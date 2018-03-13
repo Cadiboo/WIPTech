@@ -9,6 +9,7 @@ import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -50,5 +51,11 @@ public class ClientRegistry extends Registry {
 	public void logLogicalSide() {
 		WIPTech.logger.info("Client");
 	}
+	
+	@Override
+	public String localize(String unlocalized, Object... args) {
+		return I18n.format(unlocalized, args);
+	}
+	
 	
 }

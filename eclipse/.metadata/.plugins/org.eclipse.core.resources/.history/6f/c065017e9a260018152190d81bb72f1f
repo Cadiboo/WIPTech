@@ -1,5 +1,0 @@
-package cadiboo.wiptech.item;
-
-public class ItemCopperIngot extends ItemBase {
-
-}

@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -64,4 +65,9 @@ public class Registry {
 		public void logLogicalSide() {
 			WIPTech.logger.info("Sever");
 		}
+
+		public String localize(String unlocalized, Object... args) {
+			return I18n.translateToLocalFormatted(unlocalized, args);
+		}
+
 	}

@@ -1,7 +1,0 @@
-package cadiboo.wiptech.client;
-
-public class ClientRegistry extends Registry{
-
-	
-	
-}
