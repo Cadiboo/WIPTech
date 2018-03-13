@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "wiptech:gold_rail"}],
+	"facing=north": { "model": "wiptech:gold_rail" },
+        "facing=east":  { "model": "wiptech:gold_rail", "y": 90 },
+	"facing=south": { "model": "wiptech:gold_rail", "y": 180 },
+        "facing=west":  { "model": "wiptech:gold_rail", "y": 270 },
+        "inventory": { "model": "wiptech:gold_rail"}
+    }
+}

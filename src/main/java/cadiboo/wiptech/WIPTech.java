@@ -2,6 +2,10 @@ package cadiboo.wiptech;
 
 import org.apache.logging.log4j.Logger;
 
+import cadiboo.wiptech.network.PacketRequestUpdateCoiler;
+import cadiboo.wiptech.network.PacketRequestUpdateCrusher;
+import cadiboo.wiptech.network.PacketUpdateCoiler;
+import cadiboo.wiptech.network.PacketUpdateCrusher;
 import cadiboo.wiptech.world.WorldGen;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -13,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(
 		modid = Reference.ID,
@@ -40,16 +45,17 @@ public class WIPTech {
 		logger = event.getModLog();
 		
 		proxy.logLogicalSide();
+		proxy.addToCreativeTab();
 		
 		GameRegistry.registerWorldGenerator(new WorldGen(), 3);
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
 		network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
 		int networkIds = 0;
-		//network.registerMessage(new PacketUpdateCrusher.Handler(), PacketUpdateCrusher.class, networkIds++, Side.CLIENT);
-		//network.registerMessage(new PacketRequestUpdateCrusher.Handler(), PacketRequestUpdateCrusher.class, networkIds++, Side.SERVER);
-		//network.registerMessage(new PacketUpdateCoiler.Handler(), PacketUpdateCoiler.class, networkIds++, Side.CLIENT);
-		//network.registerMessage(new PacketRequestUpdateCoiler.Handler(), PacketRequestUpdateCoiler.class, networkIds++, Side.SERVER);
+		network.registerMessage(new PacketUpdateCrusher.Handler(), PacketUpdateCrusher.class, networkIds++, Side.CLIENT);
+		network.registerMessage(new PacketRequestUpdateCrusher.Handler(), PacketRequestUpdateCrusher.class, networkIds++, Side.SERVER);
+		network.registerMessage(new PacketUpdateCoiler.Handler(), PacketUpdateCoiler.class, networkIds++, Side.CLIENT);
+		network.registerMessage(new PacketRequestUpdateCoiler.Handler(), PacketRequestUpdateCoiler.class, networkIds++, Side.SERVER);
 	}
 
 	@EventHandler

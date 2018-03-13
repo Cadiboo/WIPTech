@@ -4,7 +4,7 @@
 	"textures": {
 		"0": "blocks/planks_oak",
 		"2": "wiptech:blocks/copper_enamel_repeating",
-		"particle": "wiptech:items/copper_enamel"
+		"particle": "wiptech:blocks/copper_enamel_repeating"
 	},
 	"elements": [
 		{

@@ -1,1 +1,55 @@
 itemGroup.wiptechtab=WIP Tech
+#Copper
+tile.copper_ore.name=Copper Ore
+tile.copper_block.name=Copper Block
+item.copper_ingot.name=Copper Ingot
+item.copper_nugget.name=Copper Nugget
+item.copper_strand.name=Copper Strand
+item.copper_enamel.name=Enamel Copper Wire
+tile.copper_spool.name=Copper Spool
+item.copper_coil.name=Copper Coil
+#Gold
+item.gold_enamel.name=Enamel Gold Wire
+tile.gold_spool.name=Gold Spool
+item.gold_coil.name=Gold Coil
+#Bauxite
+tile.bauxite_ore.name=Bauxite Ore
+item.alumina.name=Alumina (Aluminum Oxide)
+item.gallium.name=Gallium
+item.gallium_ingot.name=Gallium Ingot
+item.iron_oxide.name=Iron Oxide
+item.silica.name=Silica (Silicon Oxide)
+item.silicon.name=Silicon
+item.titania.name=Titania (Titanium Oxide)
+item.titanium_ingot.name=Titanium Ingot
+#Iron
+item.magnetic_metal_rod.iron.name=Iron Rod
+#Aluminium (Aluminum for Americans)
+tile.aluminium_ore.name=Aluminum Ore
+tile.aluminium_block.name=Aluminum Block
+item.aluminium_ingot.name=Aluminum Ingot
+item.aluminium_nugget.name=Aluminum Nugget
+#Tungsten
+tile.tungsten_ore.name=Tungsten Ore
+tile.tungsten_block.name=Tungsten Block
+item.tungsten_ingot.name=Tungsten Ingot
+item.tungsten_nugget.name=Tungsten Nugget
+item.magnetic_metal_rod.tungsten.name=Tungsten Rod
+#Osmium
+tile.osmium_ore.name=Osmium Ore
+tile.osmium_block.name=Osmium Block
+item.osmium_ingot.name=Osmium Ingot
+item.osmium_nugget.name=Osmium Nugget
+item.magnetic_metal_rod.osmium.name=Osmium Rod
+#Machines
+tile.strong_piston.name=Strong(Reinforced?) Piston
+tile.counter.name=Counter (soon to be removed D:)
+##Crusher
+tile.crusher.name=Crusher
+item.crusher_bit.name=Crusher Bit
+item.crusher_bit_holder.name=Crusher Bit Anchor
+
+tile.storer.name=Storer (soon to be removed/modified D:)
+
+tile.coil_winder.name=Coil Winder
+

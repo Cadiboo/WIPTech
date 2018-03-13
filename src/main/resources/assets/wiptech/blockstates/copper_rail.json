@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "wiptech:copper_rail"}],
+	"facing=north": { "model": "wiptech:copper_rail" },
+        "facing=east":  { "model": "wiptech:copper_rail", "y": 90 },
+	"facing=south": { "model": "wiptech:copper_rail", "y": 180 },
+        "facing=west":  { "model": "wiptech:copper_rail", "y": 270 },
+        "inventory": { "model": "wiptech:copper_rail"}
+    }
+}

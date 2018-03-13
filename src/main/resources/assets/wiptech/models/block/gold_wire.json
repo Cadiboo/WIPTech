@@ -1,0 +1,27 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"0": "items/gold_ingot",
+		"particle": "items/gold_ingot"
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"from": [7, 0, 0],
+			"to": [9, 1, 16],
+			"faces": {
+				"north": {
+					"uv": [12, 5, 14, 6],
+					"texture": "#0",
+					"rotation": 180
+				},
+				"east": {"uv": [13, 5, 14, 6], "texture": "#0"},
+				"south": {"uv": [12, 5, 14, 6], "texture": "#0"},
+				"west": {"uv": [12, 5, 13, 6], "texture": "#0"},
+				"up": {"uv": [12, 5, 14, 6], "texture": "#0"},
+				"down": {"uv": [12, 5, 14, 6], "texture": "#0"}
+			},
+			"type": "cube"
+		}
+	]
+}

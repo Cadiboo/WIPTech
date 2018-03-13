@@ -1,11 +1,15 @@
 package cadiboo.wiptech.network;
 
 import cadiboo.wiptech.block.coiler.TileEntityCoiler;
+import cadiboo.wiptech.block.crusher.TileEntityCrusher;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
+import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.items.ItemStackHandler;
 
 public class PacketUpdateCoiler implements IMessage {
@@ -79,5 +83,27 @@ public class PacketUpdateCoiler implements IMessage {
 		stack9 = ByteBufUtils.readItemStack(buf);
 		lastChangeTime = buf.readLong();
 		windTime = buf.readFloat();
+	}
+
+	public static class Handler implements IMessageHandler<PacketUpdateCoiler, IMessage> {
+
+		@Override
+		public IMessage onMessage(PacketUpdateCoiler message, MessageContext ctx) {
+			Minecraft.getMinecraft().addScheduledTask(() -> {
+				TileEntityCoiler te = (TileEntityCoiler)Minecraft.getMinecraft().world.getTileEntity(message.pos);
+				te.inventory.setStackInSlot(0, message.stack0);
+				te.inventory.setStackInSlot(1, message.stack1);
+				te.inventory.setStackInSlot(2, message.stack2);
+				te.inventory.setStackInSlot(3, message.stack3);
+				te.inventory.setStackInSlot(4, message.stack4);
+				te.inventory.setStackInSlot(5, message.stack5);
+				te.inventory.setStackInSlot(6, message.stack6);
+				te.inventory.setStackInSlot(7, message.stack7);
+				te.lastChangeTime = message.lastChangeTime;
+				te.windTime = message.windTime;
+			});
+			return null;
+		}
+
 	}
 }

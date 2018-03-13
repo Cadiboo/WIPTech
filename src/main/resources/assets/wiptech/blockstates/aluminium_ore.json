@@ -1,8 +1,8 @@
 {
     "variants": {
         "normal": [
-            {"model": "wiptech:aluminum_ore"}
+            {"model": "wiptech:aluminium_ore"}
         ],
-        "inventory": { "model": "wiptech:aluminum_ore" }
+        "inventory": { "model": "wiptech:aluminium_ore" }
     }
 }

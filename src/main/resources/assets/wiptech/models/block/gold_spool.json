@@ -4,7 +4,7 @@
 	"textures": {
 		"0": "blocks/planks_oak",
 		"2": "wiptech:blocks/gold_enamel_repeating",
-		"particle": "wiptech:items/gold_enamel"
+		"particle": "wiptech:blocks/gold_enamel_repeating"
 	},
 	"elements": [
 		{

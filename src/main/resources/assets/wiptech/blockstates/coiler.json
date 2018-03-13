@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "iron_block"}],
+	"facing=north": { "model": "iron_block" },
+        "facing=east":  { "model": "iron_block", "y": 90 },
+	"facing=south": { "model": "iron_block", "y": 180 },
+        "facing=west":  { "model": "iron_block", "y": 270 },
+        "inventory": { "model": "iron_block"}
+    }
+}
