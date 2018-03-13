@@ -2,8 +2,7 @@ package cadiboo.wiptech.block.crusher;
 
 import javax.annotation.Nonnull;
 
-import cadiboo.wiptech.Utils;
-import cadiboo.wiptech.item.ItemCrusherBit;
+import cadiboo.wiptech.init.Items;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -13,7 +12,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import cadiboo.wiptech.init.ModItems;
 
 public class ContainerCrusher extends Container {
 
@@ -47,7 +45,7 @@ public class ContainerCrusher extends Container {
 			@Override
 			public boolean isItemValid(@Nonnull ItemStack stack){
 				//return stack.getItem() instanceof ItemCrusherBit;
-				if (stack.getItem() == ModItems.CRUSHER_BIT)
+				if (stack.getItem() == Items.CRUSHER_BIT)
 					return true;
 				else
 					return false;

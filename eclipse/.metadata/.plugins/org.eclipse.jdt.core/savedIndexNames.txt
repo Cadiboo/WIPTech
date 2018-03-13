@@ -1,1 +1,0 @@
-INDEX VERSION 1.130+/Users/cadigalhavens/Modding/WIPTech/eclipse/.metadata/.plugins/org.eclipse.jdt.core

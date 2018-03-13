@@ -5,11 +5,8 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import cadiboo.wiptech.Clausen;
-import cadiboo.wiptech.Utils;
-import cadiboo.wiptech.init.ModBlocks;
-import cadiboo.wiptech.init.ModItems;
-import cadiboo.wiptech.item.ItemCrusherBitHolder;
+import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.utils.Clausen;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.BlockPistonExtension;
@@ -66,7 +63,6 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 				//double pos = Math.cos(TileEntityCrusher.getFractionOfCrushTimeRemaining(te)*(2*Math.PI));
 				double pos = Clausen.cl2(TileEntityCrusher.getFractionOfCrushTimeRemaining(te)*25);
 				GlStateManager.translate(0, pos/16, 0);
-				Utils.getLogger().info(pos);
 				if(pos<-0.9) {
 					((BlockCrusher) te.getWorld().getBlockState(te.getPos()).getBlock()).animateCrush(te.getWorld().getBlockState(te.getPos()), te.getWorld(), te.getPos());
 				}
@@ -85,7 +81,7 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 
 			GlStateManager.scale(-0.374, 0.374, -0.374);
 			renderModel(stackCrusherBit, te.getWorld());
-			renderModel(new ItemStack(ModItems.CRUSHER_BIT_HOLDER), te.getWorld());
+			renderModel(new ItemStack(Items.CRUSHER_BIT_HOLDER), te.getWorld());
 
 			GlStateManager.popMatrix();
 		}

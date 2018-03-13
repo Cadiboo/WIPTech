@@ -2,7 +2,7 @@ package cadiboo.wiptech.block.crusher;
 
 import javax.annotation.Nullable;
 
-import cadiboo.wiptech.WIPTechMod;
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.network.PacketRequestUpdateCrusher;
 import cadiboo.wiptech.network.PacketUpdateCrusher;
 import cadiboo.wiptech.init.Recipes;
