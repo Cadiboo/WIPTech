@@ -12,6 +12,6 @@ public class RenderEntityNapalmFactory
 {
   public Render<? super EntityNapalm> createRenderFor(RenderManager manager)
   {
-    return new RenderBasic(manager, Items.NAPALM, Minecraft.getMinecraft().getRenderItem(), 0.25F);
+    return new RenderBasic(manager, Items.NAPALM, Minecraft.getMinecraft().getRenderItem(),/* 0.25F*/ 1.0F);
   }
 }
