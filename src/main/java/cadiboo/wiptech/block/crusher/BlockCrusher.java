@@ -134,7 +134,7 @@ public class BlockCrusher extends BlockTileEntity<TileEntityCrusher> {
 	      WIPTech.logger.info("player.isSneaking(): " + player.isSneaking());
 	      if (!player.isSneaking())
 	      {
-	        player.openGui(WIPTech.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
+	        player.openGui(WIPTech.instance, GuiHandler.CRUSHER, world, pos.getX(), pos.getY(), pos.getZ());
 	      }
 	      else
 	      {
