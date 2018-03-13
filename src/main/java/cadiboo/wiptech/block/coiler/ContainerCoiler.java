@@ -1,6 +1,11 @@
 package cadiboo.wiptech.block.coiler;
 
 import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.init.Recipes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -16,17 +21,53 @@ public class ContainerCoiler extends Container {
 	public ContainerCoiler(InventoryPlayer playerInv, final TileEntityCoiler coiler)
 	{
 		IItemHandler inventory = (IItemHandler)coiler.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
-		for (int i = 0; i < 10; i++) {
+		for (int  i = 0; i < 10; i++) {
 			if ((i & 0x1) == 0) {
 				addSlotToContainer(new SlotItemHandler(inventory, i, 19 + 30 * i / 2, 17)
 				{
+					@Override
 					public void onSlotChanged()
 					{
 						coiler.markDirty();
 					}
+
+					public boolean isItemValid(@Nonnull ItemStack stack)
+					{
+						boolean returnResult = false;
+
+						ItemStack slot0Stack = ((IItemHandler)coiler.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(0);
+
+						for (ItemStack result : Recipes.getCoilResult(0)) {
+							if ((!returnResult) && (result != null) && (result.getItem() == stack.getItem())) {
+								returnResult = true;
+							}
+						}
+						return returnResult;
+					}
 				});
 			} else {
-				addSlotToContainer(new SlotItemHandler(inventory, i, 19 + 30 * ((i - 1) / 2), 53) {});
+				addSlotToContainer(new SlotItemHandler(inventory, i, 19 + 30 * ((i - 1) / 2), 53) 
+				{
+					@Override
+					public void onSlotChanged()
+					{
+						coiler.markDirty();
+					}
+					
+					public boolean isItemValid(@Nonnull ItemStack stack)
+					{
+						boolean returnResult = false;
+
+						ItemStack slot0Stack = ((IItemHandler)coiler.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(0);
+
+						for (ItemStack result : Recipes.getCoilResult(1)) {
+							if ((!returnResult) && (result != null) && (result.getItem() == stack.getItem())) {
+								returnResult = true;
+							}
+						}
+						return returnResult;
+					}
+				});
 			}
 		}
 		for (int i = 0; i < 3; i++) {
