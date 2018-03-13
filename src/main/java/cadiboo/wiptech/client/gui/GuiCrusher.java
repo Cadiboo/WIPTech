@@ -84,7 +84,6 @@ public class GuiCrusher extends GuiContainer {
 			drawHoveringText(hoveringText, mouseX - this.guiLeft, mouseY - this.guiTop, this.fontRenderer);
 		}
 
-
 		this.mc.getTextureManager().bindTexture(BG_TEXTURE);
 
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -92,17 +91,17 @@ public class GuiCrusher extends GuiContainer {
 		if ((this.tileEntity.inventory.getStackInSlot(0) != null) && (!this.tileEntity.inventory.getStackInSlot(0).isEmpty()) && (this.tileEntity.inventory.getStackInSlot(0).getItem() == Items.CRUSHER_BIT))
 		{
 			GlStateManager.disableLighting();
-			GlStateManager.disableFog();
+			//GlStateManager.disableFog(); //Used to be the only thing that made it work, now it absolutely destroys everything when called
 
 			this.zLevel = 255.0F;
-			this.itemRender.zLevel = 255.0F;
+			//this.itemRender.zLevel = 255.0F;
 			drawTexturedModalRect(24, 17, 176, 31, 16, 16);
 
 			this.zLevel = 0.0F;
-			this.itemRender.zLevel = 0.0F;
+			//this.itemRender.zLevel = 0.0F;
 
 			GlStateManager.enableLighting();
-			GlStateManager.enableFog();
+			//GlStateManager.enableFog(); //Used to be the only thing that made it work, now it absolutely destroys everything when called
 		}
 	}
 
