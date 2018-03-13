@@ -1,9 +1,10 @@
 package cadiboo.wiptech.item;
 
-public class ItemCrusherBit extends ItemBase
+public class ItemCrusherBit
+  extends ItemBase
 {
-	public ItemCrusherBit(String name)
-	{
-		super(name);
-	}
+  public ItemCrusherBit(String name)
+  {
+    super(name);
+  }
 }

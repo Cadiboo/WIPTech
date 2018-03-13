@@ -12,10 +12,14 @@ public class BlockBase extends Block {
 
 	public BlockBase(String name, Material materialIn) {
 		super(materialIn);
+
+		setHardness(1.0F);
+		setHarvestLevel(null, 0);
+
 		this.setRegistryName(new ResourceLocation(Reference.ID, name));
 		this.setUnlocalizedName(name);
 	}
-	
+
 	//Beacon Base
 	private Block beaconBase;
 	public Block setBeaconBase(){
@@ -26,17 +30,18 @@ public class BlockBase extends Block {
 	{
 		return this == beaconBase;
 	}
-	
+
 	//Ore Block
 	private Block isOreBlock;
 	public Block setOreBlock(){
+		this.setHarvestLevel("Stone", 3);
 		return isOreBlock = this;
 	}
 	public final boolean isOreBlock()
 	{
 		return this == isOreBlock;
 	}
-	
+
 	//Tile Entity
 	private Block isTileEntity;
 	public Block setTileEntity(){
@@ -55,6 +60,18 @@ public class BlockBase extends Block {
 	public final boolean isNonSolidBlock()
 	{
 		return this == nonSolidBlock;
+	}
+
+	//Hidden Block (Not displayed in creative tab)
+	private Block hiddenBlock;
+	public Block setHiddenBlock()
+	{
+		return hiddenBlock = this;
+	}
+
+	public boolean isHiddenBlock()
+	{
+		return this == this.hiddenBlock;
 	}
 
 	@Override

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "normal": [
+            {"model": "wiptech:copper_spool"}
+        ],
+        "inventory": { "model": "wiptech:copper_spool" }
+    }
+}

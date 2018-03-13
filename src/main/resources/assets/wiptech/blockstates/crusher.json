@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "wiptech:crusher"}],
+	"facing=north": { "model": "wiptech:crusher" },
+        "facing=east":  { "model": "wiptech:crusher", "y": 90 },
+	"facing=south": { "model": "wiptech:crusher", "y": 180 },
+        "facing=west":  { "model": "wiptech:crusher", "y": 270 },
+        "inventory": { "model": "wiptech:crusher"}
+    }
+}

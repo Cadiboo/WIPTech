@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "normal": [
+            {"model": "wiptech:storer"}
+        ],
+        "inventory": { "model": "wiptech:storer" }
+    }
+}

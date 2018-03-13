@@ -1,0 +1,101 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"parent": "block/block",
+	"textures": {
+		"0": "blocks/iron_block",
+		"1": "wiptech:blocks/crusher_piston_inner",
+		"2": "blocks/piston_side",
+		"3": "blocks/piston_bottom",
+		"4": "blocks/anvil_top_damaged_0",
+		"particle": "blocks/iron_block"
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"from": [5, 10, 8],
+			"to": [11, 15, 14],
+			"faces": {
+				"north": {
+					"uv": [0, 4, 16, 16],
+					"texture": "#2",
+					"rotation": 180
+				},
+				"east": {
+					"uv": [0, 4, 16, 16],
+					"texture": "#2",
+					"rotation": 180
+				},
+				"south": {
+					"uv": [0, 4, 16, 16],
+					"texture": "#2",
+					"rotation": 180
+				},
+				"west": {
+					"uv": [0, 4, 16, 16],
+					"texture": "#2",
+					"rotation": 180
+				},
+				"up": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#3",
+					"rotation": 180
+				},
+				"down": {
+					"uv": [0, 0, 16, 16],
+					"texture": "#1",
+					"rotation": 180
+				}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [0, 0, 0],
+			"to": [16, 1, 16],
+			"faces": {
+				"north": {"uv": [0, 15, 16, 16], "texture": "#0"},
+				"east": {"uv": [0, 15, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 15, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 15, 16, 16], "texture": "#0"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#0"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [0, 0, 15],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"east": {"uv": [15, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"west": {"uv": [0, 0, 1, 16], "texture": "#0"},
+				"up": {"uv": [0, 15, 16, 16], "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 1], "texture": "#0"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [1, 1, 5],
+			"to": [15, 4, 15],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 4], "texture": "#0"},
+				"east": {"uv": [0, 0, 16, 9], "texture": "#0"},
+				"south": {
+					"uv": [0, 0, 14, 4],
+					"texture": "#missing"
+				},
+				"west": {"uv": [0, 0, 16, 7], "texture": "#0"},
+				"up": {
+					"uv": [3, 0, 13, 16],
+					"texture": "#4",
+					"rotation": 90
+				},
+				"down": {"uv": [0, 0, 14, 8], "texture": "#missing"}
+			},
+			"type": "cube"
+		}
+	]
+}

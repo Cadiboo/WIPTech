@@ -1,0 +1,17 @@
+{
+    "variants": {
+        "extended=false,facing=down": { "model":"wiptech:strong_piston", "x": 90 },
+        "extended=false,facing=up": { "model":"wiptech:strong_piston", "x": 270 },
+        "extended=false,facing=north": { "model":"wiptech:strong_piston" },
+        "extended=false,facing=south": { "model":"wiptech:strong_piston", "y": 180 },
+        "extended=false,facing=west": { "model":"wiptech:strong_piston", "y": 270 },
+        "extended=false,facing=east": { "model":"wiptech:strong_piston", "y": 90 },
+        "extended=true,facing=down": { "model":"piston_extended_normal", "x": 90 },
+        "extended=true,facing=up": { "model":"piston_extended_normal", "x": 270 },
+        "extended=true,facing=north": { "model":"piston_extended_normal" },
+        "extended=true,facing=south": { "model":"piston_extended_normal", "y": 180 },
+        "extended=true,facing=west": { "model":"piston_extended_normal", "y": 270 },
+        "extended=true,facing=east": { "model":"piston_extended_normal", "y": 90 },
+        "inventory": { "model": "wiptech:strong_piston_inventory"}
+    }
+}

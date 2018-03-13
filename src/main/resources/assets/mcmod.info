@@ -1,0 +1,16 @@
+[
+{
+  "modid": "wiptech",
+  "name": "WIPTech",
+  "description": "A small mod that adds real life (or theoretically possible) experimental technologies.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Cadiboo"],
+  "credits": "Cadiboo",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
