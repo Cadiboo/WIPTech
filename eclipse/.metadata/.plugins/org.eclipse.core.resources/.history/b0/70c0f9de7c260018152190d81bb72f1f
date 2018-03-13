@@ -1,0 +1,11 @@
+package cadiboo.wiptech.init;
+
+import net.minecraft.block.Block;
+
+public class Blocks {
+	
+	public static final Block[] BLOCKS = {
+		
+	};
+
+}

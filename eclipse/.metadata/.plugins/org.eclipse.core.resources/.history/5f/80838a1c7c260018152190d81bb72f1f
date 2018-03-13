@@ -1,0 +1,53 @@
+package cadiboo.wiptech;
+
+import net.minecraftforge.fml.common.Mod;
+
+@Mod(
+		modid = Reference.ID,
+		name = Reference.NAME,
+		version = Reference.VERSION,
+		acceptedMinecraftVersions = Reference.ACCEPTED_VERSIONS
+		)
+public class WIPTech {
+
+	@Instance(Reference.ID)
+	public static WIPTechMod instance;
+
+	@SidedProxy(clientSide = Reference.CLIENT_PROXY_CLASS, serverSide = Reference.COMMON_PROXY_CLASS)
+	public static WIPTechModCommonProxy proxy;
+	
+	public static SimpleNetworkWrapper network;
+
+	//public static SimpleNetworkWrapper network;
+
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		// logger = event.getModLog();
+
+		/*
+        registerCreatures();
+		registerTileEntities();
+		 */
+		// sounds on client, and whatever else needs to be registered pre-load
+		//proxy.doPreLoadRegistration();
+		proxy.logProxy();
+		proxy.doPostLoadRegistration();
+		proxy.registerRenderers();
+		GameRegistry.registerWorldGenerator(new WorldGen(), 3);
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
+		
+		network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
+		int networkIds = 0;
+		network.registerMessage(new PacketUpdateStorer.Handler(), PacketUpdateStorer.class, networkIds++, Side.CLIENT);
+		network.registerMessage(new PacketRequestUpdateStorer.Handler(), PacketRequestUpdateStorer.class, networkIds++, Side.SERVER);
+		network.registerMessage(new PacketUpdateCrusher.Handler(), PacketUpdateCrusher.class, networkIds++, Side.CLIENT);
+		network.registerMessage(new PacketRequestUpdateCrusher.Handler(), PacketRequestUpdateCrusher.class, networkIds++, Side.SERVER);
+	}
+
+	@EventHandler
+	public void init(FMLInitializationEvent event)
+	{
+	}
+
+}

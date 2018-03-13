@@ -1,0 +1,29 @@
+package cadiboo.wiptech.item;
+
+public class ItemBase extends Item {
+
+	ItemBase(String name)
+	{
+		super();
+
+		this.setRegistryName(Reference.ID, name);
+		this.setUnlocalizedName(name);
+
+		Utils.getLogger().info("ItemBase - RegistryName "+this.getRegistryName());
+		Utils.getLogger().info("ItemBase - UnlocalizedName "+this.getUnlocalizedName());
+	}
+
+
+
+	private Item beaconPayment;
+
+	public Item setBeaconPayment(){
+		return beaconPayment = this;
+	}
+
+	@Override
+	public boolean isBeaconPayment(ItemStack stack)
+	{
+		return this == beaconPayment;
+	}
+}

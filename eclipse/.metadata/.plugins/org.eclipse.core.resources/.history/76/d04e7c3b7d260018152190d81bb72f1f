@@ -1,0 +1,16 @@
+package cadiboo.wiptech.block;
+
+import cadiboo.wiptech.Reference;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.util.ResourceLocation;
+
+public class BlockBase extends Block {
+
+	public BlockBase(String name, Material materialIn) {
+		super(materialIn);
+		this.setRegistryName(new ResourceLocation(Reference.ID, name));
+		this.setUnlocalizedName(name);
+	}
+
+}

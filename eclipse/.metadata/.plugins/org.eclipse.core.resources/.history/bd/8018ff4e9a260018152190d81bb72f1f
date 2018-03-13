@@ -1,0 +1,13 @@
+package cadiboo.wiptech.init;
+
+import net.minecraft.item.Item;
+
+public class Items {
+
+	public static final ItemCopperIngot COPPER_INGOT = new ItemCopperIngot("copper_ingot")
+	
+	public static final Item[] ITEMS = {
+			
+	};
+
+}

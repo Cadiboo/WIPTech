@@ -1,0 +1,28 @@
+package cadiboo.wiptech.item;
+
+import cadiboo.wiptech.Reference;
+import net.minecraft.item.Item;
+
+public class ItemBase extends Item {
+
+	ItemBase(String name)
+	{
+		super();
+		this.setRegistryName(Reference.ID, name);
+		this.setUnlocalizedName(name);
+	}
+
+
+
+	private Item beaconPayment;
+
+	public Item setBeaconPayment(){
+		return beaconPayment = this;
+	}
+
+	@Override
+	public boolean isBeaconPayment(ItemStack stack)
+	{
+		return this == beaconPayment;
+	}
+}

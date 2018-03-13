@@ -1,0 +1,12 @@
+package cadiboo.wiptech.client;
+
+import cadiboo.wiptech.Registry;
+import cadiboo.wiptech.WIPTech;
+
+public class ClientRegistry extends Registry {
+
+	public void logLogicalSide() {
+		WIPTech.logger.info("Client");
+	}
+	
+}

@@ -1,0 +1,9 @@
+package cadiboo.wiptech.init;
+
+public class Blocks {
+	
+	public static final Block[] BLOCKS {
+		
+	};
+
+}

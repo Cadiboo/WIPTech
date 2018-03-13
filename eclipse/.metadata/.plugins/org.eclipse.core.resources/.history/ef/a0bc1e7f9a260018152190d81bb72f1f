@@ -1,0 +1,11 @@
+package cadiboo.wiptech.item;
+
+public class ItemCopperIngot extends ItemBase {
+
+	ItemCopperIngot(String name) {
+		super(name);
+		this.setBeaconPayment()
+		// TODO Auto-generated constructor stub
+	}
+
+}

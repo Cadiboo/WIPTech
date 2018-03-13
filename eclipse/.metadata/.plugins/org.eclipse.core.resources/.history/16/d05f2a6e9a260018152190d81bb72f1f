@@ -1,0 +1,5 @@
+package cadiboo.wiptech.item;
+
+public class ItemBase extends Item {
+
+}
