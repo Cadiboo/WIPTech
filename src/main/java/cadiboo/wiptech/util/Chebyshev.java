@@ -1,4 +1,4 @@
-package cadiboo.wiptech.utils;
+package cadiboo.wiptech.util;
 
 /**
  * Evaluate Chebyshev series.

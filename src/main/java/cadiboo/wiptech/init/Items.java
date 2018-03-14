@@ -20,6 +20,7 @@ import cadiboo.wiptech.item.ItemMagneticMetalRod;
 import cadiboo.wiptech.item.ItemNapalm;
 import cadiboo.wiptech.item.ItemOsmiumIngot;
 import cadiboo.wiptech.item.ItemOsmiumNugget;
+import cadiboo.wiptech.item.ItemRailgun;
 import cadiboo.wiptech.item.ItemSilica;
 import cadiboo.wiptech.item.ItemSilicon;
 import cadiboo.wiptech.item.ItemSiliconWafer;
@@ -58,6 +59,9 @@ public class Items
   public static final ItemFlamethrower FLAMETHROWER = new ItemFlamethrower("flamethrower");
   public static final ItemNapalm NAPALM = new ItemNapalm("napalm");
   public static final ItemHammer HAMMER = new ItemHammer("hammer");
+  public static final ItemRailgun RAILGUN = new ItemRailgun("railgun");
+  
+  
   public static final Item[] ITEMS = {
     HAMMER, 
     COPPER_INGOT, 
@@ -85,5 +89,7 @@ public class Items
     TITANIA, 
     TITANIUM_INGOT, 
     FLAMETHROWER, 
-    NAPALM };
+    NAPALM,
+    RAILGUN,  
+  };
 }

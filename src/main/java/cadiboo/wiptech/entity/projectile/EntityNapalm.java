@@ -13,9 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class EntityNapalm
-extends EntityThrowable
-{
+public class EntityNapalm extends EntityThrowable {
 	public EntityLivingBase shootingEntity;
 
 	public EntityNapalm(World worldIn)
