@@ -5,13 +5,18 @@ import cadiboo.wiptech.Registry;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
+import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
+import cadiboo.wiptech.entity.render.RenderBasic;
 import cadiboo.wiptech.entity.render.RenderEntityNapalmFactory;
+import cadiboo.wiptech.entity.render.RenderEntityRailgunProjectile;
+import cadiboo.wiptech.entity.render.RenderEntityRailgunProjectileFactory;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.item.EnumHandler;
 import cadiboo.wiptech.item.EnumHandler.MagneticMetalRods;
 import cadiboo.wiptech.item.ItemMagneticMetalRod;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -63,6 +68,7 @@ public class ClientRegistry extends Registry {
 		WIPTech.logger.info("Registered models");
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, new RenderEntityNapalmFactory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityRailgunProjectile.class, new RenderEntityRailgunProjectileFactory());
 		WIPTech.logger.info("Registered Entity Renders");
 	}
 

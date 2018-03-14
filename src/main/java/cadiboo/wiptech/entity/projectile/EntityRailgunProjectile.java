@@ -78,7 +78,7 @@ public class EntityRailgunProjectile extends EntityBase implements IProjectile {
 	private int zTile;
 	private Block inTile;
 	private int inData;
-	protected boolean inGround;
+	public boolean inGround;
 	protected int timeInGround;
 	/** 1 if the player can pick up the projectile */
 	public EntityRailgunProjectile.PickupStatus pickupStatus;
@@ -306,11 +306,6 @@ public class EntityRailgunProjectile extends EntityBase implements IProjectile {
 			float f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
 
-			for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f4) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
-			{
-				;
-			}
-
 			while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
 			{
 				this.prevRotationPitch += 360.0F;
@@ -384,7 +379,7 @@ public class EntityRailgunProjectile extends EntityBase implements IProjectile {
 				damagesource = cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this.shootingEntity);
 			}
 
-			if (this.isBurning() && !(entity instanceof EntityEnderman))
+			if (this.isBurning())
 			{
 				entity.setFire(5);
 			}
@@ -411,20 +406,24 @@ public class EntityRailgunProjectile extends EntityBase implements IProjectile {
 						EnchantmentHelper.applyArthropodEnchantments((EntityLivingBase)this.shootingEntity, entitylivingbase);
 					}
 
-					this.arrowHit(entitylivingbase);
+					/*this.arrowHit(entitylivingbase);
 
 					if (this.shootingEntity != null && entitylivingbase != this.shootingEntity && entitylivingbase instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP)
 					{
 						((EntityPlayerMP)this.shootingEntity).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
 					}
+					*/
+					//TODO make this do whatever its meant to do
 				}
 
-				this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+				//the sound it makes as it makes a hole straight through an entity, not slowing at all
+				this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 
-				if (!(entity instanceof EntityEnderman))
+				/*if (!(entity instanceof EntityEnderman))
 				{
 					this.setDead();
-				}
+				}*/
+				//MUAHAHAHA it can kill a line of entities at once
 			}
 			else
 			{
@@ -462,7 +461,7 @@ public class EntityRailgunProjectile extends EntityBase implements IProjectile {
 			this.posX -= this.motionX / (double)f2 * 0.05000000074505806D;
 			this.posY -= this.motionY / (double)f2 * 0.05000000074505806D;
 			this.posZ -= this.motionZ / (double)f2 * 0.05000000074505806D;
-			this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+			this.playSound(SoundEvents.BLOCK_STONE_BREAK, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 			this.inGround = true;
 
 			if (iblockstate.getMaterial() != Material.AIR)
