@@ -12,23 +12,22 @@ import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.world.IBlockAccess;
 
 public class BlockGoldNugget
-  extends BlockBase
+extends BlockBase
 {
-  public BlockGoldNugget(String name, Material material)
-  {
-    super(name, material);
-    setNonSolidBlock();
-    setHiddenBlock();
-    setHardness(0.1F);
-  }
-  
-  public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
-  {
-    drops.add(new ItemStack((Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"))));
-  }
-  
-  public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-  {
-    return new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.25D, 0.75D);
-  }
+	public BlockGoldNugget(String name, Material material)
+	{
+		super(name, material);
+		setCircuitMaterial();
+		setTileOnly();
+	}
+
+	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+	{
+		drops.add(new ItemStack((Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"))));
+	}
+
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+	{
+		return new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.25D, 0.75D);
+	}
 }

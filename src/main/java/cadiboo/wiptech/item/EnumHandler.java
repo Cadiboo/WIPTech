@@ -30,8 +30,8 @@ public class EnumHandler
 
 	public static enum MagneticMetalRods implements IStringSerializable {
 		IRON(0, "iron", TextFormatting.WHITE),
-		TUNGSTEN(1,"tungsten", TextFormatting.GRAY),
-		OSMIUM(2, "osmium", TextFormatting.DARK_BLUE);
+		OSMIUM(1, "osmium", TextFormatting.DARK_BLUE),
+		TUNGSTEN(2,"tungsten", TextFormatting.GRAY);
 		
 		private int ID;
 		private String name;

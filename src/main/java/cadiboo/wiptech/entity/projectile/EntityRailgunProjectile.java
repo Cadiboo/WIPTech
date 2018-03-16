@@ -19,10 +19,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.PotionTypes;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -52,7 +50,8 @@ public class EntityRailgunProjectile extends EntityBase implements IProjectile {
 	{
 		public boolean apply(@Nullable Entity p_apply_1_)
 		{
-			return p_apply_1_.canBeCollidedWith();
+			//return p_apply_1_.canBeCollidedWith();
+			return true; //otherwise endermen tp away, may change this in future
 		}
 	});
 

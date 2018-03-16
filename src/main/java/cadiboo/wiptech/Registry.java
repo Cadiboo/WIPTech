@@ -154,30 +154,50 @@ public class Registry
 		if (event.getHarvester() != null)
 		{
 			List<ItemStack> drops = event.getDrops();
-			ItemStack stack = (ItemStack)drops.get(0);
-			Item item = stack.getItem();
-			World world = event.getWorld();
-			BlockPos pos = event.getPos();
-			Item gold_nugget = (Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
-			Item gold_ingot = (Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"));
-			if ((event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_NUGGET) || 
-					(event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_INGOT) || 
-					(event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_NUGGET) || 
-					(event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_INGOT)) {
-				if (((world.getBlockState(pos.down()).getBlock() instanceof BlockAnvil)) && 
-						((event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHammer)))
-				{
-					if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_NUGGET) {
-						stack = new ItemStack(cadiboo.wiptech.init.Blocks.COPPER_WIRE);
-					} else if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_INGOT) {
-						stack = new ItemStack(cadiboo.wiptech.init.Blocks.COPPER_RAIL);
-					} else if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_NUGGET) {
-						stack = new ItemStack(cadiboo.wiptech.init.Blocks.GOLD_WIRE);
-					} else if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_INGOT) {
-						stack = new ItemStack(cadiboo.wiptech.init.Blocks.GOLD_RAIL);
+			if(drops!=null && drops.size()>0) {
+				ItemStack stack = (ItemStack)drops.get(0);
+				Item item = stack.getItem();
+				World world = event.getWorld();
+				BlockPos pos = event.getPos();
+
+				//replace all this with init.Recipes.getHammerRecipe
+				Block eventBlock = event.getState().getBlock();
+
+				if ((eventBlock == cadiboo.wiptech.init.Blocks.COPPER_NUGGET) || 
+						(eventBlock == cadiboo.wiptech.init.Blocks.COPPER_INGOT) || 
+						(eventBlock == cadiboo.wiptech.init.Blocks.GOLD_NUGGET) || 
+						(eventBlock == cadiboo.wiptech.init.Blocks.GOLD_INGOT)) {
+					if (((world.getBlockState(pos.down()).getBlock() instanceof BlockAnvil)) && 
+							((event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHammer)))
+					{
+						drops.set(0, ((ItemStack) Recipes.getHammerResult(stack).get(1)).copy());
 					}
-					drops.set(0, stack);
 				}
+
+				/*if(Recipes.getHammerResult(stack).size()>0) {
+
+				}
+
+				Item gold_nugget = (Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
+				Item gold_ingot = (Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"));
+				if ((event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_NUGGET) || 
+						(event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_INGOT) || 
+						(event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_NUGGET) || 
+						(event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_INGOT)) {
+					if (((world.getBlockState(pos.down()).getBlock() instanceof BlockAnvil)) && 
+							((event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHammer)))
+					{
+						if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_NUGGET) {
+							stack = new ItemStack(cadiboo.wiptech.init.Blocks.COPPER_WIRE);
+						} else if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_INGOT) {
+							stack = new ItemStack(cadiboo.wiptech.init.Blocks.COPPER_RAIL);
+						} else if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_NUGGET) {
+							stack = new ItemStack(cadiboo.wiptech.init.Blocks.GOLD_WIRE);
+						} else if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_INGOT) {
+							stack = new ItemStack(cadiboo.wiptech.init.Blocks.GOLD_RAIL);
+						}
+						drops.set(0, stack);
+					}*/
 			}
 		}
 	}

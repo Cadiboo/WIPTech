@@ -8,6 +8,6 @@ public class BlockCopperWire
   public BlockCopperWire(String name, Material material)
   {
     super(name, material);
-    setHardness(0.1F);
+    setCircuit();
   }
 }

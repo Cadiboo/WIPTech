@@ -33,46 +33,51 @@ public class BlockBase extends Block {
 
 	//Ore Block
 	private Block isOreBlock;
-	public Block setOreBlock(){
+	public Block setOreBlock()		{
 		this.setHarvestLevel("Stone", 3);
 		return isOreBlock = this;
 	}
-	public final boolean isOreBlock()
-	{
-		return this == isOreBlock;
-	}
+	public final boolean isOreBlock() {	return this == isOreBlock;	}
 
 	//Tile Entity
 	private Block isTileEntity;
-	public Block setTileEntity(){
-		return isTileEntity = this;
-	}
-	public final boolean isTileEntity()
-	{
-		return this == isTileEntity;
-	}
+	public Block setTileEntity()		{	return isTileEntity = this;	}
+	public boolean isTileEntity()	{	return this == isTileEntity;	}
 
 	//Non-Solid Block
 	private Block nonSolidBlock;
-	public Block setNonSolidBlock(){
-		return nonSolidBlock = this;
-	}
-	public final boolean isNonSolidBlock()
-	{
-		return this == nonSolidBlock;
-	}
+	public Block setNonSolidBlock()	{	return nonSolidBlock = this; }
+	public boolean isNonSolidBlock()	{	return this== nonSolidBlock; }
 
 	//Hidden Block (Not displayed in creative tab)
 	private Block hiddenBlock;
-	public Block setHiddenBlock()
-	{
-		return hiddenBlock = this;
-	}
+	public Block setHiddenBlock()	{	return hiddenBlock = this;	 }
+	public boolean isHiddenBlock()	{	return this== hiddenBlock;	 }
 
-	public boolean isHiddenBlock()
-	{
-		return this == this.hiddenBlock;
+	//Tile Block Only (No item created for it)
+	private Block tileOnly;
+	public Block setTileOnly()		{
+		this.setHiddenBlock();
+		return tileOnly = this;
 	}
+	public boolean isTileOnly()		{	return this== tileOnly;		 }
+
+	//Circuit Material (non-solid, breaks easily)
+	private Block circuitMaterial;
+	public Block setCircuitMaterial(){
+		setNonSolidBlock();
+		setHardness(0.1F);
+		return circuitMaterial = this;
+	}
+	public boolean isCircuitMaterial(){	return this== circuitMaterial; }
+
+	//Circuit (possibly use it for electricity checks in future)
+	private Block circuit;
+	public Block setCircuit(){
+		setCircuitMaterial();
+		return circuit = this;
+	}
+	public boolean isCircuit(){	return this== circuit; }
 
 	@Override
 	public final boolean isOpaqueCube(IBlockState state)

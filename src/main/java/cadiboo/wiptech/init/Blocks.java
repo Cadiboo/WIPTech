@@ -20,8 +20,11 @@ import cadiboo.wiptech.block.BlockGoldWire;
 import cadiboo.wiptech.block.BlockOsmiumOre;
 import cadiboo.wiptech.block.BlockStrongPistonBase;
 import cadiboo.wiptech.block.BlockTungstenOre;
+import cadiboo.wiptech.block.capacitorbank.BlockCapacitorBank;
 import cadiboo.wiptech.block.coiler.BlockCoiler;
 import cadiboo.wiptech.block.crusher.BlockCrusher;
+import cadiboo.wiptech.block.turbine.BlockTurbine;
+
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.block.Block;
@@ -50,6 +53,8 @@ public class Blocks
 	public static final BlockGoldWire GOLD_WIRE = new BlockGoldWire("gold_wire", Material.CIRCUITS);
 	public static final BlockCopperEnamel COPPER_ENAMEL = new BlockCopperEnamel("copper_enamel", Material.CIRCUITS);
 	public static final BlockGoldEnamel GOLD_ENAMEL = new BlockGoldEnamel("gold_enamel", Material.CIRCUITS);
+	public static final BlockTurbine TURBINE = new BlockTurbine("turbine", Material.IRON);
+	public static final BlockCapacitorBank CAPACITOR_BANK = new BlockCapacitorBank("capacitor_bank", Material.IRON);
 	
 	
 	public static final Block[] BLOCKS = {
@@ -67,6 +72,9 @@ public class Blocks
 
 			CRUSHER, 
 			COILER, 
+			
+			TURBINE,
+			CAPACITOR_BANK,
 
 			STRONG_PISTON, 
 			

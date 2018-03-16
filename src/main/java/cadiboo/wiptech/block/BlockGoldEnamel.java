@@ -8,5 +8,6 @@ public class BlockGoldEnamel
   public BlockGoldEnamel(String name, Material material)
   {
     super(name, material);
+    setCircuit();
   }
 }
