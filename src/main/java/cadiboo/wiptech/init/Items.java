@@ -3,6 +3,7 @@ package cadiboo.wiptech.init;
 import cadiboo.wiptech.item.ItemAlumina;
 import cadiboo.wiptech.item.ItemAluminiumIngot;
 import cadiboo.wiptech.item.ItemAluminiumNugget;
+import cadiboo.wiptech.item.ItemCoilgun;
 import cadiboo.wiptech.item.ItemCopperCoil;
 import cadiboo.wiptech.item.ItemCopperIngot;
 import cadiboo.wiptech.item.ItemCopperNugget;
@@ -60,6 +61,7 @@ public class Items
   public static final ItemNapalm NAPALM = new ItemNapalm("napalm");
   public static final ItemHammer HAMMER = new ItemHammer("hammer");
   public static final ItemRailgun RAILGUN = new ItemRailgun("railgun");
+  public static final ItemCoilgun COILGUN = new ItemCoilgun("coilgun");
   
   
   public static final Item[] ITEMS = {
@@ -90,6 +92,7 @@ public class Items
     TITANIUM_INGOT, 
     FLAMETHROWER, 
     NAPALM,
-    RAILGUN,  
+    RAILGUN,
+    COILGUN,
   };
 }

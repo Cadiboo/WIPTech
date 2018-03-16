@@ -16,12 +16,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
 public class ItemFlamethrower
-extends Item
+extends ItemBase
 {
 	public ItemFlamethrower(String name)
 	{
-		setRegistryName("wiptech", name);
-		setUnlocalizedName(name);
+		super(name);
 		this.maxStackSize = 1;
 		setMaxDamage(0);
 		setCreativeTab(CreativeTabs.COMBAT);

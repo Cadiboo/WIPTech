@@ -10,9 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-public class ItemMagneticMetalRod
-extends ItemBase
-{
+public class ItemMagneticMetalRod extends ItemBase {
 	public static final String[] itemNames = { "iron_rod", "tungsten_rod", "osmium_rod" };
 
 	public ItemMagneticMetalRod(String name)

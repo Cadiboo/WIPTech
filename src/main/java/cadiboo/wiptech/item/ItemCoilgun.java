@@ -1,32 +1,33 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.entity.projectile.EntityNapalm;
+import cadiboo.wiptech.Reference;
+import cadiboo.wiptech.entity.projectile.EntityCoilgunProjectile;
 import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
-import cadiboo.wiptech.item.EnumHandler.MagneticMetalRods;
+import cadiboo.wiptech.init.Items;
 
 import java.util.Random;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Enchantments;
-import cadiboo.wiptech.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-public class ItemRailgun
+public class ItemCoilgun
 extends ItemBase
 {
-	public ItemRailgun(String name)
+	private static final Item IRON_NUGGET = net.minecraft.item.Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
+
+	public ItemCoilgun(String name)
 	{
 		super(name);
 		this.maxStackSize = 1;
@@ -44,13 +45,38 @@ extends ItemBase
 		return EnumAction.BOW;
 	}
 
+	@Override
+	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
+	{
+		/*
+		if(this.getComponents.contains(rollingCircuit||machinegunCircuit) {
+		 */
+		World worldIn = player.world;
+		if ((player instanceof EntityPlayer))
+		{
+			float velocity = 0.75F;
+			if (!worldIn.isRemote)
+			{
+				EntityCoilgunProjectile entitycoilgunprojectile = new EntityCoilgunProjectile(worldIn, player);
+				entitycoilgunprojectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 1.0F);
+				worldIn.spawnEntity(entitycoilgunprojectile);
+			}
+			worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+		}
+	}
+	
+	protected boolean isAmmo(ItemStack stack)
+	{
+		return stack.getItem() == IRON_NUGGET || stack.getItem() instanceof ItemOsmiumNugget || stack.getItem() instanceof ItemTungstenNugget;
+	}
+	
 	private ItemStack findAmmo(EntityPlayer player)
 	{
-		if (this.isRod(player.getHeldItem(EnumHand.OFF_HAND)))
+		if (this.isAmmo(player.getHeldItem(EnumHand.OFF_HAND)))
 		{
 			return player.getHeldItem(EnumHand.OFF_HAND);
 		}
-		else if (this.isRod(player.getHeldItem(EnumHand.MAIN_HAND)))
+		else if (this.isAmmo(player.getHeldItem(EnumHand.MAIN_HAND)))
 		{
 			return player.getHeldItem(EnumHand.MAIN_HAND);
 		}
@@ -60,7 +86,7 @@ extends ItemBase
 			{
 				ItemStack itemstack = player.inventory.getStackInSlot(i);
 
-				if (this.isRod(itemstack))
+				if (this.isAmmo(itemstack))
 				{
 					return itemstack;
 				}
@@ -69,14 +95,12 @@ extends ItemBase
 			return ItemStack.EMPTY;
 		}
 	}
-
-	protected boolean isRod(ItemStack stack)
-	{
-		return stack.getItem() instanceof ItemMagneticMetalRod;
-	}
-
+	
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
 	{
+		/*
+		if(!this.getComponents.contains(rollingCircuit||machinegunCircuit) {
+		 */
 		if (entityLiving instanceof EntityPlayer)
 		{
 			EntityPlayer entityplayer = (EntityPlayer)entityLiving;
@@ -91,10 +115,10 @@ extends ItemBase
 			{
 				if (itemstack.isEmpty())
 				{
-					itemstack = new ItemStack(Items.MAGNETIC_METAL_ROD, 1, 2); //TUNGSTEN
+					itemstack = new ItemStack(Items.TUNGSTEN_NUGGET, 1, 2); //TUNGSTEN
 				}
 
-				float velocity = getRailgunProjectileVelocity(stack);
+				float velocity = getCoilgunProjectileVelocity(stack);
 
 				if ((double)velocity >= 0.1D)
 				{
@@ -102,23 +126,28 @@ extends ItemBase
 
 					if (!worldIn.isRemote)
 					{
-						ItemMagneticMetalRod itemrod = (ItemMagneticMetalRod)(itemstack.getItem() instanceof ItemMagneticMetalRod ? itemstack.getItem() : Items.MAGNETIC_METAL_ROD);
+						Item itemnugget = ((stack.getItem() == IRON_NUGGET || stack.getItem() instanceof ItemOsmiumNugget || stack.getItem() instanceof ItemTungstenNugget) ? itemstack.getItem() : Items.MAGNETIC_METAL_ROD);
 
 						//EntityRailgunProjectile railgunProjectile = new EntityRailgunProjectile(worldIn, entityplayer);
-						EntityRailgunProjectile railgunProjectile = itemrod.createRailgunProjectile(worldIn, itemstack, entityplayer);
-						railgunProjectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
+						
+						EntityCoilgunProjectile coilgunProjectile = new EntityCoilgunProjectile(worldIn, entityplayer);
+						coilgunProjectile.setNuggetId(this.getAmmoLevel(stack));
+						//return railgunProjectile;
+						
+						
+						coilgunProjectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
 
-						railgunProjectile.setDamage(getRailgunProjectileDamage(itemstack));
+						coilgunProjectile.setDamage(getCoilgunProjectileDamage(itemstack));
 
-						railgunProjectile.setKnockbackStrength(getRailgunProjectileKnockback(itemstack));
-						//entityarrow.setFire(100);
+						coilgunProjectile.setKnockbackStrength(getCoilgunProjectileKnockback(itemstack));
+						//if(this.railgun.overheat) entityarrow.setFire(100);
 
 						if (flag1 || entityplayer.capabilities.isCreativeMode)
 						{
-							railgunProjectile.pickupStatus = EntityRailgunProjectile.PickupStatus.CREATIVE_ONLY;
+							coilgunProjectile.pickupStatus = EntityCoilgunProjectile.PickupStatus.CREATIVE_ONLY;
 						}
 
-						worldIn.spawnEntity(railgunProjectile);
+						worldIn.spawnEntity(coilgunProjectile);
 					}
 
 					worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
@@ -136,12 +165,19 @@ extends ItemBase
 			}
 		}
 	}
-
-
-
-	private float getRailgunProjectileVelocity(ItemStack stack) {
+	
+	private int getAmmoLevel(ItemStack stack) {
+		int level = 0;
+		if(stack.getItem() instanceof ItemOsmiumNugget)
+			level = 1;
+		if(stack.getItem() instanceof ItemTungstenNugget)
+			level = 2;
+		return level;
+	}
+	
+	private float getCoilgunProjectileVelocity(ItemStack stack) {
 		float velocity = 0;
-		switch(stack.getMetadata()) {
+		switch(getAmmoLevel(stack)) {
 		case 0:
 			velocity = 3.5F;break;
 		case 1:
@@ -151,10 +187,10 @@ extends ItemBase
 		}
 		return velocity;
 	}
-	
-	private float getRailgunProjectileDamage(ItemStack stack) {
+
+	private float getCoilgunProjectileDamage(ItemStack stack) {
 		float damage = 0;
-		switch(stack.getMetadata()) {
+		switch(getAmmoLevel(stack)) {
 		case 0:
 			damage = 5F;break;
 		case 1:
@@ -166,9 +202,9 @@ extends ItemBase
 		//return damage*2;
 	}
 	
-	private int getRailgunProjectileKnockback(ItemStack stack) {
+	private int getCoilgunProjectileKnockback(ItemStack stack) {
 		int knockback = 0;
-		switch(stack.getMetadata()) {
+		switch(getAmmoLevel(stack)) {
 		case 0:
 			knockback = 1;break;
 		case 1:
@@ -178,7 +214,6 @@ extends ItemBase
 		}
 		return knockback;
 	}
-
 
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
 	{
