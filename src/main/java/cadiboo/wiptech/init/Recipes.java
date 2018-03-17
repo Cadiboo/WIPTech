@@ -3,10 +3,15 @@ package cadiboo.wiptech.init;
 import java.util.ArrayList;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.block.coiler.TileEntityCoiler;
+import cadiboo.wiptech.block.crusher.TileEntityCrusher;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class Recipes
 {
@@ -229,7 +234,7 @@ public class Recipes
 
 	public static ArrayList<ItemStack> getCrushResults(int slot)
 	{
-		if ((slot > 7) || (slot < 0)) {
+		if ((slot > TileEntityCrusher.getSlots()-1) || (slot < 0)) {
 			return null;
 		}
 		ArrayList<ItemStack> crushResults = new ArrayList();
@@ -241,7 +246,7 @@ public class Recipes
 
 	public static ArrayList<ItemStack> getHammerResults(int slot)
 	{
-		if ((slot > 7) || (slot < 0)) {
+		if ((slot > TileEntityCrusher.getSlots()-1) || (slot < 0)) {
 			return null;
 		}
 		ArrayList<ItemStack> hammerResults = new ArrayList();
@@ -253,7 +258,7 @@ public class Recipes
 
 	public static ArrayList<ItemStack> getCoilResult(int slot)
 	{
-		if ((slot > 9) || (slot < 0)) {
+		if ((slot > TileEntityCoiler.getSlots()-1) || (slot < 0)) {
 			return null;
 		}
 		ArrayList<ItemStack> coilResults = new ArrayList();

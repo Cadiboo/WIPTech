@@ -24,7 +24,10 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 
 	public float crushTime;
 	public long lastChangeTime;
-	public ItemStackHandler inventory = new ItemStackHandler(8)
+	
+	public static int getSlots() {return 8;}
+	
+	public ItemStackHandler inventory = new ItemStackHandler(getSlots())
 	{
 		protected void onContentsChanged(int slot)
 		{

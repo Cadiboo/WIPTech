@@ -26,6 +26,10 @@ public class TileEntityCoiler extends TileEntity implements ITickable {
 	public float windTime;
 	//private int activeSlot = -1;
 	public long lastChangeTime;
+	
+	public static int getSlots() {
+		return 10;
+	}
 
 	public ItemStackHandler inventory = new ItemStackHandler(10) {
 		@Override

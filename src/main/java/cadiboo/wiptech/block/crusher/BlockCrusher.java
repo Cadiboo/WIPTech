@@ -36,6 +36,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import scala.swing.TextComponent;
 
 public class BlockCrusher extends BlockTileEntity<TileEntityCrusher> {
 
@@ -215,7 +216,7 @@ public class BlockCrusher extends BlockTileEntity<TileEntityCrusher> {
 	  {
 	    TileEntityCrusher tile = (TileEntityCrusher)getTileEntity(world, pos);
 	    IItemHandler itemHandler = (IItemHandler)tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
-	    for (int i = 0; i < 8; i++)
+	    for (int i = 0; i < itemHandler.getSlots(); i++)
 	    {
 	      ItemStack stack = itemHandler.getStackInSlot(i);
 	      if (!stack.isEmpty())
