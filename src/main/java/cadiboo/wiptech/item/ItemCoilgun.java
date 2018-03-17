@@ -1,11 +1,8 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.entity.projectile.EntityCoilgunProjectile;
-import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
+import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
 import cadiboo.wiptech.init.Items;
-
-import java.util.Random;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -144,7 +141,7 @@ extends ItemBase
 
 						if (flag1 || entityplayer.capabilities.isCreativeMode)
 						{
-							coilgunProjectile.pickupStatus = EntityCoilgunProjectile.PickupStatus.CREATIVE_ONLY;
+							coilgunProjectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
 						}
 
 						worldIn.spawnEntity(coilgunProjectile);

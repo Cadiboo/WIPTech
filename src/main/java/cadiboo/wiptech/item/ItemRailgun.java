@@ -1,22 +1,16 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.entity.projectile.EntityNapalm;
+import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
 import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
-import cadiboo.wiptech.item.EnumHandler.MagneticMetalRods;
-
-import java.util.Random;
+import cadiboo.wiptech.init.Items;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Enchantments;
-import cadiboo.wiptech.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.StatList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -115,7 +109,7 @@ extends ItemBase
 
 						if (flag1 || entityplayer.capabilities.isCreativeMode)
 						{
-							railgunProjectile.pickupStatus = EntityRailgunProjectile.PickupStatus.CREATIVE_ONLY;
+							railgunProjectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
 						}
 
 						worldIn.spawnEntity(railgunProjectile);

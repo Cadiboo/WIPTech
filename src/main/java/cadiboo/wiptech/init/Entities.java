@@ -1,9 +1,9 @@
 package cadiboo.wiptech.init;
 
 import cadiboo.wiptech.Reference;
+import cadiboo.wiptech.entity.projectile.EntityCoilgunProjectile;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
-import cadiboo.wiptech.entity.projectile.EntityCoilgunProjectile;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
