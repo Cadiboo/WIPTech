@@ -182,7 +182,9 @@ public class Recipes
 	public static ArrayList getCrushResult(ItemStack input)
 	{
 		for (ArrayList recipe : crushRecipes) {
-			if (((ItemStack)recipe.get(0)).getItem() == input.getItem()) {
+			ItemStack test = ((ItemStack)recipe.get(0)).copy();
+			test.setCount(input.getCount());
+			if(ItemStack.areItemsEqual(test, input)) {
 				return recipe;
 			}
 		}
@@ -191,34 +193,34 @@ public class Recipes
 
 	public static ArrayList getHammerResult(ItemStack input)
 	{
+		//if(input != ItemStack.EMPTY) {
 		for (ArrayList recipe : hammerRecipes) {
 			ItemStack test = ((ItemStack)recipe.get(0)).copy();
 			test.setCount(input.getCount());
-			ItemStack air = (new ItemStack(net.minecraft.init.Blocks.AIR));
-			air.setCount(input.getCount());
-			if(test==air)
-				return null;
-
-			if(test == input) {
-				WIPTech.logger.info("TEST==INPUT");
-				WIPTech.logger.info(test);
-				WIPTech.logger.info(input);
+			if(ItemStack.areItemsEqual(test, input)) {
+				/*WIPTech.logger.info("TEST==INPUT");
+					WIPTech.logger.info(test);
+					WIPTech.logger.info(input);
+				 */
 				return recipe;
 			}
 			else
 			{
-				WIPTech.logger.info("TEST!=INPUT");
-				WIPTech.logger.info(test);
-				WIPTech.logger.info(input);
+				/*WIPTech.logger.info("TEST!=INPUT");
+					WIPTech.logger.info(test);
+					WIPTech.logger.info(input);*/
 			}
 		}
+		//}
 		return null;
 	}
 
 	public static ArrayList getCoilResult(ItemStack input)
 	{
-		for (ArrayList recipe : coilRecipes) {
-			if (((ItemStack)recipe.get(0)).getItem() == input.getItem()) {
+		for (ArrayList recipe : crushRecipes) {
+			ItemStack test = ((ItemStack)recipe.get(0)).copy();
+			test.setCount(input.getCount());
+			if(ItemStack.areItemsEqual(test, input)) {
 				return recipe;
 			}
 		}
