@@ -3,6 +3,7 @@ package cadiboo.wiptech.init;
 import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
+import cadiboo.wiptech.entity.projectile.EntityCoilgunProjectile;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
@@ -24,12 +25,20 @@ public class Entities {
 			.name("railgunprojectile")
 			.tracker(64, 2, true)
 			.build();
+	
+	public static final EntityEntry COILGUNPROJECTILE = EntityEntryBuilder.create()
+			.entity(EntityCoilgunProjectile.class)
+			.id(new ResourceLocation(Reference.ID, "coilgunprojectile"), ID++)
+			.name("coilgunprojectile")
+			.tracker(64, 2, true)
+			.build();
 
 
 
 	public static final EntityEntry[] ENTITIES = {
 			NAPALM,
 			RAILGUNPROJECTILE,
+			COILGUNPROJECTILE,
 			
 	};
 
