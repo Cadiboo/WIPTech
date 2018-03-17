@@ -11,33 +11,30 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EnumHandler
 {
 	public static ResourceLocation[] getResourceLocations(int i) {
-		ResourceLocation[] string;
-		if(i == 1) {
-			string = new ResourceLocation[3];
-			for(int j = 0; j < MagneticMetalRods.values().length; j++) {
-				string[j] = new ResourceLocation(Reference.ID, MagneticMetalRods.values()[j].getName());
-			}
-			return string;
+		ResourceLocation[] string = new ResourceLocation[ItemFerromagneticProjectile.subTypesAmmount+1];
+		for(int j = 0; j < FerromagneticProjectiles.values().length; j++) {
+			string[j] = new ResourceLocation(Reference.ID, FerromagneticProjectiles.values()[j].getName());
 		}
-		else {
-			string = new ResourceLocation[3];
-			for(int j = 0; j < MagneticMetalRods.values().length; j++) {
-				string[j] = new ResourceLocation(Reference.ID, MagneticMetalRods.values()[j].getName());
-			}
-			return string;
-		}
+		return string;
 	}
 
-	public static enum MagneticMetalRods implements IStringSerializable {
-		IRON(0, "iron", TextFormatting.WHITE),
-		OSMIUM(1, "osmium", TextFormatting.DARK_BLUE),
-		TUNGSTEN(2,"tungsten", TextFormatting.GRAY);
+	public static enum FerromagneticProjectiles implements IStringSerializable {
+		IRON_LARGE(0, "iron_large", TextFormatting.WHITE),
+		OSMIUM_LARGE(1, "osmium_large", TextFormatting.DARK_BLUE),
+		TUNGSTEN_LARGE(2,"tungsten_large", TextFormatting.GRAY),
+		IRON_MEDIUM(3, "iron_medium", TextFormatting.WHITE),
+		OSMIUM_MEDIUM(4, "osmium_medium", TextFormatting.DARK_BLUE),
+		TUNGSTEN_MEDIUM(5,"tungsten_medium", TextFormatting.GRAY),
+		IRON_SMALL(6, "iron_small", TextFormatting.WHITE),
+		OSMIUM_SMALL(7, "osmium_small", TextFormatting.DARK_BLUE),
+		TUNGSTEN_SMALL(8,"tungsten_small", TextFormatting.GRAY),
+		PLASMA(9,"plasma", TextFormatting.GOLD); //nano
 		
 		private int ID;
 		private String name;
 		private TextFormatting chatColor;
 
-		private MagneticMetalRods(int ID, String name, TextFormatting chatColorIn) {
+		private FerromagneticProjectiles(int ID, String name, TextFormatting chatColorIn) {
 			this.ID = ID;
 			this.name = name;
 			this.chatColor = chatColorIn;
@@ -61,8 +58,50 @@ public class EnumHandler
 			return getName();
 		}
 
-		public static MagneticMetalRods byMetadata(int i) {
-			return MagneticMetalRods.values()[i];
+		public static FerromagneticProjectiles byMetadata(int i) {
+			return FerromagneticProjectiles.values()[i];
+		}
+
+		public int getMetadata() {
+			return getID();
+		}
+	}
+	
+	public static enum Circuits implements IStringSerializable {
+		MANUAL(0, "iron_large", TextFormatting.WHITE),
+		SEMI_AUTO(1, "osmium_large", TextFormatting.DARK_BLUE),
+		AUTO(2,"tungsten_large", TextFormatting.GRAY);
+		
+		private int ID;
+		private String name;
+		private TextFormatting chatColor;
+
+		private Circuits(int ID, String name, TextFormatting chatColorIn) {
+			this.ID = ID;
+			this.name = name;
+			this.chatColor = chatColorIn;
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+		
+		public String getUnlocalizedName() {
+			return this.getName();
+		}
+
+		public int getID() {
+			return ID;
+		}
+
+		@Override
+		public String toString() {
+			return getName();
+		}
+
+		public static Circuits byMetadata(int i) {
+			return Circuits.values()[i];
 		}
 
 		public int getMetadata() {

@@ -21,26 +21,26 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class EntityRailgunProjectile extends EntityProjectileBase {
+public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
-	private static final DataParameter<Integer> ROD_ID = EntityDataManager.<Integer>createKey(EntityRailgunProjectile.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> AMMO_ID = EntityDataManager.<Integer>createKey(EntityFerromagneticProjectile.class, DataSerializers.VARINT);
 
 	protected void entityInit()
 	{
-		this.dataManager.register(ROD_ID, Integer.valueOf(-1));
-	}
-	
-	public void setRodId(int rodId)
-	{
-		this.dataManager.set(ROD_ID, Integer.valueOf(rodId));
+		this.dataManager.register(AMMO_ID, Integer.valueOf(-1));
 	}
 
-	public int getRodId()
+	public void setAmmoId(int rodId)
 	{
-		return ((Integer)this.dataManager.get(ROD_ID)).intValue();
+		this.dataManager.set(AMMO_ID, Integer.valueOf(rodId));
 	}
 
-	public EntityRailgunProjectile(World worldIn)
+	public int getAmmoId()
+	{
+		return ((Integer)this.dataManager.get(AMMO_ID)).intValue();
+	}
+
+	public EntityFerromagneticProjectile(World worldIn)
 	{
 		super(worldIn);
 		this.xTile = -1;
@@ -51,13 +51,13 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 		this.setSize(0.5F, 0.5F);
 	}
 
-	public EntityRailgunProjectile(World worldIn, double x, double y, double z)
+	public EntityFerromagneticProjectile(World worldIn, double x, double y, double z)
 	{
 		this(worldIn);
 		this.setPosition(x, y, z);
 	}
 
-	public EntityRailgunProjectile(World worldIn, EntityLivingBase shooter)
+	public EntityFerromagneticProjectile(World worldIn, EntityLivingBase shooter)
 	{
 		this(worldIn, shooter.posX, shooter.posY + (double)shooter.getEyeHeight() - 0.10000000149011612D, shooter.posZ);
 		this.shootingEntity = shooter;
@@ -82,13 +82,22 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 
 			DamageSource damagesource;
 
-			if (this.shootingEntity == null)
+			boolean shootingEntityNull = this.shootingEntity == null;
+
+			switch(this.getAmmoType(this.getAmmoId()))
 			{
-				damagesource = cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this);
-			}
-			else
-			{
-				damagesource = cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this.shootingEntity);
+			case 0: //Big rod - MountedRailgun
+				damagesource = shootingEntityNull? cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this): cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this.shootingEntity);
+				break;
+			default: case 1: //Medium rod - Handheld Railgun
+				damagesource = shootingEntityNull? cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this): cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this.shootingEntity);
+				break;
+			case 2: //Small rod - Coilgun
+				damagesource = shootingEntityNull? cadiboo.wiptech.util.DamageSource.causeCoilgunProjectileDamage(this, this): cadiboo.wiptech.util.DamageSource.causeCoilgunProjectileDamage(this, this.shootingEntity);
+				break;
+			case 3: //Nano rod - Plasma Cannon
+				damagesource = shootingEntityNull? cadiboo.wiptech.util.DamageSource.causePlasmaProjectileDamage(this, this): cadiboo.wiptech.util.DamageSource.causePlasmaProjectileDamage(this, this.shootingEntity);
+				break;
 			}
 
 			if (this.isBurning())
@@ -124,18 +133,27 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 					{
 						((EntityPlayerMP)this.shootingEntity).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
 					}
-					*/
+					 */
 					//TODO make this do whatever its meant to do
+					//TODO might have something to do with increasing arrow count in player?
 				}
 
-				//the sound it makes as it makes a hole straight through an entity, not slowing at all
-				this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+				switch(getAmmoType(getAmmoId())) {
+				default: case 0: case 1:
+					this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+					break;
+				case 2:
+					this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+					break;
+				case 3:
+					this.playSound(SoundEvents.ENTITY_PLAYER_HURT_ON_FIRE, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+					break;
+				}
 
-				/*if (!(entity instanceof EntityEnderman))
+				if(getAmmoType(getAmmoId())>2)
 				{
 					this.setDead();
-				}*/
-				//MUAHAHAHA it can kill a line of entities at once
+				}
 			}
 			else
 			{
@@ -150,7 +168,7 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 				{
 					if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED)
 					{
-						this.entityDropItem(this.getRodStack(), 0.1F);
+						this.entityDropItem(this.getAmmoStack(), 0.1F);
 					}
 
 					this.setDead();
@@ -182,7 +200,7 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 			}
 		}
 	}
-	
+
 	/**
 	 * (abstract) Protected helper method to write subclass entity data to NBT.
 	 */
@@ -198,7 +216,7 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 		compound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
 		compound.setByte("pickup", (byte)this.pickupStatus.ordinal());
 		compound.setDouble("damage", this.damage);
-		compound.setInteger("rodId", this.getRodId());
+		compound.setInteger("rodId", this.getAmmoId());
 	}
 
 	/**
@@ -210,7 +228,7 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 		this.yTile = compound.getInteger("yTile");
 		this.zTile = compound.getInteger("zTile");
 		this.ticksInGround = compound.getShort("life");
-		this.setRodId(compound.getInteger("rodId"));
+		this.setAmmoId(compound.getInteger("rodId"));
 
 		if (compound.hasKey("inTile", 8))
 		{
@@ -249,7 +267,7 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 		{
 			boolean flag = this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED || this.pickupStatus == EntityProjectileBase.PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
 
-			if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getRodStack()))
+			if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getAmmoStack()))
 			{
 				flag = false;
 			}
@@ -262,10 +280,172 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 		}
 	}
 
-	protected ItemStack getRodStack()
+	protected ItemStack getAmmoStack()
 	{
 		//itemIn, amount, meta
-		return new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, this.getRodId());
+		return new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, this.getAmmoId());
+	}
+
+	public static int getAmmoType(int ammoId)
+	{
+		return (int) Math.floor((ammoId+1)/3);
+		//TODO CHECK THIS
+	}
+
+	public static int getAmmoTier(int ammoId)
+	{
+		return ammoId%3;
+		//TODO CHECK THIS
+	}
+
+	public static float getProjectileVelocity(ItemStack stack) {
+		float velocity = 0;
+		int metaData = stack.getMetadata();
+		switch(getAmmoType(metaData)) {
+		case 0: //mounted Railgun
+			switch(getAmmoTier(metaData)) {
+
+			//TODO make these higher
+			default: case 0: //iron
+				velocity = 3.5F;break;
+			case 1: //osmium
+				velocity = 3F; break;
+			case 2: //tungsten
+				velocity = 3.25F; break;
+			}
+
+			break;
+		default: case 1: //handheld Railgun
+			switch(getAmmoTier(metaData)) {
+
+			default: case 0: //iron
+				velocity = 3.5F;break;
+			case 1: //osmium
+				velocity = 3F; break;
+			case 2: //tungsten
+				velocity = 3.25F; break;
+			}
+
+			break;
+		case 2: //Coilgun / gausscannon
+			switch(getAmmoTier(metaData)) {
+
+			//TODO change these
+
+			default: case 0: //iron
+				velocity = 3.5F;break;
+			case 1: //osmium
+				velocity = 3F; break;
+			case 2: //tungsten
+				velocity = 3.25F; break;
+			}
+
+			break;
+		case 3: //plasma
+			velocity = 20; //some fucking crazy amount because of how light it is
+
+		}
+		return velocity;
+	}
+
+
+	public static float getProjectileDamage(ItemStack stack) {
+		float damage = 0;
+		int metaData = stack.getMetadata();
+		switch(getAmmoType(metaData)) {
+		case 0: //mounted Railgun
+			switch(getAmmoTier(metaData)) {
+
+			//TODO make these higher
+			default: case 0: //iron
+				damage = 7.5F;break;
+			case 1: //osmium
+				damage = 12F; break;
+			case 2: //tungsten
+				damage = 15F; break;
+			}
+
+			break;
+		default: case 1: //handheld Railgun
+			switch(getAmmoTier(metaData)) {
+
+			default: case 0: //iron
+				damage = 5F;break;
+			case 1: //osmium
+				damage = 8F; break;
+			case 2: //tungsten
+				damage = 10F; break;
+			}
+
+			break;
+		case 2: //Coilgun / gausscannon
+			switch(getAmmoTier(metaData)) {
+
+			//TODO change these
+
+			default: case 0: //iron
+				damage = 1F;break;
+			case 1: //osmium
+				damage = 1.75F; break;
+			case 2: //tungsten
+				damage = 2F; break;
+			}
+
+			break;
+		case 3: //plasma
+			damage = 0.5F;
+
+		}
+		return damage;
+	}
+
+	public static float getProjectileKnockback(ItemStack stack) {
+		float knockback = 0;
+		int metaData = stack.getMetadata();
+		switch(getAmmoType(metaData)) {
+		case 0: //mounted Railgun
+			switch(getAmmoTier(metaData)) {
+
+			default: case 0: //iron
+				knockback = 2F;break;
+			case 1: //osmium
+				knockback = 3F; break;
+			case 2: //tungsten
+				knockback = 5F; break;
+			}
+
+			break;
+		default: case 1: //handheld Railgun
+			switch(getAmmoTier(metaData)) {
+
+			default: case 0: //iron
+				knockback = 1F;break;
+			case 1: //osmium
+				knockback = 1.5F; break;
+			case 2: //tungsten
+				knockback = 2.5F; break;
+			}
+
+			break;
+		case 2: //Coilgun / gausscannon
+			switch(getAmmoTier(metaData)) {
+
+			//TODO change these
+
+			default: case 0: //iron
+				knockback = 0.1F;break;
+			case 1: //osmium
+				knockback = 0.15F; break;
+			case 2: //tungsten
+				knockback = 0.25F; break;
+			}
+
+			break;
+		case 3: //plasma
+			knockback = 0F;
+
+		}
+		return knockback;
 	}
 
 	/**
@@ -290,9 +470,9 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 	/**
 	 * Sets the amount of knockback the arrow applies when it hits a mob.
 	 */
-	public void setKnockbackStrength(int knockbackStrengthIn)
+	public void setKnockbackStrength(float f)
 	{
-		this.knockbackStrength = knockbackStrengthIn;
+		this.knockbackStrength = f;
 	}
 
 	/**
@@ -301,6 +481,23 @@ public class EntityRailgunProjectile extends EntityProjectileBase {
 	public boolean canBeAttackedWithItem()
 	{
 		return false;
+	}
+
+	public static enum PickupStatus
+	{
+		DISALLOWED,
+		ALLOWED,
+		CREATIVE_ONLY;
+
+		public static EntityFerromagneticProjectile.PickupStatus getByOrdinal(int ordinal)
+		{
+			if (ordinal < 0 || ordinal > values().length)
+			{
+				ordinal = 0;
+			}
+
+			return values()[ordinal];
+		}
 	}
 
 }

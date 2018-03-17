@@ -5,7 +5,6 @@ import java.util.List;
 import cadiboo.wiptech.block.coiler.TileEntityCoiler;
 import cadiboo.wiptech.block.crusher.BlockCrusher;
 import cadiboo.wiptech.block.crusher.TileEntityCrusher;
-import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.init.Entities;
 import cadiboo.wiptech.init.Recipes;
 import cadiboo.wiptech.item.ItemCopperIngot;
@@ -31,7 +30,6 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 

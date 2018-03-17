@@ -3,17 +3,31 @@ package cadiboo.wiptech.item;
 import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-public class ItemMagneticMetalRod extends ItemBase {
-	public static final String[] itemNames = { "iron_rod", "tungsten_rod", "osmium_rod" };
+public class ItemFerromagneticProjectile extends ItemBase {
 
-	public ItemMagneticMetalRod(String name)
+	public static final String[] itemNames = {
+			"iron_rod_large",
+			"tungsten_rod_large",
+			"osmium_rod_large",
+
+			"iron_rod_medium",
+			"tungsten_rod_medium",
+			"osmium_rod_medium",
+
+			"iron_rod_small",
+			"tungsten_rod_small",
+			"osmium_rod_small",
+
+			//"plasma",
+
+	};
+	public static final int subTypesAmmount = itemNames.length;
+
+	public ItemFerromagneticProjectile(String name)
 	{
 		super(name);
 		setHasSubtypes(true);
@@ -23,13 +37,15 @@ public class ItemMagneticMetalRod extends ItemBase {
 	public String getUnlocalizedName(ItemStack stack)
 	{
 		int i = stack.getMetadata();
-		return super.getUnlocalizedName() + "." + EnumHandler.MagneticMetalRods.byMetadata(i).getUnlocalizedName();
+		if(i>subTypesAmmount)
+			i=0;
+		return super.getUnlocalizedName() + "." + EnumHandler.FerromagneticProjectiles.byMetadata(i).getUnlocalizedName();
 	}
 
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
 	{
 		if (isInCreativeTab(tab)) {
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < subTypesAmmount; i++) {
 				items.add(new ItemStack(this, 1, i));
 			}
 		}

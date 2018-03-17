@@ -1,22 +1,20 @@
 package cadiboo.wiptech.client;
 
-import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.Registry;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockBase;
+import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
-import cadiboo.wiptech.entity.render.RenderBasic;
+import cadiboo.wiptech.entity.render.RenderEntityFerromagneticProjectileFactory;
 import cadiboo.wiptech.entity.render.RenderEntityNapalmFactory;
-import cadiboo.wiptech.entity.render.RenderEntityRailgunProjectile;
 import cadiboo.wiptech.entity.render.RenderEntityRailgunProjectileFactory;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.item.EnumHandler;
-import cadiboo.wiptech.item.EnumHandler.MagneticMetalRods;
-import cadiboo.wiptech.item.ItemMagneticMetalRod;
+import cadiboo.wiptech.item.EnumHandler.FerromagneticProjectiles;
+import cadiboo.wiptech.item.ItemFerromagneticProjectile;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -46,8 +44,8 @@ public class ClientRegistry extends Registry {
 				ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 			} else {
 
-				if(item instanceof ItemMagneticMetalRod) {
-					for(MagneticMetalRods rod : EnumHandler.MagneticMetalRods.values()) { 
+				if(item instanceof ItemFerromagneticProjectile) {
+					for(FerromagneticProjectiles rod : EnumHandler.FerromagneticProjectiles.values()) { 
 						ModelLoader.setCustomModelResourceLocation(item, rod.getID(), new ModelResourceLocation("wiptech:rods/" + rod.getName()));
 					}
 				}
@@ -69,6 +67,7 @@ public class ClientRegistry extends Registry {
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, new RenderEntityNapalmFactory());
 		RenderingRegistry.registerEntityRenderingHandler(EntityRailgunProjectile.class, new RenderEntityRailgunProjectileFactory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityFerromagneticProjectile.class, new RenderEntityFerromagneticProjectileFactory());
 		WIPTech.logger.info("Registered Entity Renders");
 	}
 

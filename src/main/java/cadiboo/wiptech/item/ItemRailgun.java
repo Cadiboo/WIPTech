@@ -1,7 +1,7 @@
 package cadiboo.wiptech.item;
 
+import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
-import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -40,11 +40,11 @@ extends ItemBase
 
 	private ItemStack findAmmo(EntityPlayer player)
 	{
-		if (this.isRod(player.getHeldItem(EnumHand.OFF_HAND)))
+		if (this.isAmmo(player.getHeldItem(EnumHand.OFF_HAND)))
 		{
 			return player.getHeldItem(EnumHand.OFF_HAND);
 		}
-		else if (this.isRod(player.getHeldItem(EnumHand.MAIN_HAND)))
+		else if (this.isAmmo(player.getHeldItem(EnumHand.MAIN_HAND)))
 		{
 			return player.getHeldItem(EnumHand.MAIN_HAND);
 		}
@@ -54,7 +54,7 @@ extends ItemBase
 			{
 				ItemStack itemstack = player.inventory.getStackInSlot(i);
 
-				if (this.isRod(itemstack))
+				if (this.isAmmo(itemstack))
 				{
 					return itemstack;
 				}
@@ -64,9 +64,9 @@ extends ItemBase
 		}
 	}
 
-	protected boolean isRod(ItemStack stack)
+	protected boolean isAmmo(ItemStack stack)
 	{
-		return stack.getItem() instanceof ItemMagneticMetalRod;
+		return stack.getItem() instanceof ItemFerromagneticProjectile;
 	}
 
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
@@ -85,10 +85,10 @@ extends ItemBase
 			{
 				if (itemstack.isEmpty())
 				{
-					itemstack = new ItemStack(Items.MAGNETIC_METAL_ROD, 1, 2); //TUNGSTEN
+					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN
 				}
 
-				float velocity = getRailgunProjectileVelocity(stack);
+				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
 
 				if ((double)velocity >= 0.1D)
 				{
@@ -96,23 +96,22 @@ extends ItemBase
 
 					if (!worldIn.isRemote)
 					{
-						ItemMagneticMetalRod itemrod = (ItemMagneticMetalRod)(itemstack.getItem() instanceof ItemMagneticMetalRod ? itemstack.getItem() : Items.MAGNETIC_METAL_ROD);
+						EntityFerromagneticProjectile projectile = new EntityFerromagneticProjectile(worldIn, entityplayer);
+						projectile.setAmmoId(EntityFerromagneticProjectile.getAmmoTier(stack.getMetadata()));
+						
+						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
 
-						//EntityRailgunProjectile railgunProjectile = new EntityRailgunProjectile(worldIn, entityplayer);
-						EntityRailgunProjectile railgunProjectile = itemrod.createRailgunProjectile(worldIn, itemstack, entityplayer);
-						railgunProjectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
+						projectile.setDamage(EntityFerromagneticProjectile.getProjectileDamage(itemstack));
 
-						railgunProjectile.setDamage(getRailgunProjectileDamage(itemstack));
-
-						railgunProjectile.setKnockbackStrength(getRailgunProjectileKnockback(itemstack));
-						//entityarrow.setFire(100);
+						projectile.setKnockbackStrength(EntityFerromagneticProjectile.getProjectileKnockback(itemstack));
+						//if(this.railgun.overheat) entityarrow.setFire(100);
 
 						if (flag1 || entityplayer.capabilities.isCreativeMode)
 						{
-							railgunProjectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
+							projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
 						}
 
-						worldIn.spawnEntity(railgunProjectile);
+						worldIn.spawnEntity(projectile);
 					}
 
 					worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
@@ -129,48 +128,6 @@ extends ItemBase
 				}
 			}
 		}
-	}
-
-
-
-	private float getRailgunProjectileVelocity(ItemStack stack) {
-		float velocity = 0;
-		switch(stack.getMetadata()) {
-		case 0:
-			velocity = 3.5F;break;
-		case 1:
-			velocity = 3F; break;
-		default:
-			velocity = 3.25F; break;
-		}
-		return velocity;
-	}
-	
-	private float getRailgunProjectileDamage(ItemStack stack) {
-		float damage = 0;
-		switch(stack.getMetadata()) {
-		case 0:
-			damage = 5F;break;
-		case 1:
-			damage = 8F; break;
-		default:
-			damage = 10F; break;
-		}
-		return damage;
-		//return damage*2;
-	}
-	
-	private int getRailgunProjectileKnockback(ItemStack stack) {
-		int knockback = 0;
-		switch(stack.getMetadata()) {
-		case 0:
-			knockback = 1;break;
-		case 1:
-			knockback = 3; break;
-		default:
-			knockback = 5; break;
-		}
-		return knockback;
 	}
 
 

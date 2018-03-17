@@ -52,7 +52,7 @@ public class EntityProjectileBase extends EntityBase implements IProjectile {
 	protected int ticksInGround;
 	protected int ticksInAir;
 	protected double damage;
-	protected int knockbackStrength;
+	protected double knockbackStrength;
 
 	public EntityProjectileBase(World worldIn)
 	{

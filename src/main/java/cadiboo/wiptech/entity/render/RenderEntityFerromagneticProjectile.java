@@ -5,7 +5,8 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
+import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -17,9 +18,13 @@ import net.minecraft.util.ResourceLocation;
 
 //Absolutely copied from Tinkers Construct
 
-public class RenderEntityRailgunProjectile<T extends EntityRailgunProjectile> extends Render<T> {
+public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticProjectile> extends Render<T> {
 
-	protected RenderEntityRailgunProjectile(RenderManager renderManager) {
+	private double prevX;
+	private double prevY;
+	private double prevZ;
+	
+	protected RenderEntityFerromagneticProjectile(RenderManager renderManager) {
 		super(renderManager);
 	}
 
@@ -40,14 +45,27 @@ public class RenderEntityRailgunProjectile<T extends EntityRailgunProjectile> ex
     }
     ItemStack itemStack = handler.getItemStack();
 		 */
-		
-		ItemStack itemStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, entity.getRodId());
 
+		ItemStack itemStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, entity.getAmmoId());
+
+		
+		
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
 		// last step: translate from 0/0/0 to correct position in world
 		GL11.glTranslated(x, y, z);
+		
+		if(this.prevX!=x) {
+			WIPTech.logger.info("prevX: "+prevX+", prevY:"+prevY+", prevZ:"+prevZ);
+			WIPTech.logger.info("x: "+x+", y:"+y+", z:"+z);
+		}
+		
+		this.prevX = x;
+		this.prevX = y;
+		this.prevX = z;
+		
+		/*WIPTech.logger.info("x: "+x+", y:"+y+", z:"+z);
 		// mkae it smaller
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
 
@@ -67,7 +85,10 @@ public class RenderEntityRailgunProjectile<T extends EntityRailgunProjectile> ex
 	      ItemStack dummy = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
 	      Minecraft.getMinecraft().getRenderItem().renderItem(dummy, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
 	    }
-
+		 */
+		
+		 Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
+		
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 

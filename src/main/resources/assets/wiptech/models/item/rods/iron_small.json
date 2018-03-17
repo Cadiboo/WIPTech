@@ -1,7 +1,7 @@
 {
     "parent": "item/generated",
     "textures": {
-        "layer0": "wiptech:items/osmium_rod"
+        "layer0": "wiptech:items/rods/iron_small"
     },
     "display": {
         "thirdperson": {
