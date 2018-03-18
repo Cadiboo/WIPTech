@@ -10,6 +10,6 @@ implements IRenderFactory<EntityFerromagneticProjectile2>
 {
 	public Render<? super EntityFerromagneticProjectile2> createRenderFor(RenderManager manager)
 	{
-		return new RenderEntityFerromagneticProjectile(manager);
+		return new RenderEntityFerromagneticProjectile2(manager);
 	}
 }
