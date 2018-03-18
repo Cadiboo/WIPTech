@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,6 +37,8 @@ public class EntityProjectileBase extends EntityBase implements IProjectile {
 	{
 		public boolean apply(@Nullable Entity targetEntity)
 		{
+			if(targetEntity instanceof EntityEnderman)
+				return true;
 			return targetEntity.canBeCollidedWith();
 		}
 	});
@@ -460,7 +463,7 @@ public class EntityProjectileBase extends EntityBase implements IProjectile {
 		{
 			boolean flag = this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED || this.pickupStatus == EntityProjectileBase.PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
 
-			if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getStack()))
+			if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getAmmoStack()))
 			{
 				flag = false;
 			}
@@ -474,7 +477,7 @@ public class EntityProjectileBase extends EntityBase implements IProjectile {
 	}
 
 
-	protected ItemStack getStack() {
+	protected ItemStack getAmmoStack() {
 		return ItemStack.EMPTY;
 	}
 
