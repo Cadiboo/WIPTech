@@ -1,5 +1,6 @@
 package cadiboo.wiptech.entity.projectile;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 public class EntityFerromagneticProjectile2 extends EntityProjectileBase2 {
 
 	private static final DataParameter<Integer> AMMO_ID = EntityDataManager.<Integer>createKey(EntityFerromagneticProjectile2.class, DataSerializers.VARINT);
-	
+
 	protected void entityInit()
 	{
 		this.dataManager.register(AMMO_ID, Integer.valueOf(-1));
@@ -289,12 +290,14 @@ public class EntityFerromagneticProjectile2 extends EntityProjectileBase2 {
 
 	public static int getAmmoType(int ammoId)
 	{
+		WIPTech.logger.info("getAmmoType for id "+ammoId+": "+Math.floor((ammoId+1)/3));
 		return (int) Math.floor((ammoId+1)/3);
 		//TODO CHECK THIS
 	}
 
 	public static int getAmmoTier(int ammoId)
 	{
+		WIPTech.logger.info("getAmmoTier for id "+ammoId+": "+ammoId%3);
 		return ammoId%3;
 		//TODO CHECK THIS
 	}

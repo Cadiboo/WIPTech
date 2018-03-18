@@ -1,5 +1,6 @@
 package cadiboo.wiptech.item;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile2;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase2;
 import cadiboo.wiptech.init.Items;
@@ -54,7 +55,7 @@ public class ItemTestLauncher extends ItemBase
 			{
 				if (itemstack.isEmpty())
 				{
-					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN
+					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN MEDIUM
 				}
 
 				float velocity = EntityFerromagneticProjectile2.getProjectileVelocity(stack);
@@ -66,7 +67,9 @@ public class ItemTestLauncher extends ItemBase
 					if (!worldIn.isRemote)
 					{
 						EntityFerromagneticProjectile2 projectile = new EntityFerromagneticProjectile2(worldIn, entityplayer);
-						projectile.setAmmoId(EntityFerromagneticProjectile2.getAmmoTier(stack.getMetadata()));
+						projectile.setAmmoId(stack.getMetadata());
+						WIPTech.logger.info(projectile);
+						WIPTech.logger.info(projectile.getAmmoId());
 						
 						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
 
