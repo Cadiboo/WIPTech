@@ -16,7 +16,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EntitySelectors;
@@ -31,7 +30,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityProjectileBase extends EntityArrow implements IProjectile {
+public class EntityProjectileBase extends EntityBase implements IProjectile {
 
 	public static final Predicate<Entity> PROJECTILE_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, new Predicate<Entity>()
 	{
@@ -54,12 +53,6 @@ public class EntityProjectileBase extends EntityArrow implements IProjectile {
 	protected int ticksInAir;
 	protected double damage;
 	protected double knockbackStrength;
-	
-	@Override
-	public boolean getIsCritical()
-    {
-       return false;
-    }
 
 	public EntityProjectileBase(World worldIn)
 	{
@@ -467,7 +460,7 @@ public class EntityProjectileBase extends EntityArrow implements IProjectile {
 		{
 			boolean flag = this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED || this.pickupStatus == EntityProjectileBase.PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
 
-			if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getAmmoStack()))
+			if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getStack()))
 			{
 				flag = false;
 			}
@@ -481,7 +474,7 @@ public class EntityProjectileBase extends EntityArrow implements IProjectile {
 	}
 
 
-	protected ItemStack getAmmoStack() {
+	protected ItemStack getStack() {
 		return ItemStack.EMPTY;
 	}
 
@@ -519,11 +512,6 @@ public class EntityProjectileBase extends EntityArrow implements IProjectile {
 	public boolean canBeAttackedWithItem()
 	{
 		return false;
-	}
-
-	@Override
-	protected ItemStack getArrowStack() {
-		return getAmmoStack();
 	}
 
 }
