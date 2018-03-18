@@ -8,9 +8,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -66,12 +68,13 @@ public class ItemTestLauncher extends ItemBase
 
 					if (!worldIn.isRemote)
 					{
-						EntityFerromagneticProjectile2 projectile = new EntityFerromagneticProjectile2(worldIn, entityplayer);
-						projectile.setAmmoId(stack.getMetadata());
-						WIPTech.logger.info(projectile);
-						WIPTech.logger.info(projectile.getAmmoId());
-						
-						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
+						ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(itemstack.getItem() instanceof ItemFerromagneticProjectile ? itemstack.getItem() : Items.FERROMAGNETIC_PROJECILE);
+						EntityFerromagneticProjectile2 projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer);
+						//projectile.setAmmoId(stack.getMetadata());
+						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
+						//EntityFerromagneticProjectile2 projectile = new EntityFerromagneticProjectile2(worldIn, entityplayer);
+
+						//projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
 
 						projectile.setDamage(EntityFerromagneticProjectile2.getProjectileDamage(itemstack));
 

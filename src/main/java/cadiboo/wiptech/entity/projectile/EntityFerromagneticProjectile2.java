@@ -26,8 +26,10 @@ public class EntityFerromagneticProjectile2 extends EntityProjectileBase2 {
 
 	private static final DataParameter<Integer> AMMO_ID = EntityDataManager.<Integer>createKey(EntityFerromagneticProjectile2.class, DataSerializers.VARINT);
 
+	@Override
 	protected void entityInit()
 	{
+		super.entityInit();
 		this.dataManager.register(AMMO_ID, Integer.valueOf(-1));
 	}
 
@@ -282,22 +284,32 @@ public class EntityFerromagneticProjectile2 extends EntityProjectileBase2 {
 	}
 
 	@Override
-	protected ItemStack getAmmoStack()
+	public ItemStack getAmmoStack()
 	{
+		return getAmmoStack(this.getAmmoId());
+	}
+	public ItemStack getAmmoStack (int ammoId) {
 		//itemIn, amount, meta
-		return new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, this.getAmmoId());
+		return new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, ammoId);
+	}
+
+	public float getStuckDepth() {
+		return getStuckDepth(this.getAmmoId());
+	}
+	public float getStuckDepth(int ammoId) {
+		return getAmmoType(ammoId)<2?0.4F:0;
 	}
 
 	public static int getAmmoType(int ammoId)
 	{
-		WIPTech.logger.info("getAmmoType for id "+ammoId+": "+Math.floor((ammoId+1)/3));
+		//WIPTech.logger.info("getAmmoType for id "+ammoId+": "+Math.floor((ammoId+1)/3));
 		return (int) Math.floor((ammoId+1)/3);
 		//TODO CHECK THIS
 	}
 
 	public static int getAmmoTier(int ammoId)
 	{
-		WIPTech.logger.info("getAmmoTier for id "+ammoId+": "+ammoId%3);
+		//WIPTech.logger.info("getAmmoTier for id "+ammoId+": "+ammoId%3);
 		return ammoId%3;
 		//TODO CHECK THIS
 	}

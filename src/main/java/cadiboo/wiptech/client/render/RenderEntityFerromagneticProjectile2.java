@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile2;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 
 //Absolutely copied from Tinkers Construct
 
@@ -30,18 +32,9 @@ public class RenderEntityFerromagneticProjectile2<T extends EntityFerromagneticP
 		// That'd screw things up, since it'd be applied before our transformations
 		// So remember to read this from the rendering call up to this line
 
-		// can be overwritten in customRendering
-		//toolCoreRenderer.setDepth(1/32f);
+		ItemStack itemStack = entity.getAmmoStack();
 
-		/*
-		 ITinkerProjectile handler = entity.getCapability(CapabilityTinkerProjectile.PROJECTILE_CAPABILITY, null);
-    if(handler == null) {
-      return;
-    }
-    ItemStack itemStack = handler.getItemStack();
-		 */
-
-		ItemStack itemStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, entity.getAmmoId());
+		WIPTech.logger.info("doRender");
 
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -52,6 +45,13 @@ public class RenderEntityFerromagneticProjectile2<T extends EntityFerromagneticP
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
 
 		customRendering(entity, x, y, z, entityYaw, partialTicks);
+
+		// arrow shake
+		float f11 = (float) entity.projectileShake - partialTicks;
+		if(f11 > 0.0F) {
+			float f12 = -MathHelper.sin(f11 * 3.0F) * f11;
+			GL11.glRotatef(f12, 0.0F, 0.0F, 1.0F);
+		}
 
 		if(renderManager == null || renderManager.renderEngine == null) {
 			return;
@@ -64,7 +64,7 @@ public class RenderEntityFerromagneticProjectile2<T extends EntityFerromagneticP
 			Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
 		}
 		else {
-			ItemStack dummy = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
+			ItemStack dummy = ItemStack.EMPTY;
 			Minecraft.getMinecraft().getRenderItem().renderItem(dummy, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
 		}
 
@@ -75,6 +75,9 @@ public class RenderEntityFerromagneticProjectile2<T extends EntityFerromagneticP
 	}
 
 	public void customRendering(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
+
+		WIPTech.logger.info("customRendering");
+
 		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
 
 		// rotate it into the direction we threw it
@@ -83,14 +86,7 @@ public class RenderEntityFerromagneticProjectile2<T extends EntityFerromagneticP
 
 		// adjust "stuck" depth
 		if(entity.inGround) {
-			/*
-		public double getStuckDepth() {
-			return 0.4f;
-		}
-			 */
-
-			//GL11.glTranslated(0, 0, -entity.getStuckDepth());
-			GL11.glTranslated(0, 0, -0.4f);
+			GL11.glTranslated(0, 0, -entity.getStuckDepth());
 		}
 
 		customCustomRendering(entity, x, y, z, entityYaw, partialTicks);

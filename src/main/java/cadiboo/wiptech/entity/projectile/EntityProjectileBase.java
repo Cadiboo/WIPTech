@@ -378,7 +378,7 @@ public class EntityProjectileBase extends EntityBase implements IProjectile {
 			{
 				Entity entity1 = list.get(i);
 
-				if (entity1 != this.shootingEntity || this.ticksInAir >=5)
+				if (entity1 != this.shootingEntity || (this.ticksInAir >=5 && this.projectileShake ==0))
 				{
 					AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
 					RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
