@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 
 public class ItemCoilgun extends ItemBase {
 	private static final Item IRON_NUGGET = net.minecraft.item.Item.REGISTRY.getObject(new ResourceLocation("minecraft", "iron_nugget"));
-	//private static enum CIRCUIT_TYPE;
 
 	public ItemCoilgun(String name)
 	{

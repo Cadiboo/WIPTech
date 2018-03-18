@@ -40,7 +40,7 @@ public class RenderEntityRailgunProjectile<T extends EntityRailgunProjectile> ex
     }
     ItemStack itemStack = handler.getItemStack();
 		 */
-		
+
 		ItemStack itemStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, entity.getRodId());
 
 		GL11.glPushMatrix();
@@ -61,12 +61,12 @@ public class RenderEntityRailgunProjectile<T extends EntityRailgunProjectile> ex
 		renderManager.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 		if(!itemStack.isEmpty()) {
-	      Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
-	    }
-	    else {
-	      ItemStack dummy = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
-	      Minecraft.getMinecraft().getRenderItem().renderItem(dummy, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
-	    }
+			Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
+		}
+		else {
+			ItemStack dummy = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
+			Minecraft.getMinecraft().getRenderItem().renderItem(dummy, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
+		}
 
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();

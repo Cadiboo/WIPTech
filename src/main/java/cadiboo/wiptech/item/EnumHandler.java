@@ -68,9 +68,9 @@ public class EnumHandler
 	}
 	
 	public static enum Circuits implements IStringSerializable {
-		MANUAL(0, "iron_large", TextFormatting.WHITE),
-		SEMI_AUTO(1, "osmium_large", TextFormatting.DARK_BLUE),
-		AUTO(2,"tungsten_large", TextFormatting.GRAY);
+		MANUAL(0, "manual", TextFormatting.WHITE),
+		BURST(1, "burst", TextFormatting.RED),
+		AUTO(2,"auto", TextFormatting.DARK_RED);
 		
 		private int ID;
 		private String name;

@@ -4,10 +4,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import org.lwjgl.util.glu.GLU;
-import org.lwjgl.util.glu.Sphere;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.client.Minecraft;
@@ -21,10 +18,6 @@ import net.minecraft.util.ResourceLocation;
 //Absolutely copied from Tinkers Construct
 
 public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticProjectile> extends Render<T> {
-
-	private double prevX;
-	private double prevY;
-	private double prevZ;
 
 	protected RenderEntityFerromagneticProjectile(RenderManager renderManager) {
 		super(renderManager);
@@ -50,24 +43,11 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 		ItemStack itemStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, entity.getAmmoId());
 
-
-
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 
 		// last step: translate from 0/0/0 to correct position in world
 		GL11.glTranslated(x, y, z);
-
-		if(this.prevX!=x) {
-			WIPTech.logger.info("prevX: "+prevX+", prevY:"+prevY+", prevZ:"+prevZ);
-			WIPTech.logger.info("x: "+x+", y:"+y+", z:"+z);
-		}
-
-		this.prevX = x;
-		this.prevX = y;
-		this.prevX = z;
-
-		/*WIPTech.logger.info("x: "+x+", y:"+y+", z:"+z);
 		// mkae it smaller
 		GL11.glScalef(0.5F, 0.5F, 0.5F);
 
@@ -77,27 +57,16 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 			return;
 		}
 
-
-
-
-
-
-
-
-
 		// draw correct texture. not some weird block fragments.
 		renderManager.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 		if(!itemStack.isEmpty()) {
-	      Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
-	    }
-	    else {
-	      ItemStack dummy = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
-	      Minecraft.getMinecraft().getRenderItem().renderItem(dummy, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
-	    }
-		 */
-
-		//Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
+			Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
+		}
+		else {
+			ItemStack dummy = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
+			Minecraft.getMinecraft().getRenderItem().renderItem(dummy, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
+		}
 
 		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
