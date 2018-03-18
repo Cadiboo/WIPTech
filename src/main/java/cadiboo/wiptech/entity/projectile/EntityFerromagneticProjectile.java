@@ -30,9 +30,9 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		this.dataManager.register(AMMO_ID, Integer.valueOf(-1));
 	}
 
-	public void setAmmoId(int rodId)
+	public void setAmmoId(int ammoId)
 	{
-		this.dataManager.set(AMMO_ID, Integer.valueOf(rodId));
+		this.dataManager.set(AMMO_ID, Integer.valueOf(ammoId));
 	}
 
 	public int getAmmoId()
@@ -216,7 +216,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		compound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
 		compound.setByte("pickup", (byte)this.pickupStatus.ordinal());
 		compound.setDouble("damage", this.damage);
-		compound.setInteger("rodId", this.getAmmoId());
+		compound.setInteger("ammoId", this.getAmmoId());
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		this.yTile = compound.getInteger("yTile");
 		this.zTile = compound.getInteger("zTile");
 		this.ticksInGround = compound.getShort("life");
-		this.setAmmoId(compound.getInteger("rodId"));
+		this.setAmmoId(compound.getInteger("ammoId"));
 
 		if (compound.hasKey("inTile", 8))
 		{

@@ -5,10 +5,8 @@ import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
-import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
 import cadiboo.wiptech.entity.render.RenderEntityFerromagneticProjectileFactory;
 import cadiboo.wiptech.entity.render.RenderEntityNapalmFactory;
-import cadiboo.wiptech.entity.render.RenderEntityRailgunProjectileFactory;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.item.EnumHandler;
@@ -51,23 +49,17 @@ public class ClientRegistry extends Registry {
 				}
 
 			}
-			/*else if ((item instanceof ItemMagneticMetalRod))
-			{
-				EnumHandler.MagneticMetalRods[] arrayOfMagneticMetalRods;
-				int m = (arrayOfMagneticMetalRods = EnumHandler.MagneticMetalRods.values()).length;
-				for (int k = 0; k < m; k++)
-				{
-					EnumHandler.MagneticMetalRods rod = arrayOfMagneticMetalRods[k];
-
-					ModelLoader.setCustomModelResourceLocation(item, rod.getID(), new ModelResourceLocation("wiptech:rods/" + rod.getName()));
-				}
-			}*/
 		}
 		WIPTech.logger.info("Registered models");
 
+		/*for (EntityEntry entity: Entities.ENTITIES)
+		{
+			
+		}*/
+		
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, new RenderEntityNapalmFactory());
-		RenderingRegistry.registerEntityRenderingHandler(EntityRailgunProjectile.class, new RenderEntityRailgunProjectileFactory());
 		RenderingRegistry.registerEntityRenderingHandler(EntityFerromagneticProjectile.class, new RenderEntityFerromagneticProjectileFactory());
+
 		WIPTech.logger.info("Registered Entity Renders");
 	}
 

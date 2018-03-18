@@ -1,11 +1,8 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
 
 public class ItemFerromagneticProjectile extends ItemBase {
 
@@ -51,10 +48,4 @@ public class ItemFerromagneticProjectile extends ItemBase {
 		}
 	}
 
-	public EntityRailgunProjectile createRailgunProjectile(World worldIn, ItemStack stack, EntityLivingBase shooter)
-	{
-		EntityRailgunProjectile railgunProjectile = new EntityRailgunProjectile(worldIn, shooter);
-		railgunProjectile.setRodId(this.getDamage(stack));
-		return railgunProjectile;
-	}
 }

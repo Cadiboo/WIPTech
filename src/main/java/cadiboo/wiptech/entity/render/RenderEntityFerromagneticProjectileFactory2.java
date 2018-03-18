@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
-public class RenderEntityFerromagneticProjectileFactory
+public class RenderEntityFerromagneticProjectileFactory2
 implements IRenderFactory<EntityFerromagneticProjectile>
 {
 	public Render<? super EntityFerromagneticProjectile> createRenderFor(RenderManager manager)

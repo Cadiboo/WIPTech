@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cadiboo.wiptech.entity.projectile.EntityRailgunProjectile;
+import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -14,12 +14,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 //Absolutely copied from Tinkers Construct
 
-public class RenderEntityRailgunProjectile<T extends EntityRailgunProjectile> extends Render<T> {
+public class RenderEntityFerromagneticProjectile2<T extends EntityFerromagneticProjectile> extends Render<T> {
 
-	protected RenderEntityRailgunProjectile(RenderManager renderManager) {
+	protected RenderEntityFerromagneticProjectile2(RenderManager renderManager) {
 		super(renderManager);
 	}
 
@@ -41,7 +42,7 @@ public class RenderEntityRailgunProjectile<T extends EntityRailgunProjectile> ex
     ItemStack itemStack = handler.getItemStack();
 		 */
 
-		ItemStack itemStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, entity.getRodId());
+		ItemStack itemStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, entity.getAmmoId());
 
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
