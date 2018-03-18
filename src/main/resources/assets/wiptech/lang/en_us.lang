@@ -1,4 +1,7 @@
 itemGroup.wiptechtab=WIP Tech
+#deaths
+death.attack.railgunprojectile.name=%s was annihilated by %p
+death.attack.coilgunprojectile.name=%s was turned into a sieve by %p
 #Copper
 tile.copper_ore.name=Copper Ore
 tile.copper_block.name=Copper Block
@@ -23,7 +26,9 @@ item.silicon.name=Silicon
 item.titania.name=Titania (Titanium Oxide)
 item.titanium_ingot.name=Titanium Ingot
 #Iron
-item.magnetic_metal_rod.iron.name=Iron Rod
+item.magnetic_metal_rod.iron_large.name=Large Iron Rod
+item.magnetic_metal_rod.iron_medium.name=Iron Rod
+item.magnetic_metal_rod.iron_small.name=Iron Pellet
 #Aluminium (Aluminum for Americans)
 tile.aluminium_ore.name=Aluminum Ore
 tile.aluminium_block.name=Aluminum Block
@@ -47,11 +52,9 @@ item.magnetic_metal_rod.osmium_medium.name=Osmium Rod
 item.magnetic_metal_rod.osmium_small.name=Osmium Pellet
 #Machines
 tile.strong_piston.name=Strong(Reinforced?) Piston
-tile.counter.name=Counter (soon to be removed D:)
 ##Crusher
 tile.crusher.name=Crusher
 item.crusher_bit.name=Crusher Bit
 item.crusher_bit_holder.name=Crusher Bit Anchor
 ##Coiler
 tile.coiler.name=Coil Winder
-

@@ -63,6 +63,16 @@ public class GuiCrusher extends GuiContainer {
 		drawTexturedModalRect(x + 26, y + 37, 177, 1, 12, getCrushProgressScaled(12));
 
 		drawTexturedModalRect(x + 48, y + 35, 176, 14, getCrushProgressScaled(24), 17);
+
+		/*float oldZ = this.zLevel;
+		this.zLevel = 255.0F;
+		this.mc.getTextureManager().bindTexture(BG_TEXTURE);
+		drawModalRectWithCustomSizedTexture(x+1, y+1, 10, 10, 10, 10, 10, 10);
+		this.zLevel = oldZ;
+		this.mc.getTextureManager().bindTexture(BG_TEXTURE);
+		*/
+		//drawScaledCustomSizeModalRect(x+1, y+1, 177, 1, 12, 12, 12, 12, 24, 24);
+
 	}
 
 	private int getCrushProgressScaled(int textureSize)

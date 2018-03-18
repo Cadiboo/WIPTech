@@ -280,6 +280,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		}
 	}
 
+	@Override
 	protected ItemStack getAmmoStack()
 	{
 		//itemIn, amount, meta

@@ -150,7 +150,7 @@ public class EntityCoilgunProjectile extends EntityProjectileBase {
 				{
 					if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED)
 					{
-						this.entityDropItem(this.getStack(), 0.1F);
+						this.entityDropItem(this.getAmmoStack(), 0.1F);
 					}
 
 					this.setDead();
@@ -241,7 +241,7 @@ public class EntityCoilgunProjectile extends EntityProjectileBase {
 	}
 
 	@Override
-	protected ItemStack getStack()
+	protected ItemStack getAmmoStack()
 	{
 		ItemStack stack;
 		switch(this.getNuggetId())
