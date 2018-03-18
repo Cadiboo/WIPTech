@@ -1,11 +1,11 @@
-package cadiboo.wiptech.entity.render;
+package cadiboo.wiptech.client.render;
 
 import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
+import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile2;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 //Absolutely copied from Tinkers Construct
 
-public class RenderEntityFerromagneticProjectile2<T extends EntityFerromagneticProjectile> extends Render<T> {
+public class RenderEntityFerromagneticProjectile2<T extends EntityFerromagneticProjectile2> extends Render<T> {
 
 	protected RenderEntityFerromagneticProjectile2(RenderManager renderManager) {
 		super(renderManager);
