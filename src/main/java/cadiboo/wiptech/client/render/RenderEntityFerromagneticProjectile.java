@@ -84,7 +84,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
 		if(model!=null) {
-			WIPTech.logger.info(model);
+			//WIPTech.logger.info(model);
 			//bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 			int color = -1;
 			List<BakedQuad> quads;
@@ -93,7 +93,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 				List<BakedQuad> quads = model.getQuads((IBlockState)null, enumfacing, 0L);
 			}*/
 			quads = model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
-			WIPTech.logger.info(quads);
+			//WIPTech.logger.info(quads);
 
 			boolean flag = color == -1 && !itemStack.isEmpty();
 			int i = 0;
