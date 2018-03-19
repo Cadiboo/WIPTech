@@ -46,25 +46,63 @@ public class ItemCoilgun extends ItemBase {
 		/*
 		if(this.getComponents.contains(rollingCircuit||machinegunCircuit) {
 		 */
-		World worldIn = player.world;
-		if ((player instanceof EntityPlayer))
+		if (player instanceof EntityPlayer)
 		{
-			float velocity = 0.75F;
-			if (!worldIn.isRemote)
+			EntityPlayer entityplayer = (EntityPlayer)player;
+			World worldIn = entityplayer.getEntityWorld();
+			boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
+			flag = true;
+			ItemStack itemstack = ItemStack.EMPTY;
+
+			if (!itemstack.isEmpty() || flag)
 			{
-				EntityFerromagneticProjectile entitycoilgunprojectile = new EntityFerromagneticProjectile(worldIn, player);
-				entitycoilgunprojectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 1.0F);
-				worldIn.spawnEntity(entitycoilgunprojectile);
+				if (itemstack.isEmpty())
+				{
+					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 8); //TUNGSTEN SMALL
+				}
+
+				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
+
+				if ((double)velocity >= 0.1D)
+				{
+					boolean flag1 = entityplayer.capabilities.isCreativeMode/* || (itemstack.getItem() instanceof ItemMagneticMetalRod && ((ItemMagneticMetalRod) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer))*/;
+
+					if (!worldIn.isRemote)
+					{
+						ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(itemstack.getItem() instanceof ItemFerromagneticProjectile ? itemstack.getItem() : Items.FERROMAGNETIC_PROJECILE);
+						EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer);
+						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
+						projectile.setDamage(EntityFerromagneticProjectile.getProjectileDamage(itemstack));
+						projectile.setKnockbackStrength(EntityFerromagneticProjectile.getProjectileKnockback(itemstack));
+
+						if (flag1 || entityplayer.capabilities.isCreativeMode)
+						{
+							projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
+						}
+						worldIn.spawnEntity(projectile);
+					}
+
+					worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+
+					if (!flag1 && !entityplayer.capabilities.isCreativeMode)
+					{
+						itemstack.shrink(1);
+
+						if (itemstack.isEmpty())
+						{
+							entityplayer.inventory.deleteStack(itemstack);
+						}
+					}
+				}
 			}
-			worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 		}
 	}
-	
+
 	protected boolean isAmmo(ItemStack stack)
 	{
 		return stack.getItem() instanceof ItemFerromagneticProjectile;
 	}
-	
+
 	private ItemStack findAmmo(EntityPlayer player)
 	{
 		if (this.isAmmo(player.getHeldItem(EnumHand.OFF_HAND)))
@@ -90,7 +128,7 @@ public class ItemCoilgun extends ItemBase {
 			return ItemStack.EMPTY;
 		}
 	}
-	
+
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
 	{
 		/*
@@ -110,7 +148,7 @@ public class ItemCoilgun extends ItemBase {
 			{
 				if (itemstack.isEmpty())
 				{
-					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN
+					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 8); //TUNGSTEN SMALL
 				}
 
 				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
@@ -123,7 +161,7 @@ public class ItemCoilgun extends ItemBase {
 					{
 						EntityFerromagneticProjectile projectile = new EntityFerromagneticProjectile(worldIn, entityplayer);
 						projectile.setAmmoId(EntityFerromagneticProjectile.getAmmoTier(stack.getMetadata()));
-						
+
 						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
 
 						projectile.setDamage(EntityFerromagneticProjectile.getProjectileDamage(itemstack));
