@@ -19,12 +19,15 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 
 
 //COPPIED FROM IMMERSIVE ENGINEERING
@@ -80,6 +83,15 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
 
 		bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
+		
+		List<BakedQuad> quads = model.getQuads((IBlockState)null, EnumFacing.UP, 0L);
+		
+		BakedQuad bakedquad = quads.get(0);
+		TextureAtlasSprite sprite = bakedquad.getSprite();
+		float minU = sprite.getMinU();
+		float maxU = sprite.getMaxU();
+		float minV = sprite.getMinV();
+		float maxV = sprite.getMaxV();
 
 		for (EnumFacing enumfacing : EnumFacing.values())
 		{
@@ -95,6 +107,29 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 		//GlStateManager.scale(.25f, .25f, .25f);
 
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(0, .0,-.25).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(0, .0, .25).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(0, .5, .25).tex(minU, minV).endVertex();
+		bufferbuilder.pos(0, .5,-.25).tex(maxU, minV).endVertex();
+		tessellator.draw();
+
+		/*bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
+		bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
+		bufferbuilder.pos(0,	.375,0).tex(0/32d, 0/32d).endVertex();
+		bufferbuilder.pos(.375,	.375,0).tex(8/32d, 0/32d).endVertex();
+		tessellator.draw();
+
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(.375,	.25,-.25).tex(8/32d, 5/32d).endVertex();
+		bufferbuilder.pos(0,	.25,-.25).tex(0/32d, 5/32d).endVertex();
+		bufferbuilder.pos(0,	.25, .25).tex(0/32d, 0/32d).endVertex();
+		bufferbuilder.pos(.375,	.25, .25).tex(8/32d, 0/32d).endVertex();
+		tessellator.draw();
+		*/
+		
+		/*
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		bufferbuilder.pos(0, .0,-.25).tex(5/32d, 10/32d).endVertex();
 		bufferbuilder.pos(0, .0, .25).tex(0/32d, 10/32d).endVertex();
@@ -115,6 +150,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		bufferbuilder.pos(0,	.25, .25).tex(0/32d, 0/32d).endVertex();
 		bufferbuilder.pos(.375,	.25, .25).tex(8/32d, 0/32d).endVertex();
 		tessellator.draw();
+		*/
 
 		GlStateManager.enableCull();
 		GlStateManager.disableRescaleNormal();
@@ -160,4 +196,38 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 			//PLEASE WØRK
 		}
 	}
+	
+	/*
+	public static void putBakedQuad(IVertexConsumer consumer, BakedQuad quad)
+    {
+        consumer.setTexture(quad.getSprite());
+        consumer.setQuadOrientation(quad.getFace());
+        if(quad.hasTintIndex())
+        {
+            consumer.setQuadTint(quad.getTintIndex());
+        }
+        consumer.setApplyDiffuseLighting(quad.shouldApplyDiffuseLighting());
+        float[] data = new float[4];
+        VertexFormat formatFrom = consumer.getVertexFormat();
+        VertexFormat formatTo = quad.getFormat();
+        int countFrom = formatFrom.getElementCount();
+        int countTo = formatTo.getElementCount();
+        int[] eMap = mapFormats(formatFrom, formatTo);
+        for(int v = 0; v < 4; v++)
+        {
+            for(int e = 0; e < countFrom; e++)
+            {
+                if(eMap[e] != countTo)
+                {
+                    unpack(quad.getVertexData(), data, formatTo, v, eMap[e]);
+                    consumer.put(e, data);
+                }
+                else
+                {
+                    consumer.put(e);
+                }
+            }
+        }
+    }
+	 */
 }
