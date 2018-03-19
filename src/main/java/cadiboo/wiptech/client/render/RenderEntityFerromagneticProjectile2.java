@@ -47,7 +47,7 @@ public class RenderEntityFerromagneticProjectile2<T extends EntityFerromagneticP
 		customRendering(entity, x, y, z, entityYaw, partialTicks);
 
 		// arrow shake
-		float f11 = (float) entity.projectileShake - partialTicks;
+		float f11 = (float) entity.arrowShake - partialTicks;
 		if(f11 > 0.0F) {
 			float f12 = -MathHelper.sin(f11 * 3.0F) * f11;
 			GL11.glRotatef(f12, 0.0F, 0.0F, 1.0F);

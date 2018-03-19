@@ -62,7 +62,6 @@ public class EntityProjectileBase2 extends EntityArrow {
 	public int ticksInAir;
 	public double damage;
 	public double knockbackStrength;
-	public int projectileShake;
 
 	public EntityProjectileBase2(World worldIn)
 	{
@@ -229,8 +228,6 @@ public class EntityProjectileBase2 extends EntityArrow {
 		{
 			AxisAlignedBB axisalignedbb = iblockstate.getCollisionBoundingBox(this.world, blockpos);
 
-			//axisalignedbb.grow(-0.1F);
-			
 			if (axisalignedbb != Block.NULL_AABB && axisalignedbb.grow(0.1F).offset(blockpos).contains(new Vec3d(this.posX, this.posY, this.posZ)))
 			{
 				this.inGround = true;
@@ -394,7 +391,7 @@ public class EntityProjectileBase2 extends EntityArrow {
 			{
 				Entity entity1 = list.get(i);
 
-				if (entity1 != this.shootingEntity || this.ticksInAir >=5)
+				if (entity1 != this.shootingEntity || (this.ticksInAir >=5 && this.arrowShake==0))
 				{
 					AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
 					RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
