@@ -87,19 +87,22 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 			WIPTech.logger.info(model);
 			//bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 			int color = -1;
-			for (EnumFacing enumfacing : EnumFacing.values())
+			List<BakedQuad> quads;
+			/*for (EnumFacing enumfacing : EnumFacing.values())
 			{
 				List<BakedQuad> quads = model.getQuads((IBlockState)null, enumfacing, 0L);
-				WIPTech.logger.info(quads);
+			}*/
+			quads = model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
+			WIPTech.logger.info(quads);
 
-				boolean flag = color == -1 && !itemStack.isEmpty();
-				int i = 0;
+			boolean flag = color == -1 && !itemStack.isEmpty();
+			int i = 0;
 
-				for (int j = quads.size(); i < j; ++i)
-				{
-					BakedQuad bakedquad = quads.get(i);
-					WIPTech.logger.info(bakedquad);
-					/*int k = color;
+			for (int j = quads.size(); i < j; ++i)
+			{
+				BakedQuad bakedquad = quads.get(i);
+				WIPTech.logger.info(bakedquad);
+				/*int k = color;
 					//TODO now make it only render part of the texture
 
 					if (flag && bakedquad.hasTintIndex())
@@ -115,42 +118,42 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 					}
 
 					net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, bakedquad, k);
-					 */
-					TextureAtlasSprite sprite = bakedquad.getSprite();
-					if(sprite!=null) {
-						WIPTech.logger.info(sprite);
+				 */
+				TextureAtlasSprite sprite = bakedquad.getSprite();
+				if(sprite!=null) {
+					WIPTech.logger.info(sprite);
 
-						float minU = sprite.getMinU();
-						float maxU = sprite.getMaxU();
-						float minV = sprite.getMinV();
-						float maxV = sprite.getMaxV();
-						
-						WIPTech.logger.info(minU);
-						WIPTech.logger.info(maxU);
-						WIPTech.logger.info(minV);
-						WIPTech.logger.info(maxV);
+					float minU = sprite.getMinU();
+					float maxU = sprite.getMaxU();
+					float minV = sprite.getMinV();
+					float maxV = sprite.getMaxV();
 
-						GlStateManager.disableCull();
-						GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
-						GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * f1, 0.0F, 0.0F, 1.0F);
+					WIPTech.logger.info(minU);
+					WIPTech.logger.info(maxU);
+					WIPTech.logger.info(minV);
+					WIPTech.logger.info(maxV);
 
-						//GlStateManager.scale(.25f, .25f, .25f);
+					GlStateManager.disableCull();
+					GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
+					GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * f1, 0.0F, 0.0F, 1.0F);
 
-						bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-						bufferbuilder.pos(0, .0,-.25).tex(maxU, maxV).endVertex();
-						bufferbuilder.pos(0, .0, .25).tex(minU, maxV).endVertex();
-						bufferbuilder.pos(0, .5, .25).tex(minU, minV).endVertex();
-						bufferbuilder.pos(0, .5,-.25).tex(maxU, minV).endVertex();
-						tessellator.draw();
-						
-						bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-						bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
-						bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
-						bufferbuilder.pos(0,	.375,0).tex(0/32d, 0/32d).endVertex();
-						bufferbuilder.pos(.375,	.375,0).tex(8/32d, 0/32d).endVertex();
-						tessellator.draw();
+					//GlStateManager.scale(.25f, .25f, .25f);
 
-					}
+					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+					bufferbuilder.pos(0, .0,-.25).tex(maxU, maxV).endVertex();
+					bufferbuilder.pos(0, .0, .25).tex(minU, maxV).endVertex();
+					bufferbuilder.pos(0, .5, .25).tex(minU, minV).endVertex();
+					bufferbuilder.pos(0, .5,-.25).tex(maxU, minV).endVertex();
+					tessellator.draw();
+
+					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+					bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
+					bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
+					bufferbuilder.pos(0,	.375,0).tex(0/32d, 0/32d).endVertex();
+					bufferbuilder.pos(.375,	.375,0).tex(8/32d, 0/32d).endVertex();
+					tessellator.draw();
+
+					//}
 				}
 			}
 		}
