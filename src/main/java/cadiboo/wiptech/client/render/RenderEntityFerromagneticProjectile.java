@@ -122,6 +122,11 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 						float maxU = sprite.getMaxU();
 						float minV = sprite.getMinV();
 						float maxV = sprite.getMaxV();
+						
+						WIPTech.logger.info(minU);
+						WIPTech.logger.info(maxU);
+						WIPTech.logger.info(minV);
+						WIPTech.logger.info(maxV);
 
 						GlStateManager.disableCull();
 						GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -134,6 +139,13 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 						bufferbuilder.pos(0, .0, .25).tex(minU, maxV).endVertex();
 						bufferbuilder.pos(0, .5, .25).tex(minU, minV).endVertex();
 						bufferbuilder.pos(0, .5,-.25).tex(maxU, minV).endVertex();
+						tessellator.draw();
+						
+						bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+						bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
+						bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
+						bufferbuilder.pos(0,	.375,0).tex(0/32d, 0/32d).endVertex();
+						bufferbuilder.pos(.375,	.375,0).tex(8/32d, 0/32d).endVertex();
 						tessellator.draw();
 
 					}
