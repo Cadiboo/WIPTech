@@ -84,12 +84,13 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
 		if(model!=null) {
+			WIPTech.logger.info(model);
 			//bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 			int color = -1;
 			for (EnumFacing enumfacing : EnumFacing.values())
 			{
-				List<BakedQuad> quads = model.getQuads((IBlockState)null, EnumFacing.UP, 0L);
-
+				List<BakedQuad> quads = model.getQuads((IBlockState)null, enumfacing, 0L);
+				WIPTech.logger.info(quads);
 
 				boolean flag = color == -1 && !itemStack.isEmpty();
 				int i = 0;
@@ -97,6 +98,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 				for (int j = quads.size(); i < j; ++i)
 				{
 					BakedQuad bakedquad = quads.get(i);
+					WIPTech.logger.info(bakedquad);
 					/*int k = color;
 					//TODO now make it only render part of the texture
 
@@ -116,7 +118,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 					 */
 					TextureAtlasSprite sprite = bakedquad.getSprite();
 					if(sprite!=null) {
-						WIPTech.logger.info(bakedquad.getSprite());
+						WIPTech.logger.info(sprite);
 
 						float minU = sprite.getMinU();
 						float maxU = sprite.getMaxU();
