@@ -27,6 +27,7 @@ import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 
 
@@ -51,30 +52,24 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 	private ItemStack itemStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
 
 	@Override
-	public void doRender(@Nonnull T entity, double x, double y, double z, float f0, float f1)
+	public void doRender(@Nonnull T entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
-
-		/*if(!itemStack.isEmpty()) {
-		Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
-	}
-	else {
-		ItemStack dummy = ItemStack.EMPTY;
-		Minecraft.getMinecraft().getRenderItem().renderItem(dummy, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
-	}*/
-
-		/*
-	 else if (Block.getBlockFromItem(item) instanceof BlockShulkerBox)
-        {
-            TileEntityRendererDispatcher.instance.render(SHULKER_BOXES[BlockShulkerBox.getColorFromItem(item).getMetadata()], 0.0D, 0.0D, 0.0D, 0.0F, partialTicks);
-        }
-		 */
-
-
 		itemStack = entity.getAmmoStack();
 
 		GlStateManager.pushMatrix();
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.translate(x, y, z);
+
+		//customRendering(entity, x, y, z, entityYaw, partialTicks);
+
+		// arrow shake
+		float renderShake = (float)entity.arrowShake - partialTicks;
+
+		if (renderShake > 0.0F)
+		{
+			float angle = -MathHelper.sin(renderShake * 3.0F) * renderShake;
+			GlStateManager.rotate(angle, 0.0F, 0.0F, 1.0F);
+		}
 		GlStateManager.enableRescaleNormal();
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
@@ -84,26 +79,18 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
 		if(model!=null) {
-			//WIPTech.logger.info(model);
-			//bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 			int color = -1;
-			List<BakedQuad> quads;
-			/*for (EnumFacing enumfacing : EnumFacing.values())
-			{
-				List<BakedQuad> quads = model.getQuads((IBlockState)null, enumfacing, 0L);
-			}*/
-			quads = model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
-			//WIPTech.logger.info(quads);
+			List<BakedQuad> quads = model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
+
+			//TODO if(quads.size > 0) do everything else {
 
 			boolean flag = color == -1 && !itemStack.isEmpty();
 			int i = 0;
 
-			for (int j = quads.size(); i < j; ++i)
-			{
-				BakedQuad bakedquad = quads.get(i);
-				WIPTech.logger.info(bakedquad);
-				/*int k = color;
-					//TODO now make it only render part of the texture
+			BakedQuad bakedquad = quads.get(0);
+
+			/*int k = color;
+					//TODO what does this do?
 
 					if (flag && bakedquad.hasTintIndex())
 					{
@@ -118,132 +105,61 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 					}
 
 					net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, bakedquad, k);
+			 */
+			TextureAtlasSprite sprite = bakedquad.getSprite();
+			if(sprite!=null) {
+
+				float minU = sprite.getMinU();
+				float maxU = sprite.getMaxU();
+				float minV = sprite.getMinV();
+				float maxV = sprite.getMaxV();
+
+				float width = maxU-minU;
+				float height = maxV-minV;
+
+				float midU = minU+(width/2);
+				float midV = minV+(height/2);
+
+				WIPTech.logger.info(minU);
+				WIPTech.logger.info(maxU);
+				WIPTech.logger.info(minV);
+				WIPTech.logger.info(maxV);
+
+				WIPTech.logger.info(width);
+				WIPTech.logger.info(height);
+
+				WIPTech.logger.info(midU);
+				WIPTech.logger.info(midV);
+
+				GlStateManager.disableCull();
+				//GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
+				//GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
+
+				//GlStateManager.scale(.25f, .25f, .25f);
+
+				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+				bufferbuilder.pos(0, .0,-1).tex(maxU, maxV).endVertex();
+				bufferbuilder.pos(0, .0, 1).tex(minU, maxV).endVertex();
+				bufferbuilder.pos(0, 1., 1).tex(minU, minV).endVertex();
+				bufferbuilder.pos(0, 1.,-1).tex(maxU, minV).endVertex();
+				tessellator.draw();
+
+				/*
+				buffer.pos(x1, y0, z0).color(r, g, b, a).endVertex();
+				buffer.pos(x1, y0, z1).color(r, g, b, a).endVertex();
+				buffer.pos(x0, y0, z1).color(r, g, b, a).endVertex();
+				buffer.pos(x0, y0, z0).color(r, g, b, a).endVertex();
 				 */
-				TextureAtlasSprite sprite = bakedquad.getSprite();
-				if(sprite!=null) {
-					WIPTech.logger.info(sprite);
 
-					float minU = sprite.getMinU();
-					float maxU = sprite.getMaxU();
-					float minV = sprite.getMinV();
-					float maxV = sprite.getMaxV();
-
-					WIPTech.logger.info(minU);
-					WIPTech.logger.info(maxU);
-					WIPTech.logger.info(minV);
-					WIPTech.logger.info(maxV);
-
-					GlStateManager.disableCull();
-					GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
-					GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * f1, 0.0F, 0.0F, 1.0F);
-
-					//GlStateManager.scale(.25f, .25f, .25f);
-
-					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-					bufferbuilder.pos(0, .0,-.25).tex(maxU, maxV).endVertex();
-					bufferbuilder.pos(0, .0, .25).tex(minU, maxV).endVertex();
-					bufferbuilder.pos(0, .5, .25).tex(minU, minV).endVertex();
-					bufferbuilder.pos(0, .5,-.25).tex(maxU, minV).endVertex();
-					tessellator.draw();
-
-					bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-					bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
-					bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
-					bufferbuilder.pos(0,	.375,0).tex(0/32d, 0/32d).endVertex();
-					bufferbuilder.pos(.375,	.375,0).tex(8/32d, 0/32d).endVertex();
-					tessellator.draw();
-
-					//}
-				}
+				/*bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+				bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
+				bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
+				bufferbuilder.pos(0,	.375,0).tex(0/32d, 0/32d).endVertex();
+				bufferbuilder.pos(.375,	.375,0).tex(8/32d, 0/32d).endVertex();
+				tessellator.draw();
+				 */
 			}
 		}
-
-
-
-		/*int color = -1;
-
-
-		for (EnumFacing enumfacing : EnumFacing.values())
-		{
-			this.renderQuads(bufferbuilder, model.getQuads((IBlockState)null, enumfacing, 0L), color, itemStack);
-		}
-
-
-		/*List<BakedQuad> quads = model.getQuads((IBlockState)null, EnumFacing.UP, 0L);
-		//WIPTech.logger.info(model);
-		System.out.println(model);
-		//WIPTech.logger.info(quads);
-		System.out.println(quads);
-
-		BakedQuad bakedquad = quads.get(0);
-		System.out.println(bakedquad);
-		//WIPTech.logger.info(bakedquad);
-		TextureAtlasSprite sprite = bakedquad.getSprite();
-		float minU = sprite.getMinU();
-		float maxU = sprite.getMaxU();
-		float minV = sprite.getMinV();
-		float maxV = sprite.getMaxV();
-		 *\/
-		for (EnumFacing enumfacing : EnumFacing.values())
-		{
-			this.renderQuads(bufferbuilder, model.getQuads((IBlockState)null, enumfacing, 0L), color, itemStack);
-		}
-
-		//this.renderQuads(bufferbuilder, model.getQuads((IBlockState)null, (EnumFacing)null, 0L), color, stack);
-		//tessellator.draw();
-
-		GlStateManager.disableCull();
-		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * f1, 0.0F, 0.0F, 1.0F);
-
-		//GlStateManager.scale(.25f, .25f, .25f);
-
-		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(0, .0,-.25).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(0, .0, .25).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(0, .5, .25).tex(minU, minV).endVertex();
-		bufferbuilder.pos(0, .5,-.25).tex(maxU, minV).endVertex();
-		tessellator.draw();
-
-		 */
-
-		/*bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
-		bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
-		bufferbuilder.pos(0,	.375,0).tex(0/32d, 0/32d).endVertex();
-		bufferbuilder.pos(.375,	.375,0).tex(8/32d, 0/32d).endVertex();
-		tessellator.draw();
-
-		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(.375,	.25,-.25).tex(8/32d, 5/32d).endVertex();
-		bufferbuilder.pos(0,	.25,-.25).tex(0/32d, 5/32d).endVertex();
-		bufferbuilder.pos(0,	.25, .25).tex(0/32d, 0/32d).endVertex();
-		bufferbuilder.pos(.375,	.25, .25).tex(8/32d, 0/32d).endVertex();
-		tessellator.draw();
-		 */
-
-		/*
-		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(0, .0,-.25).tex(5/32d, 10/32d).endVertex();
-		bufferbuilder.pos(0, .0, .25).tex(0/32d, 10/32d).endVertex();
-		bufferbuilder.pos(0, .5, .25).tex(0/32d, 5/32d).endVertex();
-		bufferbuilder.pos(0, .5,-.25).tex(5/32d, 5/32d).endVertex();
-		tessellator.draw();
-
-		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
-		bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
-		bufferbuilder.pos(0,	.375,0).tex(0/32d, 0/32d).endVertex();
-		bufferbuilder.pos(.375,	.375,0).tex(8/32d, 0/32d).endVertex();
-		tessellator.draw();
-
-		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(.375,	.25,-.25).tex(8/32d, 5/32d).endVertex();
-		bufferbuilder.pos(0,	.25,-.25).tex(0/32d, 5/32d).endVertex();
-		bufferbuilder.pos(0,	.25, .25).tex(0/32d, 0/32d).endVertex();
-		bufferbuilder.pos(.375,	.25, .25).tex(8/32d, 0/32d).endVertex();
-		tessellator.draw();
-		 */
 
 		GlStateManager.enableCull();
 		GlStateManager.disableRescaleNormal();
@@ -259,68 +175,26 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		return TextureMap.LOCATION_MISSING_TEXTURE;
 	}
 
-	private void renderQuads(BufferBuilder renderer, List<BakedQuad> quads, int color, ItemStack stack)
-	{
-		boolean flag = color == -1 && !stack.isEmpty();
-		int i = 0;
+	public void customRendering(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
 
-		for (int j = quads.size(); i < j; ++i)
-		{
-			BakedQuad bakedquad = quads.get(i);
-			int k = color;
-			//wow i got everything right
-			//TODO now make it only render part of the texture
+		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
 
-			if (flag && bakedquad.hasTintIndex())
-			{
-				k = Minecraft.getMinecraft().getItemColors().colorMultiplier(stack, bakedquad.getTintIndex());
+		// rotate it into the direction we threw it
+		GL11.glRotatef(entity.rotationYaw, 0f, 1f, 0f);
+		GL11.glRotatef(-entity.rotationPitch, 1f, 0f, 0f);
 
-				if (EntityRenderer.anaglyphEnable)
-				{
-					k = TextureUtil.anaglyphColor(k);
-				}
-
-				k = k | -16777216;
-			}
-
-			net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(renderer, bakedquad, k);
-
-			WIPTech.logger.info(bakedquad.getSprite());
-			//PLEASE WØRK
+		// adjust "stuck" depth
+		if(entity.inGround) {
+			GL11.glTranslated(0, 0, -entity.getStuckDepth());
 		}
+
+		customCustomRendering(entity, x, y, z, entityYaw, partialTicks);
+
+		// rotate it so it faces forward
+		GL11.glRotatef(-90f, 0f, 1f, 0f);
+
+		// rotate the projectile it so it faces upwards
+		GL11.glRotatef(-45, 0f, 0f, 1f);
 	}
 
-	/*
-	public static void putBakedQuad(IVertexConsumer consumer, BakedQuad quad)
-    {
-        consumer.setTexture(quad.getSprite());
-        consumer.setQuadOrientation(quad.getFace());
-        if(quad.hasTintIndex())
-        {
-            consumer.setQuadTint(quad.getTintIndex());
-        }
-        consumer.setApplyDiffuseLighting(quad.shouldApplyDiffuseLighting());
-        float[] data = new float[4];
-        VertexFormat formatFrom = consumer.getVertexFormat();
-        VertexFormat formatTo = quad.getFormat();
-        int countFrom = formatFrom.getElementCount();
-        int countTo = formatTo.getElementCount();
-        int[] eMap = mapFormats(formatFrom, formatTo);
-        for(int v = 0; v < 4; v++)
-        {
-            for(int e = 0; e < countFrom; e++)
-            {
-                if(eMap[e] != countTo)
-                {
-                    unpack(quad.getVertexData(), data, formatTo, v, eMap[e]);
-                    consumer.put(e, data);
-                }
-                else
-                {
-                    consumer.put(e);
-                }
-            }
-        }
-    }
-	 */
 }
