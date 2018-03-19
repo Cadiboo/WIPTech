@@ -16,11 +16,23 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 
-//Absolutely copied from Tinkers Construct
+
+//COPPIED FROM IMMERSIVE ENGINEERING
+// https://github.com/BluSunrize/ImmersiveEngineering/blob/master/src/main/java/blusunrize/immersiveengineering/client/render/EntityRenderRevolvershot.java
+/*
+ * BluSunrize
+ * Copyright (c) 2017
+ *
+ * This code is licensed under "Blu's License of Common Sense"
+ * Details can be found in the license file in the root folder of this project
+ */
+
+
 
 public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticProjectile> extends Render<T> {
 
@@ -29,59 +41,45 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 	}
 
 	@Override
-	public void doRender(@Nonnull T entity, double x, double y, double z, float entityYaw, float partialTicks) {
-		ItemStack itemStack = entity.getAmmoStack();
+	public void doRender(@Nonnull T entity, double x, double y, double z, float f0, float f1)
+	{
+		GlStateManager.pushMatrix();
+		this.bindEntityTexture(entity);
+		GlStateManager.translate(x, y, z);
+		GlStateManager.enableRescaleNormal();
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-		renderManager.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.pushMatrix();
-        GlStateManager.disableLighting();
-        GlStateManager.translate((float)x, (float)y, (float)z);
-        GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+		GlStateManager.disableCull();
+		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * f1, 0.0F, 0.0F, 1.0F);
 
-		if(renderManager == null || renderManager.renderEngine == null) {
-			return;
-		}
+		//GlStateManager.scale(.25f, .25f, .25f);
 
-		// draw correct texture. not some weird block fragments.
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(0, .0,-.25).tex(5/32d, 10/32d).endVertex();
+		bufferbuilder.pos(0, .0, .25).tex(0/32d, 10/32d).endVertex();
+		bufferbuilder.pos(0, .5, .25).tex(0/32d, 5/32d).endVertex();
+		bufferbuilder.pos(0, .5,-.25).tex(5/32d, 5/32d).endVertex();
+		tessellator.draw();
 
-		if(!itemStack.isEmpty()) {
-			Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
-		}
-		else {
-			ItemStack dummy = ItemStack.EMPTY;
-			Minecraft.getMinecraft().getRenderItem().renderItem(dummy, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
-		}
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
+		bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
+		bufferbuilder.pos(0,	.375,0).tex(0/32d, 0/32d).endVertex();
+		bufferbuilder.pos(.375,	.375,0).tex(8/32d, 0/32d).endVertex();
+		tessellator.draw();
 
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glPopMatrix();
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(.375,	.25,-.25).tex(8/32d, 5/32d).endVertex();
+		bufferbuilder.pos(0,	.25,-.25).tex(0/32d, 5/32d).endVertex();
+		bufferbuilder.pos(0,	.25, .25).tex(0/32d, 0/32d).endVertex();
+		bufferbuilder.pos(.375,	.25, .25).tex(8/32d, 0/32d).endVertex();
+		tessellator.draw();
 
-		super.doRender(entity, x, y, z, entityYaw, partialTicks);
-	}
-
-	public void customRendering(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
-
-		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
-
-		// rotate it into the direction we threw it
-		GL11.glRotatef(entity.rotationYaw, 0f, 1f, 0f);
-		GL11.glRotatef(-entity.rotationPitch, 1f, 0f, 0f);
-
-		// adjust "stuck" depth
-		if(entity.inGround) {
-			GL11.glTranslated(0, 0, -entity.getStuckDepth());
-		}
-
-		customCustomRendering(entity, x, y, z, entityYaw, partialTicks);
-
-		// rotate it so it faces forward
-		GL11.glRotatef(-90f, 0f, 1f, 0f);
-
-		// rotate the projectile it so it faces upwards
-		GL11.glRotatef(-45, 0f, 0f, 1f);
+		GlStateManager.enableCull();
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.popMatrix();
 	}
 
 	/** If you just want to rotate it or something but the overall "have it heading towards the target" should stay the same */
