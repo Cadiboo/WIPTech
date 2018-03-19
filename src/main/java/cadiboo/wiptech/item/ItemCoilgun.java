@@ -72,13 +72,16 @@ public class ItemCoilgun extends ItemBase {
 						ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(itemstack.getItem() instanceof ItemFerromagneticProjectile ? itemstack.getItem() : Items.FERROMAGNETIC_PROJECILE);
 						EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer);
 						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
-						projectile.setDamage(EntityFerromagneticProjectile.getProjectileDamage(itemstack));
-						projectile.setKnockbackStrength(EntityFerromagneticProjectile.getProjectileKnockback(itemstack));
+
+						//if(this.coilGold) damage & knockback * 1.5
+
+						//if(this.coilgun.overheat) entityarrow.setFire(100);
 
 						if (flag1 || entityplayer.capabilities.isCreativeMode)
 						{
 							projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
 						}
+
 						worldIn.spawnEntity(projectile);
 					}
 
@@ -131,6 +134,7 @@ public class ItemCoilgun extends ItemBase {
 
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
 	{
+		//this.burstCounter.reset()
 		/*
 		if(!this.getComponents.contains(rollingCircuit||machinegunCircuit) {
 		 */
@@ -159,14 +163,12 @@ public class ItemCoilgun extends ItemBase {
 
 					if (!worldIn.isRemote)
 					{
-						EntityFerromagneticProjectile projectile = new EntityFerromagneticProjectile(worldIn, entityplayer);
-						projectile.setAmmoId(EntityFerromagneticProjectile.getAmmoTier(stack.getMetadata()));
+						ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(itemstack.getItem() instanceof ItemFerromagneticProjectile ? itemstack.getItem() : Items.FERROMAGNETIC_PROJECILE);
+						EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer);
+						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
 
-						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
+						//if(this.coilGold) damage & knockback * 1.5
 
-						projectile.setDamage(EntityFerromagneticProjectile.getProjectileDamage(itemstack));
-
-						projectile.setKnockbackStrength(EntityFerromagneticProjectile.getProjectileKnockback(itemstack));
 						//if(this.coilgun.overheat) entityarrow.setFire(100);
 
 						if (flag1 || entityplayer.capabilities.isCreativeMode)

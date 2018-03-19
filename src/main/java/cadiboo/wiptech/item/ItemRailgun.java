@@ -1,8 +1,11 @@
 package cadiboo.wiptech.item;
 
+import java.util.List;
+
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
 import cadiboo.wiptech.init.Items;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,6 +30,13 @@ extends ItemBase
 		setMaxDamage(0);
 		setCreativeTab(CreativeTabs.COMBAT);
 	}
+	
+	@Override
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+	  {
+	    tooltip.add("Superaccelerates ferromagnetic projectiles");
+	    tooltip.add("§6§ooops, currently shoots mounted railgun projectiles");
+	  }
 
 	public int getMaxItemUseDuration(ItemStack stack)
 	{
@@ -96,14 +106,12 @@ extends ItemBase
 
 					if (!worldIn.isRemote)
 					{
-						EntityFerromagneticProjectile projectile = new EntityFerromagneticProjectile(worldIn, entityplayer);
-						projectile.setAmmoId(EntityFerromagneticProjectile.getAmmoTier(stack.getMetadata()));
+						ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(itemstack.getItem() instanceof ItemFerromagneticProjectile ? itemstack.getItem() : Items.FERROMAGNETIC_PROJECILE);
+						EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer);
+						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
 						
-						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
-
-						projectile.setDamage(EntityFerromagneticProjectile.getProjectileDamage(itemstack));
-
-						projectile.setKnockbackStrength(EntityFerromagneticProjectile.getProjectileKnockback(itemstack));
+						//if(this.coilGold) damage & knockback * 1.5
+						
 						//if(this.railgun.overheat) entityarrow.setFire(100);
 
 						if (flag1 || entityplayer.capabilities.isCreativeMode)

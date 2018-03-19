@@ -70,15 +70,8 @@ public class ItemTestLauncher extends ItemBase
 					{
 						ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(itemstack.getItem() instanceof ItemFerromagneticProjectile ? itemstack.getItem() : Items.FERROMAGNETIC_PROJECILE);
 						EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer);
-						//projectile.setAmmoId(stack.getMetadata());
 						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
-						//EntityFerromagneticProjectile2 projectile = new EntityFerromagneticProjectile2(worldIn, entityplayer);
-
-						//projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.0F);
-
-						projectile.setDamage(EntityFerromagneticProjectile.getProjectileDamage(itemstack));
-
-						projectile.setKnockbackStrength(EntityFerromagneticProjectile.getProjectileKnockback(itemstack));
+						
 						//if(this.railgun.overheat) entityarrow.setFire(100);
 
 						if (flag1 || entityplayer.capabilities.isCreativeMode)

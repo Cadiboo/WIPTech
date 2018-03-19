@@ -60,7 +60,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.translate(x, y, z);
 
-		//customRendering(entity, x, y, z, entityYaw, partialTicks);
+		customRendering(entity, x, y, z, entityYaw, partialTicks);
 
 		// arrow shake
 		float renderShake = (float)entity.arrowShake - partialTicks;
@@ -119,11 +119,23 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 				float midU = minU+(width/2);
 				float midV = minV+(height/2);
+
+				float multiplier = 1;
+				float scale = 1F;
+				if(itemStack.getMetadata()>3) {
+					multiplier = 2;
+					scale = 0.5F;
+				}
+				if(itemStack.getMetadata()>6) {
+					scale = 0.25F;
+				}
 				
-				minU = midU-0.01F;
-				maxU = midU+0.01F;
-				minV = midV-0.01F;
-				maxV = midV+0.01F;
+				GlStateManager.scale(scale, scale, scale);
+
+				minU = midU-(width/(8F*multiplier));
+				maxU = midU+(width/(8F*multiplier));
+				minV = midV-(height/(8F*multiplier));
+				maxV = midV+(height/(8F*multiplier));
 
 				/*WIPTech.logger.info(minU);
 				WIPTech.logger.info(maxU);
@@ -268,21 +280,21 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
 
 		// rotate it into the direction we threw it
-		GL11.glRotatef(entity.rotationYaw, 0f, 1f, 0f);
-		GL11.glRotatef(-entity.rotationPitch, 1f, 0f, 0f);
+		GlStateManager.rotate(entity.rotationYaw, 0f, 1f, 0f);
+		GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
 
 		// adjust "stuck" depth
 		if(entity.inGround) {
-			GL11.glTranslated(0, 0, -entity.getStuckDepth());
+			GlStateManager.translate(0, 0, -entity.getStuckDepth());
 		}
 
 		customCustomRendering(entity, x, y, z, entityYaw, partialTicks);
 
 		// rotate it so it faces forward
-		GL11.glRotatef(-90f, 0f, 1f, 0f);
+		//GL11.glRotatef(-90f, 0f, 1f, 0f);
 
 		// rotate the projectile it so it faces upwards
-		GL11.glRotatef(-45, 0f, 0f, 1f);
+		//GL11.glRotatef(-45, 0f, 0f, 1f);
 	}
 
 }
