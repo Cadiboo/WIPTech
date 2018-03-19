@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.block.state.IBlockState;
@@ -138,6 +139,8 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		{
 			BakedQuad bakedquad = quads.get(i);
 			int k = color;
+			//wow i got everything right
+			//TODO now make it only render part of the texture
 
 			if (flag && bakedquad.hasTintIndex())
 			{
@@ -152,6 +155,9 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 			}
 
 			net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(renderer, bakedquad, k);
+			
+			WIPTech.logger.info(bakedquad.getSprite());
+			//PLEASE WØRK
 		}
 	}
 }
