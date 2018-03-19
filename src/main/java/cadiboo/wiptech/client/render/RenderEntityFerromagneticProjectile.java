@@ -5,13 +5,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.init.Items;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockShulkerBox;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -20,21 +16,14 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ModelManager;
-import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.client.renderer.color.ItemColors;
 
 
 //COPPIED FROM IMMERSIVE ENGINEERING
