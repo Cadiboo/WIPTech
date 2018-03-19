@@ -9,9 +9,6 @@ import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -22,31 +19,44 @@ import net.minecraft.util.math.MathHelper;
 
 //Absolutely copied from Tinkers Construct
 
-public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticProjectile> extends Render<T> {
+public class RenderEntityFerromagneticProjectile_COPY<T extends EntityFerromagneticProjectile> extends Render<T> {
 
-	protected RenderEntityFerromagneticProjectile(RenderManager renderManager) {
+	protected RenderEntityFerromagneticProjectile_COPY(RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
 	public void doRender(@Nonnull T entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		// preface: Remember that the rotations are applied in reverse order.
+		// the rendering call does not apply any transformations.
+		// That'd screw things up, since it'd be applied before our transformations
+		// So remember to read this from the rendering call up to this line
+
 		ItemStack itemStack = entity.getAmmoStack();
 
-		renderManager.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.pushMatrix();
-        GlStateManager.disableLighting();
-        GlStateManager.translate((float)x, (float)y, (float)z);
-        GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferbuilder = tessellator.getBuffer();
+		GL11.glPushMatrix();
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+
+		// last step: translate from 0/0/0 to correct position in world
+		GL11.glTranslated(x, y, z);
+		//make it smaller
+		//GL11.glScalef(0.5F, 0.5F, 0.5F);
+
+		customRendering(entity, x, y, z, entityYaw, partialTicks);
+
+		// arrow shake
+		float f11 = (float) entity.arrowShake - partialTicks;
+		if(f11 > 0.0F) {
+			float f12 = -MathHelper.sin(f11 * 3.0F) * f11;
+			GL11.glRotatef(f12, 0.0F, 0.0F, 1.0F);
+		}
 
 		if(renderManager == null || renderManager.renderEngine == null) {
 			return;
 		}
 
 		// draw correct texture. not some weird block fragments.
+		renderManager.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 		if(!itemStack.isEmpty()) {
 			Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
