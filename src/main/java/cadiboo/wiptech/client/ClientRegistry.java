@@ -3,11 +3,9 @@ package cadiboo.wiptech.client;
 import cadiboo.wiptech.Registry;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockBase;
-import cadiboo.wiptech.client.render.RenderEntityFerromagneticProjectile2Factory;
 import cadiboo.wiptech.client.render.RenderEntityFerromagneticProjectileFactory;
 import cadiboo.wiptech.client.render.RenderEntityNapalmFactory;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
-import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile2;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
@@ -61,7 +59,6 @@ public class ClientRegistry extends Registry {
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, new RenderEntityNapalmFactory());
 		RenderingRegistry.registerEntityRenderingHandler(EntityFerromagneticProjectile.class, new RenderEntityFerromagneticProjectileFactory());
-		RenderingRegistry.registerEntityRenderingHandler(EntityFerromagneticProjectile2.class, new RenderEntityFerromagneticProjectile2Factory());
 
 		WIPTech.logger.info("Registered Entity Renders");
 	}
