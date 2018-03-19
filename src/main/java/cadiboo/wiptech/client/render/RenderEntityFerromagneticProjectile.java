@@ -53,43 +53,111 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 	@Override
 	public void doRender(@Nonnull T entity, double x, double y, double z, float f0, float f1)
 	{
+
+		/*if(!itemStack.isEmpty()) {
+		Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
+	}
+	else {
+		ItemStack dummy = ItemStack.EMPTY;
+		Minecraft.getMinecraft().getRenderItem().renderItem(dummy, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
+	}*/
+
+		/*
+	 else if (Block.getBlockFromItem(item) instanceof BlockShulkerBox)
+        {
+            TileEntityRendererDispatcher.instance.render(SHULKER_BOXES[BlockShulkerBox.getColorFromItem(item).getMetadata()], 0.0D, 0.0D, 0.0D, 0.0F, partialTicks);
+        }
+		 */
+
+
 		itemStack = entity.getAmmoStack();
 
 		GlStateManager.pushMatrix();
-		//this.bindEntityTexture(entity);
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.translate(x, y, z);
 		GlStateManager.enableRescaleNormal();
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-		/*if(!itemStack.isEmpty()) {
-			Minecraft.getMinecraft().getRenderItem().renderItem(itemStack, ItemCameraTransforms.TransformType.NONE);
-		}
-		else {
-			ItemStack dummy = ItemStack.EMPTY;
-			Minecraft.getMinecraft().getRenderItem().renderItem(dummy, Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getModelManager().getMissingModel());
-		}*/
 
-		/*
-		 else if (Block.getBlockFromItem(item) instanceof BlockShulkerBox)
-	        {
-	            TileEntityRendererDispatcher.instance.render(SHULKER_BOXES[BlockShulkerBox.getColorFromItem(item).getMetadata()], 0.0D, 0.0D, 0.0D, 0.0F, partialTicks);
-	        }
-		 */
 
-		ItemStack stack = itemStack;
-		int color = -1;
+
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
+		if(model!=null) {
+			//bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
+			int color = -1;
+			for (EnumFacing enumfacing : EnumFacing.values())
+			{
+				List<BakedQuad> quads = model.getQuads((IBlockState)null, EnumFacing.UP, 0L);
 
-		bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
-		
-		List<BakedQuad> quads = model.getQuads((IBlockState)null, EnumFacing.UP, 0L);
+
+				boolean flag = color == -1 && !itemStack.isEmpty();
+				int i = 0;
+
+				for (int j = quads.size(); i < j; ++i)
+				{
+					BakedQuad bakedquad = quads.get(i);
+					/*int k = color;
+					//TODO now make it only render part of the texture
+
+					if (flag && bakedquad.hasTintIndex())
+					{
+						k = Minecraft.getMinecraft().getItemColors().colorMultiplier(itemStack, bakedquad.getTintIndex());
+
+						if (EntityRenderer.anaglyphEnable)
+						{
+							k = TextureUtil.anaglyphColor(k);
+						}
+
+						k = k | -16777216;
+					}
+
+					net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, bakedquad, k);
+					 */
+					TextureAtlasSprite sprite = bakedquad.getSprite();
+					if(sprite!=null) {
+						WIPTech.logger.info(bakedquad.getSprite());
+
+						float minU = sprite.getMinU();
+						float maxU = sprite.getMaxU();
+						float minV = sprite.getMinV();
+						float maxV = sprite.getMaxV();
+
+						GlStateManager.disableCull();
+						GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
+						GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * f1, 0.0F, 0.0F, 1.0F);
+
+						//GlStateManager.scale(.25f, .25f, .25f);
+
+						bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+						bufferbuilder.pos(0, .0,-.25).tex(maxU, maxV).endVertex();
+						bufferbuilder.pos(0, .0, .25).tex(minU, maxV).endVertex();
+						bufferbuilder.pos(0, .5, .25).tex(minU, minV).endVertex();
+						bufferbuilder.pos(0, .5,-.25).tex(maxU, minV).endVertex();
+						tessellator.draw();
+
+					}
+				}
+			}
+		}
+
+
+
+		/*int color = -1;
+
+
+		for (EnumFacing enumfacing : EnumFacing.values())
+		{
+			this.renderQuads(bufferbuilder, model.getQuads((IBlockState)null, enumfacing, 0L), color, itemStack);
+		}
+
+
+		/*List<BakedQuad> quads = model.getQuads((IBlockState)null, EnumFacing.UP, 0L);
 		//WIPTech.logger.info(model);
 		System.out.println(model);
 		//WIPTech.logger.info(quads);
 		System.out.println(quads);
-		
+
 		BakedQuad bakedquad = quads.get(0);
 		System.out.println(bakedquad);
 		//WIPTech.logger.info(bakedquad);
@@ -98,14 +166,14 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		float maxU = sprite.getMaxU();
 		float minV = sprite.getMinV();
 		float maxV = sprite.getMaxV();
-
+		 *\/
 		for (EnumFacing enumfacing : EnumFacing.values())
 		{
-			this.renderQuads(bufferbuilder, model.getQuads((IBlockState)null, enumfacing, 0L), color, stack);
+			this.renderQuads(bufferbuilder, model.getQuads((IBlockState)null, enumfacing, 0L), color, itemStack);
 		}
 
-		this.renderQuads(bufferbuilder, model.getQuads((IBlockState)null, (EnumFacing)null, 0L), color, stack);
-		tessellator.draw();
+		//this.renderQuads(bufferbuilder, model.getQuads((IBlockState)null, (EnumFacing)null, 0L), color, stack);
+		//tessellator.draw();
 
 		GlStateManager.disableCull();
 		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * f1 - 90.0F, 0.0F, 1.0F, 0.0F);
@@ -120,6 +188,8 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		bufferbuilder.pos(0, .5,-.25).tex(maxU, minV).endVertex();
 		tessellator.draw();
 
+		 */
+
 		/*bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
 		bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
@@ -133,8 +203,8 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		bufferbuilder.pos(0,	.25, .25).tex(0/32d, 0/32d).endVertex();
 		bufferbuilder.pos(.375,	.25, .25).tex(8/32d, 0/32d).endVertex();
 		tessellator.draw();
-		*/
-		
+		 */
+
 		/*
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		bufferbuilder.pos(0, .0,-.25).tex(5/32d, 10/32d).endVertex();
@@ -156,7 +226,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		bufferbuilder.pos(0,	.25, .25).tex(0/32d, 0/32d).endVertex();
 		bufferbuilder.pos(.375,	.25, .25).tex(8/32d, 0/32d).endVertex();
 		tessellator.draw();
-		*/
+		 */
 
 		GlStateManager.enableCull();
 		GlStateManager.disableRescaleNormal();
@@ -197,12 +267,12 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 			}
 
 			net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(renderer, bakedquad, k);
-			
+
 			WIPTech.logger.info(bakedquad.getSprite());
 			//PLEASE WØRK
 		}
 	}
-	
+
 	/*
 	public static void putBakedQuad(IVertexConsumer consumer, BakedQuad quad)
     {
