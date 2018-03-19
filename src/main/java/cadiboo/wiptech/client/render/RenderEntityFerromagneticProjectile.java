@@ -85,8 +85,14 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 		
 		List<BakedQuad> quads = model.getQuads((IBlockState)null, EnumFacing.UP, 0L);
+		//WIPTech.logger.info(model);
+		System.out.println(model);
+		//WIPTech.logger.info(quads);
+		System.out.println(quads);
 		
 		BakedQuad bakedquad = quads.get(0);
+		System.out.println(bakedquad);
+		//WIPTech.logger.info(bakedquad);
 		TextureAtlasSprite sprite = bakedquad.getSprite();
 		float minU = sprite.getMinU();
 		float maxU = sprite.getMaxU();
