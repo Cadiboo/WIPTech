@@ -60,7 +60,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.translate(x, y, z);
 
-		//customRendering(entity, x, y, z, entityYaw, partialTicks);
+		customRendering(entity, x, y, z, entityYaw, partialTicks);
 
 		// arrow shake
 		float renderShake = (float)entity.arrowShake - partialTicks;
@@ -137,12 +137,33 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 				//GlStateManager.scale(.25f, .25f, .25f);
 
+				double x0 = -1;
+				double x1 = 1;
+				double y0 = 0.25;
+				double y1 = 0.75;
+				double z0 = -1;
+				double z1 = 1;
+				
 				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-				bufferbuilder.pos(0, .0,-1).tex(maxU, maxV).endVertex();
-				bufferbuilder.pos(0, .0, 1).tex(minU, maxV).endVertex();
-				bufferbuilder.pos(0, 1., 1).tex(minU, minV).endVertex();
-				bufferbuilder.pos(0, 1.,-1).tex(maxU, minV).endVertex();
+				bufferbuilder.pos(0, y0, z0).tex(maxU, maxV).endVertex();
+				bufferbuilder.pos(0, y0, z1).tex(minU, maxV).endVertex();
+				bufferbuilder.pos(0, y1, z1).tex(minU, minV).endVertex();
+				bufferbuilder.pos(0, y1, z0).tex(maxU, minV).endVertex();
 				tessellator.draw();
+				//TODO Might need to be -0.5 & 0.5 instead of .25 & .75
+				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+				bufferbuilder.pos(x0, y0, 0).tex(maxU, maxV).endVertex();
+				bufferbuilder.pos(x1, y0, 0).tex(minU, maxV).endVertex();
+				bufferbuilder.pos(x1, y1, 0).tex(minU, minV).endVertex();
+				bufferbuilder.pos(x0, y1, 0).tex(maxU, minV).endVertex();
+				tessellator.draw();
+				
+				/*bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+				bufferbuilder.pos(0, y0, z0).tex(maxU, maxV).endVertex();
+				bufferbuilder.pos(0, y0, z1).tex(minU, maxV).endVertex();
+				bufferbuilder.pos(0, y1, z1).tex(minU, minV).endVertex();
+				bufferbuilder.pos(0, y1, z0).tex(maxU, minV).endVertex();
+				tessellator.draw();*/
 
 				/*
 				buffer.pos(x1, y0, z0).color(r, g, b, a).endVertex();
