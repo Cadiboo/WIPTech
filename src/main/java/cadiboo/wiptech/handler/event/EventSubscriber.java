@@ -95,22 +95,6 @@ public class EventSubscriber {
 		OreDictionary.registerOre("nuggetTungsten", cadiboo.wiptech.init.Items.TUNGSTEN_NUGGET);
 
 		WIPTech.logger.info("Registered OreDictionary");
-
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.COPPER_ORE, new ItemStack(cadiboo.wiptech.init.Items.COPPER_INGOT, 1), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.ALUMINIUM_ORE, new ItemStack(cadiboo.wiptech.init.Items.ALUMINIUM_INGOT, 1), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.TUNGSTEN_ORE, new ItemStack(cadiboo.wiptech.init.Items.TUNGSTEN_INGOT, 1), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.OSMIUM_ORE, new ItemStack(cadiboo.wiptech.init.Items.OSMIUM_INGOT, 1), 0.0F);
-		WIPTech.logger.info("Registered Ore Smelting");
-
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.ALUMINA, new ItemStack(cadiboo.wiptech.init.Items.ALUMINIUM_INGOT, 2), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.GALLIUM, new ItemStack(cadiboo.wiptech.init.Items.GALLIUM_INGOT, 2), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.IRON_OXIDE, new ItemStack(net.minecraft.init.Items.IRON_INGOT, 2), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.SILICA, new ItemStack(cadiboo.wiptech.init.Items.SILICON, 2), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.TITANIA, new ItemStack(cadiboo.wiptech.init.Items.TITANIUM_INGOT, 2), 0.0F);
-		WIPTech.logger.info("Registered Item Smelting");
-
-		Recipes.createRecipes();
-		WIPTech.logger.info("Registered Processing Recipes");
 	}
 
 	@SubscribeEvent

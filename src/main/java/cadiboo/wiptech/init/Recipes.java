@@ -2,11 +2,13 @@ package cadiboo.wiptech.init;
 
 import java.util.ArrayList;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Recipes
 {
@@ -16,26 +18,26 @@ public class Recipes
 
 	public static void createRecipes()
 	{
-		addCrushRecipe(
-				new ItemStack(Blocks.BAUXITE_ORE), 
-				new ItemStack(Items.ALUMINA), 
-				new ItemStack(Items.GALLIUM), 
-				new ItemStack(Items.IRON_OXIDE), 
-				new ItemStack(Items.SILICA), 
-				new ItemStack(Items.TITANIA), 
-				new ItemStack(net.minecraft.init.Blocks.GRAVEL), 
-				100);
+		addCrushRecipes();
+		addHammerRecipes();
+		addCoilRecipes();
+		WIPTech.logger.info("Registered Processing Recipes");
 
-		addCrushRecipe(
-				new ItemStack(net.minecraft.init.Blocks.SAND), 
-				new ItemStack(Items.SILICON), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				20);
+		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.COPPER_ORE, new ItemStack(cadiboo.wiptech.init.Items.COPPER_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.ALUMINIUM_ORE, new ItemStack(cadiboo.wiptech.init.Items.ALUMINIUM_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.TUNGSTEN_ORE, new ItemStack(cadiboo.wiptech.init.Items.TUNGSTEN_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.OSMIUM_ORE, new ItemStack(cadiboo.wiptech.init.Items.OSMIUM_INGOT, 1), 0.0F);
+		WIPTech.logger.info("Registered Ore Smelting");
 
+		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.ALUMINA, new ItemStack(cadiboo.wiptech.init.Items.ALUMINIUM_INGOT, 2), 0.0F);
+		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.GALLIUM, new ItemStack(cadiboo.wiptech.init.Items.GALLIUM_INGOT, 2), 0.0F);
+		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.IRON_OXIDE, new ItemStack(net.minecraft.init.Items.IRON_INGOT, 2), 0.0F);
+		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.SILICA, new ItemStack(cadiboo.wiptech.init.Items.SILICON, 2), 0.0F);
+		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.TITANIA, new ItemStack(cadiboo.wiptech.init.Items.TITANIUM_INGOT, 2), 0.0F);
+		WIPTech.logger.info("Registered Item Smelting");
+	}
+
+	private static void addCoilRecipes() {
 		addHammerRecipe(
 				new ItemStack(Items.COPPER_INGOT), 
 				new ItemStack(Blocks.COPPER_RAIL), 
@@ -103,6 +105,9 @@ public class Recipes
 				new ItemStack(net.minecraft.init.Blocks.AIR), 
 				new ItemStack(net.minecraft.init.Blocks.AIR), 
 				20);
+		for(int i=0; i<8+1; i++) {
+			
+		}
 		addHammerRecipe(
 				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 0),
 				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, 3), 
@@ -157,7 +162,9 @@ public class Recipes
 				new ItemStack(net.minecraft.init.Blocks.AIR), 
 				new ItemStack(net.minecraft.init.Blocks.AIR), 
 				20);
+	}
 
+	private static void addHammerRecipes() {
 		addCoilRecipe(
 				new ItemStack(Blocks.GOLD_ENAMEL, 16), 
 				new ItemStack(Blocks.GOLD_SPOOL, 1), 
@@ -176,6 +183,28 @@ public class Recipes
 		addCoilRecipe(
 				new ItemStack(Blocks.COPPER_SPOOL), 
 				new ItemStack(Items.COPPER_COIL, 4), 
+				20);
+	}
+
+	private static void addCrushRecipes() {
+		addCrushRecipe(
+				new ItemStack(Blocks.BAUXITE_ORE), 
+				new ItemStack(Items.ALUMINA), 
+				new ItemStack(Items.GALLIUM), 
+				new ItemStack(Items.IRON_OXIDE), 
+				new ItemStack(Items.SILICA), 
+				new ItemStack(Items.TITANIA), 
+				new ItemStack(net.minecraft.init.Blocks.GRAVEL), 
+				100);
+
+		addCrushRecipe(
+				new ItemStack(net.minecraft.init.Blocks.SAND), 
+				new ItemStack(Items.SILICON), 
+				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(net.minecraft.init.Blocks.AIR), 
 				20);
 	}
 
@@ -299,4 +328,6 @@ public class Recipes
 		recipe.add(Integer.valueOf(time));
 		coilRecipes.add(recipe);
 	}
+
+
 }

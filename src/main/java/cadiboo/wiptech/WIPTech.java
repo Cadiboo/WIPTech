@@ -40,5 +40,34 @@ public class WIPTech {
 
 
 	//TODO STOP ARROW-LIKE BOUNCE OFF
+	
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		WIPTech.logger.info(WIPTech.proxy);
+		WIPTech.proxy.logLogicalSide();
+		WIPTech.proxy.addToCreativeTab();
+
+		new PacketHandler();
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+
+	}
+
+	@EventHandler
+	public void init(FMLInitializationEvent event)
+	{
+		GameRegistry.registerWorldGenerator(new WorldGen(), 3);
+		/*
+		Registering world generators
+		Registering recipes
+		Registering event handlers
+		 */
+	}
+
+	@EventHandler
+	public void postinit(FMLPostInitializationEvent event)
+	{
+		//Mod compatibility, or anything which depends on other mods’ init phases being finished.
+	}
 
 }
