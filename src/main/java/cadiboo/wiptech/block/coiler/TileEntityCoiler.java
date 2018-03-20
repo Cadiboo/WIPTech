@@ -1,16 +1,12 @@
 package cadiboo.wiptech.block.coiler;
 
-import java.util.ArrayList;
-
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.block.coiler.TileEntityCoiler;
-import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
+import cadiboo.wiptech.network.PacketHandler;
 import cadiboo.wiptech.network.PacketRequestUpdateCoiler;
 import cadiboo.wiptech.network.PacketUpdateCoiler;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -36,7 +32,7 @@ public class TileEntityCoiler extends TileEntity implements ITickable {
 		protected void onContentsChanged(int slot) {
 			if (!world.isRemote) {
 				lastChangeTime = world.getTotalWorldTime();
-				WIPTech.network.sendToAllAround(new PacketUpdateCoiler(TileEntityCoiler.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
+				PacketHandler.NETWORK.sendToAllAround(new PacketUpdateCoiler(TileEntityCoiler.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
 			}
 		};
 	};
@@ -72,7 +68,7 @@ public class TileEntityCoiler extends TileEntity implements ITickable {
 	@Override
 	public void onLoad() {
 		if (world.isRemote) {
-			WIPTech.network.sendToServer(new PacketRequestUpdateCoiler(this));
+			PacketHandler.NETWORK.sendToServer(new PacketRequestUpdateCoiler(this));
 		}
 	}
 

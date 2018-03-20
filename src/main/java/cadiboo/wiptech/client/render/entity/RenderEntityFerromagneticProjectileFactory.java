@@ -1,4 +1,4 @@
-package cadiboo.wiptech.client.render;
+package cadiboo.wiptech.client.render.entity;
 
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import net.minecraft.client.renderer.entity.Render;

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
+import cadiboo.wiptech.network.PacketHandler;
 import cadiboo.wiptech.network.PacketRequestUpdateCrusher;
 import cadiboo.wiptech.network.PacketUpdateCrusher;
 import net.minecraft.item.ItemStack;
@@ -34,7 +35,7 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 			if (!TileEntityCrusher.this.world.isRemote)
 			{
 				TileEntityCrusher.this.lastChangeTime = TileEntityCrusher.this.world.getTotalWorldTime();
-				WIPTech.network.sendToAllAround(new PacketUpdateCrusher(TileEntityCrusher.this), new NetworkRegistry.TargetPoint(TileEntityCrusher.this.world.provider.getDimension(), TileEntityCrusher.this.pos.getX(), TileEntityCrusher.this.pos.getY(), TileEntityCrusher.this.pos.getZ(), 64.0D));
+				PacketHandler.NETWORK.sendToAllAround(new PacketUpdateCrusher(TileEntityCrusher.this), new NetworkRegistry.TargetPoint(TileEntityCrusher.this.world.provider.getDimension(), TileEntityCrusher.this.pos.getX(), TileEntityCrusher.this.pos.getY(), TileEntityCrusher.this.pos.getZ(), 64.0D));
 			}
 		}
 	};
@@ -69,7 +70,7 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 	public void onLoad()
 	{
 		if (this.world.isRemote) {
-			WIPTech.network.sendToServer(new PacketRequestUpdateCrusher(this));
+			PacketHandler.NETWORK.sendToServer(new PacketRequestUpdateCrusher(this));
 		}
 	}
 

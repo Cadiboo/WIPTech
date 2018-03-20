@@ -1,4 +1,4 @@
-package cadiboo.wiptech.client.render;
+package cadiboo.wiptech.client.render.entity;
 
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.init.Items;

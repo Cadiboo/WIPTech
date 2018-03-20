@@ -1,7 +1,9 @@
 package cadiboo.wiptech;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cadiboo.wiptech.network.PacketHandler;
 import cadiboo.wiptech.network.PacketRequestUpdateCoiler;
 import cadiboo.wiptech.network.PacketRequestUpdateCrusher;
 import cadiboo.wiptech.network.PacketUpdateCoiler;
@@ -33,29 +35,17 @@ public class WIPTech {
 	@SidedProxy(serverSide = Reference.PROXY_CLASS, clientSide = Reference.CLIENT_PROXY_CLASS)
 	public static Registry proxy;
 	
-	public static Logger logger;
-	
-	public static SimpleNetworkWrapper network;
-
-	//public static SimpleNetworkWrapper network;
+	public static final Logger logger = LogManager.getLogger(Reference.ID);
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		logger = event.getModLog();
-		
 		proxy.logLogicalSide();
 		proxy.addToCreativeTab();
 		
-		GameRegistry.registerWorldGenerator(new WorldGen(), 3);
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+		new PacketHandler();
 		
-		network = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.ID);
-		int networkIds = 0;
-		network.registerMessage(new PacketUpdateCrusher.Handler(), PacketUpdateCrusher.class, networkIds++, Side.CLIENT);
-		network.registerMessage(new PacketRequestUpdateCrusher.Handler(), PacketRequestUpdateCrusher.class, networkIds++, Side.SERVER);
-		network.registerMessage(new PacketUpdateCoiler.Handler(), PacketUpdateCoiler.class, networkIds++, Side.CLIENT);
-		network.registerMessage(new PacketRequestUpdateCoiler.Handler(), PacketRequestUpdateCoiler.class, networkIds++, Side.SERVER);
+		GameRegistry.registerWorldGenerator(new WorldGen(), 3);
 	}
 
 	@EventHandler

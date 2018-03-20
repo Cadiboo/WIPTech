@@ -1,4 +1,4 @@
-package cadiboo.wiptech.client.render;
+package cadiboo.wiptech.client.render.entity;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
