@@ -33,7 +33,7 @@ public class WIPTech {
 	@Instance(Reference.ID)
 	public static WIPTech instance;
 
-	@SidedProxy(serverSide = Reference.PROXY_CLASS, clientSide = Reference.CLIENT_PROXY_CLASS)
+	@SidedProxy(serverSide = Reference.SERVER_PROXY_CLASS, clientSide = Reference.CLIENT_PROXY_CLASS)
 	public static IProxy proxy;
 
 	public static final Logger logger = LogManager.getLogger(Reference.ID);

@@ -4,7 +4,6 @@ import java.util.List;
 
 import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.block.BlockCrusher;
 import cadiboo.wiptech.client.render.entity.RenderEntityFerromagneticProjectileFactory;
 import cadiboo.wiptech.client.render.entity.RenderEntityNapalmFactory;
@@ -15,17 +14,16 @@ import cadiboo.wiptech.init.Entities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
 import cadiboo.wiptech.item.EnumHandler;
+import cadiboo.wiptech.item.EnumHandler.FerromagneticProjectiles;
 import cadiboo.wiptech.item.ItemCopperIngot;
 import cadiboo.wiptech.item.ItemCopperNugget;
 import cadiboo.wiptech.item.ItemFerromagneticProjectile;
 import cadiboo.wiptech.item.ItemHammer;
-import cadiboo.wiptech.item.EnumHandler.FerromagneticProjectiles;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -42,9 +40,9 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -90,6 +88,11 @@ public class EventSubscriber {
 		OreDictionary.registerOre("ingotAluminium", cadiboo.wiptech.init.Items.ALUMINIUM_INGOT);
 		OreDictionary.registerOre("ingotOsmium", cadiboo.wiptech.init.Items.OSMIUM_INGOT);
 		OreDictionary.registerOre("ingotTungsten", cadiboo.wiptech.init.Items.TUNGSTEN_INGOT);
+		
+		OreDictionary.registerOre("nuggetCopper", cadiboo.wiptech.init.Items.COPPER_NUGGET);
+		OreDictionary.registerOre("nuggetAluminium", cadiboo.wiptech.init.Items.ALUMINIUM_NUGGET);
+		OreDictionary.registerOre("nuggetOsmium", cadiboo.wiptech.init.Items.OSMIUM_NUGGET);
+		OreDictionary.registerOre("nuggetTungsten", cadiboo.wiptech.init.Items.TUNGSTEN_NUGGET);
 
 		WIPTech.logger.info("Registered OreDictionary");
 

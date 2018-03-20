@@ -38,6 +38,7 @@ public class Proxy implements IProxy {
 		}
 	}.setBackgroundImageName("item_search.png");
 
+	@Override
 	public void addToCreativeTab()
 	{
 		for(Item item : Items.ITEMS) {

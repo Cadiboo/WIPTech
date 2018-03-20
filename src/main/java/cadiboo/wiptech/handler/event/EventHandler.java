@@ -11,11 +11,13 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+@Mod.EventBusSubscriber
 public class EventHandler {
 
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		WIPTech.logger.info(WIPTech.proxy);
 		WIPTech.proxy.logLogicalSide();
 		WIPTech.proxy.addToCreativeTab();
 		

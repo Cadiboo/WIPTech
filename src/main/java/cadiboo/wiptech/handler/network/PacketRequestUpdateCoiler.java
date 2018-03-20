@@ -2,10 +2,8 @@ package cadiboo.wiptech.handler.network;
 
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;

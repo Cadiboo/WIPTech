@@ -2,8 +2,8 @@ package cadiboo.wiptech;
 
 public class Reference {
 
-	public static final String CLIENT_PROXY_CLASS = "cadiboo.wiptech.client.ClientRegistry";
-	public static final String PROXY_CLASS = "cadiboo.wiptech.Registry";
+	public static final String CLIENT_PROXY_CLASS = "cadiboo.wiptech.client.Proxy";
+	public static final String SERVER_PROXY_CLASS = "cadiboo.wiptech.server.Proxy";
 
 	public static final String ID = "wiptech";
 	public static final String NAME = "WIPTech";

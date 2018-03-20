@@ -1,7 +1,6 @@
 package cadiboo.wiptech.handler.network;
 
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
-import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
@@ -10,7 +9,6 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
-import net.minecraftforge.items.ItemStackHandler;
 
 public class PacketUpdateCoiler implements IMessage {
 	private BlockPos pos;
