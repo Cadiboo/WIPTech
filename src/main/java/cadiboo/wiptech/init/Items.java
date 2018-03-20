@@ -1,35 +1,6 @@
 package cadiboo.wiptech.init;
 
-import cadiboo.wiptech.item.ItemAlumina;
-import cadiboo.wiptech.item.ItemAluminiumIngot;
-import cadiboo.wiptech.item.ItemAluminiumNugget;
-import cadiboo.wiptech.item.ItemCoilgun;
-import cadiboo.wiptech.item.ItemCopperCoil;
-import cadiboo.wiptech.item.ItemCopperIngot;
-import cadiboo.wiptech.item.ItemCopperNugget;
-import cadiboo.wiptech.item.ItemCopperStrand;
-import cadiboo.wiptech.item.ItemCrusherBit;
-import cadiboo.wiptech.item.ItemCrusherBitHolder;
-import cadiboo.wiptech.item.ItemFerromagneticProjectile;
-import cadiboo.wiptech.item.ItemFlamethrower;
-import cadiboo.wiptech.item.ItemGallium;
-import cadiboo.wiptech.item.ItemGalliumIngot;
-import cadiboo.wiptech.item.ItemGalliumWafer;
-import cadiboo.wiptech.item.ItemGoldCoil;
-import cadiboo.wiptech.item.ItemHammer;
-import cadiboo.wiptech.item.ItemIronOxide;
-import cadiboo.wiptech.item.ItemNapalm;
-import cadiboo.wiptech.item.ItemOsmiumIngot;
-import cadiboo.wiptech.item.ItemOsmiumNugget;
-import cadiboo.wiptech.item.ItemRailgun;
-import cadiboo.wiptech.item.ItemSilica;
-import cadiboo.wiptech.item.ItemSilicon;
-import cadiboo.wiptech.item.ItemSiliconWafer;
-import cadiboo.wiptech.item.ItemTestLauncher;
-import cadiboo.wiptech.item.ItemTitania;
-import cadiboo.wiptech.item.ItemTitaniumIngot;
-import cadiboo.wiptech.item.ItemTungstenIngot;
-import cadiboo.wiptech.item.ItemTungstenNugget;
+import cadiboo.wiptech.item.*;
 import net.minecraft.item.Item;
 
 public class Items

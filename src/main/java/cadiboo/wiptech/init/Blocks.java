@@ -1,29 +1,6 @@
 package cadiboo.wiptech.init;
 
-import cadiboo.wiptech.block.BlockAluminiumOre;
-import cadiboo.wiptech.block.BlockBase;
-import cadiboo.wiptech.block.BlockBauxiteOre;
-import cadiboo.wiptech.block.BlockCapacitorBank;
-import cadiboo.wiptech.block.BlockCoiler;
-import cadiboo.wiptech.block.BlockCopperBlock;
-import cadiboo.wiptech.block.BlockCopperEnamel;
-import cadiboo.wiptech.block.BlockCopperIngot;
-import cadiboo.wiptech.block.BlockCopperNugget;
-import cadiboo.wiptech.block.BlockCopperOre;
-import cadiboo.wiptech.block.BlockCopperRail;
-import cadiboo.wiptech.block.BlockCopperSpool;
-import cadiboo.wiptech.block.BlockCopperWire;
-import cadiboo.wiptech.block.BlockCrusher;
-import cadiboo.wiptech.block.BlockGoldEnamel;
-import cadiboo.wiptech.block.BlockGoldIngot;
-import cadiboo.wiptech.block.BlockGoldNugget;
-import cadiboo.wiptech.block.BlockGoldRail;
-import cadiboo.wiptech.block.BlockGoldSpool;
-import cadiboo.wiptech.block.BlockGoldWire;
-import cadiboo.wiptech.block.BlockOsmiumOre;
-import cadiboo.wiptech.block.BlockStrongPistonBase;
-import cadiboo.wiptech.block.BlockTungstenOre;
-import cadiboo.wiptech.block.BlockTurbine;
+import cadiboo.wiptech.block.*;
 
 import java.util.ArrayList;
 import java.util.List;

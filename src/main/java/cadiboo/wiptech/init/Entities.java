@@ -1,8 +1,8 @@
 package cadiboo.wiptech.init;
 
 import cadiboo.wiptech.Reference;
-import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
-import cadiboo.wiptech.entity.projectile.EntityNapalm;
+import cadiboo.wiptech.entity.*;
+import cadiboo.wiptech.entity.projectile.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
