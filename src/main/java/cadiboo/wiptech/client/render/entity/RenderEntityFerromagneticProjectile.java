@@ -59,6 +59,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		GlStateManager.pushMatrix();
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.translate(x, y, z);
+		//GlStateManager.enableBlend();
 
 		customRendering(entity, x, y, z, entityYaw, partialTicks);
 
@@ -73,9 +74,6 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		GlStateManager.enableRescaleNormal();
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
-
-
-
 
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
 		if(model!=null) {
@@ -263,6 +261,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 		GlStateManager.enableCull();
 		GlStateManager.disableRescaleNormal();
+		//GlStateManager.disableBlend();
 		GlStateManager.popMatrix();
 	}
 

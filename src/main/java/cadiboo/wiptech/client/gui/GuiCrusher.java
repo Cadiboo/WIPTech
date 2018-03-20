@@ -52,7 +52,7 @@ public class GuiCrusher extends GuiContainer {
 
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
-		drawDefaultBackground();
+		//drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(BG_TEXTURE);
 		int x = (this.width - this.xSize) / 2;

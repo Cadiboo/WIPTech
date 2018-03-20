@@ -37,7 +37,7 @@ public class Recipes
 		WIPTech.logger.info("Registered Item Smelting");
 	}
 
-	private static void addCoilRecipes() {
+	private static void addHammerRecipes() {
 		addHammerRecipe(
 				new ItemStack(Items.COPPER_INGOT), 
 				new ItemStack(Blocks.COPPER_RAIL), 
@@ -105,66 +105,20 @@ public class Recipes
 				new ItemStack(net.minecraft.init.Blocks.AIR), 
 				new ItemStack(net.minecraft.init.Blocks.AIR), 
 				20);
-		for(int i=0; i<8+1; i++) {
-			
+		for(int i=0; i<5+1; i++) {
+			addHammerRecipe(
+					new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, i),
+					new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, i+3), 
+					new ItemStack(net.minecraft.init.Blocks.AIR), 
+					new ItemStack(net.minecraft.init.Blocks.AIR), 
+					new ItemStack(net.minecraft.init.Blocks.AIR), 
+					new ItemStack(net.minecraft.init.Blocks.AIR), 
+					new ItemStack(net.minecraft.init.Blocks.AIR), 
+					20);
 		}
-		addHammerRecipe(
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 0),
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, 3), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				20);
-		addHammerRecipe(
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 1),
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, 4), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				20);
-		addHammerRecipe(
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 2),
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, 5), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				20);
-		addHammerRecipe(
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 3),
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, 6), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				20);
-		addHammerRecipe(
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 4),
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, 7), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				20);
-		addHammerRecipe(
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5),
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, 8), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				20);
 	}
 
-	private static void addHammerRecipes() {
+	private static void addCoilRecipes() {
 		addCoilRecipe(
 				new ItemStack(Blocks.GOLD_ENAMEL, 16), 
 				new ItemStack(Blocks.GOLD_SPOOL, 1), 

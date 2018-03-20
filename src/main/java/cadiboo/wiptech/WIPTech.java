@@ -9,6 +9,7 @@ import cadiboo.wiptech.handler.network.PacketRequestUpdateCoiler;
 import cadiboo.wiptech.handler.network.PacketRequestUpdateCrusher;
 import cadiboo.wiptech.handler.network.PacketUpdateCoiler;
 import cadiboo.wiptech.handler.network.PacketUpdateCrusher;
+import cadiboo.wiptech.init.Recipes;
 import cadiboo.wiptech.world.WorldGen;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -57,11 +58,7 @@ public class WIPTech {
 	public void init(FMLInitializationEvent event)
 	{
 		GameRegistry.registerWorldGenerator(new WorldGen(), 3);
-		/*
-		Registering world generators
-		Registering recipes
-		Registering event handlers
-		 */
+		Recipes.createRecipes();
 	}
 
 	@EventHandler
