@@ -1,9 +1,10 @@
 package cadiboo.wiptech.client.gui;
 
-import cadiboo.wiptech.block.coiler.BlockCoiler;
-import cadiboo.wiptech.block.coiler.ContainerCoiler;
-import cadiboo.wiptech.block.coiler.TileEntityCoiler;
+import cadiboo.wiptech.block.BlockCoiler;
+import cadiboo.wiptech.capability.ContainerCoiler;
 import cadiboo.wiptech.init.Blocks;
+import cadiboo.wiptech.tileentity.TileEntityCoiler;
+
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;

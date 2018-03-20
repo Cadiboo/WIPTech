@@ -1,6 +1,6 @@
-package cadiboo.wiptech.network;
+package cadiboo.wiptech.handler.network;
 
-import cadiboo.wiptech.block.coiler.TileEntityCoiler;
+import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;

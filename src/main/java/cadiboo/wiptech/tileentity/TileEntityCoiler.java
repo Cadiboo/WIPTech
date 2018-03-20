@@ -1,12 +1,12 @@
-package cadiboo.wiptech.block.coiler;
+package cadiboo.wiptech.tileentity;
 
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.handler.network.PacketHandler;
+import cadiboo.wiptech.handler.network.PacketRequestUpdateCoiler;
+import cadiboo.wiptech.handler.network.PacketUpdateCoiler;
 import cadiboo.wiptech.init.Recipes;
-import cadiboo.wiptech.network.PacketHandler;
-import cadiboo.wiptech.network.PacketRequestUpdateCoiler;
-import cadiboo.wiptech.network.PacketUpdateCoiler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;

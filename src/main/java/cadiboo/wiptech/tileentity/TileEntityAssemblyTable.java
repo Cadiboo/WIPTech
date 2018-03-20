@@ -1,4 +1,4 @@
-package cadiboo.wiptech.block.assemblytable;
+package cadiboo.wiptech.tileentity;
 
 import net.minecraft.tileentity.TileEntity;
 

@@ -1,7 +1,7 @@
-package cadiboo.wiptech.network;
+package cadiboo.wiptech.handler.network;
 
-import cadiboo.wiptech.block.coiler.TileEntityCoiler;
-import cadiboo.wiptech.block.crusher.TileEntityCrusher;
+import cadiboo.wiptech.tileentity.TileEntityCoiler;
+import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;

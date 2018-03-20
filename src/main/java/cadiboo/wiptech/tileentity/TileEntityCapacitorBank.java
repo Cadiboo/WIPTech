@@ -1,4 +1,4 @@
-package cadiboo.wiptech.block.capacitorbank;
+package cadiboo.wiptech.tileentity;
 
 import javax.annotation.Nullable;
 

@@ -1,17 +1,31 @@
-package cadiboo.wiptech;
+package cadiboo.wiptech.handler.event;
 
 import java.util.List;
 
-import cadiboo.wiptech.block.coiler.TileEntityCoiler;
-import cadiboo.wiptech.block.crusher.BlockCrusher;
-import cadiboo.wiptech.block.crusher.TileEntityCrusher;
+import cadiboo.wiptech.Reference;
+import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.block.BlockBase;
+import cadiboo.wiptech.block.BlockCrusher;
+import cadiboo.wiptech.client.render.entity.RenderEntityFerromagneticProjectileFactory;
+import cadiboo.wiptech.client.render.entity.RenderEntityNapalmFactory;
+import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
+import cadiboo.wiptech.entity.projectile.EntityNapalm;
+import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Entities;
+import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
+import cadiboo.wiptech.item.EnumHandler;
 import cadiboo.wiptech.item.ItemCopperIngot;
 import cadiboo.wiptech.item.ItemCopperNugget;
+import cadiboo.wiptech.item.ItemFerromagneticProjectile;
 import cadiboo.wiptech.item.ItemHammer;
+import cadiboo.wiptech.item.EnumHandler.FerromagneticProjectiles;
+import cadiboo.wiptech.tileentity.TileEntityCoiler;
+import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -20,26 +34,23 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 @Mod.EventBusSubscriber
-public class Registry
-{
-	public void logLogicalSide()
-	{
-		WIPTech.logger.info("Server");
-	}
+public class EventSubscriber {
 
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityEntry> event)
@@ -171,43 +182,47 @@ public class Registry
 						drops.set(0, ((ItemStack) Recipes.getHammerResult(stack).get(1)).copy());
 					}
 				}
-
-				/*if(Recipes.getHammerResult(stack).size()>0) {
-
-				}
-
-				Item gold_nugget = (Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
-				Item gold_ingot = (Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"));
-				if ((event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_NUGGET) || 
-						(event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_INGOT) || 
-						(event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_NUGGET) || 
-						(event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_INGOT)) {
-					if (((world.getBlockState(pos.down()).getBlock() instanceof BlockAnvil)) && 
-							((event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHammer)))
-					{
-						if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_NUGGET) {
-							stack = new ItemStack(cadiboo.wiptech.init.Blocks.COPPER_WIRE);
-						} else if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.COPPER_INGOT) {
-							stack = new ItemStack(cadiboo.wiptech.init.Blocks.COPPER_RAIL);
-						} else if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_NUGGET) {
-							stack = new ItemStack(cadiboo.wiptech.init.Blocks.GOLD_WIRE);
-						} else if (event.getState().getBlock() == cadiboo.wiptech.init.Blocks.GOLD_INGOT) {
-							stack = new ItemStack(cadiboo.wiptech.init.Blocks.GOLD_RAIL);
-						}
-						drops.set(0, stack);
-					}*/
 			}
 		}
 	}
 
 	@SubscribeEvent
 	public static void onBreak(BlockEvent.BreakEvent event) {}
-
-	public void addToCreativeTab() {}
-
-	public String localize(String unlocalized, Object... args)
+	
+	
+	@SubscribeEvent
+	public static void registerModels(ModelRegistryEvent event)
 	{
-		return I18n.translateToLocalFormatted(unlocalized, args);
-	}
+		for (Block block: Blocks.BLOCKS)
+		{
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
+		}
 
+
+		for (Item item: Items.ITEMS)
+		{
+			if(!item.getHasSubtypes()) {
+				ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+			} else {
+
+				if(item instanceof ItemFerromagneticProjectile) {
+					for(FerromagneticProjectiles rod : EnumHandler.FerromagneticProjectiles.values()) { 
+						ModelLoader.setCustomModelResourceLocation(item, rod.getID(), new ModelResourceLocation("wiptech:rods/" + rod.getName()));
+					}
+				}
+
+			}
+		}
+		WIPTech.logger.info("Registered models");
+
+		/*for (EntityEntry entity: Entities.ENTITIES)
+		{
+			
+		}*/
+		
+		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, new RenderEntityNapalmFactory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityFerromagneticProjectile.class, new RenderEntityFerromagneticProjectileFactory());
+
+		WIPTech.logger.info("Registered Entity Renders");
+	}
 }

@@ -1,6 +1,6 @@
-package cadiboo.wiptech.network;
+package cadiboo.wiptech.handler.network;
 
-import cadiboo.wiptech.block.crusher.TileEntityCrusher;
+import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;

@@ -1,7 +1,9 @@
-package cadiboo.wiptech.block.crusher;
+package cadiboo.wiptech.container;
 
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
+import cadiboo.wiptech.tileentity.TileEntityCrusher;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;

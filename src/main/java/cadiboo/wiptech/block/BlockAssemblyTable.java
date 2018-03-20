@@ -1,6 +1,6 @@
-package cadiboo.wiptech.block.assemblytable;
+package cadiboo.wiptech.block;
 
-import cadiboo.wiptech.block.BlockTileEntity;
+import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.world.World;

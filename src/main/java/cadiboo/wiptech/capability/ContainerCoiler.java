@@ -1,4 +1,4 @@
-package cadiboo.wiptech.block.coiler;
+package cadiboo.wiptech.capability;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
+import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;

@@ -1,15 +1,15 @@
-package cadiboo.wiptech.block.crusher;
+package cadiboo.wiptech.tileentity;
 
 import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.handler.network.PacketHandler;
+import cadiboo.wiptech.handler.network.PacketRequestUpdateCrusher;
+import cadiboo.wiptech.handler.network.PacketUpdateCrusher;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
-import cadiboo.wiptech.network.PacketHandler;
-import cadiboo.wiptech.network.PacketRequestUpdateCrusher;
-import cadiboo.wiptech.network.PacketUpdateCrusher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;

@@ -1,11 +1,11 @@
-package cadiboo.wiptech;
+package cadiboo.wiptech.handler;
 
-import cadiboo.wiptech.block.coiler.ContainerCoiler;
-import cadiboo.wiptech.block.coiler.TileEntityCoiler;
-import cadiboo.wiptech.block.crusher.ContainerCrusher;
-import cadiboo.wiptech.block.crusher.TileEntityCrusher;
+import cadiboo.wiptech.capability.ContainerCoiler;
 import cadiboo.wiptech.client.gui.GuiCoiler;
 import cadiboo.wiptech.client.gui.GuiCrusher;
+import cadiboo.wiptech.container.ContainerCrusher;
+import cadiboo.wiptech.tileentity.TileEntityCoiler;
+import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.math.BlockPos;

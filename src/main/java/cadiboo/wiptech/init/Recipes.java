@@ -3,8 +3,8 @@ package cadiboo.wiptech.init;
 import java.util.ArrayList;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.block.coiler.TileEntityCoiler;
-import cadiboo.wiptech.block.crusher.TileEntityCrusher;
+import cadiboo.wiptech.tileentity.TileEntityCoiler;
+import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

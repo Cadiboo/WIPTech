@@ -1,4 +1,4 @@
-package cadiboo.wiptech.network;
+package cadiboo.wiptech.handler.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;

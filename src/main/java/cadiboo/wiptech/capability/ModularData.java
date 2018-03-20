@@ -1,7 +1,7 @@
 package cadiboo.wiptech.capability;
 
-import cadiboo.wiptech.network.CSyncModular;
-import cadiboo.wiptech.network.PacketHandler;
+import cadiboo.wiptech.handler.network.CSyncModular;
+import cadiboo.wiptech.handler.network.PacketHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;

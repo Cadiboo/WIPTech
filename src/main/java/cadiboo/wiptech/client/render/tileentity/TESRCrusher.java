@@ -3,9 +3,9 @@ package cadiboo.wiptech.client.render.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
-import cadiboo.wiptech.block.crusher.BlockCrusher;
-import cadiboo.wiptech.block.crusher.TileEntityCrusher;
+import cadiboo.wiptech.block.BlockCrusher;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import cadiboo.wiptech.util.Clausen;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.properties.PropertyDirection;

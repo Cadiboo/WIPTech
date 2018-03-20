@@ -1,13 +1,13 @@
-package cadiboo.wiptech.block.coiler;
+package cadiboo.wiptech.block;
 
 import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import cadiboo.wiptech.GuiHandler;
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.block.BlockTileEntity;
+import cadiboo.wiptech.handler.GuiHandler;
+import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.block.crusher.ContainerCrusher;
-import cadiboo.wiptech.block.crusher.TileEntityCrusher;
+import cadiboo.wiptech.container.ContainerCrusher;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
