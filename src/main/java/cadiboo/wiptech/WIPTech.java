@@ -44,6 +44,7 @@ public class WIPTech {
 		proxy.addToCreativeTab();
 		
 		new PacketHandler();
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		
 		GameRegistry.registerWorldGenerator(new WorldGen(), 3);
 	}

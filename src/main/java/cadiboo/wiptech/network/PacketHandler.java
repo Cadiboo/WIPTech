@@ -13,7 +13,6 @@ public class PacketHandler {
 	public static final SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(CHANNEL);
 
 	public PacketHandler() {
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 		int networkIds = 0;
 		NETWORK.registerMessage(new PacketUpdateCrusher.Handler(), PacketUpdateCrusher.class, networkIds++, Side.CLIENT);
 		NETWORK.registerMessage(new PacketRequestUpdateCrusher.Handler(), PacketRequestUpdateCrusher.class, networkIds++, Side.SERVER);
