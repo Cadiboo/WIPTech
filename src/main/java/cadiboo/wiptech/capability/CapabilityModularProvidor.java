@@ -34,7 +34,6 @@ public class CapabilityModularProvidor implements ICapabilitySerializable<NBTTag
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing){
 		if (capability == ModularDataCapability.CAPABILITY)

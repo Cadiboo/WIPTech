@@ -50,7 +50,6 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		this.yTile = -1;
 		this.zTile = -1;
 		this.pickupStatus = EntityProjectileBase.PickupStatus.DISALLOWED;
-		this.damage = 2.0D;
 		this.setSize(0.5F, 0.5F);
 	}
 
@@ -106,6 +105,10 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			if (this.isBurning())
 			{
 				entity.setFire(5);
+			}
+			if (this.isPlasma())
+			{
+				entity.setFire(2);
 			}
 
 			if (entity.attackEntityFrom(damagesource, (float)i))
@@ -180,6 +183,11 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		}
 		else
 		{
+			if(this.isPlasma()) {
+				this.setDead();
+				return;
+			}
+			
 			BlockPos blockpos = raytraceResultIn.getBlockPos();
 			this.xTile = blockpos.getX();
 			this.yTile = blockpos.getY();
@@ -202,6 +210,10 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 				this.inTile.onEntityCollidedWithBlock(this.world, blockpos, iblockstate, this);
 			}
 		}
+	}
+
+	private boolean isPlasma() {
+		return this.getAmmoId()==9;
 	}
 
 	/**
@@ -266,7 +278,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	 */
 	public void onCollideWithPlayer(EntityPlayer entityIn)
 	{
-		if (!this.world.isRemote && this.inGround)
+		if (!this.world.isRemote && this.inGround && !this.isPlasma())
 		{
 			boolean flag = this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED || this.pickupStatus == EntityProjectileBase.PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
 
@@ -289,6 +301,9 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		return getAmmoStack(this.getAmmoId()>9?0:this.getAmmoId());
 	}
 	public ItemStack getAmmoStack (int ammoId) {
+		if(this.isPlasma()) {
+			return ItemStack.EMPTY;
+		}
 		//itemIn, amount, meta
 		return new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, ammoId);
 	}

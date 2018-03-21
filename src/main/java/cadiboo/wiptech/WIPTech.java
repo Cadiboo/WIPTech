@@ -40,7 +40,17 @@ public class WIPTech {
 	public static final Logger logger = LogManager.getLogger(Reference.ID);
 
 
-	//TODO STOP ARROW-LIKE BOUNCE OFF
+	//TODO STOP ARROW-LIKE BOUNCE OFF - Partly done, they now either go through the mob or teleport into the ground a block below it...
+	//TODO find out ...I forgot what I was writing
+	//TODO Find out if dammage is set to Projectiles correctly
+	//TODO STOP SPELLING DAMAGE WITH TWO Ms
+	//TODO does /giving myself a Plasma still throw an error?
+	//TODO Implement my Modular capability
+	//TODO Maybe implement a custom renderer for it? so that you can see what augments you have on it
+	//TODO Def make it display the modules/augments in the ItemStack's Tooltip
+	//TODO make Plasma Cannon!!!
+	//TODO and drill
+	//DOING get some sleep
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)

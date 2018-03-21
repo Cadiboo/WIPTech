@@ -60,7 +60,8 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		GlStateManager.pushMatrix();
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.translate(x, y, z);
-		//GlStateManager.enableBlend();
+		GlStateManager.enableRescaleNormal();
+		GlStateManager.disableCull();
 
 		customRendering(entity, x, y, z, entityYaw, partialTicks);
 
@@ -74,12 +75,18 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		}
 
 		if(entity.getAmmoId()==9) {
-			GlStateManager.enableBlend();
-			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma.png"));
+			
+			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_field.png"));
 			double scale = 0.25;
+			GlStateManager.enableBlend();
+			GlStateManager.blendFunc(GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE); //maybe change GL_ONE to src alpha OR 3 one minus src color
+			drawQuad(0, 1, 0, 1, 0.25, 0.25, 0.25, 0.25);
+			GlStateManager.disableBlend();
+			
+			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_core.png"));
 			drawQuad(0, 1, 0, 1, 0.25, 0.25, 0.25, 0.25);
 			GlStateManager.popMatrix();
-			GlStateManager.disableBlend();
+			
 			return;
 		}
 		else
@@ -167,7 +174,6 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 		GlStateManager.enableCull();
 		GlStateManager.disableRescaleNormal();
-		//GlStateManager.disableBlend();
 		GlStateManager.popMatrix();
 	}
 
@@ -204,13 +210,10 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 	private void drawQuad (float minU, float maxU, float minV, float maxV, double width, double height, double length, double scale) {
 
-		GlStateManager.enableRescaleNormal();
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 
 		GlStateManager.scale(scale, scale, scale);
-
-		GlStateManager.disableCull();
 
 		//WEST
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);

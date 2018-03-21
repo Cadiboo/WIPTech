@@ -2,6 +2,7 @@ package cadiboo.wiptech.item;
 
 import java.util.List;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
 import cadiboo.wiptech.init.Items;
@@ -95,7 +96,8 @@ extends ItemBase
 			{
 				if (itemstack.isEmpty())
 				{
-					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN
+					//itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN MEDIUM
+					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 2); //TUNGSTEN LARGE
 				}
 
 				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
@@ -120,6 +122,8 @@ extends ItemBase
 						}
 
 						worldIn.spawnEntity(projectile);
+						//TODO why was it spawning in plasma?????
+						WIPTech.logger.info(projectile);
 					}
 
 					worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);

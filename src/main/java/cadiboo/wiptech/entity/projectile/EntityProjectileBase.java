@@ -72,7 +72,6 @@ public class EntityProjectileBase extends EntityArrow {
 		this.yTile = -1;
 		this.zTile = -1;
 		this.pickupStatus = EntityProjectileBase.PickupStatus.DISALLOWED;
-		this.damage = 2.0D;
 		this.setSize(0.5F, 0.5F);
 	}
 

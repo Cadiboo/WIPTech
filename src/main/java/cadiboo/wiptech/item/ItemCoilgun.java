@@ -159,6 +159,8 @@ public class ItemCoilgun extends ItemBase {
 				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
 				//TODO make it *by coil
 
+				
+				
 				if ((double)velocity >= 0.1D)
 				{
 					boolean flag1 = entityplayer.capabilities.isCreativeMode/* || (itemstack.getItem() instanceof ItemMagneticMetalRod && ((ItemMagneticMetalRod) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer))*/;

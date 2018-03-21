@@ -28,6 +28,7 @@ public class ItemFerromagneticProjectile extends ItemBase {
 
 	};
 	public static final int subTypesAmmount = itemNames.length;
+	public static int subTypesAmmountZI = itemNames.length-1; //Zero Indexed
 
 	public ItemFerromagneticProjectile(String name)
 	{

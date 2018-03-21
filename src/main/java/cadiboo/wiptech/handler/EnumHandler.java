@@ -1,6 +1,7 @@
 package cadiboo.wiptech.handler;
 
 import cadiboo.wiptech.Reference;
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.item.ItemFerromagneticProjectile;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
@@ -12,10 +13,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class EnumHandler
 {
 	public static ResourceLocation[] getResourceLocations(int i) {
-		ResourceLocation[] string = new ResourceLocation[ItemFerromagneticProjectile.subTypesAmmount+1];
+		ResourceLocation[] string = new ResourceLocation[ItemFerromagneticProjectile.subTypesAmmount];
 		for(int j = 0; j < FerromagneticProjectiles.values().length; j++) {
 			string[j] = new ResourceLocation(Reference.ID, FerromagneticProjectiles.values()[j].getName());
 		}
+		//TODO TOFINDOUT this is never called, why did I make it?
+		
 		return string;
 	}
 
@@ -60,6 +63,9 @@ public class EnumHandler
 		}
 
 		public static FerromagneticProjectiles byMetadata(int i) {
+			if(i>ItemFerromagneticProjectile.subTypesAmmountZI) {
+				return FerromagneticProjectiles.values()[0];
+			}
 			return FerromagneticProjectiles.values()[i];
 		}
 
