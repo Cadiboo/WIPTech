@@ -38,6 +38,8 @@ public class EntityProjectileBase extends EntityArrow {
 		{
 			if(targetEntity instanceof EntityEnderman)
 				return true;
+			if(targetEntity.hurtResistantTime>0)
+				return false;
 			return targetEntity.canBeCollidedWith();
 		}
 	});

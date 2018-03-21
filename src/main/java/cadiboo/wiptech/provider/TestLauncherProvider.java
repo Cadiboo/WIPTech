@@ -1,6 +1,7 @@
 package cadiboo.wiptech.provider;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.capability.ModularData;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -17,9 +18,11 @@ public class TestLauncherProvider implements ICapabilityProvider, INBTSerializab
 	//IItemHandler inventory = (IItemHandler)TestLauncherProvider.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
 	
 	private final ItemStackHandler inventory;
+	private final ModularData modules;
 
 	public TestLauncherProvider() {
 		inventory = new ItemStackHandler( 54 );
+		modules = new ModularData();
 	}
 
 	@Override
@@ -46,6 +49,7 @@ public class TestLauncherProvider implements ICapabilityProvider, INBTSerializab
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
 		WIPTech.logger.info(nbt);
+		//this.modules.circuit = nbt.getCompoundTag("circuit");
 		this.inventory.deserializeNBT(nbt);
 	}
 	

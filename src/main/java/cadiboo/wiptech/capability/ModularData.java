@@ -1,21 +1,29 @@
 package cadiboo.wiptech.capability;
 
-import cadiboo.wiptech.handler.network.CSyncModular;
-import cadiboo.wiptech.handler.network.PacketHandler;
+import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.handler.EnumHandler;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ModularData {
+public class ModularData implements INBTSerializable<NBTBase>{
 
 	private EntityLivingBase entityLiving;
 
-	private boolean flag = false;
-	private int timer = 0;
-	
-	public ModularData(){
+	protected EnumHandler.WeaponModules.Circuits circuit;
+	protected EnumHandler.WeaponModules.Coils coil;
+	protected EnumHandler.WeaponModules.Scopes scope;
+
+	public ModularData() {
+		this.circuit = null;
+		this.coil = null;
+		this.scope = null;
 	}
 
 	public EntityLivingBase getEntity() { 
@@ -31,76 +39,34 @@ public class ModularData {
 		return living.getCapability(ModularDataCapability.CAPABILITY, null);
 	}
 
-	public NBTBase writeData(){
-		NBTTagCompound tag = new NBTTagCompound();
-		
-		return tag;
+	@Override
+	public NBTBase serializeNBT()
+	{
+		NBTTagList nbtTagList = new NBTTagList();
+		NBTTagCompound compund = new NBTTagCompound();
+
+		compund.setInteger("circuit", this.circuit.getID());
+		compund.setInteger("coil", this.coil.getID());
+		compund.setInteger("scope", this.scope.getID());
+
+		nbtTagList.appendTag(compund);
+
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setTag("Modules", nbtTagList);
+		return nbt;
 	}
 
-	public void readData(NBTBase nbt){
-
+	@Override
+	public void deserializeNBT(NBTBase nbt)
+	{
+		WIPTech.logger.info(nbt);
+		/*nbt.getTagTypeName(10).get
+		NBTTagList tagList = nbt.getTagList("Modules", Constants.NBT.TAG_COMPOUND);
+		WIPTech.logger.info(tagList);
+		this.circuit = EnumHandler.WeaponModules.Circuits.byMetadata(tagList.getCompoundTagAt(0).getInteger("circuit"));
+		WIPTech.logger.info(this.circuit);
+		this.coil = null;
+		this.scope = null;*/
 	}
 
-	public void initFreezeData() {
-		if(entityLiving.world.isRemote)
-			return;
-		
-		startToFreeze();
-		
-		entityLiving.prevLimbSwingAmount = entityLiving.limbSwingAmount;
-		entityLiving.prevCameraPitch = entityLiving.cameraPitch;
-		entityLiving.prevPosX = entityLiving.posX;
-		entityLiving.prevPosY = entityLiving.posY;
-		entityLiving.prevPosZ = entityLiving.posZ;
-		entityLiving.prevSwingProgress = entityLiving.swingProgressInt;
-		entityLiving.prevRenderYawOffset = entityLiving.renderYawOffset;
-		entityLiving.prevRotationPitch = entityLiving.rotationPitch;
-		entityLiving.prevRotationYaw = entityLiving.rotationYaw;
-		entityLiving.prevRotationYawHead = entityLiving.rotationYawHead;
-		
-//		WorldDataHandler.get(entityLiving.world).addEntry(entityLiving.getUniqueID());
-		
-		//PacketHandler.NETWORK.sendToAll(new CSyncModular(true, entityLiving.getEntityId()));//, new TargetPoint(entityLiving.dimension, (int)entityLiving.posX, (int)entityLiving.posY, (int)entityLiving.posZ, 256));
-	}
-
-	public int getTimer(){
-		return timer;
-	}
-	
-	public void countDownTimer(){
-		timer--;
-
-		if(timer <= 0)
-		{
-			stopFreeze();
-			//PacketHandler.NETWORK.sendToAll(new CSyncModular(false, entityLiving.getEntityId()));//, new TargetPoint(entityLiving.dimension, (int)entityLiving.posX, (int)entityLiving.posY, (int)entityLiving.posZ, 256));
-		}
-	}
-
-	public void stopFreeze(){
-		timer = 0;
-		flag = false;
-		entityLiving.updateBlocked = false;
-	}
-	
-	public void startToFreeze(){
-		flag = true;
-		entityLiving.updateBlocked = true;
-		timer = maxTimer();
-	}
-	
-	public boolean shouldApplyFreeze() {
-		return flag || getTimer() > 0;
-	}
-	
-	public int maxTimer(){
-		return 20*20;
-	}
-	
-	@SideOnly(Side.CLIENT)
-	/**method used in client packets to sync the flag boolean for entity renders.*/
-	public void updateClientFlag(boolean flag){
-		this.flag = flag;
-	}
-	
 }

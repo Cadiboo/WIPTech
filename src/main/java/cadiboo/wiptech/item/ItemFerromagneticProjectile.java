@@ -1,6 +1,7 @@
 package cadiboo.wiptech.item;
 
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
+import cadiboo.wiptech.handler.EnumHandler;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -51,15 +52,18 @@ public class ItemFerromagneticProjectile extends ItemBase {
 			}
 		}
 	}
-	
-	public EntityFerromagneticProjectile createProjectile(World worldIn, ItemStack stack, EntityLivingBase shooter)
-    {
+
+	public EntityFerromagneticProjectile createProjectile(World worldIn, ItemStack stack, EntityLivingBase shooter, boolean isPlasma)
+	{
 		EntityFerromagneticProjectile projectile = new EntityFerromagneticProjectile(worldIn, shooter);
-		projectile.setAmmoId(stack.getMetadata());
+		if(!isPlasma)
+			projectile.setAmmoId(stack.getMetadata());
+		else
+			projectile.setAmmoId(9);
 		projectile.setDamage(EntityFerromagneticProjectile.getProjectileDamage(stack));
 		projectile.setKnockbackStrength(EntityFerromagneticProjectile.getProjectileKnockback(stack));
-		
-        return projectile;
-    }
+
+		return projectile;
+	}
 
 }

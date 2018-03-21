@@ -9,12 +9,12 @@ import cadiboo.wiptech.client.render.entity.RenderEntityFerromagneticProjectileF
 import cadiboo.wiptech.client.render.entity.RenderEntityNapalmFactory;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
+import cadiboo.wiptech.handler.EnumHandler;
+import cadiboo.wiptech.handler.EnumHandler.FerromagneticProjectiles;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Entities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
-import cadiboo.wiptech.item.EnumHandler;
-import cadiboo.wiptech.item.EnumHandler.FerromagneticProjectiles;
 import cadiboo.wiptech.item.ItemCopperIngot;
 import cadiboo.wiptech.item.ItemCopperNugget;
 import cadiboo.wiptech.item.ItemFerromagneticProjectile;

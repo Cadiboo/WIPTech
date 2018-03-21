@@ -43,34 +43,6 @@ public class CSyncModular implements IMessage{
 			Minecraft.getMinecraft().addScheduledTask(() ->{
 				Entity e = Minecraft.getMinecraft().player.world.getEntityByID(message.entityId);
 
-				if(e instanceof EntityLivingBase)
-				{
-					EntityLivingBase el = (EntityLivingBase)e;
-
-					if(el.hasCapability(ModularDataCapability.CAPABILITY, null))
-					{
-						ModularData data = ModularData.get(el);
-
-						if(message.module)
-						{
-							data.startToFreeze();
-
-							//jitter fix ?
-							el.prevLimbSwingAmount = el.limbSwingAmount;
-							el.prevCameraPitch = el.cameraPitch;
-							el.prevPosX = el.posX;
-							el.prevPosY = el.posY;
-							el.prevPosZ = el.posZ;
-							el.prevSwingProgress = el.swingProgressInt;
-							el.prevRenderYawOffset = el.renderYawOffset;
-							el.prevRotationPitch = el.rotationPitch;
-							el.prevRotationYaw = el.rotationYaw;
-							el.prevRotationYawHead = el.rotationYawHead;
-						}
-						else
-							data.stopFreeze();
-					}
-				}
 			});
 
 			return null;

@@ -146,7 +146,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 					this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 					break;
 				case 2:
-					this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+					this.playSound(SoundEvents.ENTITY_SHULKER_BULLET_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 					break;
 				case 3:
 					this.playSound(SoundEvents.ENTITY_PLAYER_HURT_ON_FIRE, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
@@ -286,7 +286,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	@Override
 	public ItemStack getAmmoStack()
 	{
-		return getAmmoStack(this.getAmmoId());
+		return getAmmoStack(this.getAmmoId()>9?0:this.getAmmoId());
 	}
 	public ItemStack getAmmoStack (int ammoId) {
 		//itemIn, amount, meta

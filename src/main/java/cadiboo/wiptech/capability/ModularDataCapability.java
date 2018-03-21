@@ -41,12 +41,12 @@ public class ModularDataCapability {
 
 		@Override
 		public NBTBase writeNBT(Capability<ModularData> capability, ModularData instance, EnumFacing side)		{
-			return instance.writeData();
+			return instance.serializeNBT();
 		}
 
 		@Override
 		public void readNBT(Capability<ModularData> capability, ModularData instance, EnumFacing side, NBTBase nbt){
-			instance.readData(nbt);
+			instance.deserializeNBT(nbt);
 		}
 	}
 

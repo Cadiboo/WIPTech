@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
+import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.init.Items;
@@ -71,193 +72,98 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 			float angle = -MathHelper.sin(renderShake * 3.0F) * renderShake;
 			GlStateManager.rotate(angle, 0.0F, 0.0F, 1.0F);
 		}
-		GlStateManager.enableRescaleNormal();
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
-		if(model!=null) {
-			int color = -1;
-			List<BakedQuad> quads = model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
+		if(entity.getAmmoId()==9) {
+			GlStateManager.enableBlend();
+			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma.png"));
+			double scale = 0.25;
+			drawQuad(0, 1, 0, 1, 0.25, 0.25, 0.25, 0.25);
+			GlStateManager.popMatrix();
+			GlStateManager.disableBlend();
+			return;
+		}
+		else
+		{
+			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
+			if(model!=null) {
+				int color = -1;
+				List<BakedQuad> quads = model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
 
-			//TODO if(quads.size > 0) do everything else {
+				//TODO if(quads.size > 0) do everything else {
 
-			boolean flag = color == -1 && !itemStack.isEmpty();
-			int i = 0;
+				boolean flag = color == -1 && !itemStack.isEmpty();
+				int i = 0;
 
-			BakedQuad bakedquad = quads.get(0);
+				BakedQuad bakedquad = quads.get(0);
 
-			/*int k = color;
-					//TODO what does this do?
+				/*int k = color;
+						//TODO what does this do?
 
-					if (flag && bakedquad.hasTintIndex())
-					{
-						k = Minecraft.getMinecraft().getItemColors().colorMultiplier(itemStack, bakedquad.getTintIndex());
-
-						if (EntityRenderer.anaglyphEnable)
+						if (flag && bakedquad.hasTintIndex())
 						{
-							k = TextureUtil.anaglyphColor(k);
+							k = Minecraft.getMinecraft().getItemColors().colorMultiplier(itemStack, bakedquad.getTintIndex());
+
+							if (EntityRenderer.anaglyphEnable)
+							{
+								k = TextureUtil.anaglyphColor(k);
+							}
+
+							k = k | -16777216;
 						}
 
-						k = k | -16777216;
+						net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, bakedquad, k);
+				 */
+				TextureAtlasSprite sprite = bakedquad.getSprite();
+				if(sprite!=null) {
+
+					float minU = sprite.getMinU();
+					float maxU = sprite.getMaxU();
+					float minV = sprite.getMinV();
+					float maxV = sprite.getMaxV();
+
+					float width = maxU-minU;
+					float height = maxV-minV;
+
+					float midU = minU+(width/2);
+					float midV = minV+(height/2);
+
+					float multiplier = 1;
+					float scale = 1F;
+
+					switch(entity.getAmmoId()) {
+					default:
+						scale = 1F;
+						multiplier = 1;
+						break;
+					case 3:
+					case 4:
+					case 5:
+						multiplier = 2;
+						scale = 0.5F;
+						break;
+					case 6:
+					case 7:
+					case 8:
+						multiplier = 2;
+						scale = 0.25F;
+						break;
+					case 9: //never happens
+						scale = 1F;
+					break;
 					}
 
-					net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, bakedquad, k);
-			 */
-			TextureAtlasSprite sprite = bakedquad.getSprite();
-			if(sprite!=null) {
+					minU = midU-(width/(8F*multiplier));
+					maxU = midU+(width/(8F*multiplier));
+					minV = midV-(height/(8F*multiplier));
+					maxV = midV+(height/(8F*multiplier));
 
-				float minU = sprite.getMinU();
-				float maxU = sprite.getMaxU();
-				float minV = sprite.getMinV();
-				float maxV = sprite.getMaxV();
 
-				float width = maxU-minU;
-				float height = maxV-minV;
+					drawQuad(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);
 
-				float midU = minU+(width/2);
-				float midV = minV+(height/2);
-
-				float multiplier = 1;
-				float scale = 1F;
-				if(itemStack.getMetadata()>3) {
-					multiplier = 2;
-					scale = 0.5F;
 				}
-				if(itemStack.getMetadata()>6) {
-					scale = 0.25F;
-				}
-				
-				GlStateManager.scale(scale, scale, scale);
-
-				minU = midU-(width/(8F*multiplier));
-				maxU = midU+(width/(8F*multiplier));
-				minV = midV-(height/(8F*multiplier));
-				maxV = midV+(height/(8F*multiplier));
-
-				/*WIPTech.logger.info(minU);
-				WIPTech.logger.info(maxU);
-				WIPTech.logger.info(minV);
-				WIPTech.logger.info(maxV);
-
-				WIPTech.logger.info(width);
-				WIPTech.logger.info(height);
-
-				WIPTech.logger.info(midU);
-				WIPTech.logger.info(midV);*/
-
-				GlStateManager.disableCull();
-				//GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
-				//GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
-
-				//GlStateManager.scale(.25f, .25f, .25f);
-
-				double x0 = -0.25;
-				double x1 = 0.25;
-				double y0 = -0.25;
-				double y1 = 0.25;
-				double z0 = -0.25;
-				double z1 = 0.25;
-
-				//WEST
-				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-				bufferbuilder.pos(x0, y0, -1).tex(maxU, maxV).endVertex();
-				bufferbuilder.pos(x0, y0,  1).tex(minU, maxV).endVertex();
-				bufferbuilder.pos(x0, y1,  1).tex(minU, minV).endVertex();
-				bufferbuilder.pos(x0, y1, -1).tex(maxU, minV).endVertex();
-
-				tessellator.draw();
-
-				//EAST
-				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-				bufferbuilder.pos(x1, y0, -1).tex(maxU, maxV).endVertex();
-				bufferbuilder.pos(x1, y0,  1).tex(minU, maxV).endVertex();
-				bufferbuilder.pos(x1, y1,  1).tex(minU, minV).endVertex();
-				bufferbuilder.pos(x1, y1, -1).tex(maxU, minV).endVertex();
-
-				tessellator.draw();
-
-				//DOWN
-				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-				bufferbuilder.pos(x1, y0, -1).tex(maxU, maxV).endVertex();
-				bufferbuilder.pos(x1, y0,  1).tex(minU, maxV).endVertex();
-				bufferbuilder.pos(x0, y0,  1).tex(minU, minV).endVertex();
-				bufferbuilder.pos(x0, y0, -1).tex(maxU, minV).endVertex();
-
-				tessellator.draw();
-
-				//UP
-				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-				bufferbuilder.pos(x0, y1, -1).tex(maxU, maxV).endVertex();
-				bufferbuilder.pos(x0, y1,  1).tex(minU, maxV).endVertex();
-				bufferbuilder.pos(x1, y1,  1).tex(minU, minV).endVertex();
-				bufferbuilder.pos(x1, y1, -1).tex(maxU, minV).endVertex();
-
-				tessellator.draw();
-
-				//SOUTH //FRONT
-				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-				bufferbuilder.pos(x0, y0, -1).tex(maxU, maxV).endVertex();
-				bufferbuilder.pos(x1, y0, -1).tex(minU, maxV).endVertex();
-				bufferbuilder.pos(x1, y1, -1).tex(minU, minV).endVertex();
-				bufferbuilder.pos(x0, y1, -1).tex(maxU, minV).endVertex();
-
-				tessellator.draw();
-
-				//NORTH //BACK
-				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-				bufferbuilder.pos(x0, y0,  1).tex(maxU, maxV).endVertex();
-				bufferbuilder.pos(x1, y0,  1).tex(minU, maxV).endVertex();
-				bufferbuilder.pos(x1, y1,  1).tex(minU, minV).endVertex();
-				bufferbuilder.pos(x0, y1,  1).tex(maxU, minV).endVertex();
-
-				tessellator.draw();
-
-
-				/*bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-				bufferbuilder.pos(-1, y0, z0).tex(maxU, maxV).endVertex();
-				bufferbuilder.pos( 1, y0, z0).tex(minU, maxV).endVertex();
-				bufferbuilder.pos( 1, y1, z0).tex(minU, minV).endVertex();
-				bufferbuilder.pos(-1, y1, z0).tex(maxU, minV).endVertex();
-				tessellator.draw();
-
-				bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-				bufferbuilder.pos(-1, y0, z1).tex(maxU, maxV).endVertex();
-				bufferbuilder.pos( 1, y0, z1).tex(minU, maxV).endVertex();
-				bufferbuilder.pos( 1, y1, z1).tex(minU, minV).endVertex();
-				bufferbuilder.pos(-1, y1, z1).tex(maxU, minV).endVertex();
-				tessellator.draw();
-				 */
-
-				/*bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-				bufferbuilder.pos(0, y0, z0).tex(maxU, maxV).endVertex();
-				bufferbuilder.pos(0, y0, z1).tex(minU, maxV).endVertex();
-				bufferbuilder.pos(0, y1, z1).tex(minU, minV).endVertex();
-				bufferbuilder.pos(0, y1, z0).tex(maxU, minV).endVertex();
-				tessellator.draw();*/
-
-				/*
-				buffer.pos(x1, y0, z0).color(r, g, b, a).endVertex();
-				buffer.pos(x1, y0, z1).color(r, g, b, a).endVertex();
-				buffer.pos(x0, y0, z1).color(r, g, b, a).endVertex();
-				buffer.pos(x0, y0, z0).color(r, g, b, a).endVertex();
-				 */
-
-				/*bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-				bufferbuilder.pos(.375,	.125,0).tex(8/32d, 5/32d).endVertex();
-				bufferbuilder.pos(0,	.125,0).tex(0/32d, 5/32d).endVertex();
-				bufferbuilder.pos(0,	.375,0).tex(0/32d, 0/32d).endVertex();
-				bufferbuilder.pos(.375,	.375,0).tex(8/32d, 0/32d).endVertex();
-				tessellator.draw();
-				 */
 			}
 		}
+
 
 		GlStateManager.enableCull();
 		GlStateManager.disableRescaleNormal();
@@ -294,6 +200,77 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 		// rotate the projectile it so it faces upwards
 		//GL11.glRotatef(-45, 0f, 0f, 1f);
+	}
+
+	private void drawQuad (float minU, float maxU, float minV, float maxV, double width, double height, double length, double scale) {
+
+		GlStateManager.enableRescaleNormal();
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
+
+		GlStateManager.scale(scale, scale, scale);
+
+		GlStateManager.disableCull();
+
+		//WEST
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+		bufferbuilder.pos(-length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-length, -height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-length, height,  width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-length, height, -width).tex(maxU, minV).endVertex();
+
+		tessellator.draw();
+
+		//EAST
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, -height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(length, height,  width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(length, height, -width).tex(maxU, minV).endVertex();
+
+		tessellator.draw();
+
+		//DOWN
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, -height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-length, -height,  width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-length, -height, -width).tex(maxU, minV).endVertex();
+
+		tessellator.draw();
+
+		//UP
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-length, height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(length, height,  width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(length, height, -width).tex(maxU, minV).endVertex();
+
+		tessellator.draw();
+
+		//SOUTH //FRONT
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+		bufferbuilder.pos(-length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, -height, -width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(length, height, -width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-length, height, -width).tex(maxU, minV).endVertex();
+
+		tessellator.draw();
+
+		//NORTH //BACK
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+		bufferbuilder.pos(-length, -height,  width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, -height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(length, height,  width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-length, height,  width).tex(maxU, minV).endVertex();
+
+		tessellator.draw();
 	}
 
 }
