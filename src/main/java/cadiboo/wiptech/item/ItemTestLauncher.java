@@ -3,7 +3,9 @@ package cadiboo.wiptech.item;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
+import cadiboo.wiptech.handler.GuiHandler;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.provider.TestLauncherProvider;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,14 +16,15 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public class ItemTestLauncher extends ItemBase
-{
+public class ItemTestLauncher extends ItemBase {
 	public ItemTestLauncher(String name)
 	{
 		super(name);
@@ -101,6 +104,13 @@ public class ItemTestLauncher extends ItemBase
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
 	{
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
+
+		if (!worldIn.isRemote && playerIn.isSneaking()){
+			//playerIn.openGui(WIPTech.instance, GuiHandler.TEST_LAUNCHER, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+			playerIn.openGui(WIPTech.instance, GuiHandler.TEST_LAUNCHER, worldIn, 0, 0, 0);
+			//LogHelper.info("Succesfully opened GUI");
+		}
+		
 		playerIn.setActiveHand(handIn);
 		return new ActionResult(EnumActionResult.SUCCESS, itemstack);
 	}
@@ -109,4 +119,13 @@ public class ItemTestLauncher extends ItemBase
 	{
 		return 0;
 	}
+	
+	@Override
+	public ICapabilityProvider initCapabilities( ItemStack item, NBTTagCompound nbt ) {
+		if( item.getItem() == Items.TEST_LAUNCHER ) {
+			return new TestLauncherProvider();
+		}
+		return null;
+	}
+	
 }

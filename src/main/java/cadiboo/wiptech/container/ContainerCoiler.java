@@ -1,4 +1,4 @@
-package cadiboo.wiptech.capability;
+package cadiboo.wiptech.container;
 
 import java.util.List;
 

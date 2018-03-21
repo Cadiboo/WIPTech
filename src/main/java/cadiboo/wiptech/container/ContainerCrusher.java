@@ -18,9 +18,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
-public class ContainerCrusher
-extends Container
-{
+public class ContainerCrusher extends Container {
 	private void addSlotToContainerCrusher(final TileEntityCrusher crusher, final int index, int xPos, int yPos)
 	{
 		IItemHandler inventory = (IItemHandler)crusher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
