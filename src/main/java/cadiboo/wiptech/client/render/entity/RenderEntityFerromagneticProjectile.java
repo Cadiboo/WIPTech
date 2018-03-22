@@ -215,7 +215,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 
 		GlStateManager.scale(scale, scale, scale);
-		
+
 		this.bindTexture(Reference.DEBUG2_TEXTURE);
 		minU = 0;
 		maxU = 1;
@@ -223,31 +223,31 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		maxV = 1;
 
 		//WEST
-		/*bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-		bufferbuilder.pos( length,  height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos( length,  height,  width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos( length, -height,  width).tex(minU, minV).endVertex();
-		bufferbuilder.pos( length, -height, -width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-length, -height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-length, height,  width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-length, height, -width).tex(maxU, minV).endVertex();
 
 		tessellator.draw();
 
 		//EAST
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-		bufferbuilder.pos(-length,  height,  width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-length,  height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length, -height, -width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, -height,  width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, -height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(length, height,  width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(length, height, -width).tex(maxU, minV).endVertex();
 
 		tessellator.draw();
 
 		//DOWN
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-		bufferbuilder.pos(-length, -height,  width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos( length, -height,  width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos( length, -height, -width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, -height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-length, -height,  width).tex(minU, minV).endVertex();
 		bufferbuilder.pos(-length, -height, -width).tex(maxU, minV).endVertex();
 
 		tessellator.draw();
@@ -255,60 +255,32 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		//UP
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-		bufferbuilder.pos( length,  height,  width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-length,  height,  width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length,  height, -width).tex(minU, minV).endVertex();
-		bufferbuilder.pos( length,  height, -width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-length, height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(length, height,  width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(length, height, -width).tex(maxU, minV).endVertex();
 
 		tessellator.draw();
-		*/
-		
-		
-		/*
-		 _
-		| |
-		a = x+y-
-		b = x+y+
-		c = x-y+
-		d = x-y-
-		
-		|=
-		a = x+y+
-		b = x-y+
-		c = x-y-
-		d = x+y-
-		
-		*/
-		
-		
-		//DONE! PERFECT! DONT EDIT! //OR NOT //should be now //OR NOT
+
 		//SOUTH //FRONT
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-		bufferbuilder.pos( length,  height,  width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-length,  height,  width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length, -height,  width).tex(minU, minV).endVertex();
-		bufferbuilder.pos( length, -height,  width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, -height, -width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(length, height, -width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-length, height, -width).tex(maxU, minV).endVertex();
 
 		tessellator.draw();
 
-		
 		//NORTH //BACK
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-		bufferbuilder.pos( length, -height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos( length,  height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length,  height, -width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, -height, -width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-length, -height,  width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, -height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(length, height,  width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-length, height,  width).tex(maxU, minV).endVertex();
 
 		tessellator.draw();
-		
-		/*
-		bufferbuilder.pos(-length,  height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos( length,  height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos( length, -height, -width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, -height, -width).tex(maxU, minV).endVertex();
-		 */
 	}
 
 }
