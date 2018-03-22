@@ -13,6 +13,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -34,12 +36,9 @@ public class EntityProjectileBase extends EntityArrow {
 
 	public static final Predicate<Entity> PROJECTILE_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, new Predicate<Entity>()
 	{
+		@Override
 		public boolean apply(@Nullable Entity targetEntity)
 		{
-			if(targetEntity instanceof EntityEnderman)
-				return true;
-			if(targetEntity.hurtResistantTime>0)
-				return false;
 			return targetEntity.canBeCollidedWith();
 		}
 	});

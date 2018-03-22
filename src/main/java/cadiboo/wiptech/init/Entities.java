@@ -3,6 +3,7 @@ package cadiboo.wiptech.init;
 import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.entity.*;
 import cadiboo.wiptech.entity.projectile.*;
+import cadiboo.wiptech.entity.ridable.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
@@ -22,7 +23,14 @@ public class Entities {
 			.entity(EntityFerromagneticProjectile.class)
 			.id(new ResourceLocation(Reference.ID, "ferromagneticprojectile"), ID++)
 			.name("ferromagneticprojectile")
-			.tracker(64, 2, true)
+			.tracker(256, 2, true)
+			.build();
+	
+	public static final EntityEntry RAILGUN = EntityEntryBuilder.create()
+			.entity(EntityRailgun.class)
+			.id(new ResourceLocation(Reference.ID, "railgun"), ID++)
+			.name("railgun")
+			.tracker(128, 5, false)
 			.build();
 
 
@@ -30,6 +38,8 @@ public class Entities {
 	public static final EntityEntry[] ENTITIES = {
 			NAPALM,
 			FERROMAGNETICPROJECTILE,
+			RAILGUN,
+			
 	};
 
 }

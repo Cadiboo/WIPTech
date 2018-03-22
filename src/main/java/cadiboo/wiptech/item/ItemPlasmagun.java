@@ -10,20 +10,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 
-public class ItemCoilgun extends ItemBase {
-	
-	
+public class ItemPlasmagun extends ItemBase {
 
-	public ItemCoilgun(String name)
+	private static ItemStack plasmaStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 9); //Plasma
+
+
+	public ItemPlasmagun(String name)
 	{
 		super(name);
 		this.maxStackSize = 1;
@@ -59,7 +58,7 @@ public class ItemCoilgun extends ItemBase {
 			{
 				if (itemstack.isEmpty())
 				{
-					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 8); //TUNGSTEN SMALL
+					itemstack = plasmaStack.copy();
 				}
 
 				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
@@ -76,7 +75,7 @@ public class ItemCoilgun extends ItemBase {
 
 						//if(this.coilGold) damage & knockback * 1.5
 
-						//if(this.coilgun.overheat) entityarrow.setFire(100);
+						//if(this.plasmagun.overheat) entityarrow.setFire(100);
 
 						if (flag1 || entityplayer.capabilities.isCreativeMode)
 						{
@@ -104,7 +103,7 @@ public class ItemCoilgun extends ItemBase {
 
 	protected boolean isAmmo(ItemStack stack)
 	{
-		return stack.getItem() instanceof ItemFerromagneticProjectile && 6 >= stack.getMetadata() && stack.getMetadata() <=8 ;
+		return stack.getItem() instanceof ItemFerromagneticProjectile && stack.getMetadata() == 9;
 	}
 
 	private ItemStack findAmmo(EntityPlayer player)
@@ -153,14 +152,14 @@ public class ItemCoilgun extends ItemBase {
 			{
 				if (itemstack.isEmpty())
 				{
-					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 8); //TUNGSTEN SMALL
+					itemstack = plasmaStack.copy();
 				}
 
 				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
 				//TODO make it *by coil
 
-				
-				
+
+
 				if ((double)velocity >= 0.1D)
 				{
 					boolean flag1 = entityplayer.capabilities.isCreativeMode/* || (itemstack.getItem() instanceof ItemMagneticMetalRod && ((ItemMagneticMetalRod) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer))*/;
@@ -173,7 +172,7 @@ public class ItemCoilgun extends ItemBase {
 
 						//if(this.coilGold) damage & knockback * 1.5
 
-						//if(this.coilgun.overheat) entityarrow.setFire(100);
+						//if(this.plasmagun.overheat) entityarrow.setFire(100);
 
 						if (flag1 || entityplayer.capabilities.isCreativeMode)
 						{
@@ -210,4 +209,5 @@ public class ItemCoilgun extends ItemBase {
 	{
 		return 0;
 	}
+
 }

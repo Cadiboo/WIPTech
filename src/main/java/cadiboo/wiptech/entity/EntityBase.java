@@ -4,9 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class EntityBase
-  extends Entity
-{
+public class EntityBase extends Entity {
+	
   public EntityBase(World worldIn)
   {
     super(worldIn);

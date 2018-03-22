@@ -77,7 +77,7 @@ extends ItemBase
 
 	protected boolean isAmmo(ItemStack stack)
 	{
-		return stack.getItem() instanceof ItemFerromagneticProjectile;
+		return stack.getItem() instanceof ItemFerromagneticProjectile && 3 >= stack.getMetadata() && stack.getMetadata() <=5 ;
 	}
 
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)

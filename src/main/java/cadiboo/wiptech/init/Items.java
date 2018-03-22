@@ -34,6 +34,8 @@ public class Items
 	public static final ItemHammer HAMMER = new ItemHammer("hammer");
 	public static final ItemRailgun RAILGUN = new ItemRailgun("railgun");
 	public static final ItemCoilgun COILGUN = new ItemCoilgun("coilgun");
+	public static final ItemPlasmagun PLASMA_GUN = new ItemPlasmagun("plasmagun");
+	
 	public static final ItemTestLauncher TEST_LAUNCHER = new ItemTestLauncher("test_launcher");
 
 
@@ -67,6 +69,8 @@ public class Items
 			NAPALM,
 			RAILGUN,
 			COILGUN,
+			PLASMA_GUN,
+			
 			TEST_LAUNCHER,
 
 	};

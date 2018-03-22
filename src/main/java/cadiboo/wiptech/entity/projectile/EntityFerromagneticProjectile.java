@@ -1,5 +1,10 @@
 package cadiboo.wiptech.entity.projectile;
 
+import javax.annotation.Nullable;
+
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.block.Block;
@@ -8,6 +13,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -16,6 +24,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -26,6 +35,23 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 	private static final DataParameter<Integer> AMMO_ID = EntityDataManager.<Integer>createKey(EntityFerromagneticProjectile.class, DataSerializers.VARINT);
 
+	public static final Predicate<Entity> PROJECTILE_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, new Predicate<Entity>()
+	{
+		@Override
+		public boolean apply(@Nullable Entity targetEntity)
+		{
+			WIPTech.logger.info("Predicate Apply for "+targetEntity);
+			if(targetEntity instanceof EntityEnderman || targetEntity instanceof EntityDragon || targetEntity instanceof EntityWither)
+				return true;
+			if(targetEntity.hurtResistantTime>0) {
+				targetEntity.hurtResistantTime = 0;
+				return false;
+			}
+			
+			return targetEntity.canBeCollidedWith();
+		}
+	});
+	
 	@Override
 	protected void entityInit()
 	{
@@ -79,8 +105,8 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 		if (entity != null)
 		{
-			float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-			int i = MathHelper.ceil((double)f * this.damage);
+			//float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+			//int i = MathHelper.ceil((double)f * this.damage);
 
 			DamageSource damagesource;
 
@@ -111,7 +137,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 				entity.setFire(2);
 			}
 
-			if (entity.attackEntityFrom(damagesource, (float)i))
+			if (entity.attackEntityFrom(damagesource, (float)this.damage))
 			{
 				if (entity instanceof EntityLivingBase)
 				{
@@ -156,7 +182,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 					break;
 				}
 
-				if(getAmmoType(getAmmoId())>2)
+				if(this.isPlasma())
 				{
 					this.setDead();
 				}
@@ -315,16 +341,16 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		return getAmmoType(ammoId)<2?0.4F:0;
 	}
 
-	public static int getAmmoType(int ammoId)
+	public static int getAmmoLevel(int ammoId)
 	{
-		//WIPTech.logger.info("getAmmoType for id "+ammoId+": "+Math.floor((ammoId+1)/3));
+		//WIPTech.logger.info("getAmmoLevel for id "+ammoId+": "+Math.floor((ammoId+1)/3));
 		return (int) Math.floor((ammoId+1)/3);
 		//TODO CHECK THIS
 	}
 
-	public static int getAmmoTier(int ammoId)
+	public static int getAmmoType(int ammoId)
 	{
-		//WIPTech.logger.info("getAmmoTier for id "+ammoId+": "+ammoId%3);
+		//WIPTech.logger.info("getAmmoType for id "+ammoId+": "+ammoId%3);
 		return ammoId%3;
 		//TODO CHECK THIS
 	}
@@ -334,7 +360,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		int metaData = stack.getMetadata();
 		switch(getAmmoType(metaData)) {
 		case 0: //mounted Railgun
-			switch(getAmmoTier(metaData)) {
+			switch(getAmmoLevel(metaData)) {
 
 			//TODO make these higher
 			default: case 0: //iron
@@ -347,7 +373,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			break;
 		default: case 1: //handheld Railgun
-			switch(getAmmoTier(metaData)) {
+			switch(getAmmoLevel(metaData)) {
 
 			default: case 0: //iron
 				velocity = 3.5F;break;
@@ -359,7 +385,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			break;
 		case 2: //Coilgun / gausscannon
-			switch(getAmmoTier(metaData)) {
+			switch(getAmmoLevel(metaData)) {
 
 			//TODO change these
 
@@ -376,6 +402,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			velocity = 20; //some fucking crazy amount because of how light it is
 
 		}
+		WIPTech.logger.info("Velocity for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+velocity);
 		return velocity;
 	}
 
@@ -385,7 +412,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		int metaData = stack.getMetadata();
 		switch(getAmmoType(metaData)) {
 		case 0: //mounted Railgun
-			switch(getAmmoTier(metaData)) {
+			switch(getAmmoLevel(metaData)) {
 
 			//TODO make these higher
 			default: case 0: //iron
@@ -398,7 +425,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			break;
 		default: case 1: //handheld Railgun
-			switch(getAmmoTier(metaData)) {
+			switch(getAmmoLevel(metaData)) {
 
 			default: case 0: //iron
 				damage = 5F;break;
@@ -410,7 +437,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			break;
 		case 2: //Coilgun / gausscannon
-			switch(getAmmoTier(metaData)) {
+			switch(getAmmoLevel(metaData)) {
 
 			//TODO change these
 
@@ -427,6 +454,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			damage = 0.5F;
 
 		}
+		WIPTech.logger.info("Damage for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+damage);
 		return damage;
 	}
 
@@ -435,7 +463,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		int metaData = stack.getMetadata();
 		switch(getAmmoType(metaData)) {
 		case 0: //mounted Railgun
-			switch(getAmmoTier(metaData)) {
+			switch(getAmmoLevel(metaData)) {
 
 			default: case 0: //iron
 				knockback = 2F;break;
@@ -447,7 +475,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			break;
 		default: case 1: //handheld Railgun
-			switch(getAmmoTier(metaData)) {
+			switch(getAmmoLevel(metaData)) {
 
 			default: case 0: //iron
 				knockback = 1F;break;
@@ -459,7 +487,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			break;
 		case 2: //Coilgun / gausscannon
-			switch(getAmmoTier(metaData)) {
+			switch(getAmmoLevel(metaData)) {
 
 			//TODO change these
 
@@ -476,6 +504,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			knockback = 0F;
 
 		}
+		WIPTech.logger.info("Knockback for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+knockback);
 		return knockback;
 	}
 
