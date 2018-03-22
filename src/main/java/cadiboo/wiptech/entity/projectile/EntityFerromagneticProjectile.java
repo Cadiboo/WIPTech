@@ -1,10 +1,5 @@
 package cadiboo.wiptech.entity.projectile;
 
-import javax.annotation.Nullable;
-
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.block.Block;
@@ -13,9 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -24,7 +16,6 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -34,23 +25,6 @@ import net.minecraft.world.World;
 public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 	private static final DataParameter<Integer> AMMO_ID = EntityDataManager.<Integer>createKey(EntityFerromagneticProjectile.class, DataSerializers.VARINT);
-
-	public static final Predicate<Entity> PROJECTILE_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, new Predicate<Entity>()
-	{
-		@Override
-		public boolean apply(@Nullable Entity targetEntity)
-		{
-			WIPTech.logger.info("Predicate Apply for "+targetEntity);
-			if(targetEntity instanceof EntityEnderman || targetEntity instanceof EntityDragon || targetEntity instanceof EntityWither)
-				return true;
-			if(targetEntity.hurtResistantTime>0) {
-				targetEntity.hurtResistantTime = 0;
-				return false;
-			}
-			
-			return targetEntity.canBeCollidedWith();
-		}
-	});
 	
 	@Override
 	protected void entityInit()
@@ -189,13 +163,17 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			}
 			else
 			{
-				this.motionX *= -0.10000000149011612D;
+				/*this.motionX *= -0.10000000149011612D;
 				this.motionY *= -0.10000000149011612D;
 				this.motionZ *= -0.10000000149011612D;
 				this.rotationYaw += 180.0F;
 				this.prevRotationYaw += 180.0F;
 				this.ticksInAir = 0;
+				*/
 
+				//WHY DO THIS EVER????
+				//TODO Maybe remove this completely
+				
 				if (!this.world.isRemote && this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ < 0.0010000000474974513D)
 				{
 					if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED)
@@ -341,14 +319,14 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		return getAmmoType(ammoId)<2?0.4F:0;
 	}
 
-	public static int getAmmoLevel(int ammoId)
+	public static int getAmmoType(int ammoId)
 	{
 		//WIPTech.logger.info("getAmmoLevel for id "+ammoId+": "+Math.floor((ammoId+1)/3));
 		return (int) Math.floor((ammoId+1)/3);
 		//TODO CHECK THIS
 	}
 
-	public static int getAmmoType(int ammoId)
+	public static int getAmmoLevel(int ammoId)
 	{
 		//WIPTech.logger.info("getAmmoType for id "+ammoId+": "+ammoId%3);
 		return ammoId%3;

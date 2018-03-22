@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
+import cadiboo.wiptech.WIPTech;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -39,6 +41,34 @@ public class EntityProjectileBase extends EntityArrow {
 		@Override
 		public boolean apply(@Nullable Entity targetEntity)
 		{
+			//WIPTech.logger.info("Predicate Apply for "+targetEntity);
+			
+			if(targetEntity.hurtResistantTime>0) {
+				targetEntity.hurtResistantTime = 0;
+				return false;
+			}
+			
+			if(!targetEntity.isNonBoss())
+			{
+				/*if(targetEntity instanceof EntityDragon)
+				{
+					//TODO idk what
+				}
+				if(targetEntity instanceof EntityWither)
+				{
+					EntityWither wither = (EntityWither) targetEntity;
+					if(wither.isArmored())
+					{
+						//TODO deal direct damage, because the projectile just bounces off because it is an instanceof EntityArrow
+						return false;
+					}
+				}*/
+				return true;
+			}
+			
+			if(targetEntity instanceof EntityEnderman)
+				return true;
+			
 			return targetEntity.canBeCollidedWith();
 		}
 	});
