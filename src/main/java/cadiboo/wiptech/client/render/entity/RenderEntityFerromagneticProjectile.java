@@ -127,6 +127,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 					float maxU = sprite.getMaxU();
 					float minV = sprite.getMinV();
 					float maxV = sprite.getMaxV();
+					//float midU = sprite.getInterpolatedU(width/2) //TODO look at this
 
 					float width = maxU-minU;
 					float height = maxV-minV;
@@ -262,14 +263,32 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		tessellator.draw();
 		*/
 		
-		//DONE! PERFECT! DONT EDIT! //OR NOT //should be now
+		
+		/*
+		 _
+		| |
+		a = x+y-
+		b = x+y+
+		c = x-y+
+		d = x-y-
+		
+		|=
+		a = x+y+
+		b = x-y+
+		c = x-y-
+		d = x+y-
+		
+		*/
+		
+		
+		//DONE! PERFECT! DONT EDIT! //OR NOT //should be now //OR NOT
 		//SOUTH //FRONT
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-		bufferbuilder.pos( length, -height,  width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos( length,  height,  width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length,  height,  width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, -height,  width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos( length,  height,  width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-length,  height,  width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-length, -height,  width).tex(minU, minV).endVertex();
+		bufferbuilder.pos( length, -height,  width).tex(maxU, minV).endVertex();
 
 		tessellator.draw();
 

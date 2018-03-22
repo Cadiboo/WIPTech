@@ -322,7 +322,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	public static int getAmmoType(int ammoId)
 	{
 		//WIPTech.logger.info("getAmmoLevel for id "+ammoId+": "+Math.floor((ammoId+1)/3));
-		return (int) Math.floor((ammoId+1)/3);
+		return (int) Math.floor((ammoId)/3);
 		//TODO CHECK THIS
 	}
 
@@ -392,7 +392,18 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		case 0: //mounted Railgun
 			switch(getAmmoLevel(metaData)) {
 
-			//TODO make these higher
+			default: case 0: //iron
+				damage = 20F;break;
+			case 1: //osmium
+				damage = 32F; break;
+			case 2: //tungsten
+				damage = 40F; break;
+			}
+
+			break;
+		default: case 1: //handheld Railgun
+			switch(getAmmoLevel(metaData)) {
+
 			default: case 0: //iron
 				damage = 7.5F;break;
 			case 1: //osmium
@@ -402,34 +413,20 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			}
 
 			break;
-		default: case 1: //handheld Railgun
-			switch(getAmmoLevel(metaData)) {
-
-			default: case 0: //iron
-				damage = 5F;break;
-			case 1: //osmium
-				damage = 8F; break;
-			case 2: //tungsten
-				damage = 10F; break;
-			}
-
-			break;
 		case 2: //Coilgun / gausscannon
 			switch(getAmmoLevel(metaData)) {
 
-			//TODO change these
-
 			default: case 0: //iron
-				damage = 1F;break;
+				damage = 2F;break;
 			case 1: //osmium
-				damage = 1.75F; break;
+				damage = 3.2F; break;
 			case 2: //tungsten
-				damage = 2F; break;
+				damage = 4F; break;
 			}
 
 			break;
 		case 3: //plasma
-			damage = 0.5F;
+			damage = 1F;
 
 		}
 		WIPTech.logger.info("Damage for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+damage);
