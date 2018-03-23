@@ -32,17 +32,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.model.pipeline.IVertexConsumer;
 
 
-//COPPIED FROM IMMERSIVE ENGINEERING
-// https://github.com/BluSunrize/ImmersiveEngineering/blob/master/src/main/java/blusunrize/immersiveengineering/client/render/EntityRenderRevolvershot.java
-/*
- * BluSunrize
- * Copyright (c) 2017
- *
- * This code is licensed under "Blu's License of Common Sense"
- * Details can be found in the license file in the root folder of this project
- */
-
-
+//Based on Immersive Engineering
+//https://github.com/BluSunrize/ImmersiveEngineering/blob/master/src/main/java/blusunrize/immersiveengineering/client/render/EntityRenderRevolvershot.java
 
 public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticProjectile> extends Render<T> {
 
@@ -222,14 +213,12 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		maxU = 1;
 		minV = 0;
 		maxV = 1;*/
-		double hlfU = (maxU-minU)/2;
-		double hlfV = (maxV-minV)/2;
+		double hlfU = minU + (maxU-minU)/2;
+		double hlfV = minV + (maxV-minV)/2;
 		
 		double centre = 0d;
 
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-		//shift up = counterclockwise
 
 		//UP
 		bufferbuilder.pos(-length,  height, -width).tex(maxU, maxV).endVertex();
@@ -278,24 +267,6 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		bufferbuilder.pos( length,  height,  width).tex(minU, minV).endVertex();
 		bufferbuilder.pos(-length,  height,  width).tex(maxU, minV).endVertex();
 		bufferbuilder.pos(-length,  centre,  width).tex(maxU, hlfV).endVertex();
-
-
-		//BACK RIGHT
-		/*bufferbuilder.pos( 0, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos( 0,  height, -width).tex(minU, minV).endVertex();
-		bufferbuilder.pos( length,  height, -width).tex(.5, minV).endVertex();
-		bufferbuilder.pos( length, -height, -width).tex(.5, maxV).endVertex();*/
-		/*bufferbuilder.pos( 0, -height, -width).tex(.5, maxV).endVertex();
-		bufferbuilder.pos( 0,  height, -width).tex(.5, minV).endVertex();
-		bufferbuilder.pos( length,  height, -width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos( length, -height, -width).tex(maxU, maxV).endVertex();*/
-
-		/*
-		bufferbuilder.pos(-length, -height, -width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length,  height, -width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos( length,  height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos( length, -height, -width).tex(minU, maxV).endVertex();
-		 */
 
 		tessellator.draw();
 	}
