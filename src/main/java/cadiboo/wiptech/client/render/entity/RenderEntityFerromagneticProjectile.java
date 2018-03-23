@@ -251,16 +251,16 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		bufferbuilder.pos( length, -height, -width).tex(maxU, maxV).endVertex();
 
 		//BACK TOP
-		bufferbuilder.pos(-length,  centre, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-length,  height, -width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos( length,  height, -width).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos( length,  centre, -width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-length,  centre, -width).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(-length,  height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos( length,  height, -width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos( length,  centre, -width).tex(minU, hlfV).endVertex();
 
 		//FRONT BOTTOM
-		bufferbuilder.pos( length, -height,  width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos( length,  centre,  width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-length,  centre,  width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, -height,  width).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos( length, -height,  width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos( length,  centre,  width).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(-length,  centre,  width).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(-length, -height,  width).tex(minU, minV).endVertex();
 
 		//FRONT TOP
 		bufferbuilder.pos( length,  centre,  width).tex(minU, hlfV).endVertex();
