@@ -15,5 +15,7 @@ public class Reference {
 	public static final ResourceLocation DEBUG_TEXTURE = new ResourceLocation("minecraft", "textures/blocks/debug.png");
 	public static final ResourceLocation DEBUG2_TEXTURE = new ResourceLocation("minecraft", "textures/blocks/debug2.png");
 	public static final ResourceLocation TRANSPARENT_TEXTURE = new ResourceLocation(Reference.ID, "textures/util/transparent1x1.png");
+	
+	public static final boolean DEBUG_ENABLED = false;
 
 }

@@ -1,10 +1,12 @@
 package cadiboo.wiptech.item;
 
+import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.handler.EnumHandler;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
@@ -65,6 +67,10 @@ public class ItemFerromagneticProjectile extends ItemBase {
 		projectile.setKnockbackStrength(EntityFerromagneticProjectile.getProjectileKnockback(stack));
 
 		return projectile;
+	}
+
+	public boolean isInfinite(ItemStack itemstack, ItemStack stack, EntityPlayer entityplayer) {
+		return Reference.DEBUG_ENABLED;
 	}
 
 }

@@ -1,6 +1,7 @@
 package cadiboo.wiptech.item;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.capability.ModularDataCapability;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
 import cadiboo.wiptech.handler.GuiHandler;
@@ -23,6 +24,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class ItemTestLauncher extends ItemBase {
 	public ItemTestLauncher(String name)
@@ -44,57 +47,57 @@ public class ItemTestLauncher extends ItemBase {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase player, int timeLeft) {
-		if (player instanceof EntityPlayer)
+	public void onPlayerStoppedUsing(ItemStack itemStackIn, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+		if (entityLiving instanceof EntityPlayer)
 		{
-			EntityPlayer entityplayer = (EntityPlayer)player;
-			boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-			flag = true;
-			ItemStack itemstack = ItemStack.EMPTY;
+			EntityPlayer player = (EntityPlayer) entityLiving;
+			ItemStack ammoStack = ItemStack.EMPTY;
 
-			int i = this.getMaxItemUseDuration(stack) - timeLeft;
+			if (this.getMaxItemUseDuration(itemStackIn) - timeLeft <= 0) return;
 
-			if (i <= 0) return;
-
-			if (!itemstack.isEmpty() || flag)
+			if (!ammoStack.isEmpty() || player.capabilities.isCreativeMode)
 			{
-				if (itemstack.isEmpty())
+				if (ammoStack.isEmpty())
 				{
-					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN MEDIUM
+					ammoStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN MEDIUM
 				}
 
-				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
+				float velocity = 0;
 
-				if ((double)velocity >= 0.1D)
+				boolean flag = player.capabilities.isCreativeMode || (ammoStack.getItem() instanceof ItemFerromagneticProjectile && ((ItemFerromagneticProjectile) ammoStack.getItem()).isInfinite(ammoStack, itemStackIn, player));
+
+				if (!worldIn.isRemote)
 				{
-					boolean flag1 = entityplayer.capabilities.isCreativeMode/* || (itemstack.getItem() instanceof ItemMagneticMetalRod && ((ItemMagneticMetalRod) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer))*/;
+					//IItemHandler capability = itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-					if (!worldIn.isRemote)
+					/*if(capability!=null) {
+
+					}*/
+
+					ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(ammoStack.getItem() instanceof ItemFerromagneticProjectile ? ammoStack.getItem() : Items.FERROMAGNETIC_PROJECILE);
+					EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, ammoStack, player, false);
+					velocity = EntityFerromagneticProjectile.getProjectileVelocity(ammoStack);
+					projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
+
+					//if(this.railgun.overheat) entityarrow.setFire(100);
+
+					if (flag)
 					{
-						ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(itemstack.getItem() instanceof ItemFerromagneticProjectile ? itemstack.getItem() : Items.FERROMAGNETIC_PROJECILE);
-						EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer, false);
-						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
-						
-						//if(this.railgun.overheat) entityarrow.setFire(100);
-
-						if (flag1 || entityplayer.capabilities.isCreativeMode)
-						{
-							projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
-						}
-
-						worldIn.spawnEntity(projectile);
+						projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
 					}
 
-					worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+					worldIn.spawnEntity(projectile);
+				}
 
-					if (!flag1 && !entityplayer.capabilities.isCreativeMode)
+				worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+
+				if (!flag)
+				{
+					ammoStack.shrink(1);
+
+					if (ammoStack.isEmpty())
 					{
-						itemstack.shrink(1);
-
-						if (itemstack.isEmpty())
-						{
-							entityplayer.inventory.deleteStack(itemstack);
-						}
+						player.inventory.deleteStack(ammoStack);
 					}
 				}
 			}
@@ -110,7 +113,7 @@ public class ItemTestLauncher extends ItemBase {
 			playerIn.openGui(WIPTech.instance, GuiHandler.TEST_LAUNCHER, worldIn, 0, 0, 0);
 			//LogHelper.info("Succesfully opened GUI");
 		}
-		
+
 		playerIn.setActiveHand(handIn);
 		return new ActionResult(EnumActionResult.SUCCESS, itemstack);
 	}
@@ -119,7 +122,7 @@ public class ItemTestLauncher extends ItemBase {
 	{
 		return 0;
 	}
-	
+
 	@Override
 	public ICapabilityProvider initCapabilities( ItemStack item, NBTTagCompound nbt ) {
 		if( item.getItem() == Items.TEST_LAUNCHER ) {
@@ -127,5 +130,5 @@ public class ItemTestLauncher extends ItemBase {
 		}
 		return null;
 	}
-	
+
 }
