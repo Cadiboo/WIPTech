@@ -37,6 +37,7 @@ public class Items
 	public static final ItemPlasmagun PLASMA_GUN = new ItemPlasmagun("plasmagun");
 	
 	public static final ItemTestLauncher TEST_LAUNCHER = new ItemTestLauncher("test_launcher");
+	public static final ItemTestModularWeapon TEST_MODULAR_WEAPON = new ItemTestModularWeapon("test_modular_weapon");
 
 
 	public static final Item[] ITEMS = {
@@ -72,6 +73,7 @@ public class Items
 			PLASMA_GUN,
 			
 			TEST_LAUNCHER,
+			TEST_MODULAR_WEAPON,
 
 	};
 }

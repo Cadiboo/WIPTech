@@ -1,4 +1,6 @@
-package cadiboo.wiptech.capability;
+package cadiboo.wiptech.capability.fail;
+
+import java.util.concurrent.Callable;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -8,23 +10,24 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.items.IItemHandlerModifiable;
 
-import java.util.concurrent.Callable;
-
-public class CapabilityModuleHandler
+public class CapabilityModularData
 {
-	@CapabilityInject(IModuleHandler.class)
-	public static Capability<IModuleHandler> MODULE_HANDLER_CAPABILITY = null;
+	@CapabilityInject(IModularData.class)
+	public static Capability<IModularData> MODULAR_DATA_CAPABILITY = null;
+
+	@CapabilityInject(IModularData.class)
+	public static Capability<IModularData> ITEM_HANDLER_CAPABILITY = null;
 
 	public static void register()
 	{
-		CapabilityManager.INSTANCE.register(IModuleHandler.class, new Capability.IStorage<IModuleHandler>()
+		CapabilityManager.INSTANCE.register(IModularData.class, new Capability.IStorage<IModularData>()
 		{
 			@Override
-			public NBTBase writeNBT(Capability<IModuleHandler> capability, IModuleHandler instance, EnumFacing side)
+			public NBTBase writeNBT(Capability<IModularData> capability, IModularData instance, EnumFacing side)
 			{
 				NBTTagList nbtTagList = new NBTTagList();
+				int size = instance.getSlots();
 				for (int i = 0; i < size; i++)
 				{
 					ItemStack stack = instance.getStackInSlot(i);
@@ -40,8 +43,11 @@ public class CapabilityModuleHandler
 			}
 
 			@Override
-			public void readNBT(Capability<IModuleHandler> capability, IModuleHandler instance, EnumFacing side, NBTBase base)
+			public void readNBT(Capability<IModularData> capability, IModularData instance, EnumFacing side, NBTBase base)
 			{
+				if (!(instance instanceof IItemHandlerModifiable))
+					throw new RuntimeException("IItemHandler instance does not implement IItemHandlerModifiable");
+				IItemHandlerModifiable itemHandlerModifiable = (IItemHandlerModifiable) instance;
 				NBTTagList tagList = (NBTTagList) base;
 				for (int i = 0; i < tagList.tagCount(); i++)
 				{
@@ -57,4 +63,11 @@ public class CapabilityModuleHandler
 		}, ItemStackHandler::new);
 	}
 
+	private static class Factory implements Callable<IModularData> {
+
+		@Override
+		public IModularData call() throws Exception {
+			return new Implementation();
+		}
+	}
 }

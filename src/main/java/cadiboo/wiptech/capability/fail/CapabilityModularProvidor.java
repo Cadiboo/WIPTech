@@ -1,4 +1,4 @@
-package cadiboo.wiptech.capability;
+package cadiboo.wiptech.capability.fail;
 
 import javax.annotation.Nullable;
 

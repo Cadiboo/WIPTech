@@ -2,45 +2,51 @@ package cadiboo.wiptech.capability;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.handler.EnumHandler;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ModularData implements INBTSerializable<NBTBase>{
+public class WeaponModular implements IWeaponModules, INBTSerializable<NBTTagCompound>{
 
-	private EntityLivingBase entityLiving;
-
-	protected EnumHandler.WeaponModules.Circuits circuit;
-	protected EnumHandler.WeaponModules.Coils coil;
-	protected EnumHandler.WeaponModules.Scopes scope;
-
-	public ModularData() {
-		this.circuit = null;
-		this.coil = null;
-		this.scope = null;
-	}
-
-	public EntityLivingBase getEntity() { 
-		return entityLiving; 
-	}
-
-	public void setPlayer(EntityLivingBase entity){
-		this.entityLiving = entity;
-	}
-
-	public static ModularData get(EntityLivingBase living)
-	{
-		return living.getCapability(ModularDataCapability.CAPABILITY, null);
+	private EnumHandler.WeaponModules.Circuits circuit;
+	private EnumHandler.WeaponModules.Coils coil;
+	private EnumHandler.WeaponModules.Scopes scope;
+	
+	@Override
+	public int getModules() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
-	public NBTBase serializeNBT()
+	public void setCoil(Coils coil) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Coils getCoil() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCircuit(Circuits circuit) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Circuits getCircuit() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public NBTTagCompound serializeNBT()
 	{
 		NBTTagList nbtTagList = new NBTTagList();
 		NBTTagCompound compund = new NBTTagCompound();
@@ -57,7 +63,7 @@ public class ModularData implements INBTSerializable<NBTBase>{
 	}
 
 	@Override
-	public void deserializeNBT(NBTBase nbt)
+	public void deserializeNBT(NBTTagCompound nbt)
 	{
 		WIPTech.logger.info(nbt);
 		/*nbt.getTagTypeName(10).get
