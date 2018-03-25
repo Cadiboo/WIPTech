@@ -55,7 +55,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		GlStateManager.enableCull();
 
 		//Direction that its heading
-		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
 
 		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
