@@ -1,6 +1,9 @@
 package cadiboo.wiptech.provider;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.capability.WeaponModular;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
+import cadiboo.wiptech.init.Capabilities;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -14,16 +17,20 @@ public class TestLauncherProvider implements ICapabilityProvider, INBTSerializab
 	//IItemHandler inventory = (IItemHandler)TestLauncherProvider.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
 	
 	private final ItemStackHandler inventory;
-	//private final ModularData modules;
+	private final WeaponModular weaponModules;
 
 	public TestLauncherProvider() {
 		inventory = new ItemStackHandler( 54 );
-		//modules = new ModularData();
+		weaponModules = new WeaponModular();
+		weaponModules.setCoil(Coils.TIN);
 	}
 
 	@Override
 	public boolean hasCapability( Capability<?> capability, EnumFacing facing ) {
 		if( capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) {
+			return true;
+		}
+		else if( capability == Capabilities.MODULAR_WEAPON_CAPABILITY ){
 			return true;
 		}
 		return false;
@@ -33,6 +40,9 @@ public class TestLauncherProvider implements ICapabilityProvider, INBTSerializab
 	public <T> T getCapability( Capability<T> capability, EnumFacing facing ) {
 		if( capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) {
 			return (T) inventory; 
+		}
+		else if( capability == Capabilities.MODULAR_WEAPON_CAPABILITY ){
+			return (T) weaponModules; 
 		}
 		return null;
 	}
@@ -44,8 +54,6 @@ public class TestLauncherProvider implements ICapabilityProvider, INBTSerializab
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
-		WIPTech.logger.info(nbt);
-		//this.modules.circuit = nbt.getCompoundTag("circuit");
 		this.inventory.deserializeNBT(nbt);
 	}
 	

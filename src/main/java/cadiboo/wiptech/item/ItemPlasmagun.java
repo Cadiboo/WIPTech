@@ -1,26 +1,42 @@
 package cadiboo.wiptech.item;
 
+import java.util.List;
+
+import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.capability.IWeaponModular;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.*;
+import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.provider.ModularWeaponProvider;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemPlasmagun extends ItemBase {
 
+	private static final long shootTimeAdd = 5;
+	private static final int burstShotsAllowed = 5;
+	private static final double overheatTemperature = 10;
 	private static ItemStack plasmaStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 9); //Plasma
 
+	private int burstShotsTaken;
+	private boolean overheat;
+	private long lastShootTime;
+	private double temperature;
 
 	public ItemPlasmagun(String name)
 	{
@@ -28,6 +44,10 @@ public class ItemPlasmagun extends ItemBase {
 		this.maxStackSize = 1;
 		setMaxDamage(0);
 		setCreativeTab(CreativeTabs.COMBAT);
+		this.burstShotsTaken = 0;
+		this.overheat = false;
+		this.lastShootTime = 0;
+		this.temperature = 0;
 	}
 
 	public int getMaxItemUseDuration(ItemStack stack)
@@ -41,166 +61,112 @@ public class ItemPlasmagun extends ItemBase {
 	}
 
 	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
-	{
-		/*
-		if(this.getComponents.contains(rollingCircuit||machinegunCircuit) {
-		 */
-		if (player instanceof EntityPlayer)
-		{
-			EntityPlayer entityplayer = (EntityPlayer)player;
-			World worldIn = entityplayer.getEntityWorld();
-			boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-			flag = true;
-			ItemStack itemstack = ItemStack.EMPTY;
-
-			if (!itemstack.isEmpty() || flag)
-			{
-				if (itemstack.isEmpty())
-				{
-					itemstack = plasmaStack.copy();
-				}
-
-				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
-
-				if ((double)velocity >= 0.1D)
-				{
-					boolean flag1 = entityplayer.capabilities.isCreativeMode/* || (itemstack.getItem() instanceof ItemMagneticMetalRod && ((ItemMagneticMetalRod) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer))*/;
-
-					if (!worldIn.isRemote)
-					{
-						ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(itemstack.getItem() instanceof ItemFerromagneticProjectile ? itemstack.getItem() : Items.FERROMAGNETIC_PROJECILE);
-						EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer, false);
-						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
-
-						//if(this.coilGold) damage & knockback * 1.5
-
-						//if(this.plasmagun.overheat) entityarrow.setFire(100);
-
-						if (flag1 || entityplayer.capabilities.isCreativeMode)
-						{
-							projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
-						}
-
-						worldIn.spawnEntity(projectile);
-					}
-
-					worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
-
-					if (!flag1 && !entityplayer.capabilities.isCreativeMode)
-					{
-						itemstack.shrink(1);
-
-						if (itemstack.isEmpty())
-						{
-							entityplayer.inventory.deleteStack(itemstack);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	protected boolean isAmmo(ItemStack stack)
-	{
-		return stack.getItem() instanceof ItemFerromagneticProjectile && stack.getMetadata() == 9;
-	}
-
-	private ItemStack findAmmo(EntityPlayer player)
-	{
-		if (this.isAmmo(player.getHeldItem(EnumHand.OFF_HAND)))
-		{
-			return player.getHeldItem(EnumHand.OFF_HAND);
-		}
-		else if (this.isAmmo(player.getHeldItem(EnumHand.MAIN_HAND)))
-		{
-			return player.getHeldItem(EnumHand.MAIN_HAND);
-		}
-		else
-		{
-			for (int i = 0; i < player.inventory.getSizeInventory(); ++i)
-			{
-				ItemStack itemstack = player.inventory.getStackInSlot(i);
-
-				if (this.isAmmo(itemstack))
-				{
-					return itemstack;
-				}
-			}
-
-			return ItemStack.EMPTY;
-		}
-	}
-
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
-	{
-		//this.burstCounter.reset()
-		/*
-		if(!this.getComponents.contains(rollingCircuit||machinegunCircuit) {
-		 */
+	public void onPlayerStoppedUsing(ItemStack itemStackIn, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
 		if (entityLiving instanceof EntityPlayer)
 		{
-			EntityPlayer entityplayer = (EntityPlayer)entityLiving;
-			boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-			ItemStack itemstack = this.findAmmo(entityplayer);
+			EntityPlayer player = (EntityPlayer) entityLiving;
 
-			int i = this.getMaxItemUseDuration(stack) - timeLeft;
+			if (this.getMaxItemUseDuration(itemStackIn) - timeLeft <= 0) return;
 
-			if (i <= 0) return;
+			IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
 
-			if (!itemstack.isEmpty() || flag)
-			{
-				if (itemstack.isEmpty())
-				{
-					itemstack = plasmaStack.copy();
-				}
-
-				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
-				//TODO make it *by coil
-
-
-
-				if ((double)velocity >= 0.1D)
-				{
-					boolean flag1 = entityplayer.capabilities.isCreativeMode/* || (itemstack.getItem() instanceof ItemMagneticMetalRod && ((ItemMagneticMetalRod) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer))*/;
-
-					if (!worldIn.isRemote)
-					{
-						ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(itemstack.getItem() instanceof ItemFerromagneticProjectile ? itemstack.getItem() : Items.FERROMAGNETIC_PROJECILE);
-						EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer, false);
-						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
-
-						//if(this.coilGold) damage & knockback * 1.5
-
-						//if(this.plasmagun.overheat) entityarrow.setFire(100);
-
-						if (flag1 || entityplayer.capabilities.isCreativeMode)
-						{
-							projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
-						}
-
-						worldIn.spawnEntity(projectile);
-					}
-
-					worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
-
-					if (!flag1 && !entityplayer.capabilities.isCreativeMode)
-					{
-						itemstack.shrink(1);
-
-						if (itemstack.isEmpty())
-						{
-							entityplayer.inventory.deleteStack(itemstack);
+			if(modules!=null) {
+				Circuits circuit = modules.getCircuit();
+				if(circuit!=null) {
+					if(circuit==Circuits.MANUAL)
+						return;
+					if(circuit==Circuits.BURST) {
+						if(this.burstShotsTaken <= burstShotsAllowed) {
+							this.burstShotsTaken++;
+						} else {
+							return;
 						}
 					}
+					handleShoot(itemStackIn, worldIn, (EntityPlayer) entityLiving, modules);
 				}
+
 			}
 		}
+	}
+
+	@Override
+	public void onUsingTick(ItemStack itemStackIn, EntityLivingBase entityLiving, int count) {
+		if (entityLiving instanceof EntityPlayer)
+		{
+			IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
+
+			if(modules!=null) {
+				Circuits circuit = modules.getCircuit();
+				if(circuit!=null) {
+					if(circuit==Circuits.MANUAL)
+						return;
+					if(circuit==Circuits.BURST) {
+						if(this.burstShotsTaken <= burstShotsAllowed) {
+							this.burstShotsTaken++;
+						} else {
+							return;
+						}
+					}
+					handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules);
+				}
+
+			}
+		}
+	}
+
+	@Override
+	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		if(this.temperature>0)
+			this.temperature--;
+		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
+	}
+
+
+	private void handleShoot(ItemStack itemStackIn, World worldIn, EntityPlayer player, IWeaponModular modules) {
+
+		boolean flag = player.capabilities.isCreativeMode;
+
+		float velocity = 0;
+
+		if(this.lastShootTime>0) {
+
+			this.temperature += this.lastShootTime - worldIn.getTotalWorldTime() + shootTimeAdd;
+
+			this.overheat = this.temperature>overheatTemperature;
+
+			this.lastShootTime = worldIn.getTotalWorldTime();
+		}
+
+		if (!worldIn.isRemote)
+		{
+			EntityFerromagneticProjectile projectile = ((ItemFerromagneticProjectile)plasmaStack.getItem()).createProjectile(worldIn, plasmaStack, player, false);
+			velocity = EntityFerromagneticProjectile.getProjectileVelocity(plasmaStack)*modules.getCoil().getEfficiencyFraction()*modules.getRail().getEfficiencyFraction();
+			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
+
+			if(this.overheat) {
+				projectile.setOverheat(true);
+				projectile.setFire(EntityFerromagneticProjectile.overheatFireTime);
+			}
+
+			if (flag)
+			{
+				projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
+			}
+
+			worldIn.spawnEntity(projectile);
+		}
+
+		worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+
 	}
 
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
 	{
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
+
+		if( itemstack.getItem() == Items.PLASMA_GUN ) {
+			WIPTech.logger.info(itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).getModuleList());
+		}
 		playerIn.setActiveHand(handIn);
 		return new ActionResult(EnumActionResult.SUCCESS, itemstack);
 	}
@@ -208,6 +174,41 @@ public class ItemPlasmagun extends ItemBase {
 	public int getItemEnchantability()
 	{
 		return 0;
+	}
+
+	@Override
+	public ICapabilityProvider initCapabilities( ItemStack item, NBTTagCompound nbt ) {
+		if( item.getItem() == Items.PLASMA_GUN ) {
+			return new ModularWeaponProvider();
+		}
+		return null;
+	}
+
+	//doesnt work when giving it to yourself through creative/commands
+	/*@Override
+	public void onCreated(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
+		IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
+		WIPTech.logger.info(modules);
+		if(modules!=null) {
+			modules.setCircuit(Circuits.AUTO);
+			modules.setCoil(Coils.SILVER);
+			modules.setRail(Rails.SILVER);
+			modules.setScope(Scopes.LASER);
+			WIPTech.logger.info(modules.getModuleList());
+		}
+		super.onCreated(itemStackIn, worldIn, playerIn);
+	}*/
+	
+	@Override
+	public void addInformation(ItemStack itemStackIn, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
+
+		if(modules!=null && modules.getModules()>0) {
+			tooltip.add("Installed Modules:");
+			tooltip.addAll(modules.getModuleList());
+		}
+		
+		super.addInformation(itemStackIn, worldIn, tooltip, flagIn);
 	}
 
 }

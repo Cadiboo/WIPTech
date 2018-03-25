@@ -9,6 +9,7 @@ import cadiboo.wiptech.handler.network.PacketRequestUpdateCoiler;
 import cadiboo.wiptech.handler.network.PacketRequestUpdateCrusher;
 import cadiboo.wiptech.handler.network.PacketUpdateCoiler;
 import cadiboo.wiptech.handler.network.PacketUpdateCrusher;
+import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Recipes;
 import cadiboo.wiptech.world.WorldGen;
 import net.minecraftforge.fml.common.Mod;
@@ -40,7 +41,7 @@ public class WIPTech {
 	public static final Logger logger = LogManager.getLogger(Reference.ID);
 
 
-	//TODO STOP ARROW-LIKE BOUNCE OFF - Partly done, they now either go through the mob or teleport into the ground a block below it...
+	//TODO STOP ARROW-LIKE BOUNCE OFF - Partly done, they now either go through the mob or teleport into the ground a block below it... //DONE maybe reenable it
 	//TODO find out ...I forgot what I was writing
 	//TODO Find out if dammage is set to Projectiles correctly
 	//TODO STOP SPELLING DAMAGE WITH TWO Ms
@@ -51,6 +52,16 @@ public class WIPTech {
 	//TODO make Plasma Cannon!!!
 	//TODO and drill
 	//DOING get some sleep
+	//TODO redo knockback
+	//TODO redo Projectile spawning
+	//TODO capabilities
+	//TODO make EntityRailgun rideable
+	//TODO redo itemStack proj consumption coilgun
+	//TODO CAPABILITIES
+	//TODO CAPABILITIES
+	//TODO RIGHT CLICK ANVIL
+	//TODO PLACE BLOCKS
+	//TODO STOP GUI
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
@@ -61,6 +72,7 @@ public class WIPTech {
 
 		new PacketHandler();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+		Capabilities.registerCapabilities();
 
 	}
 
@@ -68,7 +80,7 @@ public class WIPTech {
 	public void init(FMLInitializationEvent event)
 	{
 		GameRegistry.registerWorldGenerator(new WorldGen(), 3);
-		Recipes.createRecipes();
+		Recipes.registerRecipes();
 	}
 
 	@EventHandler

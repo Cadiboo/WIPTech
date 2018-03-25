@@ -46,6 +46,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 @Mod.EventBusSubscriber
 public class EventSubscriber {
@@ -72,29 +73,47 @@ public class EventSubscriber {
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event)
 	{
+		
 		event.getRegistry().registerAll(cadiboo.wiptech.init.Items.ITEMS);
-
+		
+		WIPTech.logger.info("Registered Items");
+		
 		for(Block block : cadiboo.wiptech.init.Blocks.BLOCKS) {
 			event.getRegistry().register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
 		}
-		WIPTech.logger.info("Registered Items");
-
-		OreDictionary.registerOre("oreCopper", cadiboo.wiptech.init.Blocks.COPPER_ORE);
-		OreDictionary.registerOre("oreAluminium", cadiboo.wiptech.init.Blocks.ALUMINIUM_ORE);
-		OreDictionary.registerOre("oreOsmium", cadiboo.wiptech.init.Blocks.OSMIUM_ORE);
-		OreDictionary.registerOre("oreTungsten", cadiboo.wiptech.init.Blocks.TUNGSTEN_ORE);
-
-		OreDictionary.registerOre("ingotCopper", cadiboo.wiptech.init.Items.COPPER_INGOT);
-		OreDictionary.registerOre("ingotAluminium", cadiboo.wiptech.init.Items.ALUMINIUM_INGOT);
-		OreDictionary.registerOre("ingotOsmium", cadiboo.wiptech.init.Items.OSMIUM_INGOT);
-		OreDictionary.registerOre("ingotTungsten", cadiboo.wiptech.init.Items.TUNGSTEN_INGOT);
 		
-		OreDictionary.registerOre("nuggetCopper", cadiboo.wiptech.init.Items.COPPER_NUGGET);
-		OreDictionary.registerOre("nuggetAluminium", cadiboo.wiptech.init.Items.ALUMINIUM_NUGGET);
-		OreDictionary.registerOre("nuggetOsmium", cadiboo.wiptech.init.Items.OSMIUM_NUGGET);
-		OreDictionary.registerOre("nuggetTungsten", cadiboo.wiptech.init.Items.TUNGSTEN_NUGGET);
+		WIPTech.logger.info("And ItemBlocks");
+
+		
+		for(Block block : cadiboo.wiptech.init.Blocks.getOres()) {
+			WIPTech.logger.info(block.getUnlocalizedName());
+			String name = block.getUnlocalizedName().replace("_ore", "").replace("tile.", "");
+			WIPTech.logger.info(name);
+			if(name.length()>0) {
+				name = name.substring(0, 1).toUpperCase() + name.substring(1);
+				OreDictionary.registerOre("ore"+name, block);
+			}
+		}
+
+		for(Item item : cadiboo.wiptech.init.Items.getIngots()) {
+			String name = item.getUnlocalizedName().replace("_ingot", "").replace("item.", "");
+			if(name.length()>0) {
+				name = name.substring(0, 1).toUpperCase() + name.substring(1);
+				OreDictionary.registerOre("ingot"+name, item);
+			}
+		}
+
+		for(Item item : cadiboo.wiptech.init.Items.getNuggets()) {
+			String name = item.getUnlocalizedName().replace("_nugget", "").replace("item.", "");
+			if(name.length()>0) {
+				name = name.substring(0, 1).toUpperCase() + name.substring(1);
+				OreDictionary.registerOre("nugget"+name, item);
+			}
+		}
 
 		WIPTech.logger.info("Registered OreDictionary");
+		
+		
 	}
 
 	@SubscribeEvent
@@ -175,8 +194,8 @@ public class EventSubscriber {
 
 	@SubscribeEvent
 	public static void onBreak(BlockEvent.BreakEvent event) {}
-	
-	
+
+
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event)
 	{
@@ -204,9 +223,9 @@ public class EventSubscriber {
 
 		/*for (EntityEntry entity: Entities.ENTITIES)
 		{
-			
+
 		}*/
-		
+
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, new RenderEntityNapalmFactory());
 		RenderingRegistry.registerEntityRenderingHandler(EntityFerromagneticProjectile.class, new RenderEntityFerromagneticProjectileFactory());
 

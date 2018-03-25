@@ -10,5 +10,5 @@ public class BlockAluminiumOre extends BlockBase
 		super(name, material);
 		this.setOreBlock();
 	}
-	
+
 }

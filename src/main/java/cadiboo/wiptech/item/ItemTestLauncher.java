@@ -1,9 +1,11 @@
 package cadiboo.wiptech.item;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.capability.IWeaponModular;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
 import cadiboo.wiptech.handler.GuiHandler;
+import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.provider.TestLauncherProvider;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,12 +23,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemTestLauncher extends ItemBase {
+
+	private boolean overheat;
+	private long lastShootTime;
+	private long secondlastShootTime;
+	private long thirdlastShootTime;
+	private long fourthlastShootTime;
+
 	public ItemTestLauncher(String name)
 	{
 		super(name);
 		this.maxStackSize = 1;
 		setMaxDamage(0);
 		setCreativeTab(CreativeTabs.COMBAT);
+		this.overheat = false;
+		this.lastShootTime = 0;
+		this.secondlastShootTime = lastShootTime;
+		this.thirdlastShootTime = secondlastShootTime;
+		this.fourthlastShootTime = thirdlastShootTime;
 	}
 
 	public int getMaxItemUseDuration(ItemStack stack)
@@ -57,22 +71,37 @@ public class ItemTestLauncher extends ItemBase {
 
 				float velocity = 0;
 
+				IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
+
 				boolean flag = player.capabilities.isCreativeMode || (ammoStack.getItem() instanceof ItemFerromagneticProjectile && ((ItemFerromagneticProjectile) ammoStack.getItem()).isInfinite(ammoStack, itemStackIn, player));
+
+				this.fourthlastShootTime = this.thirdlastShootTime;
+				this.thirdlastShootTime = this.secondlastShootTime;
+				this.secondlastShootTime = this.lastShootTime;
+				this.lastShootTime = worldIn.getTotalWorldTime();
+
+				if((this.lastShootTime - this.secondlastShootTime + this.thirdlastShootTime - fourthlastShootTime)<5) {
+					this.overheat = true;
+				} else {
+					this.overheat = false;
+				}
+
 
 				if (!worldIn.isRemote)
 				{
-					//IItemHandler capability = itemStackIn.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-					/*if(capability!=null) {
-
-					}*/
 
 					ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(ammoStack.getItem() instanceof ItemFerromagneticProjectile ? ammoStack.getItem() : Items.FERROMAGNETIC_PROJECILE);
 					EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, ammoStack, player, false);
-					velocity = EntityFerromagneticProjectile.getProjectileVelocity(ammoStack);
+					velocity = (EntityFerromagneticProjectile.getProjectileVelocity(ammoStack))*(modules.getCoil().getEfficiencyFraction());
+					WIPTech.logger.info(velocity);
+					WIPTech.logger.info(EntityFerromagneticProjectile.getProjectileVelocity(ammoStack));
+					WIPTech.logger.info(modules.getCoil().getEfficiencyFraction());
 					projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
 
-					//if(this.railgun.overheat) entityarrow.setFire(100);
+					if(this.overheat) {
+						projectile.setOverheat(true);
+						projectile.setFire(EntityFerromagneticProjectile.overheatFireTime);
+					}
 
 					if (flag)
 					{
@@ -101,12 +130,13 @@ public class ItemTestLauncher extends ItemBase {
 	{
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 
-		if (!worldIn.isRemote && playerIn.isSneaking()){
-			//playerIn.openGui(WIPTech.instance, GuiHandler.TEST_LAUNCHER, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
-			playerIn.openGui(WIPTech.instance, GuiHandler.TEST_LAUNCHER, worldIn, 0, 0, 0);
-			//LogHelper.info("Succesfully opened GUI");
-		}
+		if( itemstack.getItem() == Items.TEST_LAUNCHER ) {
+			WIPTech.logger.info(itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).getModuleList());
 
+			if (!worldIn.isRemote && playerIn.isSneaking()){
+				playerIn.openGui(WIPTech.instance, GuiHandler.TEST_LAUNCHER, worldIn, 0, 0, 0);
+			}
+		}
 		playerIn.setActiveHand(handIn);
 		return new ActionResult(EnumActionResult.SUCCESS, itemstack);
 	}

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -15,25 +16,29 @@ public class Recipes
 	private static ArrayList<ArrayList> crushRecipes = new ArrayList();
 	private static ArrayList<ArrayList> hammerRecipes = new ArrayList();
 	private static ArrayList<ArrayList> coilRecipes = new ArrayList();
+	
+	private static final Block AIR = net.minecraft.init.Blocks.AIR;
 
-	public static void createRecipes()
+	public static void registerRecipes()
 	{
 		addCrushRecipes();
 		addHammerRecipes();
 		addCoilRecipes();
 		WIPTech.logger.info("Registered Processing Recipes");
 
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.COPPER_ORE, new ItemStack(cadiboo.wiptech.init.Items.COPPER_INGOT, 1), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.ALUMINIUM_ORE, new ItemStack(cadiboo.wiptech.init.Items.ALUMINIUM_INGOT, 1), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.TUNGSTEN_ORE, new ItemStack(cadiboo.wiptech.init.Items.TUNGSTEN_INGOT, 1), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Blocks.OSMIUM_ORE, new ItemStack(cadiboo.wiptech.init.Items.OSMIUM_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(Blocks.COPPER_ORE, new ItemStack(Items.COPPER_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(Blocks.TIN_ORE, new ItemStack(Items.TIN_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(Blocks.ALUMINIUM_ORE, new ItemStack(Items.ALUMINIUM_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(Blocks.SILVER_ORE, new ItemStack(Items.SILVER_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(Blocks.TUNGSTEN_ORE, new ItemStack(Items.TUNGSTEN_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(Blocks.OSMIUM_ORE, new ItemStack(Items.OSMIUM_INGOT, 1), 0.0F);
 		WIPTech.logger.info("Registered Ore Smelting");
 
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.ALUMINA, new ItemStack(cadiboo.wiptech.init.Items.ALUMINIUM_INGOT, 2), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.GALLIUM, new ItemStack(cadiboo.wiptech.init.Items.GALLIUM_INGOT, 2), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.IRON_OXIDE, new ItemStack(net.minecraft.init.Items.IRON_INGOT, 2), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.SILICA, new ItemStack(cadiboo.wiptech.init.Items.SILICON, 2), 0.0F);
-		GameRegistry.addSmelting(cadiboo.wiptech.init.Items.TITANIA, new ItemStack(cadiboo.wiptech.init.Items.TITANIUM_INGOT, 2), 0.0F);
+		GameRegistry.addSmelting(Items.ALUMINA, new ItemStack(Items.ALUMINIUM_INGOT, 2), 0.0F);
+		GameRegistry.addSmelting(Items.GALLIUM, new ItemStack(Items.GALLIUM_INGOT, 2), 0.0F);
+		GameRegistry.addSmelting(Items.IRON_OXIDE, new ItemStack(net.minecraft.init.Items.IRON_INGOT, 2), 0.0F);
+		GameRegistry.addSmelting(Items.SILICA, new ItemStack(Items.SILICON, 2), 0.0F);
+		GameRegistry.addSmelting(Items.TITANIA, new ItemStack(Items.TITANIUM_INGOT, 2), 0.0F);
 		WIPTech.logger.info("Registered Item Smelting");
 	}
 
@@ -41,79 +46,79 @@ public class Recipes
 		addHammerRecipe(
 				new ItemStack(Items.COPPER_INGOT), 
 				new ItemStack(Blocks.COPPER_RAIL), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
 				20);
 
 		addHammerRecipe(
 				new ItemStack(Items.COPPER_NUGGET), 
 				new ItemStack(Blocks.COPPER_WIRE), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
 				20);
 
 		addHammerRecipe(
 				new ItemStack((Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"))), 
 				new ItemStack(Blocks.GOLD_RAIL), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
 				20);
 
 		addHammerRecipe(
 				new ItemStack((Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"))), 
 				new ItemStack(Blocks.GOLD_WIRE), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
 				20);
 
 		addHammerRecipe(
 				new ItemStack((Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "iron_ingot"))), 
 				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 0), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
 				20);
 		addHammerRecipe(
 				new ItemStack(Items.OSMIUM_INGOT), 
 				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 1), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
 				20);
 		addHammerRecipe(
 				new ItemStack(Items.TUNGSTEN_INGOT), 
 				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 2), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
 				20);
 		for(int i=0; i<5+1; i++) {
 			addHammerRecipe(
 					new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, i),
 					new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, i+3), 
-					new ItemStack(net.minecraft.init.Blocks.AIR), 
-					new ItemStack(net.minecraft.init.Blocks.AIR), 
-					new ItemStack(net.minecraft.init.Blocks.AIR), 
-					new ItemStack(net.minecraft.init.Blocks.AIR), 
-					new ItemStack(net.minecraft.init.Blocks.AIR), 
+					new ItemStack(AIR), 
+					new ItemStack(AIR), 
+					new ItemStack(AIR), 
+					new ItemStack(AIR), 
+					new ItemStack(AIR), 
 					20);
 		}
 	}
@@ -154,11 +159,11 @@ public class Recipes
 		addCrushRecipe(
 				new ItemStack(net.minecraft.init.Blocks.SAND), 
 				new ItemStack(Items.SILICON), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
-				new ItemStack(net.minecraft.init.Blocks.AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
+				new ItemStack(AIR), 
 				20);
 	}
 

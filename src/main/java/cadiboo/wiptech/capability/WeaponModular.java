@@ -1,71 +1,125 @@
 package cadiboo.wiptech.capability;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.handler.EnumHandler;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.*;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class WeaponModular implements IWeaponModules, INBTSerializable<NBTTagCompound>{
+public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCompound>{
 
-	private EnumHandler.WeaponModules.Circuits circuit;
-	private EnumHandler.WeaponModules.Coils coil;
-	private EnumHandler.WeaponModules.Scopes scope;
-	
+	private Circuits circuit;
+	private Coils coil;
+	private Scopes scope;
+	private Rails rail;
+
+	public WeaponModular() {
+	}
+
+	@Override
+	public List <? extends EnumHandler.WeaponModules> getModuleList() {
+		List modules = new ArrayList();
+
+		if(this.circuit!=null)
+			modules.add("circuit: "+this.circuit);
+		if(this.coil!=null)
+			modules.add("coil: "+this.coil);
+		if(this.scope!=null)
+			modules.add("scope: "+this.scope);
+		if(this.rail!=null)
+			modules.add("rail: "+this.rail);
+
+		return modules;
+	}
+
 	@Override
 	public int getModules() {
-		// TODO Auto-generated method stub
-		return 0;
+		return getModuleList().size(); //TODO make this its own function and therefore less processor intensive 
 	}
 
 	@Override
-	public void setCoil(Coils coil) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Coils getCoil() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setCircuit(Circuits circuit) {
-		// TODO Auto-generated method stub
-		
+	public WeaponModular setCircuit(Circuits circuit) {
+		this.circuit = circuit;
+		return this;
 	}
 
 	@Override
 	public Circuits getCircuit() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.circuit;
 	}
+
+	@Override
+	public WeaponModular setCoil(Coils coil) {
+		this.coil = coil;
+		return this;
+	}
+
+	@Override
+	public Coils getCoil() {
+		return this.coil;
+	}
+
+	@Override
+	public WeaponModular setScope(Scopes scope) {
+		this.scope = scope;
+		return this;
+	}
+
+	@Override
+	public Scopes getScope() {
+		return this.scope;
+	}
+
+	public WeaponModular setRail(Rails rail) {
+		this.rail = rail;
+		return this;
+	}
+
+	@Override
+	public Rails getRail() {
+		return this.rail;
+	}
+
 
 	@Override
 	public NBTTagCompound serializeNBT()
 	{
-		NBTTagList nbtTagList = new NBTTagList();
-		NBTTagCompound compund = new NBTTagCompound();
-
-		compund.setInteger("circuit", this.circuit.getID());
-		compund.setInteger("coil", this.coil.getID());
-		compund.setInteger("scope", this.scope.getID());
-
-		nbtTagList.appendTag(compund);
-
 		NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setTag("Modules", nbtTagList);
+		/*
+		WIPTech.logger.info("serializeNBT: ");
+		WIPTech.logger.info(this.circuit);
+		WIPTech.logger.info(this.coil);
+		WIPTech.logger.info(this.scope);
+		 */
+		if(this.circuit!=null)
+			nbt.setInteger("circuit", this.circuit.getID());
+		if(this.coil!=null)
+			nbt.setInteger("coil", this.coil.getID());
+		if(this.scope!=null)
+			nbt.setInteger("scope", this.scope.getID());
+		if(this.rail!=null)
+			nbt.setInteger("rail", this.rail.getID());
+
 		return nbt;
 	}
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt)
 	{
-		WIPTech.logger.info(nbt);
+		//WIPTech.logger.info("deserializeNBT: "+nbt);
+		if(nbt.hasKey("circuit"))
+			this.circuit = Circuits.byID(nbt.getInteger("circuit"));
+		if(nbt.hasKey("coil"))
+			this.coil = Coils.byID(nbt.getInteger("coil"));
+		if(nbt.hasKey("scope"))
+			this.scope = Scopes.byID(nbt.getInteger("scope"));
+		if(nbt.hasKey("rail"))
+			this.rail = Rails.byID(nbt.getInteger("rail"));
 		/*nbt.getTagTypeName(10).get
 		NBTTagList tagList = nbt.getTagList("Modules", Constants.NBT.TAG_COMPOUND);
 		WIPTech.logger.info(tagList);

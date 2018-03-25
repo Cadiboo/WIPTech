@@ -35,13 +35,17 @@ public class BlockBase extends Block {
 	private Block isOreBlock;
 	public Block setOreBlock()		{
 		this.setHarvestLevel("Stone", 3);
+		this.setHardness(3.0F);
 		return isOreBlock = this;
 	}
 	public final boolean isOreBlock() {	return this == isOreBlock;	}
 
 	//Tile Entity
 	private Block isTileEntity;
-	public Block setTileEntity()		{	return isTileEntity = this;	}
+	public Block setTileEntity()	{
+		this.setHardness(4.0F);
+		return isTileEntity = this;
+	}
 	public boolean isTileEntity()	{	return this == isTileEntity;	}
 
 	//Non-Solid Block

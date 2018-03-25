@@ -54,7 +54,14 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableCull();
 
-		customRendering(entity, x, y, z, entityYaw, partialTicks);
+		//Direction that its heading
+		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
+		GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
+
+		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
+		// rotate it into the direction we threw it
+		//GlStateManager.rotate(entity.rotationYaw, 0f, 1f, 0f);
+		//GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
 
 		// arrow shake
 		float renderShake = (float)entity.arrowShake - partialTicks;
@@ -66,16 +73,17 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		}
 
 		if(entity.getAmmoId()==9) {
-
-			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_field.png"));
 			double scale = 0.25;
-			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE); //maybe change GL_ONE to src alpha OR 3 one minus src color
-			drawQuad(0, 1, 0, 1, 0.25, 0.25, 0.25, 0.25);
-			GlStateManager.disableBlend();
 
 			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_core.png"));
-			drawQuad(0, 1, 0, 1, 0.25, 0.25, 0.25, 0.25);
+			drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
+
+			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_field.png"));
+			GlStateManager.enableBlend();
+			GlStateManager.blendFunc(GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE); //maybe change GL_ONE to src alpha OR 3 one minus src color
+			drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
+			GlStateManager.disableBlend();
+
 			GlStateManager.popMatrix();
 
 			return;
@@ -156,6 +164,8 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 					minV = midV-(height/(8F*multiplier));
 					maxV = midV+(height/(8F*multiplier));
 
+					if(entity.overheat)
+						GlStateManager.color(1F, 0, 0);
 
 					drawQuad(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);
 
@@ -169,36 +179,10 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		GlStateManager.popMatrix();
 	}
 
-	/** If you just want to rotate it or something but the overall "have it heading towards the target" should stay the same */
-	protected void customCustomRendering(T entity, double x, double y, double z, float entityYaw, float partialTicks) {}
-
 	@Nonnull
 	@Override
 	protected ResourceLocation getEntityTexture(@Nonnull T entity) {
 		return TextureMap.LOCATION_MISSING_TEXTURE;
-	}
-
-	public void customRendering(T entity, double x, double y, double z, float entityYaw, float partialTicks) {
-
-		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
-
-		// rotate it into the direction we threw it
-		GlStateManager.rotate(entity.rotationYaw, 0f, 1f, 0f);
-		GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
-
-		// adjust "stuck" depth
-		/*if(entity.inGround) {
-			GlStateManager.translate(0, 0, -entity.getStuckDepth());
-		}
-
-		customCustomRendering(entity, x, y, z, entityYaw, partialTicks);
-		 */
-
-		// rotate it so it faces forward
-		//GL11.glRotatef(-90f, 0f, 1f, 0f);
-
-		// rotate the projectile it so it faces upwards
-		//GL11.glRotatef(-45, 0f, 0f, 1f);
 	}
 
 	private void drawQuad (float minU, float maxU, float minV, float maxV, double width, double height, double length, double scale) {
@@ -215,7 +199,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		maxV = 1;*/
 		double hlfU = minU + (maxU-minU)/2;
 		double hlfV = minV + (maxV-minV)/2;
-		
+
 		double centre = 0d;
 
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);

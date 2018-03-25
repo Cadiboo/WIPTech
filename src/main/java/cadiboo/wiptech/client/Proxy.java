@@ -3,13 +3,18 @@ package cadiboo.wiptech.client;
 import cadiboo.wiptech.IProxy;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockBase;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Rails;
 import cadiboo.wiptech.init.Blocks;
+import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class Proxy implements IProxy {
 
@@ -28,7 +33,7 @@ public class Proxy implements IProxy {
 		@Override
 		public ItemStack getTabIconItem()
 		{
-			return new ItemStack(Blocks.COPPER_ORE);
+			return new ItemStack(Items.PLASMA_GUN);
 		}
 
 		@Override
@@ -36,6 +41,15 @@ public class Proxy implements IProxy {
 		{
 			return true;
 		}
+		
+		@Override
+		public void displayAllRelevantItems(NonNullList<ItemStack> list) {
+			ItemStack plasmaGun = new ItemStack(Items.PLASMA_GUN);
+			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.SILVER).setRail(Rails.SILVER).setCircuit(Circuits.AUTO);
+			list.add(plasmaGun);
+			super.displayAllRelevantItems(list);
+		}
+		
 	}.setBackgroundImageName("item_search.png");
 
 	@Override

@@ -9,6 +9,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +26,11 @@ import net.minecraft.world.World;
 public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 	private static final DataParameter<Integer> AMMO_ID = EntityDataManager.<Integer>createKey(EntityFerromagneticProjectile.class, DataSerializers.VARINT);
-	
+
+	public static boolean overheat;
+
+	public static final int overheatFireTime = 5;
+
 	@Override
 	protected void entityInit()
 	{
@@ -102,7 +107,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 				break;
 			}
 
-			if (this.isBurning())
+			if (this.overheat)
 			{
 				entity.setFire(5);
 			}
@@ -169,11 +174,11 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 				this.rotationYaw += 180.0F;
 				this.prevRotationYaw += 180.0F;
 				this.ticksInAir = 0;
-				*/
+				 */
 
 				//WHY DO THIS EVER????
 				//TODO Maybe remove this completely
-				
+
 				if (!this.world.isRemote && this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ < 0.0010000000474974513D)
 				{
 					if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED)
@@ -191,7 +196,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 				this.setDead();
 				return;
 			}
-			
+
 			BlockPos blockpos = raytraceResultIn.getBlockPos();
 			this.xTile = blockpos.getX();
 			this.yTile = blockpos.getY();
@@ -208,6 +213,18 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			this.posZ -= this.motionZ / (double)f2 * 0.05000000074505806D;
 			this.playSound(SoundEvents.BLOCK_STONE_BREAK, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 			this.inGround = true;
+
+
+			if(this.isPlasma() || this.overheat || this.isBurning()) {
+				if (iblockstate.getMaterial() == Material.ICE || iblockstate.getMaterial() == Material.PACKED_ICE)
+				{
+					this.world.setBlockState(blockpos, Blocks.WATER.getDefaultState());
+				}
+				if (iblockstate.getMaterial() == Material.SNOW)
+				{
+					this.world.setBlockToAir(blockpos);
+				}
+			}
 
 			if (iblockstate.getMaterial() != Material.AIR)
 			{
@@ -533,6 +550,10 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			return values()[ordinal];
 		}
+	}
+
+	public void setOverheat(boolean overheat) {
+		this.overheat = overheat;
 	}
 
 }

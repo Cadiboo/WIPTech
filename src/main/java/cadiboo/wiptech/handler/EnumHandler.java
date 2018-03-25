@@ -18,7 +18,7 @@ public class EnumHandler
 			string[j] = new ResourceLocation(Reference.ID, FerromagneticProjectiles.values()[j].getName());
 		}
 		//TODO TOFINDOUT this is never called, why did I make it?
-		
+
 		return string;
 	}
 
@@ -33,7 +33,7 @@ public class EnumHandler
 		OSMIUM_SMALL(7, "osmium_small", TextFormatting.DARK_BLUE),
 		TUNGSTEN_SMALL(8,"tungsten_small", TextFormatting.GRAY);//,
 		//PLASMA(9,"plasma", TextFormatting.GOLD); //nano
-		
+
 		private int ID;
 		private String name;
 		private TextFormatting chatColor;
@@ -48,7 +48,7 @@ public class EnumHandler
 		public String getName() {
 			return this.name;
 		}
-		
+
 		public String getUnlocalizedName() {
 			return this.getName();
 		}
@@ -73,14 +73,75 @@ public class EnumHandler
 			return getID();
 		}
 	}
-	
+
 	public static final class WeaponModules {
-		
-		public static enum Circuits implements IStringSerializable {
+
+		public static enum Rails implements IStringSerializable, IWeaponModule {
+
+			/*
+			Material IACS (International Annealed Copper Standard)
+			Ranking	Metal	% Conductivity*
+			1	Silver (Pure)	105%
+			2	Copper	100%
+			3	Gold (Pure)	70%
+			4	Aluminum	61%
+			5	Brass	28%
+			6	Zinc	27%
+			7	Nickel	22%
+			8	Iron (Pure)	17%
+			9	Tin	15%
+			10	Phosphor Bronze	15%
+			11	Steel (Stainless included)	3-15%
+			12	Lead (Pure)	7%
+			13	Nickel Aluminum Bronze	7%
+			 */
+
+			SILVER		(5, "silver",	105,	TextFormatting.WHITE),
+			COPPER		(4, "copper",	100,	TextFormatting.RED),
+			GOLD			(3, "gold",		70, TextFormatting.GOLD),
+			ALUMINIUM	(2, "aluminium",	61, TextFormatting.GRAY),
+			IRON			(1, "iron",		17, TextFormatting.GRAY),
+			TIN			(0, "tin",		15, TextFormatting.WHITE);
+
+			private int ID;
+			private String name;
+			private TextFormatting chatColor;
+			private int efficiency;
+
+			private Rails(int ID, String name, int efficiency, TextFormatting chatColorIn) {
+				this.ID = ID;
+				this.name = name;
+				this.efficiency = efficiency;
+				this.chatColor = chatColorIn;
+			}
+
+			@Override
+			public String getName() {
+				return this.name;
+			}
+
+			public int getID() {
+				return ID;
+			}
+
+			public static Rails byID(int i) {
+				return Rails.values()[i];
+			}
+
+			public float getEfficiencyFraction() {
+				return (float)getEfficiencyPercentage()/100F;
+			}
+
+			public int getEfficiencyPercentage() {
+				return this.efficiency;
+			}
+		}
+
+		public static enum Circuits implements IStringSerializable, IWeaponModule {
 			MANUAL(0, "manual", TextFormatting.WHITE),
 			BURST(1, "burst", TextFormatting.RED),
 			AUTO(2,"auto", TextFormatting.DARK_RED);
-			
+
 			private int ID;
 			private String name;
 			private TextFormatting chatColor;
@@ -95,34 +156,21 @@ public class EnumHandler
 			public String getName() {
 				return this.name;
 			}
-			
-			public String getUnlocalizedName() {
-				return this.getName();
-			}
 
 			public int getID() {
 				return ID;
 			}
 
-			@Override
-			public String toString() {
-				return getName();
-			}
-
-			public static Circuits byMetadata(int i) {
+			public static Circuits byID(int i) {
 				return Circuits.values()[i];
 			}
-
-			public int getMetadata() {
-				return getID();
-			}
 		}
-		
-		public static enum Scopes implements IStringSerializable {
-			MANUAL(0, "manual", TextFormatting.WHITE),
-			BURST(1, "burst", TextFormatting.RED),
-			AUTO(2,"auto", TextFormatting.DARK_RED);
-			
+
+		public static enum Scopes implements IStringSerializable, IWeaponModule {
+			ACOG(0, "acog", TextFormatting.WHITE),
+			ZOOM(1, "zoom", TextFormatting.GRAY),
+			LASER(2,"laser", TextFormatting.RED);
+
 			private int ID;
 			private String name;
 			private TextFormatting chatColor;
@@ -137,41 +185,52 @@ public class EnumHandler
 			public String getName() {
 				return this.name;
 			}
-			
-			public String getUnlocalizedName() {
-				return this.getName();
-			}
 
 			public int getID() {
 				return ID;
 			}
 
-			@Override
-			public String toString() {
-				return getName();
-			}
-
-			public static Scopes byMetadata(int i) {
+			public static Scopes byID(int i) {
 				return Scopes.values()[i];
 			}
-
-			public int getMetadata() {
-				return getID();
-			}
 		}
-		
-		public static enum Coils implements IStringSerializable {
-			MANUAL(0, "manual", TextFormatting.WHITE),
-			BURST(1, "burst", TextFormatting.RED),
-			AUTO(2,"auto", TextFormatting.DARK_RED);
-			
+
+		public static enum Coils implements IStringSerializable, IWeaponModule {
+
+			/*
+			Material IACS (International Annealed Copper Standard)
+			Ranking	Metal	% Conductivity*
+			1	Silver (Pure)	105%
+			2	Copper	100%
+			3	Gold (Pure)	70%
+			4	Aluminum	61%
+			5	Brass	28%
+			6	Zinc	27%
+			7	Nickel	22%
+			8	Iron (Pure)	17%
+			9	Tin	15%
+			10	Phosphor Bronze	15%
+			11	Steel (Stainless included)	3-15%
+			12	Lead (Pure)	7%
+			13	Nickel Aluminum Bronze	7%
+			 */
+
+			SILVER		(5, "silver",	105,	TextFormatting.WHITE),
+			COPPER		(4, "copper",	100,	TextFormatting.RED),
+			GOLD			(3, "gold",		70, TextFormatting.GOLD),
+			ALUMINIUM	(2, "aluminium",	61, TextFormatting.GRAY),
+			IRON			(1, "iron",		17, TextFormatting.GRAY),
+			TIN			(0, "tin",		15, TextFormatting.WHITE);
+
 			private int ID;
 			private String name;
 			private TextFormatting chatColor;
+			private int efficiency;
 
-			private Coils(int ID, String name, TextFormatting chatColorIn) {
+			private Coils(int ID, String name, int efficiency, TextFormatting chatColorIn) {
 				this.ID = ID;
 				this.name = name;
+				this.efficiency = efficiency;
 				this.chatColor = chatColorIn;
 			}
 
@@ -179,30 +238,25 @@ public class EnumHandler
 			public String getName() {
 				return this.name;
 			}
-			
-			public String getUnlocalizedName() {
-				return this.getName();
-			}
 
 			public int getID() {
 				return ID;
 			}
 
-			@Override
-			public String toString() {
-				return getName();
-			}
-
-			public static Coils byMetadata(int i) {
+			public static Coils byID(int i) {
 				return Coils.values()[i];
 			}
 
-			public int getMetadata() {
-				return getID();
+			public float getEfficiencyFraction() {
+				return (float)getEfficiencyPercentage()/100F;
 			}
+
+			public int getEfficiencyPercentage() {
+				return this.efficiency;
+			}
+
 		}
-		
-		
+
 	}
 
 }
