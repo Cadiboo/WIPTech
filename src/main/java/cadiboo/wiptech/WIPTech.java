@@ -41,27 +41,32 @@ public class WIPTech {
 	public static final Logger logger = LogManager.getLogger(Reference.ID);
 
 
-	//TODO STOP ARROW-LIKE BOUNCE OFF - Partly done, they now either go through the mob or teleport into the ground a block below it... //DONE maybe reenable it
+	//HALF DONE STOP ARROW-LIKE BOUNCE OFF - Partly done, they now either go through the mob or teleport into the ground a block below it... //DONE maybe reenable it
 	//TODO find out ...I forgot what I was writing
 	//TODO Find out if dammage is set to Projectiles correctly
 	//TODO STOP SPELLING DAMAGE WITH TWO Ms
 	//TODO does /giving myself a Plasma still throw an error?
-	//TODO Implement my Modular capability
+	//DONE Implement my Modular capability
 	//TODO Maybe implement a custom renderer for it? so that you can see what augments you have on it
-	//TODO Def make it display the modules/augments in the ItemStack's Tooltip
-	//TODO make Plasma Cannon!!!
+	//HALF DONE Def make it display the modules/augments in the ItemStack's Tooltip
+	//HALF DONE make Plasma Cannon!!!
 	//TODO and drill
 	//DOING get some sleep
 	//TODO redo knockback
 	//TODO redo Projectile spawning
-	//TODO capabilities
+	//DONE capabilities
 	//TODO make EntityRailgun rideable
 	//TODO redo itemStack proj consumption coilgun
-	//TODO CAPABILITIES
-	//TODO CAPABILITIES
+	//DONE CAPABILITIES
+	//DONE CAPABILITIES
 	//TODO RIGHT CLICK ANVIL
 	//TODO PLACE BLOCKS
 	//TODO STOP GUI
+	//TODO why does overheat do this?
+	//TODO redo coil speed - efficiency != pure power
+	//TODO something else thats pretty old cant rememer now
+	//TODO capacitors
+	//TODO FE
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)

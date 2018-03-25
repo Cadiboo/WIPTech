@@ -42,12 +42,12 @@ public class EntityProjectileBase extends EntityArrow {
 		public boolean apply(@Nullable Entity targetEntity)
 		{
 			//WIPTech.logger.info("Predicate Apply for "+targetEntity);
-			
+
 			if(targetEntity.hurtResistantTime>0) {
 				targetEntity.hurtResistantTime = 0;
 				return false;
 			}
-			
+
 			if(!targetEntity.isNonBoss())
 			{
 				/*if(targetEntity instanceof EntityDragon)
@@ -65,10 +65,10 @@ public class EntityProjectileBase extends EntityArrow {
 				}*/
 				return true;
 			}
-			
+
 			if(targetEntity instanceof EntityEnderman)
 				return true;
-			
+
 			return targetEntity.canBeCollidedWith();
 		}
 	});
@@ -356,38 +356,40 @@ public class EntityProjectileBase extends EntityArrow {
 		this.motionY *= (double)f1;
 		this.motionZ *= (double)f1;
 
-		if (!this.hasNoGravity())
-		{
-			this.motionY -= 0.05000000074505806D;
-		}
+		if(!this.hasNoGravity())
+			updateGravity();
 
 		this.setPosition(this.posX, this.posY, this.posZ);
 		this.doBlockCollisions();
 	}
 
+	protected void updateGravity() {
+		this.motionY -= 0.05000000074505806D;
+	}
+
 	private void updateInGround(IBlockState state) {
 		Block block = state.getBlock();
-	    int meta = block.getMetaFromState(state);
+		int meta = block.getMetaFromState(state);
 
-	    // check if it's still the same block or if it is already within tolerance of another hitbox
-	    // second part prevents it from falling when the block changes but the hitbox does nots
-	    if((block == this.inTile && meta == this.inData) || this.getEntityWorld().collidesWithAnyBlock(ON_BLOCK_AABB.offset(this.getPositionVector()))) {
-	      ++this.ticksInGround;
+		// check if it's still the same block or if it is already within tolerance of another hitbox
+		// second part prevents it from falling when the block changes but the hitbox does nots
+		if((block == this.inTile && meta == this.inData) || this.getEntityWorld().collidesWithAnyBlock(ON_BLOCK_AABB.offset(this.getPositionVector()))) {
+			++this.ticksInGround;
 
-	      if(this.ticksInGround >= 1200) {
-	        this.setDead();
-	      }
-	    }
-	    else {
-	      this.inGround = false;
-	      this.motionX *= this.rand.nextFloat() * 0.2F;
-	      this.motionY *= this.rand.nextFloat() * 0.2F;
-	      this.motionZ *= this.rand.nextFloat() * 0.2F;
-	      this.ticksInGround = 0;
-	      this.ticksInAir = 0;
-	    }
+			if(this.ticksInGround >= 1200) {
+				this.setDead();
+			}
+		}
+		else {
+			this.inGround = false;
+			this.motionX *= this.rand.nextFloat() * 0.2F;
+			this.motionY *= this.rand.nextFloat() * 0.2F;
+			this.motionZ *= this.rand.nextFloat() * 0.2F;
+			this.ticksInGround = 0;
+			this.ticksInAir = 0;
+		}
 
-	    ++this.timeInGround;
+		++this.timeInGround;
 	}
 
 	/**

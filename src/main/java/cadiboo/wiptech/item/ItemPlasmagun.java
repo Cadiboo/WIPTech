@@ -31,6 +31,7 @@ public class ItemPlasmagun extends ItemBase {
 	private static final long shootTimeAdd = 5;
 	private static final int burstShotsAllowed = 5;
 	private static final double overheatTemperature = 10;
+	private static final int circuitAutoRepeats = 3;
 	private static ItemStack plasmaStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 9); //Plasma
 
 	private int burstShotsTaken;
@@ -73,15 +74,8 @@ public class ItemPlasmagun extends ItemBase {
 			if(modules!=null) {
 				Circuits circuit = modules.getCircuit();
 				if(circuit!=null) {
-					if(circuit==Circuits.MANUAL)
+					if(circuit!=Circuits.MANUAL)
 						return;
-					if(circuit==Circuits.BURST) {
-						if(this.burstShotsTaken <= burstShotsAllowed) {
-							this.burstShotsTaken++;
-						} else {
-							return;
-						}
-					}
 					handleShoot(itemStackIn, worldIn, (EntityPlayer) entityLiving, modules);
 				}
 
@@ -108,6 +102,11 @@ public class ItemPlasmagun extends ItemBase {
 						}
 					}
 					handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules);
+					if(circuit==Circuits.AUTO) {
+						for(int i = 0; i<circuitAutoRepeats; i++) {
+							handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules);
+						}
+					}
 				}
 
 			}
@@ -120,7 +119,6 @@ public class ItemPlasmagun extends ItemBase {
 			this.temperature--;
 		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 	}
-
 
 	private void handleShoot(ItemStack itemStackIn, World worldIn, EntityPlayer player, IWeaponModular modules) {
 
@@ -139,7 +137,7 @@ public class ItemPlasmagun extends ItemBase {
 
 		if (!worldIn.isRemote)
 		{
-			EntityFerromagneticProjectile projectile = ((ItemFerromagneticProjectile)plasmaStack.getItem()).createProjectile(worldIn, plasmaStack, player, false);
+			EntityFerromagneticProjectile projectile = ((ItemFerromagneticProjectile)plasmaStack.getItem()).createProjectile(worldIn, plasmaStack, player, true);
 			velocity = EntityFerromagneticProjectile.getProjectileVelocity(plasmaStack)*modules.getCoil().getEfficiencyFraction()*modules.getRail().getEfficiencyFraction();
 			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
 
@@ -165,6 +163,7 @@ public class ItemPlasmagun extends ItemBase {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 
 		if( itemstack.getItem() == Items.PLASMA_GUN ) {
+			this.burstShotsTaken = 0;
 			WIPTech.logger.info(itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).getModuleList());
 		}
 		playerIn.setActiveHand(handIn);

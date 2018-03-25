@@ -30,6 +30,14 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	public static boolean overheat;
 
 	public static final int overheatFireTime = 5;
+	
+	@Override
+	protected void updateGravity() {
+		if(this.isPlasma())
+			this.motionY -= 0.00000000074505806D;
+		else
+			super.updateGravity();
+	}
 
 	@Override
 	protected void entityInit()
@@ -394,7 +402,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			break;
 		case 3: //plasma
-			velocity = 20; //some fucking crazy amount because of how light it is
+			velocity = 7.5F; //some fucking crazy amount because of how light it is //yenah 20 is way over the top
 
 		}
 		WIPTech.logger.info("Velocity for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+velocity);
