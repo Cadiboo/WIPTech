@@ -139,8 +139,11 @@ public class EnumHandler
 
 		public static enum Circuits implements IStringSerializable, IWeaponModule {
 			MANUAL(0, "manual", TextFormatting.WHITE),
-			BURST(1, "burst", TextFormatting.RED),
-			AUTO(2,"auto", TextFormatting.DARK_RED);
+			BURST3(1, "burst3", TextFormatting.RED),
+			BURST5(2, "burst5", TextFormatting.RED),
+			BURST10(3, "burst10", TextFormatting.RED),
+			AUTO(4,"auto", TextFormatting.DARK_RED),
+			OVERCLOCKED(5,"overclocked", TextFormatting.AQUA);
 
 			private int ID;
 			private String name;

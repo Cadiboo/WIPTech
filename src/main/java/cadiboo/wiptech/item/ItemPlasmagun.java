@@ -1,6 +1,7 @@
 package cadiboo.wiptech.item;
 
 import java.util.List;
+import java.util.Random;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.IWeaponModular;
@@ -30,11 +31,14 @@ public class ItemPlasmagun extends ItemBase {
 
 	private static final long shootTimeAdd = 5;
 	private static final int burstShotsAllowed = 5;
+	private static final float shootChance = 1.5F; //0 = never; 1 = always; 2 = half the time; 3 = 1/3rd the time
+	private static final float burstShootChance = 2F;
 	private static final double overheatTemperature = 10;
-	private static final int circuitAutoRepeats = 3;
+	private static final int circuitOverclockedRepeats = 3;
 	private static ItemStack plasmaStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 9); //Plasma
 
 	private int burstShotsTaken;
+	private int shotsTaken;
 	private boolean overheat;
 	private long lastShootTime;
 	private double temperature;
@@ -46,6 +50,7 @@ public class ItemPlasmagun extends ItemBase {
 		setMaxDamage(0);
 		setCreativeTab(CreativeTabs.COMBAT);
 		this.burstShotsTaken = 0;
+		this.shotsTaken = 0;
 		this.overheat = false;
 		this.lastShootTime = 0;
 		this.temperature = 0;
@@ -65,6 +70,7 @@ public class ItemPlasmagun extends ItemBase {
 	public void onPlayerStoppedUsing(ItemStack itemStackIn, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
 		if (entityLiving instanceof EntityPlayer)
 		{
+			shotsTaken++;
 			EntityPlayer player = (EntityPlayer) entityLiving;
 
 			if (this.getMaxItemUseDuration(itemStackIn) - timeLeft <= 0) return;
@@ -87,26 +93,44 @@ public class ItemPlasmagun extends ItemBase {
 	public void onUsingTick(ItemStack itemStackIn, EntityLivingBase entityLiving, int count) {
 		if (entityLiving instanceof EntityPlayer)
 		{
+			shotsTaken++;
 			IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
 
 			if(modules!=null) {
 				Circuits circuit = modules.getCircuit();
 				if(circuit!=null) {
-					if(circuit==Circuits.MANUAL)
-						return;
-					if(circuit==Circuits.BURST) {
-						if(this.burstShotsTaken <= burstShotsAllowed) {
+					switch(circuit) {
+					case AUTO:
+						if(Math.floor(shotsTaken % shootChance) != 0) return;
+						break;
+					case BURST3:
+						if(this.burstShotsTaken <= 3 && Math.floor(shotsTaken % burstShootChance) != 0)
 							this.burstShotsTaken++;
-						} else {
+						else
 							return;
-						}
-					}
-					handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules);
-					if(circuit==Circuits.AUTO) {
-						for(int i = 0; i<circuitAutoRepeats; i++) {
+						break;
+					case BURST5:
+						if(this.burstShotsTaken <= 5 && Math.floor(shotsTaken % burstShootChance) != 0)
+							this.burstShotsTaken++;
+						else
+							return;
+						break;
+					case BURST10:
+						if(this.burstShotsTaken <= 10 && Math.floor(shotsTaken % burstShootChance) != 0)
+							this.burstShotsTaken++;
+						else
+							return;
+						break;
+					case OVERCLOCKED:
+						for(int i = 0; i<circuitOverclockedRepeats; i++) {
 							handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules);
 						}
+						return;
+
+					default: return;
+
 					}
+					handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules);
 				}
 
 			}
@@ -115,8 +139,9 @@ public class ItemPlasmagun extends ItemBase {
 
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if(this.temperature>0)
+		if(new Random().nextFloat()<0.1F && this.temperature>0)
 			this.temperature--;
+		//WIPTech.logger.info("Update: "+this.temperature);
 		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 	}
 
@@ -128,17 +153,18 @@ public class ItemPlasmagun extends ItemBase {
 
 		if(this.lastShootTime>0) {
 
+			WIPTech.logger.info("temperature: "+this.temperature+", lastShootTime: "+this.lastShootTime+", getTotalWorldTime: "+worldIn.getTotalWorldTime()+", shootTimeAdd: "+shootTimeAdd);
 			this.temperature += this.lastShootTime - worldIn.getTotalWorldTime() + shootTimeAdd;
 
 			this.overheat = this.temperature>overheatTemperature;
-
-			this.lastShootTime = worldIn.getTotalWorldTime();
 		}
+		this.lastShootTime = worldIn.getTotalWorldTime();
 
 		if (!worldIn.isRemote)
 		{
 			EntityFerromagneticProjectile projectile = ((ItemFerromagneticProjectile)plasmaStack.getItem()).createProjectile(worldIn, plasmaStack, player, true);
-			velocity = EntityFerromagneticProjectile.getProjectileVelocity(plasmaStack)*modules.getCoil().getEfficiencyFraction()*modules.getRail().getEfficiencyFraction();
+			velocity = EntityFerromagneticProjectile.getProjectileVelocity(plasmaStack)*modules.getCoil().getEfficiencyFraction();
+			projectile.setDamage(projectile.getDamage()*modules.getRail().getEfficiencyFraction());
 			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
 
 			if(this.overheat) {
@@ -183,21 +209,6 @@ public class ItemPlasmagun extends ItemBase {
 		return null;
 	}
 
-	//doesnt work when giving it to yourself through creative/commands
-	/*@Override
-	public void onCreated(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn) {
-		IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
-		WIPTech.logger.info(modules);
-		if(modules!=null) {
-			modules.setCircuit(Circuits.AUTO);
-			modules.setCoil(Coils.SILVER);
-			modules.setRail(Rails.SILVER);
-			modules.setScope(Scopes.LASER);
-			WIPTech.logger.info(modules.getModuleList());
-		}
-		super.onCreated(itemStackIn, worldIn, playerIn);
-	}*/
-	
 	@Override
 	public void addInformation(ItemStack itemStackIn, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
@@ -206,7 +217,7 @@ public class ItemPlasmagun extends ItemBase {
 			tooltip.add("Installed Modules:");
 			tooltip.addAll(modules.getModuleList());
 		}
-		
+
 		super.addInformation(itemStackIn, worldIn, tooltip, flagIn);
 	}
 

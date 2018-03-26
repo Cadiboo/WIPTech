@@ -44,10 +44,23 @@ public class Proxy implements IProxy {
 		
 		@Override
 		public void displayAllRelevantItems(NonNullList<ItemStack> list) {
+			super.displayAllRelevantItems(list);
+			
 			ItemStack plasmaGun = new ItemStack(Items.PLASMA_GUN);
+			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.SILVER).setRail(Rails.SILVER).setCircuit(Circuits.BURST10);
+			list.add(plasmaGun);
+			
+			plasmaGun = new ItemStack(Items.PLASMA_GUN);
 			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.SILVER).setRail(Rails.SILVER).setCircuit(Circuits.AUTO);
 			list.add(plasmaGun);
-			super.displayAllRelevantItems(list);
+			
+			plasmaGun = new ItemStack(Items.PLASMA_GUN);
+			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.SILVER).setRail(Rails.SILVER).setCircuit(Circuits.MANUAL);
+			list.add(plasmaGun);
+			
+			plasmaGun = new ItemStack(Items.PLASMA_GUN);
+			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.TIN).setRail(Rails.TIN).setCircuit(Circuits.AUTO);
+			list.add(plasmaGun);
 		}
 		
 	}.setBackgroundImageName("item_search.png");

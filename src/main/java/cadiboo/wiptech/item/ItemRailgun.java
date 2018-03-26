@@ -117,6 +117,8 @@ public class ItemRailgun extends ItemBase {
 							projectile.setFire(EntityFerromagneticProjectile.overheatFireTime);
 						}
 
+						WIPTech.logger.info("Railgun Overheat: "+overheat);
+						
 						if (flag1 || entityplayer.capabilities.isCreativeMode)
 						{
 							projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;

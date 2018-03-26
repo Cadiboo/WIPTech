@@ -52,6 +52,8 @@ public class Items
 	public static final ItemRailgun RAILGUN = new ItemRailgun("railgun");
 	public static final ItemCoilgun COILGUN = new ItemCoilgun("coilgun");
 	public static final ItemPlasmagun PLASMA_GUN = new ItemPlasmagun("plasmagun");
+	
+	public static final ItemCapacitor CAPACITOR = new ItemCapacitor("capacitor");
 
 	public static final ItemTestLauncher TEST_LAUNCHER = new ItemTestLauncher("test_launcher");
 	public static final ItemTestModularWeapon TEST_MODULAR_WEAPON = new ItemTestModularWeapon("test_modular_weapon");
@@ -101,6 +103,8 @@ public class Items
 			RAILGUN,
 			COILGUN,
 			PLASMA_GUN,
+			
+			CAPACITOR,
 
 			TEST_LAUNCHER,
 			TEST_MODULAR_WEAPON,

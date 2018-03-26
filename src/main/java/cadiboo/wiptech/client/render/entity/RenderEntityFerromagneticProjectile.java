@@ -42,6 +42,8 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 	}
 
 	private ItemStack itemStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
+	//Heading, Pitch, Roll
+	//Heading (being a rotation around an "up"-axis), pitch (being a rotation around a "right"-axis), and roll (being a rotation about a "forward"-axis)
 
 	@Override
 	public void doRender(@Nonnull T entity, double x, double y, double z, float entityYaw, float partialTicks)
@@ -54,14 +56,20 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableCull();
 
-		//Direction that its heading
-		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
+		/*//Direction that its heading/shot? Yaw
+		GlStateManager.rotate(entityYaw, 0.0F, 1.0F, 0.0F);
 
+		//Direction that its heading Yaw
+		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0.0F, 1.0F, 0.0F);
+		//GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
+		
+		//GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
+		
+*/
 		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
 		// rotate it into the direction we threw it
-		//GlStateManager.rotate(entity.rotationYaw, 0f, 1f, 0f);
-		//GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
+		GlStateManager.rotate(entity.rotationYaw, 0f, 1f, 0f);
+		GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
 
 		// arrow shake
 		float renderShake = (float)entity.arrowShake - partialTicks;
@@ -78,10 +86,16 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_core.png"));
 			drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
 
+
+			scale = 0.5;
 			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_field.png"));
 			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE); //maybe change GL_ONE to src alpha OR 3 one minus src color
-			drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
+			GlStateManager.blendFunc(GL11.GL_DST_COLOR, GL11.GL_ONE); //maybe change GL_ONE to src alpha OR 3 one minus src color
+
+			for(int i = 0; i<=4; i++) {
+				GlStateManager.rotate((float) i/10F, 0, 1, 0);
+				drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
+			}
 			GlStateManager.disableBlend();
 
 			GlStateManager.popMatrix();
@@ -164,7 +178,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 					minV = midV-(height/(8F*multiplier));
 					maxV = midV+(height/(8F*multiplier));
 
-					if(entity.overheat)
+					if(entity.getOverheat())
 						GlStateManager.color(1F, 0, 0);
 
 					drawQuad(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);

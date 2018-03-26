@@ -26,15 +26,15 @@ import net.minecraft.world.World;
 public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 	private static final DataParameter<Integer> AMMO_ID = EntityDataManager.<Integer>createKey(EntityFerromagneticProjectile.class, DataSerializers.VARINT);
-
-	public static boolean overheat;
+	private static final DataParameter<Boolean> OVERHEAT = EntityDataManager.<Boolean>createKey(EntityFerromagneticProjectile.class, DataSerializers.BOOLEAN);
 
 	public static final int overheatFireTime = 5;
-	
+
 	@Override
 	protected void updateGravity() {
 		if(this.isPlasma())
-			this.motionY -= 0.00000000074505806D;
+			this.motionY -= 0.00500000074505806D;
+		//0.05000000074505806D;
 		else
 			super.updateGravity();
 	}
@@ -44,6 +44,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	{
 		super.entityInit();
 		this.dataManager.register(AMMO_ID, Integer.valueOf(-1));
+		this.dataManager.register(OVERHEAT, Boolean.valueOf(false));
 	}
 
 	public void setAmmoId(int ammoId)
@@ -54,6 +55,16 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	public int getAmmoId()
 	{
 		return ((Integer)this.dataManager.get(AMMO_ID)).intValue();
+	}
+
+	public void setOverheat(boolean value)
+	{
+		this.dataManager.set(OVERHEAT, Boolean.valueOf(value));
+	}
+
+	public boolean getOverheat()
+	{
+		return ((Boolean)this.dataManager.get(OVERHEAT)).booleanValue();
 	}
 
 	public EntityFerromagneticProjectile(World worldIn)
@@ -115,7 +126,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 				break;
 			}
 
-			if (this.overheat)
+			if (this.getOverheat())
 			{
 				entity.setFire(5);
 			}
@@ -200,18 +211,37 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		}
 		else
 		{
-			if(this.isPlasma()) {
-				this.setDead();
-				return;
-			}
-
 			BlockPos blockpos = raytraceResultIn.getBlockPos();
 			this.xTile = blockpos.getX();
 			this.yTile = blockpos.getY();
 			this.zTile = blockpos.getZ();
 			IBlockState iblockstate = this.world.getBlockState(blockpos);
+
+
+			if(this.isPlasma() || this.getOverheat() || this.isBurning()) {
+				if (iblockstate.getMaterial() == Material.ICE || iblockstate.getMaterial() == Material.PACKED_ICE)
+				{
+					this.world.setBlockState(blockpos, Blocks.WATER.getDefaultState());
+				}
+				if (iblockstate.getMaterial() == Material.SNOW || iblockstate.getMaterial() == Material.CRAFTED_SNOW)
+				{
+					this.world.setBlockToAir(blockpos);
+				}
+			}
+
+			if(this.isPlasma()) {
+				this.setDead();
+				return;
+			}
+			
 			this.inTile = iblockstate.getBlock();
 			this.inData = this.inTile.getMetaFromState(iblockstate);
+
+			if (iblockstate.getMaterial() != Material.AIR)
+			{
+				this.inTile.onEntityCollidedWithBlock(this.world, blockpos, iblockstate, this);
+			}
+
 			this.motionX = (double)((float)(raytraceResultIn.hitVec.x - this.posX));
 			this.motionY = (double)((float)(raytraceResultIn.hitVec.y - this.posY));
 			this.motionZ = (double)((float)(raytraceResultIn.hitVec.z - this.posZ));
@@ -221,23 +251,6 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			this.posZ -= this.motionZ / (double)f2 * 0.05000000074505806D;
 			this.playSound(SoundEvents.BLOCK_STONE_BREAK, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 			this.inGround = true;
-
-
-			if(this.isPlasma() || this.overheat || this.isBurning()) {
-				if (iblockstate.getMaterial() == Material.ICE || iblockstate.getMaterial() == Material.PACKED_ICE)
-				{
-					this.world.setBlockState(blockpos, Blocks.WATER.getDefaultState());
-				}
-				if (iblockstate.getMaterial() == Material.SNOW)
-				{
-					this.world.setBlockToAir(blockpos);
-				}
-			}
-
-			if (iblockstate.getMaterial() != Material.AIR)
-			{
-				this.inTile.onEntityCollidedWithBlock(this.world, blockpos, iblockstate, this);
-			}
 		}
 	}
 
@@ -405,7 +418,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			velocity = 7.5F; //some fucking crazy amount because of how light it is //yenah 20 is way over the top
 
 		}
-		WIPTech.logger.info("Velocity for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+velocity);
+		//WIPTech.logger.info("Velocity for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+velocity);
 		return velocity;
 	}
 
@@ -451,10 +464,10 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			break;
 		case 3: //plasma
-			damage = 1F;
+			damage = 0.1F;
 
 		}
-		WIPTech.logger.info("Damage for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+damage);
+		//WIPTech.logger.info("Damage for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+damage);
 		return damage;
 	}
 
@@ -504,7 +517,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			knockback = 0F;
 
 		}
-		WIPTech.logger.info("Knockback for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+knockback);
+		//WIPTech.logger.info("Knockback for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+knockback);
 		return knockback;
 	}
 
@@ -558,10 +571,6 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			return values()[ordinal];
 		}
-	}
-
-	public void setOverheat(boolean overheat) {
-		this.overheat = overheat;
 	}
 
 }

@@ -19,8 +19,10 @@ import cadiboo.wiptech.item.ItemCopperIngot;
 import cadiboo.wiptech.item.ItemCopperNugget;
 import cadiboo.wiptech.item.ItemFerromagneticProjectile;
 import cadiboo.wiptech.item.ItemHammer;
+import cadiboo.wiptech.tileentity.TileEntityCapacitorBank;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
+import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -66,6 +68,8 @@ public class EventSubscriber {
 
 		GameRegistry.registerTileEntity(TileEntityCrusher.class, Reference.ID+"TileEntityCrusher");
 		GameRegistry.registerTileEntity(TileEntityCoiler.class, Reference.ID+"TileEntityCoiler");
+		GameRegistry.registerTileEntity(TileEntityTurbine.class, Reference.ID+"TileEntityTurbine");
+		GameRegistry.registerTileEntity(TileEntityCapacitorBank.class, Reference.ID+"TileEntityCapacitorBank");
 
 		WIPTech.logger.info("Registered TileEntities");
 	}
