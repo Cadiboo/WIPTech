@@ -25,7 +25,7 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 
 	public static int ENERGY_PRODUCTION = 8;
 
-	private CustomEnergyStorage energy = new CustomEnergyStorage(ENERGY_PRODUCTION){
+	public CustomEnergyStorage energy = new CustomEnergyStorage(ENERGY_PRODUCTION){
         @Override
         public boolean canReceive() {
             return false;

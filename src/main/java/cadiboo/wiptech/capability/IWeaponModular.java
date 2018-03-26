@@ -18,7 +18,7 @@ public interface IWeaponModular {
 
 	WeaponModular setCoil(Coils coil);
 	Coils getCoil();
-	
+
 	WeaponModular setRail(Rails rail);
 	Rails getRail();
 
@@ -29,5 +29,22 @@ public interface IWeaponModular {
 	Scopes getScope();
 
 	List getModuleList();
-	
+
+	int getBurstShotsTaken();
+	void incrementBurstShotsTaken();
+	int getShotsTaken();
+	void incrementShotsTaken();
+	boolean isOverheated();
+
+	int getTemperature();
+	void heat();
+	void cool();
+	int getOverheatTemperature();
+
+	long getLastShootTime();
+
+	void resetBurstShotsTaken();
+
+	void setLastShootTime(long totalWorldTime);
+
 }

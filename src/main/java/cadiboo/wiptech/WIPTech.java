@@ -67,6 +67,11 @@ public class WIPTech {
 	//TODO something else thats pretty old cant rememer now
 	//TODO capacitors
 	//TODO FE
+	//DOING ^
+	//TODO Knockback
+	//TODO dammage nerf
+	//TODO check Capabilities modules nbt
+	
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)

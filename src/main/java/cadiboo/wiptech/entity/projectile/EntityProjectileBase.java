@@ -11,6 +11,7 @@ import cadiboo.wiptech.WIPTech;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
@@ -18,9 +19,12 @@ import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketChangeGameState;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
@@ -93,6 +97,7 @@ public class EntityProjectileBase extends EntityArrow {
 	public int ticksInAir;
 	public double damage;
 	public double knockbackStrength;
+	public int projectileShake;
 
 	public EntityProjectileBase(World worldIn)
 	{
@@ -235,12 +240,14 @@ public class EntityProjectileBase extends EntityArrow {
 
 	/**
 	 * Called to update the entity's position/logic.
+	 * @return 
 	 */
 	@Override
 	public void onUpdate()
 	{
-		//super.onUpdate();
-
+		//THANK YOU TINKERS CONSTRUCT!!! Spent 2 hours trying to get around calling Arrow's onUpdate();
+		 onEntityUpdate();
+		
 		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
 		{
 			float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -263,6 +270,9 @@ public class EntityProjectileBase extends EntityArrow {
 				this.inGround = true;
 			}
 		}
+		
+		if(this.projectileShake >0)
+			this.projectileShake--;
 
 		if (this.inGround)
 		{
@@ -311,50 +321,55 @@ public class EntityProjectileBase extends EntityArrow {
 		}
 
 		this.posX += this.motionX;
-		this.posY += this.motionY;
-		this.posZ += this.motionZ;
-		float f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-		this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
+        this.posY += this.motionY;
+        this.posZ += this.motionZ;
+        float f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
 
-		while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
-		{
-			this.prevRotationPitch += 360.0F;
-		}
+        for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f4) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+        {
+            ;
+        }
 
-		while (this.rotationYaw - this.prevRotationYaw < -180.0F)
-		{
-			this.prevRotationYaw -= 360.0F;
-		}
+        while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
+        {
+            this.prevRotationPitch += 360.0F;
+        }
 
-		while (this.rotationYaw - this.prevRotationYaw >= 180.0F)
-		{
-			this.prevRotationYaw += 360.0F;
-		}
+        while (this.rotationYaw - this.prevRotationYaw < -180.0F)
+        {
+            this.prevRotationYaw -= 360.0F;
+        }
 
-		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
-		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-		float f1 = 0.99F;
-		float f2 = 0.05F;
+        while (this.rotationYaw - this.prevRotationYaw >= 180.0F)
+        {
+            this.prevRotationYaw += 360.0F;
+        }
 
-		if (this.isInWater())
-		{
-			for (int i = 0; i < 4; ++i)
-			{
-				float f3 = 0.25F;
-				this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
-			}
+        this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
+        this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
+        float f1 = 0.99F;
+        float f2 = 0.05F;
 
-			f1 = 0.6F;
-		}
+        if (this.isInWater())
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                float f3 = 0.25F;
+                this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
+            }
 
-		if (this.isWet())
-		{
-			this.extinguish();
-		}
+            f1 = 0.6F;
+        }
 
-		this.motionX *= (double)f1;
-		this.motionY *= (double)f1;
-		this.motionZ *= (double)f1;
+        if (this.isWet())
+        {
+            this.extinguish();
+        }
+
+        this.motionX *= (double)f1;
+        this.motionY *= (double)f1;
+        this.motionZ *= (double)f1;
 
 		if(!this.hasNoGravity())
 			updateGravity();
@@ -365,6 +380,13 @@ public class EntityProjectileBase extends EntityArrow {
 
 	protected void updateGravity() {
 		this.motionY -= 0.05000000074505806D;
+	}
+
+	@Override
+	protected void onHit(RayTraceResult raytraceResultIn)
+	{
+		super.onHit(raytraceResultIn);
+		this.projectileShake = this.arrowShake;
 	}
 
 	private void updateInGround(IBlockState state) {
@@ -423,7 +445,7 @@ public class EntityProjectileBase extends EntityArrow {
 			{
 				Entity entity1 = list.get(i);
 
-				if (entity1 != this.shootingEntity || (this.ticksInAir >=5 && this.arrowShake==0))
+				if (entity1 != this.shootingEntity || (this.ticksInAir >=5 && this.projectileShake==0))
 				{
 					AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
 					RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);

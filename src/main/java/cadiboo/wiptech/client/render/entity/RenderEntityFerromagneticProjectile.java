@@ -1,6 +1,7 @@
 package cadiboo.wiptech.client.render.entity;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 
@@ -41,14 +42,22 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		super(renderManager);
 	}
 
-	private ItemStack itemStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
+	private ItemStack ammoStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
 	//Heading, Pitch, Roll
 	//Heading (being a rotation around an "up"-axis), pitch (being a rotation around a "right"-axis), and roll (being a rotation about a "forward"-axis)
 
 	@Override
 	public void doRender(@Nonnull T entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
-		itemStack = entity.getAmmoStack();
+		ammoStack = entity.getAmmoStack();
+
+		/*if(new Random().nextFloat() < 0.1F) {
+			WIPTech.logger.info("entityYaw: "+entityYaw);
+			WIPTech.logger.info("entity.rotationYaw: "+entity.rotationYaw);
+			WIPTech.logger.info("entity.rotationPitch: "+entity.rotationPitch);
+			WIPTech.logger.info("entity.arrowShake: "+entity.arrowShake);
+			WIPTech.logger.info("entity.projectileShake: "+entity.projectileShake);
+		}*/
 
 		GlStateManager.pushMatrix();
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
@@ -62,17 +71,17 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		//Direction that its heading Yaw
 		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0.0F, 1.0F, 0.0F);
 		//GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
-		
+
 		//GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
-		
-*/
+
+		 */
 		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
 		// rotate it into the direction we threw it
 		GlStateManager.rotate(entity.rotationYaw, 0f, 1f, 0f);
 		GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
 
 		// arrow shake
-		float renderShake = (float)entity.arrowShake - partialTicks;
+		float renderShake = (float)entity.projectileShake - partialTicks;
 
 		if (renderShake > 0.0F)
 		{
@@ -87,15 +96,14 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 			drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
 
 
-			scale = 0.5;
+			scale = 0.75;
 			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_field.png"));
 			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GL11.GL_DST_COLOR, GL11.GL_ONE); //maybe change GL_ONE to src alpha OR 3 one minus src color
+			GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA); //both GL1
+			//GL_ONE_MINUS_CONSTANT_COLOR
 
-			for(int i = 0; i<=4; i++) {
-				GlStateManager.rotate((float) i/10F, 0, 1, 0);
-				drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
-			}
+			drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
+
 			GlStateManager.disableBlend();
 
 			GlStateManager.popMatrix();
@@ -104,14 +112,14 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		}
 		else
 		{
-			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(itemStack);
+			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(ammoStack);
 			if(model!=null) {
 				int color = -1;
 				List<BakedQuad> quads = model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
 
 				//TODO if(quads.size > 0) do everything else {
 
-				boolean flag = color == -1 && !itemStack.isEmpty();
+				boolean flag = color == -1 && !ammoStack.isEmpty();
 				int i = 0;
 
 				BakedQuad bakedquad = quads.get(0);
@@ -267,6 +275,8 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		bufferbuilder.pos(-length,  centre,  width).tex(maxU, hlfV).endVertex();
 
 		tessellator.draw();
+		
+		GlStateManager.scale(1, 1, 1);
 	}
 
 }

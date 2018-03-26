@@ -5,6 +5,7 @@ import java.util.Random;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.IWeaponModular;
+import cadiboo.wiptech.capability.WeaponModular;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.*;
@@ -29,19 +30,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemPlasmagun extends ItemBase {
 
-	private static final long shootTimeAdd = 5;
-	private static final int burstShotsAllowed = 5;
-	private static final float shootChance = 1.5F; //0 = never; 1 = always; 2 = half the time; 3 = 1/3rd the time
-	private static final float burstShootChance = 2F;
-	private static final double overheatTemperature = 10;
-	private static final int circuitOverclockedRepeats = 3;
 	private static ItemStack plasmaStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 9); //Plasma
-
-	private int burstShotsTaken;
-	private int shotsTaken;
-	private boolean overheat;
-	private long lastShootTime;
-	private double temperature;
 
 	public ItemPlasmagun(String name)
 	{
@@ -49,11 +38,6 @@ public class ItemPlasmagun extends ItemBase {
 		this.maxStackSize = 1;
 		setMaxDamage(0);
 		setCreativeTab(CreativeTabs.COMBAT);
-		this.burstShotsTaken = 0;
-		this.shotsTaken = 0;
-		this.overheat = false;
-		this.lastShootTime = 0;
-		this.temperature = 0;
 	}
 
 	public int getMaxItemUseDuration(ItemStack stack)
@@ -70,7 +54,6 @@ public class ItemPlasmagun extends ItemBase {
 	public void onPlayerStoppedUsing(ItemStack itemStackIn, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
 		if (entityLiving instanceof EntityPlayer)
 		{
-			shotsTaken++;
 			EntityPlayer player = (EntityPlayer) entityLiving;
 
 			if (this.getMaxItemUseDuration(itemStackIn) - timeLeft <= 0) return;
@@ -78,6 +61,8 @@ public class ItemPlasmagun extends ItemBase {
 			IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
 
 			if(modules!=null) {
+				modules.incrementShotsTaken();
+				modules.resetBurstShotsTaken();
 				Circuits circuit = modules.getCircuit();
 				if(circuit!=null) {
 					if(circuit!=Circuits.MANUAL)
@@ -93,36 +78,39 @@ public class ItemPlasmagun extends ItemBase {
 	public void onUsingTick(ItemStack itemStackIn, EntityLivingBase entityLiving, int count) {
 		if (entityLiving instanceof EntityPlayer)
 		{
-			shotsTaken++;
 			IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
 
 			if(modules!=null) {
+				modules.incrementShotsTaken();
 				Circuits circuit = modules.getCircuit();
 				if(circuit!=null) {
 					switch(circuit) {
 					case AUTO:
-						if(Math.floor(shotsTaken % shootChance) != 0) return;
+						if(Math.floor(modules.getShotsTaken() % WeaponModular.shootChance) != 0) return;
 						break;
 					case BURST3:
-						if(this.burstShotsTaken <= 3 && Math.floor(shotsTaken % burstShootChance) != 0)
-							this.burstShotsTaken++;
-						else
+						if(modules.getBurstShotsTaken() < 3 && Math.floor(modules.getShotsTaken() % WeaponModular.burstShootChance) != 0) {
+							modules.incrementBurstShotsTaken();
+						} else {
 							return;
+						}
 						break;
 					case BURST5:
-						if(this.burstShotsTaken <= 5 && Math.floor(shotsTaken % burstShootChance) != 0)
-							this.burstShotsTaken++;
-						else
+						if(modules.getBurstShotsTaken() < 5 && Math.floor(modules.getShotsTaken() % WeaponModular.burstShootChance) != 0) {
+							modules.incrementBurstShotsTaken();
+						} else {
 							return;
+						}
 						break;
 					case BURST10:
-						if(this.burstShotsTaken <= 10 && Math.floor(shotsTaken % burstShootChance) != 0)
-							this.burstShotsTaken++;
-						else
+						if(modules.getBurstShotsTaken() < 5 && Math.floor(modules.getShotsTaken() % WeaponModular.burstShootChance) != 0) {
+							modules.incrementBurstShotsTaken();
+						} else {
 							return;
+						}
 						break;
 					case OVERCLOCKED:
-						for(int i = 0; i<circuitOverclockedRepeats; i++) {
+						for(int i = 0; i<WeaponModular.circuitOverclockedRepeats; i++) {
 							handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules);
 						}
 						return;
@@ -138,11 +126,13 @@ public class ItemPlasmagun extends ItemBase {
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if(new Random().nextFloat()<0.1F && this.temperature>0)
-			this.temperature--;
-		//WIPTech.logger.info("Update: "+this.temperature);
-		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
+	public void onUpdate(ItemStack itemStackIn, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
+
+		if(modules!=null) {
+			modules.cool();
+		}
+		super.onUpdate(itemStackIn, worldIn, entityIn, itemSlot, isSelected);
 	}
 
 	private void handleShoot(ItemStack itemStackIn, World worldIn, EntityPlayer player, IWeaponModular modules) {
@@ -151,14 +141,14 @@ public class ItemPlasmagun extends ItemBase {
 
 		float velocity = 0;
 
-		if(this.lastShootTime>0) {
+		if(modules.getLastShootTime()>0) {
 
-			WIPTech.logger.info("temperature: "+this.temperature+", lastShootTime: "+this.lastShootTime+", getTotalWorldTime: "+worldIn.getTotalWorldTime()+", shootTimeAdd: "+shootTimeAdd);
-			this.temperature += this.lastShootTime - worldIn.getTotalWorldTime() + shootTimeAdd;
-
-			this.overheat = this.temperature>overheatTemperature;
+			//WIPTech.logger.info("temperature: "+this.temperature+", lastShootTime: "+this.lastShootTime+", getTotalWorldTime: "+worldIn.getTotalWorldTime()+", shootTimeAdd: "+shootTimeAdd);
+			if(modules.getLastShootTime() > worldIn.getTotalWorldTime() - WeaponModular.overheatTimer)
+			
+			modules.setLastShootTime(worldIn.getTotalWorldTime());
 		}
-		this.lastShootTime = worldIn.getTotalWorldTime();
+		modules.setLastShootTime(worldIn.getTotalWorldTime());
 
 		if (!worldIn.isRemote)
 		{
@@ -167,7 +157,7 @@ public class ItemPlasmagun extends ItemBase {
 			projectile.setDamage(projectile.getDamage()*modules.getRail().getEfficiencyFraction());
 			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
 
-			if(this.overheat) {
+			if(modules.isOverheated()) {
 				projectile.setOverheat(true);
 				projectile.setFire(EntityFerromagneticProjectile.overheatFireTime);
 			}
@@ -189,8 +179,11 @@ public class ItemPlasmagun extends ItemBase {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 
 		if( itemstack.getItem() == Items.PLASMA_GUN ) {
-			this.burstShotsTaken = 0;
-			WIPTech.logger.info(itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).getModuleList());
+			IWeaponModular modules = itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
+
+			if(modules!=null) {
+				modules.resetBurstShotsTaken();
+			}
 		}
 		playerIn.setActiveHand(handIn);
 		return new ActionResult(EnumActionResult.SUCCESS, itemstack);

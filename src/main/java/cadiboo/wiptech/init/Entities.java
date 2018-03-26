@@ -16,14 +16,14 @@ public class Entities {
 			.entity(EntityNapalm.class)
 			.id(new ResourceLocation(Reference.ID, "napalm"), ID++)
 			.name("napalm")
-			.tracker(64, 2, true)
+			.tracker(64, 5, true)
 			.build();
 	
 	public static final EntityEntry FERROMAGNETICPROJECTILE = EntityEntryBuilder.create()
 			.entity(EntityFerromagneticProjectile.class)
 			.id(new ResourceLocation(Reference.ID, "ferromagneticprojectile"), ID++)
 			.name("ferromagneticprojectile")
-			.tracker(256, 2, true)
+			.tracker(128, 1, true)
 			.build();
 	
 	public static final EntityEntry RAILGUN = EntityEntryBuilder.create()

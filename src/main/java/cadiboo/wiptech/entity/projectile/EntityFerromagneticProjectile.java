@@ -29,6 +29,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	private static final DataParameter<Boolean> OVERHEAT = EntityDataManager.<Boolean>createKey(EntityFerromagneticProjectile.class, DataSerializers.BOOLEAN);
 
 	public static final int overheatFireTime = 5;
+	private boolean hasOverheated = false;
 
 	@Override
 	protected void updateGravity() {
@@ -64,7 +65,13 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 	public boolean getOverheat()
 	{
-		return ((Boolean)this.dataManager.get(OVERHEAT)).booleanValue();
+		if(this.dataManager.get(OVERHEAT)!=null) {
+			if(this.dataManager.get(OVERHEAT).booleanValue() == true && this.hasOverheated!=true)
+				this.hasOverheated = true;
+			return ((Boolean)this.dataManager.get(OVERHEAT)).booleanValue();
+		} else if(this.hasOverheated)
+			return true;
+		return false;
 	}
 
 	public EntityFerromagneticProjectile(World worldIn)
@@ -95,8 +102,9 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	}
 
 	/**
-	 * Called when the arrow hits a block or an entity
+	 * Called when the projectile hits a block or an entity
 	 */
+	@Override
 	protected void onHit(RayTraceResult raytraceResultIn)
 	{
 		Entity entity = raytraceResultIn.entityHit;
@@ -187,13 +195,12 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			}
 			else
 			{
-				/*this.motionX *= -0.10000000149011612D;
+				this.motionX *= -0.10000000149011612D;
 				this.motionY *= -0.10000000149011612D;
 				this.motionZ *= -0.10000000149011612D;
 				this.rotationYaw += 180.0F;
 				this.prevRotationYaw += 180.0F;
 				this.ticksInAir = 0;
-				 */
 
 				//WHY DO THIS EVER????
 				//TODO Maybe remove this completely
@@ -218,14 +225,16 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			IBlockState iblockstate = this.world.getBlockState(blockpos);
 
 
-			if(this.isPlasma() || this.getOverheat() || this.isBurning()) {
-				if (iblockstate.getMaterial() == Material.ICE || iblockstate.getMaterial() == Material.PACKED_ICE)
-				{
-					this.world.setBlockState(blockpos, Blocks.WATER.getDefaultState());
-				}
-				if (iblockstate.getMaterial() == Material.SNOW || iblockstate.getMaterial() == Material.CRAFTED_SNOW)
-				{
-					this.world.setBlockToAir(blockpos);
+			if(!this.world.isRemote) {
+				if(this.isPlasma() || this.getOverheat() || this.isBurning()) {
+					if (iblockstate.getMaterial() == Material.ICE || iblockstate.getMaterial() == Material.PACKED_ICE)
+					{
+						this.world.setBlockState(blockpos, Blocks.WATER.getDefaultState());
+					}
+					if (iblockstate.getMaterial() == Material.SNOW || iblockstate.getMaterial() == Material.CRAFTED_SNOW)
+					{
+						this.world.setBlockToAir(blockpos);
+					}
 				}
 			}
 
@@ -233,7 +242,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 				this.setDead();
 				return;
 			}
-			
+
 			this.inTile = iblockstate.getBlock();
 			this.inData = this.inTile.getMetaFromState(iblockstate);
 
@@ -251,6 +260,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			this.posZ -= this.motionZ / (double)f2 * 0.05000000074505806D;
 			this.playSound(SoundEvents.BLOCK_STONE_BREAK, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 			this.inGround = true;
+			this.projectileShake = this.arrowShake;
 		}
 	}
 
@@ -464,7 +474,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			break;
 		case 3: //plasma
-			damage = 0.1F;
+			damage = 0.5F;
 
 		}
 		//WIPTech.logger.info("Damage for meta '"+metaData+"' with Type '"+getAmmoType(metaData)+"' and Level '"+getAmmoLevel(metaData)+"' = "+damage);
@@ -541,7 +551,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	}
 
 	/**
-	 * Sets the amount of knockback the arrow applies when it hits a mob.
+	 * Sets the amount of knockback the projectile applies when it hits a mob.
 	 */
 	public void setKnockbackStrength(float f)
 	{
