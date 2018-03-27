@@ -65,13 +65,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 	public boolean getOverheat()
 	{
-		if(this.dataManager.get(OVERHEAT)!=null) {
-			if(this.dataManager.get(OVERHEAT).booleanValue() == true && this.hasOverheated!=true)
-				this.hasOverheated = true;
-			return ((Boolean)this.dataManager.get(OVERHEAT)).booleanValue();
-		} else if(this.hasOverheated)
-			return true;
-		return false;
+		return ((Boolean)this.dataManager.get(OVERHEAT)).booleanValue();
 	}
 
 	public EntityFerromagneticProjectile(World worldIn)
@@ -195,12 +189,13 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			}
 			else
 			{
-				this.motionX *= -0.10000000149011612D;
+				/*this.motionX *= -0.10000000149011612D;
 				this.motionY *= -0.10000000149011612D;
 				this.motionZ *= -0.10000000149011612D;
 				this.rotationYaw += 180.0F;
 				this.prevRotationYaw += 180.0F;
 				this.ticksInAir = 0;
+				*/
 
 				//WHY DO THIS EVER????
 				//TODO Maybe remove this completely

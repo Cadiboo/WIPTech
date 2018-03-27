@@ -43,6 +43,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 	}
 
 	private ItemStack ammoStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
+	private boolean overheated = false;
 	//Heading, Pitch, Roll
 	//Heading (being a rotation around an "up"-axis), pitch (being a rotation around a "right"-axis), and roll (being a rotation about a "forward"-axis)
 
@@ -50,6 +51,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 	public void doRender(@Nonnull T entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		ammoStack = entity.getAmmoStack();
+		overheated = entity.getOverheat();
 
 		/*if(new Random().nextFloat() < 0.1F) {
 			WIPTech.logger.info("entityYaw: "+entityYaw);
@@ -93,14 +95,15 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 			double scale = 0.25;
 
 			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_core.png"));
+			GlStateManager.depthMask(true);
 			drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
-
+			GlStateManager.depthMask(false);
 
 			scale = 0.75;
 			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_field.png"));
 			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA); //both GL1
-			//GL_ONE_MINUS_CONSTANT_COLOR
+			GlStateManager.blendFunc(GL11.GL_ONE_MINUS_CONSTANT_COLOR, GL11.GL_ONE); //both GL1
+			GlStateManager.color(0, 1, 1);
 
 			drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
 
@@ -186,7 +189,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 					minV = midV-(height/(8F*multiplier));
 					maxV = midV+(height/(8F*multiplier));
 
-					if(entity.getOverheat())
+					if(overheated)
 						GlStateManager.color(1F, 0, 0);
 
 					drawQuad(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);

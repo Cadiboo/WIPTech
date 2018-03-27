@@ -46,7 +46,7 @@ public class BlockTurbine extends BlockTileEntity<TileEntityTurbine>{
 
 	public void breakBlock(World world, BlockPos pos, IBlockState state)
 	{
-		TileEntityTurbine tile = (TileEntityTurbine)getTileEntity(world, pos);
+		/*TileEntityTurbine tile = (TileEntityTurbine)getTileEntity(world, pos);
 		IItemHandler itemHandler = (IItemHandler)tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
 		for (int i = 0; i < itemHandler.getSlots(); i++)
 		{
@@ -57,6 +57,7 @@ public class BlockTurbine extends BlockTileEntity<TileEntityTurbine>{
 				world.spawnEntity(item);
 			}
 		}
+		*/
 		super.breakBlock(world, pos, state);
 	}
 

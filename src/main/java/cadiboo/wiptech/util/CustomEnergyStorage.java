@@ -2,6 +2,7 @@ package cadiboo.wiptech.util;
 
 import javax.annotation.Nullable;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.tileentity.TileEntityBase;
 import net.minecraftforge.energy.EnergyStorage;
 

@@ -63,14 +63,15 @@ public class WIPTech {
 	//TODO PLACE BLOCKS
 	//TODO STOP GUI
 	//TODO why does overheat do this?
-	//TODO redo coil speed - efficiency != pure power
+	//DONE redo coil speed - efficiency != pure power
 	//TODO something else thats pretty old cant rememer now
 	//TODO capacitors
 	//TODO FE
 	//DOING ^
 	//TODO Knockback
-	//TODO dammage nerf
+	//TODO damage nerf
 	//TODO check Capabilities modules nbt
+	//DONE WHy are projectiles bouncing off bosses? idk but they arent anymore
 	
 	
 	@EventHandler

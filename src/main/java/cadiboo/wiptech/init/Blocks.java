@@ -7,8 +7,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
-public class Blocks
-{
+public class Blocks {
+	
 	public static final BlockCopperBlock COPPER_BLOCK = new BlockCopperBlock("copper_block", Material.IRON);
 	public static final BlockCopperOre COPPER_ORE = new BlockCopperOre("copper_ore", Material.ROCK);
 	public static final BlockCopperSpool COPPER_SPOOL = new BlockCopperSpool("copper_spool", Material.IRON);

@@ -67,6 +67,7 @@ public class EntityProjectileBase extends EntityArrow {
 						return false;
 					}
 				}*/
+				WIPTech.logger.info("IsNonBoss for "+targetEntity);
 				return true;
 			}
 
