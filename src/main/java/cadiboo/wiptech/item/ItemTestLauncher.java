@@ -99,8 +99,7 @@ public class ItemTestLauncher extends ItemBase {
 					projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
 
 					if(this.overheat) {
-						projectile.setOverheat(true);
-						projectile.setFire(EntityFerromagneticProjectile.overheatFireTime);
+						projectile.setTemperature(projectile.getTemperature() + 25F);
 					}
 
 					if (flag)

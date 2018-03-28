@@ -320,6 +320,8 @@ public class EntityProjectileBase extends EntityArrow {
 		{
 			this.onHit(raytraceresult);
 		}
+		
+		customUpdateinAir();
 
 		this.posX += this.motionX;
         this.posY += this.motionY;
@@ -379,18 +381,19 @@ public class EntityProjectileBase extends EntityArrow {
 		this.doBlockCollisions();
 	}
 
-	protected void updateGravity() {
+	public void customUpdateinAir(){}
+
+	public void updateGravity() {
 		this.motionY -= 0.05000000074505806D;
 	}
 
 	@Override
-	protected void onHit(RayTraceResult raytraceResultIn)
+	public void onHit(RayTraceResult raytraceResultIn)
 	{
 		super.onHit(raytraceResultIn);
-		this.projectileShake = this.arrowShake;
 	}
 
-	private void updateInGround(IBlockState state) {
+	public void updateInGround(IBlockState state) {
 		Block block = state.getBlock();
 		int meta = block.getMetaFromState(state);
 
@@ -399,7 +402,7 @@ public class EntityProjectileBase extends EntityArrow {
 		if((block == this.inTile && meta == this.inData) || this.getEntityWorld().collidesWithAnyBlock(ON_BLOCK_AABB.offset(this.getPositionVector()))) {
 			++this.ticksInGround;
 
-			if(this.ticksInGround >= 1200) {
+			if(this.ticksInGround >= this.getLifespan()) {
 				this.setDead();
 			}
 		}
@@ -413,6 +416,10 @@ public class EntityProjectileBase extends EntityArrow {
 		}
 
 		++this.timeInGround;
+	}
+
+	public int getLifespan() {
+		return 1200;
 	}
 
 	/**
@@ -579,6 +586,11 @@ public class EntityProjectileBase extends EntityArrow {
 	 */
 	@Override
 	public void setKnockbackStrength(int knockbackStrengthIn)
+	{
+		this.knockbackStrength = knockbackStrengthIn;
+	}
+	
+	public void setKnockbackStrength(float knockbackStrengthIn)
 	{
 		this.knockbackStrength = knockbackStrengthIn;
 	}

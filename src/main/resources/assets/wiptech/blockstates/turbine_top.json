@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "wiptech:turbine_top"}],
+	"facing=north": { "model": "wiptech:turbine_top" },
+        "facing=east":  { "model": "wiptech:turbine_top", "y": 90 },
+	"facing=south": { "model": "wiptech:turbine_top", "y": 180 },
+        "facing=west":  { "model": "wiptech:turbine_top", "y": 270 },
+        "inventory": { "model": "wiptech:turbine_top"}
+    }
+}

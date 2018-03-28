@@ -72,6 +72,7 @@ public class WIPTech {
 	//TODO damage nerf
 	//TODO check Capabilities modules nbt
 	//DONE WHy are projectiles bouncing off bosses? idk but they arent anymore
+	//TODO copy how ender gateways are rendered
 	
 	
 	@EventHandler

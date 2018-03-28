@@ -51,7 +51,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 	public void doRender(@Nonnull T entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		ammoStack = entity.getAmmoStack();
-		overheated = entity.getOverheat();
+		overheated = entity.isOverheated();
 
 		/*if(new Random().nextFloat() < 0.1F) {
 			WIPTech.logger.info("entityYaw: "+entityYaw);
@@ -79,8 +79,11 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		 */
 		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
 		// rotate it into the direction we threw it
-		GlStateManager.rotate(entity.rotationYaw, 0f, 1f, 0f);
-		GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
+		//GlStateManager.rotate(entity.rotationYaw, 0f, 1f, 0f);
+		//GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
+
+		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0, 1, 0);
+		GlStateManager.rotate(-(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks), 1, 0, 0);
 
 		// arrow shake
 		float renderShake = (float)entity.projectileShake - partialTicks;
@@ -278,7 +281,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		bufferbuilder.pos(-length,  centre,  width).tex(maxU, hlfV).endVertex();
 
 		tessellator.draw();
-		
+
 		GlStateManager.scale(1, 1, 1);
 	}
 

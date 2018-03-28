@@ -103,7 +103,7 @@ public class ItemPlasmagun extends ItemBase {
 						}
 						break;
 					case BURST10:
-						if(modules.getBurstShotsTaken() < 5 && Math.floor(modules.getShotsTaken() % WeaponModular.burstShootChance) != 0) {
+						if(modules.getBurstShotsTaken() < 10 && Math.floor(modules.getShotsTaken() % WeaponModular.burstShootChance) != 0) {
 							modules.incrementBurstShotsTaken();
 						} else {
 							return;
@@ -156,10 +156,10 @@ public class ItemPlasmagun extends ItemBase {
 			velocity = EntityFerromagneticProjectile.getProjectileVelocity(plasmaStack)*modules.getCoil().getEfficiencyFraction();
 			projectile.setDamage(projectile.getDamage()*modules.getRail().getEfficiencyFraction());
 			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
+			projectile.setTemperature(1185F);
 
 			if(modules.isOverheated()) {
-				projectile.setOverheat(true);
-				projectile.setFire(EntityFerromagneticProjectile.overheatFireTime);
+				projectile.setTemperature(projectile.getTemperature() + 25F);
 			}
 
 			if (flag)

@@ -41,7 +41,7 @@ public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializa
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
-		WIPTech.logger.info(nbt);
+		//WIPTech.logger.info(nbt);
 		//this.modules.circuit = nbt.getCompoundTag("circuit");
 		this.weaponModules.deserializeNBT(nbt);
 	}

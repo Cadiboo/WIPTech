@@ -15,6 +15,8 @@ import net.minecraft.world.World;
 
 public class EntityNapalm extends EntityThrowable {
 	public EntityLivingBase shootingEntity;
+	public static final IBlockState BSADS = Blocks.AIR.getDefaultState();
+	public static final IBlockState FSADS = Blocks.FIRE.getDefaultState();
 
 	public EntityNapalm(World worldIn)
 	{
@@ -58,13 +60,11 @@ public class EntityNapalm extends EntityThrowable {
 					BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
 					IBlockState blockstate = world.getBlockState(pos);
 
-					IBlockState BSADS = Blocks.AIR.getDefaultState();
-					IBlockState FSADS = Blocks.FIRE.getDefaultState();
 					if ((blockstate == BSADS) && ((world.getBlockState(pos.up()).getBlock().isFlammable(world, pos.up(), EnumFacing.DOWN)) || (world.getBlockState(pos.north()).getBlock().isFlammable(world, pos.north(), EnumFacing.NORTH)) || (world.getBlockState(pos.east()).getBlock().isFlammable(world, pos.east(), EnumFacing.EAST)) || (world.getBlockState(pos.south()).getBlock().isFlammable(world, pos.south(), EnumFacing.SOUTH)) || (world.getBlockState(pos.west()).getBlock().isFlammable(world, pos.west(), EnumFacing.WEST)))) {
-						world.setBlockState(pos, FSADS, 3);
+						world.setBlockState(pos, FSADS, 2);
 					}
 					if ((blockstate == BSADS) && (world.getBlockState(pos.down()) != BSADS)) {
-						world.setBlockState(pos, FSADS, 3);
+						world.setBlockState(pos, FSADS, 2);
 					}
 				}
 				this.setDead();

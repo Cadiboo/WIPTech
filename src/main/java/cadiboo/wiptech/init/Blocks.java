@@ -67,6 +67,7 @@ public class Blocks {
 	public static final BlockStrongPistonBase STRONG_PISTON = new BlockStrongPistonBase("strong_piston", null);
 
 	public static final BlockTurbine TURBINE = new BlockTurbine("turbine", Material.IRON);
+	public static final BlockPeripheralBlock PERIPHERAL = new BlockPeripheralBlock("peripheral", Material.IRON);
 	public static final BlockCapacitorBank CAPACITOR_BANK = new BlockCapacitorBank("capacitor_bank", Material.IRON);
 
 
@@ -127,6 +128,7 @@ public class Blocks {
 			STRONG_PISTON,
 			
 			TURBINE,
+			PERIPHERAL,
 			CAPACITOR_BANK,
 	};
 

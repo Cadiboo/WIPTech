@@ -113,7 +113,7 @@ public class ItemRailgun extends ItemBase {
 						EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer, false);
 						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
 						if(this.overheat) {
-							projectile.setOverheat(this.overheat);
+							//projectile.setOverheat(this.overheat);
 							projectile.setFire(EntityFerromagneticProjectile.overheatFireTime);
 						}
 

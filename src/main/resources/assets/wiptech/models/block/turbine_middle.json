@@ -1,0 +1,31 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"0": "blocks/iron_block",
+		"particle": "blocks/iron_block"
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"from": [2, 0, 2],
+			"to": [14, 16, 14],
+			"faces": {
+				"north": {"uv": [1, 1, 8, 3], "texture": "#0"},
+				"east": {
+					"uv": [1, 1, 8, 3],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"south": {"uv": [1, 1, 8, 3], "texture": "#0"},
+				"west": {
+					"uv": [1, 1, 8, 3],
+					"texture": "#0",
+					"rotation": 90
+				},
+				"up": {"uv": [1, 1, 8, 3], "texture": "#0"},
+				"down": {"uv": [1, 1, 8, 3], "texture": "#0"}
+			},
+			"type": "cube"
+		}
+	]
+}
