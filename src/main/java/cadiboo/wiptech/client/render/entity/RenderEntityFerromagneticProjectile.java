@@ -63,7 +63,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 		GlStateManager.pushMatrix();
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		GlStateManager.translate(x, y, z);
+		GlStateManager.translate(x, y+0.25, z);
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableCull();
 

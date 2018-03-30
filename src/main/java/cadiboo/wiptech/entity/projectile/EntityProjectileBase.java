@@ -100,25 +100,35 @@ public class EntityProjectileBase extends EntityArrow {
 	{
 		super(worldIn, x, y, z);
 	}
-
+	
 	public EntityProjectileBase(World worldIn, EntityLivingBase shooter)
 	{
-		super(worldIn, shooter);
+		this(worldIn, shooter.posX, shooter.posY + (double)shooter.getEyeHeight() - (double)getEyeOffset(), shooter.posZ);
+        this.shootingEntity = shooter;
+
+        if (shooter instanceof EntityPlayer)
+        {
+            this.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
+        }
+	}
+
+	private static double getEyeOffset() {
+		return 0;
 	}
 
 	@Override
-	protected void entityInit()
-	{
-
-	}
+	protected void entityInit() {}
 
 	@Override
 	public void shoot(Entity shooter, float pitch, float yaw, float iDontDoAnything, float velocity, float inaccuracy)
 	{
-		super.shoot(shooter, pitch, yaw, iDontDoAnything, velocity, inaccuracy);
+		float f = -MathHelper.sin(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
+		float f1 = -MathHelper.sin(pitch * 0.017453292F);
+		float f2 = MathHelper.cos(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
+		this.shoot((double)f, (double)f1, (double)f2, velocity, inaccuracy);
 		this.motionX += shooter.motionX;
 		this.motionZ += shooter.motionZ;
-		this.motionY  = shooter.motionY;
+		this.motionY += shooter.motionY;
 	}
 
 	/**

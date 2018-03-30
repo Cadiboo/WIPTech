@@ -82,7 +82,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	{
 		super.entityInit();
 		this.dataManager.register(AMMO_ID, Integer.valueOf(-1));
-		this.dataManager.register(TEMPERATURE, Float.valueOf(plasmaKillTemperature+5F));
+		this.dataManager.register(TEMPERATURE, Float.valueOf(25F));
 	}
 
 	public void setAmmoId(int ammoId)
@@ -123,29 +123,15 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	public EntityFerromagneticProjectile(World worldIn)
 	{
 		super(worldIn);
-		this.xTile = -1;
-		this.yTile = -1;
-		this.zTile = -1;
-		this.pickupStatus = EntityProjectileBase.PickupStatus.DISALLOWED;
-		this.setSize(0.5F, 0.5F);
-		this.setTemperature(25F);
+	}
+	public EntityFerromagneticProjectile(World worldIn, EntityLivingBase shooter)
+	{
+		super(worldIn, shooter);
 	}
 
 	public EntityFerromagneticProjectile(World worldIn, double x, double y, double z)
 	{
-		this(worldIn);
-		this.setPosition(x, y, z);
-	}
-
-	public EntityFerromagneticProjectile(World worldIn, EntityLivingBase shooter)
-	{
-		this(worldIn, shooter.posX, shooter.posY + (double)shooter.getEyeHeight() - 0.10000000149011612D, shooter.posZ);
-		this.shootingEntity = shooter;
-
-		if (shooter instanceof EntityPlayer)
-		{
-			this.pickupStatus = EntityProjectileBase.PickupStatus.ALLOWED;
-		}
+		super(worldIn, x, y, z);
 	}
 
 	/**
@@ -369,23 +355,10 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	/**
 	Called by a player entity when they collide with an entity
 	 */
+	@Override
 	public void onCollideWithPlayer(EntityPlayer entityIn)
 	{
-		if (!this.world.isRemote && this.inGround && !this.isPlasma())
-		{
-			boolean flag = this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED || this.pickupStatus == EntityProjectileBase.PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
-
-			if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED && !entityIn.inventory.addItemStackToInventory(this.getAmmoStack()))
-			{
-				flag = false;
-			}
-
-			if (flag)
-			{
-				entityIn.onItemPickup(this, 1);
-				this.setDead();
-			}
-		}
+		super.onCollideWithPlayer(entityIn);
 	}
 
 	@Override
