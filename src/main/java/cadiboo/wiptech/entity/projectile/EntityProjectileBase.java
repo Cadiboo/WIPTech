@@ -7,25 +7,17 @@ import javax.annotation.Nullable;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 
-import cadiboo.wiptech.WIPTech;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.play.server.SPacketChangeGameState;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -67,7 +59,7 @@ public class EntityProjectileBase extends EntityArrow {
 						return false;
 					}
 				}*/
-				WIPTech.logger.info("IsNonBoss for "+targetEntity);
+				//WIPTech.logger.info("IsNonBoss for "+targetEntity);
 				return true;
 			}
 
@@ -92,7 +84,6 @@ public class EntityProjectileBase extends EntityArrow {
 	public int inData;
 	public boolean inGround;
 	public int timeInGround;
-	public EntityProjectileBase.PickupStatus pickupStatus;
 	public Entity shootingEntity;
 	public int ticksInGround;
 	public int ticksInAir;
@@ -103,79 +94,31 @@ public class EntityProjectileBase extends EntityArrow {
 	public EntityProjectileBase(World worldIn)
 	{
 		super(worldIn);
-		this.xTile = -1;
-		this.yTile = -1;
-		this.zTile = -1;
-		this.pickupStatus = EntityProjectileBase.PickupStatus.DISALLOWED;
-		this.setSize(0.5F, 0.5F);
 	}
 
 	public EntityProjectileBase(World worldIn, double x, double y, double z)
 	{
-		this(worldIn);
-		this.setPosition(x, y, z);
+		super(worldIn, x, y, z);
 	}
 
 	public EntityProjectileBase(World worldIn, EntityLivingBase shooter)
 	{
-		this(worldIn, shooter.posX, shooter.posY + (double)shooter.getEyeHeight() - 0.10000000149011612D, shooter.posZ);
-		this.shootingEntity = shooter;
-
-		if (shooter instanceof EntityPlayer)
-		{
-			this.pickupStatus = EntityProjectileBase.PickupStatus.ALLOWED;
-		}
+		super(worldIn, shooter);
 	}
 
-	public static enum PickupStatus
-	{
-		DISALLOWED,
-		ALLOWED,
-		CREATIVE_ONLY;
-
-		public static EntityProjectileBase.PickupStatus getByOrdinal(int ordinal)
-		{
-			if (ordinal < 0 || ordinal > values().length)
-			{
-				ordinal = 0;
-			}
-
-			return values()[ordinal];
-		}
-	}
-
-	/**
-	 * Checks if the entity is in range to render.
-	 */
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean isInRangeToRenderDist(double distance)
+	protected void entityInit()
 	{
-		double d0 = this.getEntityBoundingBox().getAverageEdgeLength() * 10.0D;
 
-		if (Double.isNaN(d0))
-		{
-			d0 = 1.0D;
-		}
-
-		d0 = d0 * 64.0D * getRenderDistanceWeight();
-		return distance < d0 * d0;
 	}
 
 	@Override
 	public void shoot(Entity shooter, float pitch, float yaw, float iDontDoAnything, float velocity, float inaccuracy)
 	{
-		float f = -MathHelper.sin(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
-		float f1 = -MathHelper.sin(pitch * 0.017453292F);
-		float f2 = MathHelper.cos(yaw * 0.017453292F) * MathHelper.cos(pitch * 0.017453292F);
-		this.shoot((double)f, (double)f1, (double)f2, velocity, inaccuracy);
+		super.shoot(shooter, pitch, yaw, iDontDoAnything, velocity, inaccuracy);
 		this.motionX += shooter.motionX;
 		this.motionZ += shooter.motionZ;
-
-		if (!shooter.onGround)
-		{
-			this.motionY += shooter.motionY;
-		}
+		this.motionY  = shooter.motionY;
 	}
 
 	/**
@@ -184,25 +127,7 @@ public class EntityProjectileBase extends EntityArrow {
 	@Override
 	public void shoot(double x, double y, double z, float velocity, float inaccuracy)
 	{
-		float f = MathHelper.sqrt(x * x + y * y + z * z);
-		x = x / (double)f;
-		y = y / (double)f;
-		z = z / (double)f;
-		x = x + this.rand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
-		y = y + this.rand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
-		z = z + this.rand.nextGaussian() * 0.007499999832361937D * (double)inaccuracy;
-		x = x * (double)velocity;
-		y = y * (double)velocity;
-		z = z * (double)velocity;
-		this.motionX = x;
-		this.motionY = y;
-		this.motionZ = z;
-		float f1 = MathHelper.sqrt(x * x + z * z);
-		this.rotationYaw = (float)(MathHelper.atan2(x, z) * (180D / Math.PI));
-		this.rotationPitch = (float)(MathHelper.atan2(y, (double)f1) * (180D / Math.PI));
-		this.prevRotationYaw = this.rotationYaw;
-		this.prevRotationPitch = this.rotationPitch;
-		this.ticksInGround = 0;
+		super.shoot(x, y, z, velocity, inaccuracy);
 	}
 
 	/**
@@ -212,8 +137,7 @@ public class EntityProjectileBase extends EntityArrow {
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport)
 	{
-		this.setPosition(x, y, z);
-		this.setRotation(yaw, pitch);
+		super.setPositionAndRotationDirect(x, y, z, yaw, pitch, posRotationIncrements, teleport);
 	}
 
 	/**
@@ -223,20 +147,7 @@ public class EntityProjectileBase extends EntityArrow {
 	@SideOnly(Side.CLIENT)
 	public void setVelocity(double x, double y, double z)
 	{
-		this.motionX = x;
-		this.motionY = y;
-		this.motionZ = z;
-
-		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
-		{
-			float f = MathHelper.sqrt(x * x + z * z);
-			this.rotationPitch = (float)(MathHelper.atan2(y, (double)f) * (180D / Math.PI));
-			this.rotationYaw = (float)(MathHelper.atan2(x, z) * (180D / Math.PI));
-			this.prevRotationPitch = this.rotationPitch;
-			this.prevRotationYaw = this.rotationYaw;
-			this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-			this.ticksInGround = 0;
-		}
+		super.setVelocity(x, y, z);
 	}
 
 	/**
@@ -247,8 +158,8 @@ public class EntityProjectileBase extends EntityArrow {
 	public void onUpdate()
 	{
 		//THANK YOU TINKERS CONSTRUCT!!! Spent 2 hours trying to get around calling Arrow's onUpdate();
-		 onEntityUpdate();
-		
+		onEntityUpdate();
+
 		if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
 		{
 			float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
@@ -271,7 +182,7 @@ public class EntityProjectileBase extends EntityArrow {
 				this.inGround = true;
 			}
 		}
-		
+
 		if(this.projectileShake >0)
 			this.projectileShake--;
 
@@ -320,59 +231,59 @@ public class EntityProjectileBase extends EntityArrow {
 		{
 			this.onHit(raytraceresult);
 		}
-		
+
 		customUpdateinAir();
 
 		this.posX += this.motionX;
-        this.posY += this.motionY;
-        this.posZ += this.motionZ;
-        float f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-        this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
+		this.posY += this.motionY;
+		this.posZ += this.motionZ;
+		float f4 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+		this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * (180D / Math.PI));
 
-        for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f4) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
-        {
-            ;
-        }
+		for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f4) * (180D / Math.PI)); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+		{
+			;
+		}
 
-        while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
-        {
-            this.prevRotationPitch += 360.0F;
-        }
+		while (this.rotationPitch - this.prevRotationPitch >= 180.0F)
+		{
+			this.prevRotationPitch += 360.0F;
+		}
 
-        while (this.rotationYaw - this.prevRotationYaw < -180.0F)
-        {
-            this.prevRotationYaw -= 360.0F;
-        }
+		while (this.rotationYaw - this.prevRotationYaw < -180.0F)
+		{
+			this.prevRotationYaw -= 360.0F;
+		}
 
-        while (this.rotationYaw - this.prevRotationYaw >= 180.0F)
-        {
-            this.prevRotationYaw += 360.0F;
-        }
+		while (this.rotationYaw - this.prevRotationYaw >= 180.0F)
+		{
+			this.prevRotationYaw += 360.0F;
+		}
 
-        this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
-        this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-        float f1 = 0.99F;
-        float f2 = 0.05F;
+		this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
+		this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
+		float f1 = 0.99F;
+		float f2 = 0.05F;
 
-        if (this.isInWater())
-        {
-            for (int i = 0; i < 4; ++i)
-            {
-                float f3 = 0.25F;
-                this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
-            }
+		if (this.isInWater())
+		{
+			for (int i = 0; i < 4; ++i)
+			{
+				float f3 = 0.25F;
+				this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
+			}
 
-            f1 = 0.6F;
-        }
+			f1 = 0.6F;
+		}
 
-        if (this.isWet())
-        {
-            this.extinguish();
-        }
+		if (this.isWet())
+		{
+			this.extinguish();
+		}
 
-        this.motionX *= (double)f1;
-        this.motionY *= (double)f1;
-        this.motionZ *= (double)f1;
+		this.motionX *= (double)f1;
+		this.motionY *= (double)f1;
+		this.motionZ *= (double)f1;
 
 		if(!this.hasNoGravity())
 			updateGravity();
@@ -429,13 +340,6 @@ public class EntityProjectileBase extends EntityArrow {
 	public void move(MoverType type, double x, double y, double z)
 	{
 		super.move(type, x, y, z);
-
-		if (this.inGround)
-		{
-			this.xTile = MathHelper.floor(this.posX);
-			this.yTile = MathHelper.floor(this.posY);
-			this.zTile = MathHelper.floor(this.posZ);
-		}
 	}
 
 	@Override
@@ -453,7 +357,7 @@ public class EntityProjectileBase extends EntityArrow {
 			{
 				Entity entity1 = list.get(i);
 
-				if (entity1 != this.shootingEntity || (this.ticksInAir >=5 && this.projectileShake==0))
+				if (entity1 != this.shootingEntity || (this.ticksInAir >=5 && this.projectileShake <= 0))
 				{
 					AxisAlignedBB axisalignedbb = entity1.getEntityBoundingBox().grow(0.30000001192092896D);
 					RayTraceResult raytraceresult = axisalignedbb.calculateIntercept(start, end);
@@ -491,6 +395,7 @@ public class EntityProjectileBase extends EntityArrow {
 		compound.setByte("inData", (byte)this.inData);
 		compound.setByte("inGround", (byte)(this.inGround ? 1 : 0));
 		compound.setByte("pickup", (byte)this.pickupStatus.ordinal());
+		compound.setByte("shake", (byte)this.projectileShake);
 		compound.setDouble("damage", this.damage);
 	}
 
@@ -530,6 +435,7 @@ public class EntityProjectileBase extends EntityArrow {
 		{
 			this.pickupStatus = compound.getBoolean("player") ? EntityProjectileBase.PickupStatus.ALLOWED : EntityProjectileBase.PickupStatus.DISALLOWED;
 		}
+		this.projectileShake = compound.getByte("shake") & 255;
 
 	}
 
@@ -539,7 +445,7 @@ public class EntityProjectileBase extends EntityArrow {
 	@Override
 	public void onCollideWithPlayer(EntityPlayer entityIn)
 	{
-		if (!this.world.isRemote && this.inGround)
+		if (!this.world.isRemote && this.inGround && this.projectileShake <= 0)
 		{
 			boolean flag = this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED || this.pickupStatus == EntityProjectileBase.PickupStatus.CREATIVE_ONLY && entityIn.capabilities.isCreativeMode;
 
@@ -589,7 +495,7 @@ public class EntityProjectileBase extends EntityArrow {
 	{
 		this.knockbackStrength = knockbackStrengthIn;
 	}
-	
+
 	public void setKnockbackStrength(float knockbackStrengthIn)
 	{
 		this.knockbackStrength = knockbackStrengthIn;

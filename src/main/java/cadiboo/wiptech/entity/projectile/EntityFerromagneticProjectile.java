@@ -1,8 +1,6 @@
 package cadiboo.wiptech.entity.projectile;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.Items;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -19,11 +17,9 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityFerromagneticProjectile extends EntityProjectileBase {
@@ -39,7 +35,6 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	public static final int vaporiseTemperature = 5000;
 	public static final int plasmaKillTemperature = 350;
 	public static final int plasmaLifespan = 600;
-	public static final IBlockState AIR_DEFAULT = Blocks.AIR.getDefaultState();
 
 	@Override
 	public int getLifespan() {
@@ -53,7 +48,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	public void onUpdate() {
 		if(this.isPlasma()) {
 			this.setTemperature(this.getTemperature() - 1F);
-			WIPTech.logger.info("Temperature: "+this.getTemperature());
+			//WIPTech.logger.info("Temperature: "+this.getTemperature());
 
 			if(this.isInWater()) {
 				this.setTemperature(this.getTemperature() / (float) 1.25);
@@ -178,8 +173,10 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 		if(!this.world.isRemote) {
 			if(this.canIgnite()) {
-				if ((iblockstate == AIR_DEFAULT) && ((world.getBlockState(blockpos.up()).getBlock().isFlammable(world, blockpos.up(), EnumFacing.DOWN)) || (world.getBlockState(blockpos.north()).getBlock().isFlammable(world, blockpos.north(), EnumFacing.NORTH)) || (world.getBlockState(blockpos.east()).getBlock().isFlammable(world, blockpos.east(), EnumFacing.EAST)) || (world.getBlockState(blockpos.south()).getBlock().isFlammable(world, blockpos.south(), EnumFacing.SOUTH)) || (world.getBlockState(blockpos.west()).getBlock().isFlammable(world, blockpos.west(), EnumFacing.WEST))))
+				if ((iblockstate.getBlock() == Blocks.AIR) && ((world.getBlockState(blockpos.down()).getBlock().isFlammable(world, blockpos.down(), EnumFacing.UP)) || (world.getBlockState(blockpos.up()).getBlock().isFlammable(world, blockpos.up(), EnumFacing.DOWN)) || (world.getBlockState(blockpos.north()).getBlock().isFlammable(world, blockpos.north(), EnumFacing.SOUTH)) || (world.getBlockState(blockpos.east()).getBlock().isFlammable(world, blockpos.east(), EnumFacing.WEST)) || (world.getBlockState(blockpos.south()).getBlock().isFlammable(world, blockpos.south(), EnumFacing.NORTH)) || (world.getBlockState(blockpos.west()).getBlock().isFlammable(world, blockpos.west(), EnumFacing.EAST))))
 					this.world.setBlockState(blockpos, Blocks.FIRE.getDefaultState(), 2);
+				if(iblockstate.getBlock() == Blocks.WATER)
+					this.world.setBlockToAir(blockpos);
 			}
 		}
 		super.customUpdateinAir();
@@ -196,13 +193,12 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		if(!this.world.isRemote) {
 
 			if(this.canIgnite()) {
-				//if (world.getBlockState(blockpos.up()).getBlock().isFlammable(world, blockpos.up(), EnumFacing.NORTH))
 				if(iblockstate.getBlock() instanceof BlockTNT) {
 					iblockstate.getBlock().onBlockDestroyedByPlayer(world, blockpos, iblockstate.withProperty(BlockTNT.EXPLODE, true));
 					this.world.setBlockToAir(blockpos);
 				}
 			} 
-			else if(this.canFreeze()) {
+			if(this.canFreeze()) {
 				if (iblockstate.getMaterial() == Material.ICE)
 				{
 					this.world.setBlockState(blockpos, Blocks.PACKED_ICE.getDefaultState());
@@ -212,7 +208,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 					this.world.setBlockState(blockpos, Blocks.ICE.getDefaultState());
 				}
 			} 
-			else if(this.canMelt()) {
+			if(this.canMelt()) {
 				if (iblockstate.getMaterial() == Material.ICE || iblockstate.getMaterial() == Material.PACKED_ICE)
 				{
 					this.world.setBlockState(blockpos, Blocks.WATER.getDefaultState());
@@ -227,8 +223,10 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			}
 		}
 
-		if(this.isPlasma())
+		if(this.isPlasma()) {
 			this.setDead();
+			return;
+		}
 
 		this.inTile = iblockstate.getBlock();
 		this.inData = this.inTile.getMetaFromState(iblockstate);

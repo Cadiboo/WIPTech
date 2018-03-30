@@ -70,15 +70,14 @@ public class WIPTech {
 	//DOING ^
 	//TODO Knockback
 	//TODO damage nerf
-	//TODO check Capabilities modules nbt
-	//DONE WHy are projectiles bouncing off bosses? idk but they arent anymore
+	//TODO check Capabilities modules NBT
+	//DONE WHy are projectiles bouncing off bosses? IDK but they aren't anymore
 	//TODO copy how ender gateways are rendered
 	
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		WIPTech.logger.info(WIPTech.proxy);
 		WIPTech.proxy.logLogicalSide();
 		WIPTech.proxy.addToCreativeTab();
 
