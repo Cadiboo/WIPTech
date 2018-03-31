@@ -2,7 +2,6 @@ package cadiboo.wiptech.handler.event;
 
 import java.util.List;
 
-import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockCrusher;
 import cadiboo.wiptech.client.render.entity.RenderEntityFerromagneticProjectileFactory;
@@ -23,6 +22,7 @@ import cadiboo.wiptech.tileentity.TileEntityCapacitorBank;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
+import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

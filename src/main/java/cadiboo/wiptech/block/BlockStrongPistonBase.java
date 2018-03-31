@@ -2,7 +2,7 @@ package cadiboo.wiptech.block;
 
 import java.util.List;
 
-import cadiboo.wiptech.Reference;
+import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.util.ITooltipFlag;

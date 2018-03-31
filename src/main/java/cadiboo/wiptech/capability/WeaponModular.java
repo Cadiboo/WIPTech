@@ -3,6 +3,7 @@ package cadiboo.wiptech.capability;
 import java.util.ArrayList;
 import java.util.List;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.handler.EnumHandler;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
@@ -169,12 +170,12 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 	public NBTTagCompound serializeNBT()
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
-		/*
+		
 		WIPTech.logger.info("serializeNBT: ");
 		WIPTech.logger.info(this.circuit);
 		WIPTech.logger.info(this.coil);
 		WIPTech.logger.info(this.scope);
-		 */
+		
 		if(this.circuit!=null)
 			nbt.setInteger("circuit", this.circuit.getID());
 		if(this.coil!=null)
@@ -190,7 +191,7 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt)
 	{
-		//WIPTech.logger.info("deserializeNBT: "+nbt);
+		WIPTech.logger.info("deserializeNBT: "+nbt);
 		if(nbt.hasKey("circuit"))
 			this.circuit = Circuits.byID(nbt.getInteger("circuit"));
 		if(nbt.hasKey("coil"))

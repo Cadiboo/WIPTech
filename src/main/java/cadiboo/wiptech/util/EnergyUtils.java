@@ -1,6 +1,5 @@
 package cadiboo.wiptech.util;
 
-import cadiboo.wiptech.Reference;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

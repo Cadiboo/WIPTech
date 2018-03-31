@@ -1,8 +1,8 @@
 package cadiboo.wiptech.handler;
 
-import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.item.ItemFerromagneticProjectile;
+import cadiboo.wiptech.util.Reference;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;

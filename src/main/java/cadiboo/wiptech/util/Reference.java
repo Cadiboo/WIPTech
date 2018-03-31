@@ -1,4 +1,4 @@
-package cadiboo.wiptech;
+package cadiboo.wiptech.util;
 
 import net.minecraft.util.ResourceLocation;
 

@@ -1,9 +1,9 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.handler.EnumHandler;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.util.Reference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

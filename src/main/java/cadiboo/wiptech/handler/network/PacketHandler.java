@@ -1,7 +1,7 @@
 package cadiboo.wiptech.handler.network;
 
-import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.handler.GuiHandler;
+import cadiboo.wiptech.util.Reference;
 //import cadiboo.wiptech.network.CSyncModular.CSyncModularHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;

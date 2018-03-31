@@ -9,6 +9,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializable<NBTTagCompound> {
 
@@ -23,12 +24,18 @@ public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializa
 		if( capability == Capabilities.MODULAR_WEAPON_CAPABILITY ) {
 			return true;
 		}
+		else if( capability == CapabilityEnergy.ENERGY ) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public <T> T getCapability( Capability<T> capability, EnumFacing facing ) {
 		if( capability == Capabilities.MODULAR_WEAPON_CAPABILITY  ) {
+			return (T) weaponModules; 
+		}
+		else if( capability == CapabilityEnergy.ENERGY ) {
 			return (T) weaponModules; 
 		}
 		return null;
@@ -45,5 +52,5 @@ public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializa
 		//this.modules.circuit = nbt.getCompoundTag("circuit");
 		this.weaponModules.deserializeNBT(nbt);
 	}
-	
+
 }

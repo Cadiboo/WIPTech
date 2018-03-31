@@ -1,9 +1,9 @@
 package cadiboo.wiptech.init;
 
-import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.entity.*;
 import cadiboo.wiptech.entity.projectile.*;
 import cadiboo.wiptech.entity.ridable.*;
+import cadiboo.wiptech.util.Reference;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;

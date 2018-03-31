@@ -7,10 +7,10 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
-import cadiboo.wiptech.Reference;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;

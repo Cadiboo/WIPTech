@@ -1,6 +1,6 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.Reference;
+import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
