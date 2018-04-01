@@ -27,7 +27,7 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 		if(!world.isRemote){
 
 			if(this.canProduce()){
-				this.energy.forceReceive(ENERGY_PRODUCTION, false);
+				this.energy.receiveEnergyInternal(ENERGY_PRODUCTION, false);
 				this.markDirty();
 			}
 			if(this.energy.getEnergyStored() > 0){

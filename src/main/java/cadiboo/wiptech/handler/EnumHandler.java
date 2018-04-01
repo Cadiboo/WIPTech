@@ -96,12 +96,12 @@ public class EnumHandler
 			13	Nickel Aluminum Bronze	7%
 			 */
 
-			SILVER		(5, "silver",	105,	TextFormatting.WHITE),
-			COPPER		(4, "copper",	100,	TextFormatting.RED),
-			GOLD			(3, "gold",		70, TextFormatting.GOLD),
-			ALUMINIUM	(2, "aluminium",	61, TextFormatting.GRAY),
+			TIN			(0, "tin",		15, TextFormatting.WHITE),
 			IRON			(1, "iron",		17, TextFormatting.GRAY),
-			TIN			(0, "tin",		15, TextFormatting.WHITE);
+			ALUMINIUM	(2, "aluminium",	61, TextFormatting.GRAY),
+			GOLD			(3, "gold",		70, TextFormatting.GOLD),
+			COPPER		(4, "copper",	100,	TextFormatting.RED),
+			SILVER		(5, "silver",	105,	TextFormatting.WHITE);
 
 			private int ID;
 			private String name;
@@ -218,12 +218,13 @@ public class EnumHandler
 			13	Nickel Aluminum Bronze	7%
 			 */
 
-			SILVER		(5, "silver",	105,	TextFormatting.WHITE),
-			COPPER		(4, "copper",	100,	TextFormatting.RED),
-			GOLD			(3, "gold",		70, TextFormatting.GOLD),
-			ALUMINIUM	(2, "aluminium",	61, TextFormatting.GRAY),
+
+			TIN			(0, "tin",		15, TextFormatting.WHITE),
 			IRON			(1, "iron",		17, TextFormatting.GRAY),
-			TIN			(0, "tin",		15, TextFormatting.WHITE);
+			ALUMINIUM	(2, "aluminium",	61, TextFormatting.GRAY),
+			GOLD			(3, "gold",		70, TextFormatting.GOLD),
+			COPPER		(4, "copper",	100,	TextFormatting.RED),
+			SILVER		(5, "silver",	105,	TextFormatting.WHITE);
 
 			private int ID;
 			private String name;
@@ -247,6 +248,7 @@ public class EnumHandler
 			}
 
 			public static Coils byID(int i) {
+				Object coils = Coils.values();
 				return Coils.values()[i];
 			}
 

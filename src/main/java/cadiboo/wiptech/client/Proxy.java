@@ -47,31 +47,7 @@ public class Proxy implements IProxy {
 			super.displayAllRelevantItems(list);
 
 			ItemStack plasmaGun = new ItemStack(Items.PLASMA_GUN);
-			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.SILVER).setRail(Rails.SILVER).setCircuit(Circuits.BURST3);
-			list.add(plasmaGun);
-
-			plasmaGun = new ItemStack(Items.PLASMA_GUN);
-			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.SILVER).setRail(Rails.SILVER).setCircuit(Circuits.BURST5);
-			list.add(plasmaGun);
-
-			plasmaGun = new ItemStack(Items.PLASMA_GUN);
-			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.SILVER).setRail(Rails.SILVER).setCircuit(Circuits.BURST10);
-			list.add(plasmaGun);
-
-			plasmaGun = new ItemStack(Items.PLASMA_GUN);
-			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.SILVER).setRail(Rails.SILVER).setCircuit(Circuits.AUTO);
-			list.add(plasmaGun);
-
-			plasmaGun = new ItemStack(Items.PLASMA_GUN);
-			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.SILVER).setRail(Rails.SILVER).setCircuit(Circuits.MANUAL);
-			list.add(plasmaGun);
-
-			plasmaGun = new ItemStack(Items.PLASMA_GUN);
-			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.TIN).setRail(Rails.TIN).setCircuit(Circuits.AUTO);
-			list.add(plasmaGun);
-
-			plasmaGun = new ItemStack(Items.PLASMA_GUN);
-			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.SILVER).setRail(Rails.SILVER).setCircuit(Circuits.OVERCLOCKED);
+			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.GOLD).setRail(Rails.GOLD).setCircuit(Circuits.OVERCLOCKED);
 			list.add(plasmaGun);
 		}
 

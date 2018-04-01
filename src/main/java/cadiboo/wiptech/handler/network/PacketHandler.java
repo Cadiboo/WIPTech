@@ -1,8 +1,7 @@
 package cadiboo.wiptech.handler.network;
 
-import cadiboo.wiptech.handler.GuiHandler;
+//import cadiboo.wiptech.handler.network.ClientSyncModular.ClientSyncModularHandler;
 import cadiboo.wiptech.util.Reference;
-//import cadiboo.wiptech.network.CSyncModular.CSyncModularHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -18,7 +17,9 @@ public class PacketHandler {
 		NETWORK.registerMessage(new PacketRequestUpdateCrusher.Handler(), PacketRequestUpdateCrusher.class, networkIds++, Side.SERVER);
 		NETWORK.registerMessage(new PacketUpdateCoiler.Handler(), PacketUpdateCoiler.class, networkIds++, Side.CLIENT);
 		NETWORK.registerMessage(new PacketRequestUpdateCoiler.Handler(), PacketRequestUpdateCoiler.class, networkIds++, Side.SERVER);
-		NETWORK.registerMessage(PacketSyncTileEntity.class, PacketSyncTileEntity.class, 0, Side.CLIENT);
+		
+		NETWORK.registerMessage(PacketSyncTileEntity.class, PacketSyncTileEntity.class, networkIds++, Side.CLIENT);
+		//NETWORK.registerMessage(ClientSyncModularHandler.class, ClientSyncModular.class, networkIds++, Side.CLIENT);
 		//NETWORK.registerMessage(CSyncModularHandler.class, CSyncModular.class, networkIds++, Side.CLIENT);
 	}
 }

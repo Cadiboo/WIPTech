@@ -1,5 +1,6 @@
 package cadiboo.wiptech.item;
 
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Random;
 
@@ -12,6 +13,8 @@ import cadiboo.wiptech.handler.EnumHandler.WeaponModules.*;
 import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.provider.ModularWeaponProvider;
+import cadiboo.wiptech.util.CustomEnergyStorage;
+import cadiboo.wiptech.util.EnergyUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -27,6 +30,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public class ItemPlasmagun extends ItemBase {
 
@@ -67,7 +72,7 @@ public class ItemPlasmagun extends ItemBase {
 				if(circuit!=null) {
 					if(circuit!=Circuits.MANUAL)
 						return;
-					handleShoot(itemStackIn, worldIn, (EntityPlayer) entityLiving, modules);
+					handleShoot(itemStackIn, worldIn, (EntityPlayer) entityLiving, modules, (CustomEnergyStorage) itemStackIn.getCapability(CapabilityEnergy.ENERGY, null));
 				}
 
 			}
@@ -111,14 +116,14 @@ public class ItemPlasmagun extends ItemBase {
 						break;
 					case OVERCLOCKED:
 						for(int i = 0; i<WeaponModular.circuitOverclockedRepeats; i++) {
-							handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules);
+							handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules, (CustomEnergyStorage) itemStackIn.getCapability(CapabilityEnergy.ENERGY, null));
 						}
 						return;
 
 					default: return;
 
 					}
-					handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules);
+					handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(), (EntityPlayer) entityLiving, modules, (CustomEnergyStorage) itemStackIn.getCapability(CapabilityEnergy.ENERGY, null));
 				}
 
 			}
@@ -135,23 +140,33 @@ public class ItemPlasmagun extends ItemBase {
 		super.onUpdate(itemStackIn, worldIn, entityIn, itemSlot, isSelected);
 	}
 
-	private void handleShoot(ItemStack itemStackIn, World worldIn, EntityPlayer player, IWeaponModular modules) {
+	private void handleShoot(ItemStack itemStackIn, World worldIn, EntityPlayer player, IWeaponModular modules, CustomEnergyStorage energy) {
 
 		boolean flag = player.capabilities.isCreativeMode;
 
-		float velocity = 0;
+		if(energy.getEnergyStored() < WeaponModular.energyCost)
+			return;
 
-		if(modules.getLastShootTime()>0) {
-
-			//WIPTech.logger.info("temperature: "+this.temperature+", lastShootTime: "+this.lastShootTime+", getTotalWorldTime: "+worldIn.getTotalWorldTime()+", shootTimeAdd: "+shootTimeAdd);
-			if(modules.getLastShootTime() > worldIn.getTotalWorldTime() - WeaponModular.overheatTimer)
-			
-			modules.setLastShootTime(worldIn.getTotalWorldTime());
+		if(modules.getCircuit() == null) return;
+		if(modules.getCoil() == null) {
+			modules.setTemperature(modules.getOverheatTemperature()+20);
+			return;
 		}
-		modules.setLastShootTime(worldIn.getTotalWorldTime());
+		if(modules.getRail() == null) return;
+
+		float velocity = 0;
 
 		if (!worldIn.isRemote)
 		{
+			if(modules.getLastShootTime()>0) {
+
+				//WIPTech.logger.info("temperature: "+this.temperature+", lastShootTime: "+this.lastShootTime+", getTotalWorldTime: "+worldIn.getTotalWorldTime()+", shootTimeAdd: "+shootTimeAdd);
+				if(modules.getLastShootTime() > worldIn.getTotalWorldTime() - WeaponModular.overheatTimer)
+
+					modules.setLastShootTime(worldIn.getTotalWorldTime());
+			}
+			modules.setLastShootTime(worldIn.getTotalWorldTime());
+
 			EntityFerromagneticProjectile projectile = ((ItemFerromagneticProjectile)plasmaStack.getItem()).createProjectile(worldIn, plasmaStack, player, true);
 			velocity = EntityFerromagneticProjectile.getProjectileVelocity(plasmaStack)*modules.getCoil().getEfficiencyFraction();
 			projectile.setDamage(projectile.getDamage()*modules.getRail().getEfficiencyFraction());
@@ -162,13 +177,10 @@ public class ItemPlasmagun extends ItemBase {
 				projectile.setTemperature(projectile.getTemperature() + 25F);
 			}
 
-			if (flag)
-			{
-				projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
-			}
-
 			worldIn.spawnEntity(projectile);
 		}
+
+		energy.extractEnergy(WeaponModular.energyCost, false);
 
 		worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
@@ -177,6 +189,7 @@ public class ItemPlasmagun extends ItemBase {
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
 	{
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
+		WIPTech.logger.info(itemstack.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored());
 
 		if( itemstack.getItem() == Items.PLASMA_GUN ) {
 			IWeaponModular modules = itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
@@ -210,8 +223,31 @@ public class ItemPlasmagun extends ItemBase {
 			tooltip.add("Installed Modules:");
 			tooltip.addAll(modules.getModuleList());
 		}
+		
+		WIPTech.logger.info(modules.getModuleList());
 
+		CustomEnergyStorage energy = (CustomEnergyStorage) itemStackIn.getCapability(CapabilityEnergy.ENERGY, null);
+		if(energy!= null){
+			WIPTech.logger.info(energy);
+			energy.setEnergyStored(5);
+			WIPTech.logger.info(energy.getEnergyStored());
+			tooltip.add(EnergyUtils.formatEnergy(energy));
+		}
 		super.addInformation(itemStackIn, worldIn, tooltip, flagIn);
+	}
+
+	@Override
+	public double getDurabilityForDisplay(ItemStack stack)
+	{
+		//return 1D-(getEnergy(stack)/getMaxEnergy(stack));
+		return 0.5D;
+	}
+
+	@Override
+	public int getRGBDurabilityForDisplay(ItemStack stack)
+	{
+		// return MathHelper.hsvToRGB(Math.max(0.0F, (float)(1-getDurabilityForDisplay(stack))) / 3.0F, 1.0F, 1.0F);
+		return 123;
 	}
 
 }

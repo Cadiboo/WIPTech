@@ -37,6 +37,7 @@ public interface IWeaponModular {
 	boolean isOverheated();
 
 	int getTemperature();
+	void setTemperature(int temperature);
 	void heat();
 	void cool();
 	int getOverheatTemperature();

@@ -100,24 +100,32 @@ public class EntityProjectileBase extends EntityArrow {
 	{
 		super(worldIn, x, y, z);
 	}
-	
+
 	public EntityProjectileBase(World worldIn, EntityLivingBase shooter)
 	{
-		this(worldIn, shooter.posX, shooter.posY + (double)shooter.getEyeHeight() - (double)getEyeOffset(), shooter.posZ);
-        this.shootingEntity = shooter;
+		this(worldIn, shooter.posX + getEyeXOffset(shooter), shooter.posY + (double)shooter.getEyeHeight() - getEyeYOffset(shooter), shooter.posZ + getEyeZOffset(shooter));
+		this.shootingEntity = shooter;
 
-        if (shooter instanceof EntityPlayer)
-        {
-            this.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
-        }
+		if (shooter instanceof EntityPlayer)
+		{
+			this.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
+		}
+	}
+	
+	public static double getEyeXOffset(EntityLivingBase shooter) {
+		return 0;
 	}
 
-	private static double getEyeOffset() {
+	public static double getEyeYOffset(EntityLivingBase shooter) {
+		return 0.25D;
+	}
+
+	public static double getEyeZOffset(EntityLivingBase shooter) {
 		return 0;
 	}
 
 	@Override
-	protected void entityInit() {}
+	public void entityInit() {}
 
 	@Override
 	public void shoot(Entity shooter, float pitch, float yaw, float iDontDoAnything, float velocity, float inaccuracy)
@@ -128,7 +136,6 @@ public class EntityProjectileBase extends EntityArrow {
 		this.shoot((double)f, (double)f1, (double)f2, velocity, inaccuracy);
 		this.motionX += shooter.motionX;
 		this.motionZ += shooter.motionZ;
-		this.motionY += shooter.motionY;
 	}
 
 	/**
@@ -209,6 +216,11 @@ public class EntityProjectileBase extends EntityArrow {
 	private void updateInAir() {
 		this.timeInGround = 0;
 		++this.ticksInAir;
+		if(this.ticksInAir > this.getAirLifespan()) {
+			this.setDead();
+			return;
+		}
+
 		Vec3d vec3d1 = new Vec3d(this.posX, this.posY, this.posZ);
 		Vec3d vec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 		RayTraceResult raytraceresult = this.world.rayTraceBlocks(vec3d1, vec3d, false, true, false);
@@ -323,7 +335,7 @@ public class EntityProjectileBase extends EntityArrow {
 		if((block == this.inTile && meta == this.inData) || this.getEntityWorld().collidesWithAnyBlock(ON_BLOCK_AABB.offset(this.getPositionVector()))) {
 			++this.ticksInGround;
 
-			if(this.ticksInGround >= this.getLifespan()) {
+			if(this.ticksInGround >= this.getGroundLifespan()) {
 				this.setDead();
 			}
 		}
@@ -338,8 +350,12 @@ public class EntityProjectileBase extends EntityArrow {
 
 		++this.timeInGround;
 	}
-
-	public int getLifespan() {
+	
+	public int getAirLifespan() {
+		return 300;
+	}
+	
+	public int getGroundLifespan() {
 		return 1200;
 	}
 

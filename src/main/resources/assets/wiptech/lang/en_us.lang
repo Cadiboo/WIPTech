@@ -1,10 +1,20 @@
 itemGroup.wiptechtab=WIP Tech
-#Deaths
+#Entity
+entity.ferromagneticprojectile.name=Ferromagnetic Projectile
+entity.napalm.name=Napalm
+
+##Deaths
+death.attack.napalm=%1$s was annihilated by %2$s
+death.attack.napalm.item=%1$s was annihilated by %2$s using %3$s
+
 death.attack.railgunprojectile=%1$s was annihilated by %2$s
 death.attack.railgunprojectile.item=%1$s was annihilated by %2$s using %3$s
 
 death.attack.coilgunprojectile=%1$s was turned into a sieve by %2$s
 death.attack.coilgunprojectile.item=%1$s was turned into a sieve by %2$s using %3$s
+
+death.attack.plasmaprojectile=%1$s was incinerated by %2$s
+death.attack.plasmaprojectile.item=%1$s was incinerated by %2$s using %3$s
 #Copper
 tile.copper_ore.name=Copper Ore
 tile.copper_block.name=Copper Block

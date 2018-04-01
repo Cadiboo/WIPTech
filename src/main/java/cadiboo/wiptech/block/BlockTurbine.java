@@ -39,7 +39,7 @@ public class BlockTurbine extends BlockTileEntity<TileEntityTurbine>{
 		if (te instanceof TileEntityTurbine) {
 			if (itemStackIn.hasTagCompound()) {
 				int energy = itemStackIn.getTagCompound().getInteger("Energy");
-				((TileEntityTurbine) te).energy.forceReceive(energy, false);
+				((TileEntityTurbine) te).energy.receiveEnergyInternal(energy, false);
 			}
 		}
 	}

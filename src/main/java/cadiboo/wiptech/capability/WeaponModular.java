@@ -24,12 +24,13 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 	private boolean overheat;
 	private long lastShootTime;
 	private int temperature;
-	
+
 	public static final int overheatTimer = 5;
 	public static final int burstShotsAllowed = 5;
 	public static final float shootChance = 1.5F; //0 = never; 1 = always; 2 = half the time; 3 = 1/3rd the time
 	public static final float burstShootChance = 2F;
-	public static final int circuitOverclockedRepeats = 3;
+	public static final int circuitOverclockedRepeats = 1;
+	public static final int energyCost = 100;
 
 	public WeaponModular() {
 		this.overheatTemperature = 100;
@@ -60,7 +61,7 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 	public int getBurstShotsTaken() {
 		return this.burstShotsTaken;
 	}
-	
+
 	@Override
 	public void resetBurstShotsTaken() {
 		this.burstShotsTaken = 0;
@@ -80,17 +81,22 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 	public int getTemperature() {
 		return this.temperature;
 	}
+	
+	@Override
+	public void setTemperature(int temperature) {
+		this.temperature = temperature;
+	}
 
 	@Override
 	public int getOverheatTemperature() {
 		return this.overheatTemperature;
 	}
-	
+
 	@Override
 	public long getLastShootTime() {
 		return this.lastShootTime;
 	}
-	
+
 	@Override
 	public void setLastShootTime(long time) {
 		this.lastShootTime = time;
@@ -170,12 +176,7 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 	public NBTTagCompound serializeNBT()
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
-		
-		WIPTech.logger.info("serializeNBT: ");
-		WIPTech.logger.info(this.circuit);
-		WIPTech.logger.info(this.coil);
-		WIPTech.logger.info(this.scope);
-		
+
 		if(this.circuit!=null)
 			nbt.setInteger("circuit", this.circuit.getID());
 		if(this.coil!=null)
@@ -184,14 +185,12 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 			nbt.setInteger("scope", this.scope.getID());
 		if(this.rail!=null)
 			nbt.setInteger("rail", this.rail.getID());
-
 		return nbt;
 	}
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt)
 	{
-		WIPTech.logger.info("deserializeNBT: "+nbt);
 		if(nbt.hasKey("circuit"))
 			this.circuit = Circuits.byID(nbt.getInteger("circuit"));
 		if(nbt.hasKey("coil"))
@@ -200,13 +199,6 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 			this.scope = Scopes.byID(nbt.getInteger("scope"));
 		if(nbt.hasKey("rail"))
 			this.rail = Rails.byID(nbt.getInteger("rail"));
-		/*nbt.getTagTypeName(10).get
-		NBTTagList tagList = nbt.getTagList("Modules", Constants.NBT.TAG_COMPOUND);
-		WIPTech.logger.info(tagList);
-		this.circuit = EnumHandler.WeaponModules.Circuits.byMetadata(tagList.getCompoundTagAt(0).getInteger("circuit"));
-		WIPTech.logger.info(this.circuit);
-		this.coil = null;
-		this.scope = null;*/
 	}
 
 }

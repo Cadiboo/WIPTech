@@ -34,14 +34,22 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	public static final int ingiteTemperature = 500;
 	public static final int vaporiseTemperature = 5000;
 	public static final int plasmaKillTemperature = 350;
-	public static final int plasmaLifespan = 600;
+	public static final int plasmaAirLifespan = 120;
 
 	@Override
-	public int getLifespan() {
+	public int getAirLifespan() {
 		if(this.isPlasma())
-			return plasmaLifespan;
+			return plasmaAirLifespan;
 		else
-			return super.getLifespan();
+			return super.getAirLifespan();
+	}
+
+	@Override
+	public int getGroundLifespan() {
+		if(this.isPlasma())
+			return 0;
+		else
+			return super.getGroundLifespan();
 	}
 
 	@Override
@@ -78,7 +86,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	}
 
 	@Override
-	protected void entityInit()
+	public void entityInit()
 	{
 		super.entityInit();
 		this.dataManager.register(AMMO_ID, Integer.valueOf(-1));
@@ -124,6 +132,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	{
 		super(worldIn);
 	}
+
 	public EntityFerromagneticProjectile(World worldIn, EntityLivingBase shooter)
 	{
 		super(worldIn, shooter);
@@ -134,9 +143,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		super(worldIn, x, y, z);
 	}
 
-	/**
-	 * Called when the projectile hits a block or an entity
-	 */
+	//Called when the projectile hits a block or an entity
 	@Override
 	public void onHit(RayTraceResult raytraceResultIn)
 	{
@@ -180,8 +187,9 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 
 			if(this.canIgnite()) {
 				if(iblockstate.getBlock() instanceof BlockTNT) {
-					iblockstate.getBlock().onBlockDestroyedByPlayer(world, blockpos, iblockstate.withProperty(BlockTNT.EXPLODE, true));
+					//iblockstate.getBlock().onBlockDestroyedByPlayer(world, blockpos, iblockstate.withProperty(BlockTNT.EXPLODE, true));
 					this.world.setBlockToAir(blockpos);
+					world.createExplosion(this, blockpos.getX(), blockpos.getY(), blockpos.getZ(), 8, true);
 				}
 			} 
 			if(this.canFreeze()) {
@@ -334,7 +342,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		}
 	}
 
-	private boolean isPlasma() {
+	public boolean isPlasma() {
 		return this.getAmmoId()==9;
 	}
 
@@ -352,9 +360,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		this.setAmmoId(compound.getInteger("ammoId"));
 	}
 
-	/**
-	Called by a player entity when they collide with an entity
-	 */
+	//Called by a player entity when they collide with an entity
 	@Override
 	public void onCollideWithPlayer(EntityPlayer entityIn)
 	{

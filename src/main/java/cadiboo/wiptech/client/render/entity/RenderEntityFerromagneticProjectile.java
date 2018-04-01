@@ -16,6 +16,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -53,101 +54,72 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		ammoStack = entity.getAmmoStack();
 		overheated = entity.isOverheated();
 
-		/*if(new Random().nextFloat() < 0.1F) {
-			WIPTech.logger.info("entityYaw: "+entityYaw);
-			WIPTech.logger.info("entity.rotationYaw: "+entity.rotationYaw);
-			WIPTech.logger.info("entity.rotationPitch: "+entity.rotationPitch);
-			WIPTech.logger.info("entity.arrowShake: "+entity.arrowShake);
-			WIPTech.logger.info("entity.projectileShake: "+entity.projectileShake);
-		}*/
-
 		GlStateManager.pushMatrix();
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		GlStateManager.translate(x, y+0.25, z);
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableCull();
 
-		/*//Direction that its heading/shot? Yaw
-		GlStateManager.rotate(entityYaw, 0.0F, 1.0F, 0.0F);
-
-		//Direction that its heading Yaw
-		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0.0F, 1.0F, 0.0F);
-		//GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
-
-		//GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
-
-		 */
-		// flip it, flop it, pop it, pull it, push it, rotate it, translate it, TECHNOLOGY
-		// rotate it into the direction we threw it
-		//GlStateManager.rotate(entity.rotationYaw, 0f, 1f, 0f);
-		//GlStateManager.rotate(-entity.rotationPitch, 1f, 0f, 0f);
-
 		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0, 1, 0);
 		GlStateManager.rotate(-(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks), 1, 0, 0);
 
-		// arrow shake
+		//projectile shake
 		float renderShake = (float)entity.projectileShake - partialTicks;
-
+		
 		if (renderShake > 0.0F)
 		{
 			float angle = -MathHelper.sin(renderShake * 3.0F) * renderShake;
 			GlStateManager.rotate(angle, 0.0F, 0.0F, 1.0F);
 		}
 
-		if(entity.getAmmoId()==9) {
-			double scale = 0.25;
+		if(entity.isPlasma()) {
+			GlStateManager.scale(0.5, 0.5, 0.5);
 
 			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_core.png"));
-			GlStateManager.depthMask(true);
-			drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
-			GlStateManager.depthMask(false);
+			//GlStateManager.depthMask(true);
+			drawQuad(0, 1, 0, 1, 0.125, 0.125, 0.125, 1);
+			//GlStateManager.depthMask(false);
 
-			scale = 0.75;
-			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_field.png"));
+			this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+			RenderHelper.disableStandardItemLighting();
+
+			GlStateManager.disableTexture2D();
+			GlStateManager.shadeModel(7425);
 			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GL11.GL_ONE_MINUS_CONSTANT_COLOR, GL11.GL_ONE); //both GL1
-			GlStateManager.color(0, 1, 1);
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+			GlStateManager.disableAlpha();
+			GlStateManager.enableCull();
+			GlStateManager.depthMask(false);
+			//GlStateManager.translate(0.0F, -1.0F, -2.0F);
 
-			drawQuad(0, 1, 0, 1, scale, scale, scale, scale);
+			GlStateManager.color(0.6F, 0.5F, 1);
 
+			drawQuad(0, 1, 0, 1, 0.25, 0.25, 0.25, 1);
+
+			GlStateManager.depthMask(true);
+			GlStateManager.disableCull();
 			GlStateManager.disableBlend();
+			GlStateManager.shadeModel(7424);
+			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+			GlStateManager.enableTexture2D();
+			GlStateManager.enableAlpha();
+			RenderHelper.enableStandardItemLighting();
 
 			GlStateManager.popMatrix();
 
 			return;
+
 		}
 		else
 		{
 			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(ammoStack);
 			if(model!=null) {
-				int color = -1;
-				List<BakedQuad> quads = model.getQuads((IBlockState)null, (EnumFacing)null, 0L);
+				//List<BakedQuad> quads = model.getQuads(null, null, 0L);
+				//BakedQuad bakedquad = quads.get(0);
 
-				//TODO if(quads.size > 0) do everything else {
+				TextureAtlasSprite sprite = model.getQuads(null, null, 0L).get(0).getSprite();
 
-				boolean flag = color == -1 && !ammoStack.isEmpty();
-				int i = 0;
-
-				BakedQuad bakedquad = quads.get(0);
-
-				/*int k = color;
-						//TODO what does this do?
-
-						if (flag && bakedquad.hasTintIndex())
-						{
-							k = Minecraft.getMinecraft().getItemColors().colorMultiplier(itemStack, bakedquad.getTintIndex());
-
-							if (EntityRenderer.anaglyphEnable)
-							{
-								k = TextureUtil.anaglyphColor(k);
-							}
-
-							k = k | -16777216;
-						}
-
-						net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, bakedquad, k);
-				 */
-				TextureAtlasSprite sprite = bakedquad.getSprite();
+				//TextureAtlasSprite sprite = bakedquad.getSprite();
 				if(sprite!=null) {
 
 					float minU = sprite.getMinU();
@@ -215,21 +187,15 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 	private void drawQuad (float minU, float maxU, float minV, float maxV, double width, double height, double length, double scale) {
 
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
-
 		GlStateManager.scale(scale, scale, scale);
 
-		/*this.bindTexture(Reference.DEBUG2_TEXTURE);
-		minU = 0;
-		maxU = 1;
-		minV = 0;
-		maxV = 1;*/
 		double hlfU = minU + (maxU-minU)/2;
 		double hlfV = minV + (maxV-minV)/2;
 
 		double centre = 0d;
 
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		//UP
@@ -282,7 +248,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 		tessellator.draw();
 
-		GlStateManager.scale(1, 1, 1);
+		GlStateManager.scale(1/scale, 1/scale, 1/scale);
 	}
 
 }
