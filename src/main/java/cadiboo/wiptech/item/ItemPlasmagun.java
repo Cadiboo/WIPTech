@@ -229,7 +229,7 @@ public class ItemPlasmagun extends ItemBase {
 		CustomEnergyStorage energy = (CustomEnergyStorage) itemStackIn.getCapability(CapabilityEnergy.ENERGY, null);
 		if(energy!= null){
 			WIPTech.logger.info(energy);
-			energy.setEnergyStored(5);
+			//energy.setEnergyStored(5);
 			WIPTech.logger.info(energy.getEnergyStored());
 			tooltip.add(EnergyUtils.formatEnergy(energy));
 		}

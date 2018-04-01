@@ -54,26 +54,23 @@ public class WIPTech {
 	//TODO and drill
 	//DOING get some sleep
 	//TODO redo knockback
-	//TODO redo Projectile spawning
-	//DONE capabilities
+	//HALF DONE redo Projectile spawning
+	//HALF DONE capabilities
 	//TODO make EntityRailgun rideable
 	//TODO redo itemStack proj consumption coilgun
-	//DONE CAPABILITIES
-	//DONE CAPABILITIES
 	//TODO RIGHT CLICK ANVIL
 	//TODO PLACE BLOCKS
 	//TODO STOP GUI
-	//TODO why does overheat do this?
-	//DONE redo coil speed - efficiency != pure power
-	//TODO something else thats pretty old cant rememer now
-	//TODO capacitors
+	//TODO Overheat
+	//DOING capacitors
 	//TODO FE
 	//DOING ^
 	//TODO Knockback
 	//TODO damage nerf
 	//TODO check Capabilities modules NBT
 	//DONE WHy are projectiles bouncing off bosses? IDK but they aren't anymore
-	//TODO copy how ender gateways are rendered
+	//DONE copy how ender gateways are rendered - used Dragon Death layer rendering
+	//TODO WHY ISNT ENERGY SYNCED!!!
 	
 	
 	@EventHandler
