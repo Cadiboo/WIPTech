@@ -1,15 +1,12 @@
 package cadiboo.wiptech.item;
 
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Random;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.IWeaponModular;
 import cadiboo.wiptech.capability.WeaponModular;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
-import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.*;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
 import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.provider.ModularWeaponProvider;
@@ -31,7 +28,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 
 public class ItemPlasmagun extends ItemBase {
 

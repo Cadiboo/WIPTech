@@ -3,11 +3,8 @@ package cadiboo.wiptech.provider;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.WeaponModular;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
 import cadiboo.wiptech.init.Capabilities;
-import cadiboo.wiptech.init.Capabilities.CapabilityWeaponModular;
 import cadiboo.wiptech.util.CustomEnergyStorage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +13,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 
 //Partly coppied from Actually Additions so heres what they put at the top
@@ -48,7 +44,7 @@ public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializa
 		if( capability == Capabilities.MODULAR_WEAPON_CAPABILITY ) {
 			return true;
 		}
-		else if( capability == CapabilityEnergy.ENERGY ) {
+		if( capability == CapabilityEnergy.ENERGY ) {
 			return true;
 		}
 		return false;
@@ -60,7 +56,7 @@ public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializa
 			return (T) this.weaponModules; 
 		}
 		if( capability == CapabilityEnergy.ENERGY ) {
-			return (T) this.energy;
+			return (T) (CustomEnergyStorage) this.energy;
 		}
 		return null;
 	}
