@@ -1,0 +1,6 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "all": "wiptech:blocks/aluminium_block"
+    }
+}

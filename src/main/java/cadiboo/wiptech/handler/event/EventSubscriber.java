@@ -3,6 +3,7 @@ package cadiboo.wiptech.handler.event;
 import java.util.List;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.block.BlockCrusher;
 import cadiboo.wiptech.client.render.entity.RenderEntityFerromagneticProjectileFactory;
 import cadiboo.wiptech.client.render.entity.RenderEntityNapalmFactory;
@@ -77,48 +78,57 @@ public class EventSubscriber {
 	@SubscribeEvent
 	public static void registerItems(RegistryEvent.Register<Item> event)
 	{
-		
+
 		event.getRegistry().registerAll(cadiboo.wiptech.init.Items.ITEMS);
-		
+
 		WIPTech.logger.info("Registered Items");
-		
-		for(Block block : cadiboo.wiptech.init.Blocks.BLOCKS) {
-			event.getRegistry().register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+
+		for(int i=0; i<Blocks.BLOCKS.length; i++) {
+			if(Blocks.BLOCKS[i] instanceof BlockBase && !((BlockBase) Blocks.BLOCKS[i]).isHiddenBlock())
+				event.getRegistry().register(new ItemBlock(Blocks.BLOCKS[i]).setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
 		}
-		
+
 		WIPTech.logger.info("And ItemBlocks");
 
-		
-		for(Block block : cadiboo.wiptech.init.Blocks.getOres()) {
-			WIPTech.logger.info(block.getUnlocalizedName());
-			String name = block.getUnlocalizedName().replace("_ore", "").replace("tile.", "");
-			WIPTech.logger.info(name);
+
+		for(int i=0; i<Blocks.getOres().size(); i++) {
+			String name = Blocks.getOres().get(i).getUnlocalizedName().replace("_ore", "").replace("tile.", "");
 			if(name.length()>0) {
 				name = name.substring(0, 1).toUpperCase() + name.substring(1);
-				OreDictionary.registerOre("ore"+name, block);
+				OreDictionary.registerOre("ore"+name, Blocks.getOres().get(i));
+				name = null;
 			}
 		}
 
-		for(Item item : cadiboo.wiptech.init.Items.getIngots()) {
-			String name = item.getUnlocalizedName().replace("_ingot", "").replace("item.", "");
+		for(int i=0; i<Items.getIngots().size(); i++) {
+			String name = Items.getIngots().get(i).getUnlocalizedName().replace("_ingot", "").replace("item.", "");
 			if(name.length()>0) {
 				name = name.substring(0, 1).toUpperCase() + name.substring(1);
-				OreDictionary.registerOre("ingot"+name, item);
+				OreDictionary.registerOre("ingot"+name, Items.getIngots().get(i));
+				name = null;
 			}
 		}
 
-		for(Item item : cadiboo.wiptech.init.Items.getNuggets()) {
-			String name = item.getUnlocalizedName().replace("_nugget", "").replace("item.", "");
+		for(int i=0; i<Items.getNuggets().size(); i++) {
+			String name = Items.getNuggets().get(i).getUnlocalizedName().replace("_nugget", "").replace("item.", "");
 			if(name.length()>0) {
 				name = name.substring(0, 1).toUpperCase() + name.substring(1);
-				OreDictionary.registerOre("nugget"+name, item);
+				OreDictionary.registerOre("nugget"+name, Items.getNuggets().get(i));
+				name = null;
 			}
 		}
 
 		WIPTech.logger.info("Registered OreDictionary");
-		
-		
+
 	}
+
+	/*
+	@SubscribeEvent
+	public static void registerOreDict(RegistryEvent.Register<NOPE> event)
+	{
+
+	}
+	 */
 
 	@SubscribeEvent
 	public static EnumActionResult BlockRightClickEvent(PlayerInteractEvent.RightClickBlock event)

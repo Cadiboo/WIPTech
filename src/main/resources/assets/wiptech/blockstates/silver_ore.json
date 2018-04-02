@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "normal": [
+            {"model": "wiptech:silver_ore"}
+        ],
+        "inventory": { "model": "wiptech:silver_ore" }
+    }
+}

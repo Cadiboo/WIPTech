@@ -5,6 +5,7 @@ import cadiboo.wiptech.util.CustomEnergyStorage;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -16,11 +17,11 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 	public static final int ENERGY_STORAGE = 10000;
 
 	public CustomEnergyStorage energy = new CustomEnergyStorage(ENERGY_STORAGE){
-        @Override
-        public boolean canReceive() {
-            return false;
-        }
-    };
+		@Override
+		public boolean canReceive() {
+			return false;
+		}
+	};
 
 	@Override
 	public void update() {
@@ -31,8 +32,8 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 				this.markDirty();
 			}
 			if(this.energy.getEnergyStored() > 0){
-                pushEnergy(this.world, this.pos, this.energy, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST);
-            }
+				pushEnergy(this.world, this.pos, this.energy, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST);
+			}
 		}
 	}
 
@@ -55,5 +56,10 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 			}
 		}
 		return 0;
+	}
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return new AxisAlignedBB(getPos(), getPos().add(1, 3, 1));
 	}
 }

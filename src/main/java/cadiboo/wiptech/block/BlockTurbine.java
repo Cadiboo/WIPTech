@@ -7,16 +7,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 public class BlockTurbine extends BlockTileEntity<TileEntityTurbine>{
 
@@ -25,7 +21,6 @@ public class BlockTurbine extends BlockTileEntity<TileEntityTurbine>{
 		this.setDefaultState(this.blockState.getBaseState());
 		this.setTileEntity();
 		this.setNonSolidBlock();
-
 	}
 
 	@Override

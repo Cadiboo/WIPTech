@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "normal": [
+            {"model": "wiptech:tin_spool"}
+        ],
+        "inventory": { "model": "wiptech:tin_spool" }
+    }
+}

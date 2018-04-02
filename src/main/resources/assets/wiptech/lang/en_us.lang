@@ -15,6 +15,7 @@ death.attack.coilgunprojectile.item=%1$s was turned into a sieve by %2$s using %
 
 death.attack.plasmaprojectile=%1$s was incinerated by %2$s
 death.attack.plasmaprojectile.item=%1$s was incinerated by %2$s using %3$s
+
 #Copper
 tile.copper_ore.name=Copper Ore
 tile.copper_block.name=Copper Block
@@ -24,10 +25,12 @@ item.copper_strand.name=Copper Strand
 item.copper_enamel.name=Enamel Copper Wire
 tile.copper_spool.name=Copper Spool
 item.copper_coil.name=Copper Coil
+
 #Gold
 item.gold_enamel.name=Enamel Gold Wire
 tile.gold_spool.name=Gold Spool
 item.gold_coil.name=Gold Coil
+
 #Bauxite
 tile.bauxite_ore.name=Bauxite Ore
 item.alumina.name=Alumina (Aluminum Oxide)
@@ -38,31 +41,51 @@ item.silica.name=Silica (Silicon Oxide)
 item.silicon.name=Silicon
 item.titania.name=Titania (Titanium Oxide)
 item.titanium_ingot.name=Titanium Ingot
+
 #Iron
-item.magnetic_metal_rod.iron_large.name=Large Iron Rod
-item.magnetic_metal_rod.iron_medium.name=Iron Rod
-item.magnetic_metal_rod.iron_small.name=Iron Pellet
+item.ferromagnetic_projectile.iron_large.name=Large Iron Rod
+item.ferromagnetic_projectile.iron_medium.name=Iron Rod
+item.ferromagnetic_projectile.iron_small.name=Iron Pellet
+
 #Aluminium (Aluminum for Americans)
 tile.aluminium_ore.name=Aluminum Ore
 tile.aluminium_block.name=Aluminum Block
 item.aluminium_ingot.name=Aluminum Ingot
 item.aluminium_nugget.name=Aluminum Nugget
+item.aluminium_strand.name=Aluminium Strand
+item.aluminium_enamel.name=Enamel Aluminium Wire
+tile.aluminium_spool.name=Aluminium Spool
+item.aluminium_coil.name=Aluminium Coil
+
+#Tin
+tile.tin_ore.name=Cassiterite
+tile.tin_ore.info=Tin Ore
+tile.tin_block.name=Tin Block
+item.tin_ingot.name=Tin Ingot
+item.tin_nugget.name=Tin Nugget
+item.tin_strand.name=Tin Strand
+item.tin_enamel.name=Enamel Tin Wire
+tile.tin_spool.name=Tin Spool
+item.tin_coil.name=Tin Coil
+
 #Tungsten
 tile.tungsten_ore.name=Tungsten Ore
 tile.tungsten_block.name=Tungsten Block
 item.tungsten_ingot.name=Tungsten Ingot
 item.tungsten_nugget.name=Tungsten Nugget
-item.magnetic_metal_rod.tungsten_large.name=Large Tungsten Rod
-item.magnetic_metal_rod.tungsten_medium.name=Tungsten Rod
-item.magnetic_metal_rod.tungsten_small.name=Tungsten Pellet
+item.ferromagnetic_projectile.tungsten_large.name=Large Tungsten Rod
+item.ferromagnetic_projectile.tungsten_medium.name=Tungsten Rod
+item.ferromagnetic_projectile.tungsten_small.name=Tungsten Pellet
+
 #Osmium
 tile.osmium_ore.name=Osmium Ore
 tile.osmium_block.name=Osmium Block
 item.osmium_ingot.name=Osmium Ingot
 item.osmium_nugget.name=Osmium Nugget
-item.magnetic_metal_rod.osmium_large.name=Large Osmium Rod
-item.magnetic_metal_rod.osmium_medium.name=Osmium Rod
-item.magnetic_metal_rod.osmium_small.name=Osmium Pellet
+item.ferromagnetic_projectile.osmium_large.name=Large Osmium Rod
+item.ferromagnetic_projectile.osmium_medium.name=Osmium Rod
+item.ferromagnetic_projectile.osmium_small.name=Osmium Pellet
+
 #Machines
 tile.strong_piston.name=Strong(Reinforced?) Piston
 ##Crusher
@@ -71,3 +94,9 @@ item.crusher_bit.name=Crusher Bit
 item.crusher_bit_holder.name=Crusher Bit Anchor
 ##Coiler
 tile.coiler.name=Coil Winder
+##Turbine
+tile.turbine.name=Wind Turbine
+##Peripheral
+tile.peripheral.name=Peripheral Block
+
+

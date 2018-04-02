@@ -1,7 +1,0 @@
-{
-    "variants": {
-        "iron":{"model": "wiptech:rods/iron_rod"},
-	"tungsten":{"model": "wiptech:rods/tungsten_rod"},
-	"osmium":{"model": "wiptech:rods/osmium_rod"}
-    }
-}
