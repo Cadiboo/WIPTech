@@ -7,28 +7,6 @@
 	"elements": [
 		{
 			"name": "cube",
-			"from": [2, 1, 2],
-			"to": [14, 16, 14],
-			"faces": {
-				"north": {"uv": [1, 1, 8, 3], "texture": "#0"},
-				"east": {
-					"uv": [1, 1, 8, 3],
-					"texture": "#0",
-					"rotation": 90
-				},
-				"south": {"uv": [1, 1, 8, 3], "texture": "#0"},
-				"west": {
-					"uv": [1, 1, 8, 3],
-					"texture": "#0",
-					"rotation": 90
-				},
-				"up": {"uv": [1, 1, 8, 3], "texture": "#0"},
-				"down": {"uv": [1, 1, 8, 3], "texture": "#0"}
-			},
-			"type": "cube"
-		},
-		{
-			"name": "cube",
 			"from": [0, 0, 0],
 			"to": [16, 2, 16],
 			"faces": {

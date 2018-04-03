@@ -93,5 +93,15 @@ public class BlockBase extends Block {
 	public final boolean isFullCube(IBlockState state) {
 		return !this.isNonSolidBlock();
 	}
+	
+	private Block transparentBlock;
+	public Block setTransparentBlock(){
+		return transparentBlock = this;
+	}
+	
+	@Override
+	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return transparentBlock==this?0:super.getLightOpacity(state, world, pos);
+	}
 
 }

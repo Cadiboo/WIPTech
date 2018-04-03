@@ -7,6 +7,8 @@ import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.block.BlockCrusher;
 import cadiboo.wiptech.client.render.entity.RenderEntityFerromagneticProjectileFactory;
 import cadiboo.wiptech.client.render.entity.RenderEntityNapalmFactory;
+import cadiboo.wiptech.client.render.tileentity.TESRCrusher;
+import cadiboo.wiptech.client.render.tileentity.TESRTurbine;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.handler.EnumHandler;
@@ -41,6 +43,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -49,7 +52,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 @Mod.EventBusSubscriber
 public class EventSubscriber {
@@ -234,7 +236,11 @@ public class EventSubscriber {
 			}
 		}
 		WIPTech.logger.info("Registered models");
-
+		
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrusher.class, new TESRCrusher());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbine.class, new TESRTurbine());
+		WIPTech.logger.info("Registered TileEntity Renders");
+		
 		/*for (EntityEntry entity: Entities.ENTITIES)
 		{
 
