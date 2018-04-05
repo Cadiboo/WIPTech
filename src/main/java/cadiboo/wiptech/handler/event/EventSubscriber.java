@@ -3,6 +3,7 @@ package cadiboo.wiptech.handler.event;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.block.BlockIngotBase;
+import cadiboo.wiptech.block.BlockNuggetBase;
 import cadiboo.wiptech.client.render.entity.RenderEntityFerromagneticProjectileFactory;
 import cadiboo.wiptech.client.render.entity.RenderEntityNapalmFactory;
 import cadiboo.wiptech.client.render.tileentity.TESRCrusher;
@@ -14,7 +15,9 @@ import cadiboo.wiptech.handler.EnumHandler.FerromagneticProjectiles;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Entities;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.init.Recipes;
 import cadiboo.wiptech.item.ItemFerromagneticProjectile;
+import cadiboo.wiptech.item.ItemHammer;
 import cadiboo.wiptech.tileentity.TileEntityCapacitorBank;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
@@ -26,6 +29,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -128,9 +132,6 @@ public class EventSubscriber {
 	public static final Item IRON_INGOT = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "iron_ingot"));
 
 	private static boolean isItemPlaceable(Item item) {
-		WIPTech.logger.info(item);
-		WIPTech.logger.info("item == " + (item == GOLD_NUGGET || item == GOLD_INGOT || item == IRON_NUGGET
-				|| item == IRON_INGOT || Items.getNuggets().contains(item) || Items.getIngots().contains(item)));
 		return item == GOLD_NUGGET || item == GOLD_INGOT || item == IRON_NUGGET || item == IRON_INGOT
 				|| Items.getNuggets().contains(item) || Items.getIngots().contains(item);
 	}
@@ -199,26 +200,28 @@ public class EventSubscriber {
 		return EnumActionResult.PASS;
 	}
 
-	@SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onHarvest(BlockEvent.HarvestDropsEvent event) {
-		/*
-		 * if (event.getHarvester() != null) { List<ItemStack> drops = event.getDrops();
-		 * if (drops != null && drops.size() > 0) { ItemStack stack = drops.get(0); Item
-		 * item = stack.getItem(); World world = event.getWorld(); BlockPos pos =
-		 * event.getPos();
-		 * 
-		 * // replace all this with init.Recipes.getHammerRecipe Block eventBlock =
-		 * event.getState().getBlock();
-		 * 
-		 * if ((eventBlock == cadiboo.wiptech.init.Blocks.COPPER_NUGGET) || (eventBlock
-		 * == cadiboo.wiptech.init.Blocks.COPPER_INGOT) || (eventBlock ==
-		 * cadiboo.wiptech.init.Blocks.GOLD_NUGGET) || (eventBlock ==
-		 * cadiboo.wiptech.init.Blocks.GOLD_INGOT)) { if
-		 * (((world.getBlockState(pos.down()).getBlock() instanceof BlockAnvil)) &&
-		 * ((event.getHarvester().getHeldItemMainhand().getItem() instanceof
-		 * ItemHammer))) { drops.set(0, ((ItemStack)
-		 * Recipes.getHammerResult(stack).get(1)).copy()); } } } }
-		 */
+		if (event.getHarvester() == null)
+			return;
+		if (!(event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockAnvil))
+			return;
+		if (!Blocks.getIngotBlocks().contains(event.getState().getBlock())
+				&& !Blocks.getNuggetBlocks().contains(event.getState().getBlock()))
+			return;
+		ItemStack itemStackToDrop = new ItemStack(BlockNuggetBase.getItemToDrop(event.getState().getBlock()));
+		if (event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHammer)
+			if (event.getDrops().size() > 0)
+				for (int i = 0; i < event.getDrops().size(); i++) {
+					if (ItemStack.areItemsEqualIgnoreDurability(event.getDrops().get(i), itemStackToDrop)) {
+						event.getDrops().set(i, ((ItemStack) Recipes.getHammerResult(itemStackToDrop).get(1)).copy());
+						return;
+					}
+				}
+		event.getDrops().add(((ItemStack) Recipes.getHammerResult(itemStackToDrop).get(1)).copy());
+		WIPTech.logger.info(event.getDrops().get(0));
+		WIPTech.logger.info(itemStackToDrop);
+		itemStackToDrop = null;
 	}
 
 	@SubscribeEvent

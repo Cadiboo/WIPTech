@@ -1,6 +1,7 @@
 package cadiboo.wiptech.block;
 
 import cadiboo.wiptech.util.Reference;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
@@ -32,15 +33,15 @@ public class BlockNuggetBase extends BlockBase {
 	@Override
 	public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state,
 			int fortune) {
-		drops.add(new ItemStack(this.getItemToDrop()));
+		drops.add(new ItemStack(getItemToDrop(this)));
 	}
 
-	private Item getItemToDrop() {
-		return ForgeRegistries.ITEMS.getValue(new ResourceLocation(Reference.ID, this.getItemName()));
+	public static Item getItemToDrop(Block block) {
+		return ForgeRegistries.ITEMS.getValue(new ResourceLocation(Reference.ID, getItemName(block)));
 	}
 
-	private String getItemName() {
-		return this.getUnlocalizedName().replace("tile.", "").replace("_block", "");
+	public static String getItemName(Block block) {
+		return block.getUnlocalizedName().replace("tile.", "").replace("_block", "");
 	}
 
 	@Override

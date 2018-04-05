@@ -11,16 +11,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Recipes
-{
+public class Recipes {
 	private static ArrayList<ArrayList> crushRecipes = new ArrayList();
 	private static ArrayList<ArrayList> hammerRecipes = new ArrayList();
 	private static ArrayList<ArrayList> coilRecipes = new ArrayList();
-	
+
 	private static final Block AIR = net.minecraft.init.Blocks.AIR;
 
-	public static void registerRecipes()
-	{
+	public static void registerRecipes() {
 		addCrushRecipes();
 		addHammerRecipes();
 		addCoilRecipes();
@@ -43,216 +41,115 @@ public class Recipes
 	}
 
 	private static void addHammerRecipes() {
-		addHammerRecipe(
-				new ItemStack(Items.COPPER_INGOT), 
-				new ItemStack(Blocks.COPPER_RAIL), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				20);
+		addHammerRecipe(new ItemStack(Items.COPPER_INGOT), new ItemStack(Blocks.COPPER_RAIL), new ItemStack(AIR),
+				new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
 
-		addHammerRecipe(
-				new ItemStack(Items.COPPER_NUGGET), 
-				new ItemStack(Blocks.COPPER_WIRE), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				20);
+		addHammerRecipe(new ItemStack(Items.COPPER_NUGGET), new ItemStack(Blocks.COPPER_WIRE), new ItemStack(AIR),
+				new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
 
-		addHammerRecipe(
-				new ItemStack((Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"))), 
-				new ItemStack(Blocks.GOLD_RAIL), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				20);
+		addHammerRecipe(new ItemStack(Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"))),
+				new ItemStack(Blocks.GOLD_RAIL), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR),
+				new ItemStack(AIR), new ItemStack(AIR), 20);
 
-		addHammerRecipe(
-				new ItemStack((Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"))), 
-				new ItemStack(Blocks.GOLD_WIRE), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				20);
+		addHammerRecipe(new ItemStack(Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"))),
+				new ItemStack(Blocks.GOLD_WIRE), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR),
+				new ItemStack(AIR), new ItemStack(AIR), 20);
 
-		addHammerRecipe(
-				new ItemStack((Item)Item.REGISTRY.getObject(new ResourceLocation("minecraft", "iron_ingot"))), 
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 0), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				20);
-		addHammerRecipe(
-				new ItemStack(Items.OSMIUM_INGOT), 
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 1), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				20);
-		addHammerRecipe(
-				new ItemStack(Items.TUNGSTEN_INGOT), 
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 2), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				20);
-		for(int i=0; i<5+1; i++) {
-			addHammerRecipe(
-					new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, i),
-					new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, i+3), 
-					new ItemStack(AIR), 
-					new ItemStack(AIR), 
-					new ItemStack(AIR), 
-					new ItemStack(AIR), 
-					new ItemStack(AIR), 
-					20);
+		addHammerRecipe(new ItemStack(Item.REGISTRY.getObject(new ResourceLocation("minecraft", "iron_ingot"))),
+				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 0), new ItemStack(AIR), new ItemStack(AIR),
+				new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
+		addHammerRecipe(new ItemStack(Items.OSMIUM_INGOT), new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 1),
+				new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
+		addHammerRecipe(new ItemStack(Items.TUNGSTEN_INGOT), new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 2),
+				new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
+		for (int i = 0; i < 5 + 1; i++) {
+			addHammerRecipe(new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, i),
+					new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, i + 3), new ItemStack(AIR), new ItemStack(AIR),
+					new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
 		}
 	}
 
 	private static void addCoilRecipes() {
-		addCoilRecipe(
-				new ItemStack(Blocks.GOLD_ENAMEL, 16), 
-				new ItemStack(Blocks.GOLD_SPOOL, 1), 
-				20);
+		addCoilRecipe(new ItemStack(Blocks.GOLD_ENAMEL, 16), new ItemStack(Blocks.GOLD_SPOOL, 1), 20);
 
-		addCoilRecipe(
-				new ItemStack(Blocks.GOLD_SPOOL), 
-				new ItemStack(Items.GOLD_COIL, 4), 
-				20);
+		addCoilRecipe(new ItemStack(Blocks.GOLD_SPOOL), new ItemStack(Items.GOLD_COIL, 4), 20);
 
-		addCoilRecipe(
-				new ItemStack(Blocks.COPPER_ENAMEL, 16), 
-				new ItemStack(Blocks.COPPER_SPOOL, 1), 
-				20);
+		addCoilRecipe(new ItemStack(Blocks.COPPER_ENAMEL, 16), new ItemStack(Blocks.COPPER_SPOOL, 1), 20);
 
-		addCoilRecipe(
-				new ItemStack(Blocks.COPPER_SPOOL), 
-				new ItemStack(Items.COPPER_COIL, 4), 
-				20);
+		addCoilRecipe(new ItemStack(Blocks.COPPER_SPOOL), new ItemStack(Items.COPPER_COIL, 4), 20);
 	}
 
 	private static void addCrushRecipes() {
-		addCrushRecipe(
-				new ItemStack(Blocks.BAUXITE_ORE), 
-				new ItemStack(Items.ALUMINA), 
-				new ItemStack(Items.GALLIUM), 
-				new ItemStack(Items.IRON_OXIDE), 
-				new ItemStack(Items.SILICA), 
-				new ItemStack(Items.TITANIA), 
-				new ItemStack(net.minecraft.init.Blocks.GRAVEL), 
-				100);
+		addCrushRecipe(new ItemStack(Blocks.BAUXITE_ORE), new ItemStack(Items.ALUMINA), new ItemStack(Items.GALLIUM),
+				new ItemStack(Items.IRON_OXIDE), new ItemStack(Items.SILICA), new ItemStack(Items.TITANIA),
+				new ItemStack(net.minecraft.init.Blocks.GRAVEL), 100);
 
-		addCrushRecipe(
-				new ItemStack(net.minecraft.init.Blocks.SAND), 
-				new ItemStack(Items.SILICON), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				new ItemStack(AIR), 
-				20);
+		addCrushRecipe(new ItemStack(net.minecraft.init.Blocks.SAND), new ItemStack(Items.SILICON), new ItemStack(AIR),
+				new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
 	}
 
-	public static ArrayList getCrushResult(ItemStack input)
-	{
-		for (ArrayList recipe : crushRecipes) {
-			ItemStack test = ((ItemStack)recipe.get(0)).copy();
-			test.setCount(input.getCount());
-			if(ItemStack.areItemsEqual(test, input)) {
-				return recipe;
+	public static ArrayList getCrushResult(ItemStack input) {
+		for (int i = 0; i < crushRecipes.size(); i++) {
+			if (ItemStack.areItemsEqualIgnoreDurability((ItemStack) crushRecipes.get(i).get(0), input)) {
+				return crushRecipes.get(i);
 			}
 		}
 		return null;
 	}
 
-	public static ArrayList getHammerResult(ItemStack input)
-	{
-		//if(input != ItemStack.EMPTY) {
-		for (ArrayList recipe : hammerRecipes) {
-			ItemStack test = ((ItemStack)recipe.get(0)).copy();
-			test.setCount(input.getCount());
-			if(ItemStack.areItemsEqual(test, input)) {
-				/*WIPTech.logger.info("TEST==INPUT");
-					WIPTech.logger.info(test);
-					WIPTech.logger.info(input);
-				 */
-				return recipe;
-			}
-			else
-			{
-				/*WIPTech.logger.info("TEST!=INPUT");
-					WIPTech.logger.info(test);
-					WIPTech.logger.info(input);*/
-			}
-		}
-		//}
-		return null;
-	}
-
-	public static ArrayList getCoilResult(ItemStack input)
-	{
-		for (ArrayList recipe : crushRecipes) {
-			ItemStack test = ((ItemStack)recipe.get(0)).copy();
-			test.setCount(input.getCount());
-			if(ItemStack.areItemsEqual(test, input)) {
-				return recipe;
+	public static ArrayList getHammerResult(ItemStack input) {
+		for (int i = 0; i < hammerRecipes.size(); i++) {
+			if (ItemStack.areItemsEqualIgnoreDurability((ItemStack) hammerRecipes.get(i).get(0), input)) {
+				return hammerRecipes.get(i);
 			}
 		}
 		return null;
 	}
 
-	public static ArrayList<ItemStack> getCrushResults(int slot)
-	{
-		if ((slot > TileEntityCrusher.getSlots()-1) || (slot < 0)) {
+	public static ArrayList getCoilResult(ItemStack input) {
+		for (int i = 0; i < coilRecipes.size(); i++) {
+			if (ItemStack.areItemsEqualIgnoreDurability((ItemStack) coilRecipes.get(i).get(0), input)) {
+				return coilRecipes.get(i);
+			}
+		}
+		return null;
+	}
+
+	public static ArrayList<ItemStack> getCrushResults(int slot) {
+		if ((slot > TileEntityCrusher.getSlots() - 1) || (slot < 0)) {
 			return null;
 		}
 		ArrayList<ItemStack> crushResults = new ArrayList();
 		for (ArrayList recipe : crushRecipes) {
-			crushResults.add((ItemStack)recipe.get(slot));
+			crushResults.add((ItemStack) recipe.get(slot));
 		}
 		return crushResults;
 	}
 
-	public static ArrayList<ItemStack> getHammerResults(int slot)
-	{
-		if ((slot > TileEntityCrusher.getSlots()-1) || (slot < 0)) {
+	public static ArrayList<ItemStack> getHammerResults(int slot) {
+		if ((slot > TileEntityCrusher.getSlots() - 1) || (slot < 0)) {
 			return null;
 		}
 		ArrayList<ItemStack> hammerResults = new ArrayList();
 		for (ArrayList recipe : hammerRecipes) {
-			hammerResults.add((ItemStack)recipe.get(slot));
+			hammerResults.add((ItemStack) recipe.get(slot));
 		}
 		return hammerResults;
 	}
 
-	public static ArrayList<ItemStack> getCoilResult(int slot)
-	{
-		if ((slot > TileEntityCoiler.getSlots()-1) || (slot < 0)) {
+	public static ArrayList<ItemStack> getCoilResult(int slot) {
+		if ((slot > TileEntityCoiler.getSlots() - 1) || (slot < 0)) {
 			return null;
 		}
 		ArrayList<ItemStack> coilResults = new ArrayList();
 		for (ArrayList recipe : coilRecipes) {
-			coilResults.add((ItemStack)recipe.get(slot));
+			coilResults.add((ItemStack) recipe.get(slot));
 		}
 		return coilResults;
 	}
 
-	public static void addCrushRecipe(ItemStack input, ItemStack output1, ItemStack output2, ItemStack output3, ItemStack output4, ItemStack output5, ItemStack output6, int time)
-	{
+	public static void addCrushRecipe(ItemStack input, ItemStack output1, ItemStack output2, ItemStack output3,
+			ItemStack output4, ItemStack output5, ItemStack output6, int time) {
 		ArrayList recipe = new ArrayList();
 		recipe.add(input);
 		recipe.add(output1);
@@ -265,8 +162,8 @@ public class Recipes
 		crushRecipes.add(recipe);
 	}
 
-	public static void addHammerRecipe(ItemStack input, ItemStack output1, ItemStack output2, ItemStack output3, ItemStack output4, ItemStack output5, ItemStack output6, int time)
-	{
+	public static void addHammerRecipe(ItemStack input, ItemStack output1, ItemStack output2, ItemStack output3,
+			ItemStack output4, ItemStack output5, ItemStack output6, int time) {
 		ArrayList recipe = new ArrayList();
 		recipe.add(input);
 		recipe.add(output1);
@@ -279,14 +176,12 @@ public class Recipes
 		hammerRecipes.add(recipe);
 	}
 
-	public static void addCoilRecipe(ItemStack input, ItemStack output, int time)
-	{
+	public static void addCoilRecipe(ItemStack input, ItemStack output, int time) {
 		ArrayList recipe = new ArrayList();
 		recipe.add(input);
 		recipe.add(output);
 		recipe.add(Integer.valueOf(time));
 		coilRecipes.add(recipe);
 	}
-
 
 }
