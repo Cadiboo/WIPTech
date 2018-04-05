@@ -62,65 +62,62 @@ import net.minecraftforge.oredict.OreDictionary;
 public class EventSubscriber {
 
 	@SubscribeEvent
-	public static void registerEntities(RegistryEvent.Register<EntityEntry> event)
-	{
+	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
 		event.getRegistry().registerAll(Entities.ENTITIES);
 		WIPTech.logger.info("Registered Entities");
 	}
 
 	@SubscribeEvent
-	public static void registerBlocks(RegistryEvent.Register<Block> event)
-	{
+	public static void registerBlocks(RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(cadiboo.wiptech.init.Blocks.BLOCKS);
 		WIPTech.logger.info("Registered Blocks");
 
-		GameRegistry.registerTileEntity(TileEntityCrusher.class, Reference.ID+"TileEntityCrusher");
-		GameRegistry.registerTileEntity(TileEntityCoiler.class, Reference.ID+"TileEntityCoiler");
-		GameRegistry.registerTileEntity(TileEntityTurbine.class, Reference.ID+"TileEntityTurbine");
-		GameRegistry.registerTileEntity(TileEntityCapacitorBank.class, Reference.ID+"TileEntityCapacitorBank");
+		GameRegistry.registerTileEntity(TileEntityCrusher.class, Reference.ID + "TileEntityCrusher");
+		GameRegistry.registerTileEntity(TileEntityCoiler.class, Reference.ID + "TileEntityCoiler");
+		GameRegistry.registerTileEntity(TileEntityTurbine.class, Reference.ID + "TileEntityTurbine");
+		GameRegistry.registerTileEntity(TileEntityCapacitorBank.class, Reference.ID + "TileEntityCapacitorBank");
 
 		WIPTech.logger.info("Registered TileEntities");
 	}
 
 	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event)
-	{
+	public static void registerItems(RegistryEvent.Register<Item> event) {
 
 		event.getRegistry().registerAll(cadiboo.wiptech.init.Items.ITEMS);
 
 		WIPTech.logger.info("Registered Items");
 
-		for(int i=0; i<Blocks.BLOCKS.length; i++) {
-			if(Blocks.BLOCKS[i] instanceof BlockBase && !((BlockBase) Blocks.BLOCKS[i]).isHiddenBlock())
-				event.getRegistry().register(new ItemBlock(Blocks.BLOCKS[i]).setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
+		for (int i = 0; i < Blocks.BLOCKS.length; i++) {
+			if (Blocks.BLOCKS[i] instanceof BlockBase && !((BlockBase) Blocks.BLOCKS[i]).isHiddenBlock())
+				event.getRegistry()
+						.register(new ItemBlock(Blocks.BLOCKS[i]).setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
 		}
 
 		WIPTech.logger.info("And ItemBlocks");
 
-
-		for(int i=0; i<Blocks.getOres().size(); i++) {
+		for (int i = 0; i < Blocks.getOres().size(); i++) {
 			String name = Blocks.getOres().get(i).getUnlocalizedName().replace("_ore", "").replace("tile.", "");
-			if(name.length()>0) {
+			if (name.length() > 0) {
 				name = name.substring(0, 1).toUpperCase() + name.substring(1);
-				OreDictionary.registerOre("ore"+name, Blocks.getOres().get(i));
+				OreDictionary.registerOre("ore" + name, Blocks.getOres().get(i));
 				name = null;
 			}
 		}
 
-		for(int i=0; i<Items.getIngots().size(); i++) {
+		for (int i = 0; i < Items.getIngots().size(); i++) {
 			String name = Items.getIngots().get(i).getUnlocalizedName().replace("_ingot", "").replace("item.", "");
-			if(name.length()>0) {
+			if (name.length() > 0) {
 				name = name.substring(0, 1).toUpperCase() + name.substring(1);
-				OreDictionary.registerOre("ingot"+name, Items.getIngots().get(i));
+				OreDictionary.registerOre("ingot" + name, Items.getIngots().get(i));
 				name = null;
 			}
 		}
 
-		for(int i=0; i<Items.getNuggets().size(); i++) {
+		for (int i = 0; i < Items.getNuggets().size(); i++) {
 			String name = Items.getNuggets().get(i).getUnlocalizedName().replace("_nugget", "").replace("item.", "");
-			if(name.length()>0) {
+			if (name.length() > 0) {
 				name = name.substring(0, 1).toUpperCase() + name.substring(1);
-				OreDictionary.registerOre("nugget"+name, Items.getNuggets().get(i));
+				OreDictionary.registerOre("nugget" + name, Items.getNuggets().get(i));
 				name = null;
 			}
 		}
@@ -130,34 +127,26 @@ public class EventSubscriber {
 	}
 
 	/*
-	@SubscribeEvent
-	public static void registerOreDict(RegistryEvent.Register<NOPE> event)
-	{
-
-	}
+	 * @SubscribeEvent public static void
+	 * registerOreDict(RegistryEvent.Register<NOPE> event) {
+	 * 
+	 * }
 	 */
 
 	public static final Item gold_nugget = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
 	public static final Item gold_ingot = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"));
 
-	private static boolean isItemPlaceable(Item item)
-	{
-		return
-				item == gold_nugget	||
-				item == gold_ingot	||
-				item instanceof ItemCopperIngot ||
-				item instanceof ItemCopperNugget ||
-				item instanceof ItemAluminiumNugget ||
-				item instanceof ItemAluminiumIngot ||
-				item instanceof ItemTinNugget ||
-				item instanceof ItemTinIngot;
+	private static boolean isItemPlaceable(Item item) {
+		return item == gold_nugget || item == gold_ingot || item == Items.COPPER_NUGGET || item == Items.COPPER_INGOT
+				|| item == Items.ALUMINIUM_NUGGET || item == Items.ALUMINIUM_INGOT || item == Items.TIN_NUGGET
+				|| item == Items.TIN_INGOT;
 	}
 
 	private static Block itemToPlace(Item item) {
 
-		if ((item instanceof ItemCopperNugget)) {
+		if ((item == Items.COPPER_NUGGET)) {
 			return cadiboo.wiptech.init.Blocks.COPPER_NUGGET;
-		} else if ((item instanceof ItemCopperIngot)) {
+		} else if ((item == Items.COPPER_INGOT)) {
 			return cadiboo.wiptech.init.Blocks.COPPER_INGOT;
 		} else if (item == gold_nugget) {
 			return cadiboo.wiptech.init.Blocks.GOLD_NUGGET;
@@ -167,113 +156,99 @@ public class EventSubscriber {
 		return net.minecraft.init.Blocks.AIR;
 	}
 
-	@SubscribeEvent(receiveCanceled=true)
-	public static EnumActionResult BlockRightClickEvent(PlayerInteractEvent.RightClickBlock event)
-	{
-		//TODO redo this so least-likely is called first
+	@SubscribeEvent(receiveCanceled = true)
+	public static EnumActionResult BlockRightClickEvent(PlayerInteractEvent.RightClickBlock event) {
+		// TODO redo this so least-likely is called first
 		if (event.getHand() == EnumHand.MAIN_HAND) {
 			if (event.getEntityPlayer().isSneaking()) {
-				if ((event.getWorld().getBlockState(event.getPos()).getBlock() != null) && ((event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockCrusher)))
-				{
+				if ((event.getWorld().getBlockState(event.getPos()).getBlock() != null)
+						&& ((event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockCrusher))) {
 					event.setUseBlock(Result.ALLOW);
-					WIPTech.logger.info("onBlockActivated event called for block " + event.getWorld().getBlockState(event.getPos()).getBlock() + " because PlayerInteractEvent.RightClickBlock#setUseBlock was set to " + event.getUseBlock());
+					WIPTech.logger.info("onBlockActivated event called for block "
+							+ event.getWorld().getBlockState(event.getPos()).getBlock()
+							+ " because PlayerInteractEvent.RightClickBlock#setUseBlock was set to "
+							+ event.getUseBlock());
 					return EnumActionResult.SUCCESS;
 				}
 			}
 		}
 
-		if(!(event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockAnvil)) return EnumActionResult.PASS;
-		if(!isItemPlaceable(event.getItemStack().getItem())) return EnumActionResult.PASS;
-		if(!(event.getWorld().getBlockState(event.getPos().up()).getBlock() instanceof BlockAir)) return EnumActionResult.PASS;
+		if (!(event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockAnvil))
+			return EnumActionResult.PASS;
+		if (!isItemPlaceable(event.getItemStack().getItem()))
+			return EnumActionResult.PASS;
+		if (!(event.getWorld().getBlockState(event.getPos().up()).getBlock() instanceof BlockAir))
+			return EnumActionResult.PASS;
 
 		event.setCanceled(true);
-		event.getWorld().setBlockState(event.getPos().up(), itemToPlace(event.getItemStack().getItem()).getDefaultState());
-		if (!event.getEntityPlayer().isCreative()) event.getItemStack().shrink(1);
+		event.getWorld().setBlockState(event.getPos().up(),
+				itemToPlace(event.getItemStack().getItem()).getDefaultState());
+		if (!event.getEntityPlayer().isCreative())
+			event.getItemStack().shrink(1);
 		return EnumActionResult.FAIL;
 
-		//event.setCanceled(true);
-		//event.setResult(Result.DENY);
-		//event.setUseBlock(Result.DENY);
-		//TODO WHY DOESNT IT WORK
-		/*if(event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockAnvil) {
-			if(isItemPlaceable(event.getItemStack().getItem())) {
-				if(event.getWorld().getBlockState(event.getPos().up()).getBlock() instanceof BlockAir) {
-					event.setCanceled(true);
-					event.setCancellationResult(EnumActionResult.FAIL);
-					event.getWorld().setBlockState(event.getPos().up(), itemToPlace(event.getItemStack().getItem()).getDefaultState());
-					if (!event.getEntityPlayer().isCreative()) event.getItemStack().shrink(1);
-					return EnumActionResult.FAIL;
-				}
-			}
-		}*/
-
-
-
-
+		// event.setCanceled(true);
+		// event.setResult(Result.DENY);
+		// event.setUseBlock(Result.DENY);
+		// TODO WHY DOESNT IT WORK
+		/*
+		 * if(event.getWorld().getBlockState(event.getPos()).getBlock() instanceof
+		 * BlockAnvil) { if(isItemPlaceable(event.getItemStack().getItem())) {
+		 * if(event.getWorld().getBlockState(event.getPos().up()).getBlock() instanceof
+		 * BlockAir) { event.setCanceled(true);
+		 * event.setCancellationResult(EnumActionResult.FAIL);
+		 * event.getWorld().setBlockState(event.getPos().up(),
+		 * itemToPlace(event.getItemStack().getItem()).getDefaultState()); if
+		 * (!event.getEntityPlayer().isCreative()) event.getItemStack().shrink(1);
+		 * return EnumActionResult.FAIL; } } }
+		 */
 
 		/*
-
-
-		Item item = event.getItemStack().getItem();
-		ItemStack stack = event.getItemStack();
-		if(stack.isEmpty()) {
-			event.setCanceled(true);
-//			return EnumActionResult.SUCCESS;
-		}
-		World world = event.getWorld();
-		BlockPos pos = event.getPos();
-		EnumFacing side = event.getFace();
-		Item gold_nugget = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
-		Item gold_ingot = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"));
-		if (((item instanceof ItemCopperNugget)) || 
-				((item instanceof ItemCopperIngot)) || 
-				(item == gold_nugget) || 
-				(item == gold_ingot)) {
-			if (((world.getBlockState(pos).getBlock() instanceof BlockAnvil)) && 
-					(side == EnumFacing.UP) && 
-					(world.getBlockState(pos.up()) == net.minecraft.init.Blocks.AIR.getDefaultState()))
-			{
-				if ((item instanceof ItemCopperNugget)) {
-					world.setBlockState(pos.up(), cadiboo.wiptech.init.Blocks.COPPER_NUGGET.getDefaultState());
-				} else if ((item instanceof ItemCopperIngot)) {
-					world.setBlockState(pos.up(), cadiboo.wiptech.init.Blocks.COPPER_INGOT.getDefaultState());
-				} else if (item == gold_nugget) {
-					world.setBlockState(pos.up(), cadiboo.wiptech.init.Blocks.GOLD_NUGGET.getDefaultState());
-				} else if (item == gold_ingot) {
-					world.setBlockState(pos.up(), cadiboo.wiptech.init.Blocks.GOLD_INGOT.getDefaultState());
-				}
-				if (!event.getEntityPlayer().isCreative()) {
-					stack.shrink(1);
-				}
-				event.setCanceled(true);
-				return EnumActionResult.SUCCESS;
-			}
-		}
+		 * 
+		 * 
+		 * Item item = event.getItemStack().getItem(); ItemStack stack =
+		 * event.getItemStack(); if(stack.isEmpty()) { event.setCanceled(true); //
+		 * return EnumActionResult.SUCCESS; } World world = event.getWorld(); BlockPos
+		 * pos = event.getPos(); EnumFacing side = event.getFace(); Item gold_nugget =
+		 * Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
+		 * Item gold_ingot = Item.REGISTRY.getObject(new ResourceLocation("minecraft",
+		 * "gold_ingot")); if (((item instanceof ItemCopperNugget)) || ((item instanceof
+		 * ItemCopperIngot)) || (item == gold_nugget) || (item == gold_ingot)) { if
+		 * (((world.getBlockState(pos).getBlock() instanceof BlockAnvil)) && (side ==
+		 * EnumFacing.UP) && (world.getBlockState(pos.up()) ==
+		 * net.minecraft.init.Blocks.AIR.getDefaultState())) { if ((item instanceof
+		 * ItemCopperNugget)) { world.setBlockState(pos.up(),
+		 * cadiboo.wiptech.init.Blocks.COPPER_NUGGET.getDefaultState()); } else if
+		 * ((item instanceof ItemCopperIngot)) { world.setBlockState(pos.up(),
+		 * cadiboo.wiptech.init.Blocks.COPPER_INGOT.getDefaultState()); } else if (item
+		 * == gold_nugget) { world.setBlockState(pos.up(),
+		 * cadiboo.wiptech.init.Blocks.GOLD_NUGGET.getDefaultState()); } else if (item
+		 * == gold_ingot) { world.setBlockState(pos.up(),
+		 * cadiboo.wiptech.init.Blocks.GOLD_INGOT.getDefaultState()); } if
+		 * (!event.getEntityPlayer().isCreative()) { stack.shrink(1); }
+		 * event.setCanceled(true); return EnumActionResult.SUCCESS; } }
 		 */
 	}
 
-	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
-	public static void onHarvest(BlockEvent.HarvestDropsEvent event)
-	{
-		if (event.getHarvester() != null)
-		{
+	@SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
+	public static void onHarvest(BlockEvent.HarvestDropsEvent event) {
+		if (event.getHarvester() != null) {
 			List<ItemStack> drops = event.getDrops();
-			if(drops!=null && drops.size()>0) {
-				ItemStack stack = (ItemStack)drops.get(0);
+			if (drops != null && drops.size() > 0) {
+				ItemStack stack = (ItemStack) drops.get(0);
 				Item item = stack.getItem();
 				World world = event.getWorld();
 				BlockPos pos = event.getPos();
 
-				//replace all this with init.Recipes.getHammerRecipe
+				// replace all this with init.Recipes.getHammerRecipe
 				Block eventBlock = event.getState().getBlock();
 
-				if ((eventBlock == cadiboo.wiptech.init.Blocks.COPPER_NUGGET) || 
-						(eventBlock == cadiboo.wiptech.init.Blocks.COPPER_INGOT) || 
-						(eventBlock == cadiboo.wiptech.init.Blocks.GOLD_NUGGET) || 
-						(eventBlock == cadiboo.wiptech.init.Blocks.GOLD_INGOT)) {
-					if (((world.getBlockState(pos.down()).getBlock() instanceof BlockAnvil)) && 
-							((event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHammer)))
-					{
+				if ((eventBlock == cadiboo.wiptech.init.Blocks.COPPER_NUGGET)
+						|| (eventBlock == cadiboo.wiptech.init.Blocks.COPPER_INGOT)
+						|| (eventBlock == cadiboo.wiptech.init.Blocks.GOLD_NUGGET)
+						|| (eventBlock == cadiboo.wiptech.init.Blocks.GOLD_INGOT)) {
+					if (((world.getBlockState(pos.down()).getBlock() instanceof BlockAnvil))
+							&& ((event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHammer))) {
 						drops.set(0, ((ItemStack) Recipes.getHammerResult(stack).get(1)).copy());
 					}
 				}
@@ -282,27 +257,26 @@ public class EventSubscriber {
 	}
 
 	@SubscribeEvent
-	public static void onBreak(BlockEvent.BreakEvent event) {}
-
+	public static void onBreak(BlockEvent.BreakEvent event) {
+	}
 
 	@SubscribeEvent
-	public static void registerModels(ModelRegistryEvent event)
-	{
-		for (Block block: Blocks.BLOCKS)
-		{
-			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
+	public static void registerModels(ModelRegistryEvent event) {
+		for (Block block : Blocks.BLOCKS) {
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
+					new ModelResourceLocation(block.getRegistryName(), "inventory"));
 		}
 
-
-		for (Item item: Items.ITEMS)
-		{
-			if(!item.getHasSubtypes()) {
-				ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+		for (Item item : Items.ITEMS) {
+			if (!item.getHasSubtypes()) {
+				ModelLoader.setCustomModelResourceLocation(item, 0,
+						new ModelResourceLocation(item.getRegistryName(), "inventory"));
 			} else {
 
-				if(item instanceof ItemFerromagneticProjectile) {
-					for(FerromagneticProjectiles rod : EnumHandler.FerromagneticProjectiles.values()) { 
-						ModelLoader.setCustomModelResourceLocation(item, rod.getID(), new ModelResourceLocation("wiptech:rods/" + rod.getName()));
+				if (item instanceof ItemFerromagneticProjectile) {
+					for (FerromagneticProjectiles rod : EnumHandler.FerromagneticProjectiles.values()) {
+						ModelLoader.setCustomModelResourceLocation(item, rod.getID(),
+								new ModelResourceLocation("wiptech:rods/" + rod.getName()));
 					}
 				}
 
@@ -314,13 +288,15 @@ public class EventSubscriber {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbine.class, new TESRTurbine());
 		WIPTech.logger.info("Registered TileEntity Renders");
 
-		/*for (EntityEntry entity: Entities.ENTITIES)
-		{
-
-		}*/
+		/*
+		 * for (EntityEntry entity: Entities.ENTITIES) {
+		 * 
+		 * }
+		 */
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, new RenderEntityNapalmFactory());
-		RenderingRegistry.registerEntityRenderingHandler(EntityFerromagneticProjectile.class, new RenderEntityFerromagneticProjectileFactory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityFerromagneticProjectile.class,
+				new RenderEntityFerromagneticProjectileFactory());
 
 		WIPTech.logger.info("Registered Entity Renders");
 	}

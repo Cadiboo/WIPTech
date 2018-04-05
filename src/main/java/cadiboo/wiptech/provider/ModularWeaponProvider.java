@@ -27,7 +27,6 @@ import net.minecraftforge.energy.IEnergyStorage;
  * © 2015-2017 Ellpeck
  */
 
-
 public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializable<NBTTagCompound> {
 
 	private static final int WEAPON_ENERGY_CAPACITY = 10000;
@@ -40,22 +39,22 @@ public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializa
 	}
 
 	@Override
-	public boolean hasCapability( Capability<?> capability, EnumFacing facing ) {
-		if( capability == Capabilities.MODULAR_WEAPON_CAPABILITY ) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == Capabilities.MODULAR_WEAPON_CAPABILITY) {
 			return true;
 		}
-		if( capability == CapabilityEnergy.ENERGY ) {
+		if (capability == CapabilityEnergy.ENERGY) {
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public <T> T getCapability(@Nonnull  Capability<T> capability, @Nullable EnumFacing facing ) {
-		if( capability == Capabilities.MODULAR_WEAPON_CAPABILITY  ) {
-			return (T) this.weaponModules; 
+	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+		if (capability == Capabilities.MODULAR_WEAPON_CAPABILITY) {
+			return (T) this.weaponModules;
 		}
-		if( capability == CapabilityEnergy.ENERGY ) {
+		if (capability == CapabilityEnergy.ENERGY) {
 			return (T) (CustomEnergyStorage) this.energy;
 		}
 		return null;
@@ -75,69 +74,69 @@ public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializa
 		this.energy.readFromNBT(nbt);
 	}
 
-	public void setEnergy(ItemStack stack, int energy){
-		if(stack.hasCapability(CapabilityEnergy.ENERGY, null)){
+	public void setEnergy(ItemStack stack, int energy) {
+		if (stack.hasCapability(CapabilityEnergy.ENERGY, null)) {
 			IEnergyStorage storage = stack.getCapability(CapabilityEnergy.ENERGY, null);
-			if(storage instanceof CustomEnergyStorage){
-				((CustomEnergyStorage)storage).setEnergyStored(energy);
+			if (storage instanceof CustomEnergyStorage) {
+				((CustomEnergyStorage) storage).setEnergyStored(energy);
 			}
 		}
 	}
 
-	public int receiveEnergyInternal(ItemStack stack, int maxReceive, boolean simulate){
-		if(stack.hasCapability(CapabilityEnergy.ENERGY, null)){
+	public int receiveEnergyInternal(ItemStack stack, int maxReceive, boolean simulate) {
+		if (stack.hasCapability(CapabilityEnergy.ENERGY, null)) {
 			IEnergyStorage storage = stack.getCapability(CapabilityEnergy.ENERGY, null);
-			if(storage instanceof CustomEnergyStorage){
-				((CustomEnergyStorage)storage).receiveEnergyInternal(maxReceive, simulate);
-			}
-		}
-		return 0;
-	}
-
-	public int extractEnergyInternal(ItemStack stack, int maxExtract, boolean simulate){
-		if(stack.hasCapability(CapabilityEnergy.ENERGY, null)){
-			IEnergyStorage storage = stack.getCapability(CapabilityEnergy.ENERGY, null);
-			if(storage instanceof CustomEnergyStorage){
-				((CustomEnergyStorage)storage).extractEnergyInternal(maxExtract, simulate);
+			if (storage instanceof CustomEnergyStorage) {
+				((CustomEnergyStorage) storage).receiveEnergyInternal(maxReceive, simulate);
 			}
 		}
 		return 0;
 	}
 
-	public int receiveEnergy(ItemStack stack, int maxReceive, boolean simulate){
-		if(stack.hasCapability(CapabilityEnergy.ENERGY, null)){
+	public int extractEnergyInternal(ItemStack stack, int maxExtract, boolean simulate) {
+		if (stack.hasCapability(CapabilityEnergy.ENERGY, null)) {
 			IEnergyStorage storage = stack.getCapability(CapabilityEnergy.ENERGY, null);
-			if(storage != null){
+			if (storage instanceof CustomEnergyStorage) {
+				((CustomEnergyStorage) storage).extractEnergyInternal(maxExtract, simulate);
+			}
+		}
+		return 0;
+	}
+
+	public int receiveEnergy(ItemStack stack, int maxReceive, boolean simulate) {
+		if (stack.hasCapability(CapabilityEnergy.ENERGY, null)) {
+			IEnergyStorage storage = stack.getCapability(CapabilityEnergy.ENERGY, null);
+			if (storage != null) {
 				return storage.receiveEnergy(maxReceive, simulate);
 			}
 		}
 		return 0;
 	}
 
-	public int extractEnergy(ItemStack stack, int maxExtract, boolean simulate){
-		if(stack.hasCapability(CapabilityEnergy.ENERGY, null)){
+	public int extractEnergy(ItemStack stack, int maxExtract, boolean simulate) {
+		if (stack.hasCapability(CapabilityEnergy.ENERGY, null)) {
 			IEnergyStorage storage = stack.getCapability(CapabilityEnergy.ENERGY, null);
-			if(storage != null){
+			if (storage != null) {
 				return storage.extractEnergy(maxExtract, simulate);
 			}
 		}
 		return 0;
 	}
 
-	public int getEnergyStored(ItemStack stack){
-		if(stack.hasCapability(CapabilityEnergy.ENERGY, null)){
+	public int getEnergyStored(ItemStack stack) {
+		if (stack.hasCapability(CapabilityEnergy.ENERGY, null)) {
 			IEnergyStorage storage = stack.getCapability(CapabilityEnergy.ENERGY, null);
-			if(storage != null){
+			if (storage != null) {
 				return storage.getEnergyStored();
 			}
 		}
 		return 0;
 	}
 
-	public int getMaxEnergyStored(ItemStack stack){
-		if(stack.hasCapability(CapabilityEnergy.ENERGY, null)){
+	public int getMaxEnergyStored(ItemStack stack) {
+		if (stack.hasCapability(CapabilityEnergy.ENERGY, null)) {
 			IEnergyStorage storage = stack.getCapability(CapabilityEnergy.ENERGY, null);
-			if(storage != null){
+			if (storage != null) {
 				return storage.getMaxEnergyStored();
 			}
 		}
