@@ -10,7 +10,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.energy.CapabilityEnergy;
 
@@ -45,7 +44,7 @@ public class GuiTurbine extends GuiContainer {
 
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String name = I18n.format(Blocks.COILER.getUnlocalizedName() + ".name");
+		String name = I18n.format(Blocks.TURBINE.getUnlocalizedName() + ".name");
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(this.playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 94, 4210752);
 

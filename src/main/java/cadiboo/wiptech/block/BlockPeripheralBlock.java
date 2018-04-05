@@ -17,6 +17,7 @@ public class BlockPeripheralBlock extends BlockBase {
 	public BlockPeripheralBlock(String name, Material materialIn) {
 		super(name, materialIn);
 		this.setHiddenBlock();
+		this.setTransparentBlock();
 		this.setBlockUnbreakable();
 	}
 

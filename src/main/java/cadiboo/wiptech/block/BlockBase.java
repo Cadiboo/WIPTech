@@ -96,6 +96,7 @@ public class BlockBase extends Block {
 	
 	private Block transparentBlock;
 	public Block setTransparentBlock(){
+		this.setNonSolidBlock();
 		return transparentBlock = this;
 	}
 	

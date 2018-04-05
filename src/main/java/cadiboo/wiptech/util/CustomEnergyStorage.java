@@ -91,4 +91,12 @@ public class CustomEnergyStorage extends EnergyStorage {
     public void setEnergyStored(int energy){
         this.energy = energy;
     }
+
+	public int forceReceive(int maxReceive, boolean simulate){
+        int energyReceived = Math.min(capacity - this.getEnergyStored(), Math.min(this.maxReceive, maxReceive));
+        if (!simulate){
+            this.setEnergyStored(this.getEnergyStored() + energyReceived);
+        }
+        return energyReceived;
+    }
 }

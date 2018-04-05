@@ -17,23 +17,27 @@ import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Entities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
+import cadiboo.wiptech.item.ItemAluminiumIngot;
+import cadiboo.wiptech.item.ItemAluminiumNugget;
 import cadiboo.wiptech.item.ItemCopperIngot;
 import cadiboo.wiptech.item.ItemCopperNugget;
 import cadiboo.wiptech.item.ItemFerromagneticProjectile;
 import cadiboo.wiptech.item.ItemHammer;
+import cadiboo.wiptech.item.ItemTinIngot;
+import cadiboo.wiptech.item.ItemTinNugget;
 import cadiboo.wiptech.tileentity.TileEntityCapacitorBank;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -46,6 +50,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -132,11 +137,89 @@ public class EventSubscriber {
 	}
 	 */
 
-	@SubscribeEvent
+	public static final Item gold_nugget = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
+	public static final Item gold_ingot = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"));
+
+	private static boolean isItemPlaceable(Item item)
+	{
+		return
+				item == gold_nugget	||
+				item == gold_ingot	||
+				item instanceof ItemCopperIngot ||
+				item instanceof ItemCopperNugget ||
+				item instanceof ItemAluminiumNugget ||
+				item instanceof ItemAluminiumIngot ||
+				item instanceof ItemTinNugget ||
+				item instanceof ItemTinIngot;
+	}
+
+	private static Block itemToPlace(Item item) {
+
+		if ((item instanceof ItemCopperNugget)) {
+			return cadiboo.wiptech.init.Blocks.COPPER_NUGGET;
+		} else if ((item instanceof ItemCopperIngot)) {
+			return cadiboo.wiptech.init.Blocks.COPPER_INGOT;
+		} else if (item == gold_nugget) {
+			return cadiboo.wiptech.init.Blocks.GOLD_NUGGET;
+		} else if (item == gold_ingot) {
+			return cadiboo.wiptech.init.Blocks.GOLD_INGOT;
+		}
+		return net.minecraft.init.Blocks.AIR;
+	}
+
+	@SubscribeEvent(receiveCanceled=true)
 	public static EnumActionResult BlockRightClickEvent(PlayerInteractEvent.RightClickBlock event)
 	{
+		//TODO redo this so least-likely is called first
+		if (event.getHand() == EnumHand.MAIN_HAND) {
+			if (event.getEntityPlayer().isSneaking()) {
+				if ((event.getWorld().getBlockState(event.getPos()).getBlock() != null) && ((event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockCrusher)))
+				{
+					event.setUseBlock(Result.ALLOW);
+					WIPTech.logger.info("onBlockActivated event called for block " + event.getWorld().getBlockState(event.getPos()).getBlock() + " because PlayerInteractEvent.RightClickBlock#setUseBlock was set to " + event.getUseBlock());
+					return EnumActionResult.SUCCESS;
+				}
+			}
+		}
+
+		if(!(event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockAnvil)) return EnumActionResult.PASS;
+		if(!isItemPlaceable(event.getItemStack().getItem())) return EnumActionResult.PASS;
+		if(!(event.getWorld().getBlockState(event.getPos().up()).getBlock() instanceof BlockAir)) return EnumActionResult.PASS;
+
+		event.setCanceled(true);
+		event.getWorld().setBlockState(event.getPos().up(), itemToPlace(event.getItemStack().getItem()).getDefaultState());
+		if (!event.getEntityPlayer().isCreative()) event.getItemStack().shrink(1);
+		return EnumActionResult.FAIL;
+
+		//event.setCanceled(true);
+		//event.setResult(Result.DENY);
+		//event.setUseBlock(Result.DENY);
+		//TODO WHY DOESNT IT WORK
+		/*if(event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockAnvil) {
+			if(isItemPlaceable(event.getItemStack().getItem())) {
+				if(event.getWorld().getBlockState(event.getPos().up()).getBlock() instanceof BlockAir) {
+					event.setCanceled(true);
+					event.setCancellationResult(EnumActionResult.FAIL);
+					event.getWorld().setBlockState(event.getPos().up(), itemToPlace(event.getItemStack().getItem()).getDefaultState());
+					if (!event.getEntityPlayer().isCreative()) event.getItemStack().shrink(1);
+					return EnumActionResult.FAIL;
+				}
+			}
+		}*/
+
+
+
+
+
+		/*
+
+
 		Item item = event.getItemStack().getItem();
 		ItemStack stack = event.getItemStack();
+		if(stack.isEmpty()) {
+			event.setCanceled(true);
+//			return EnumActionResult.SUCCESS;
+		}
 		World world = event.getWorld();
 		BlockPos pos = event.getPos();
 		EnumFacing side = event.getFace();
@@ -166,17 +249,7 @@ public class EventSubscriber {
 				return EnumActionResult.SUCCESS;
 			}
 		}
-		if (event.getHand() == EnumHand.MAIN_HAND) {
-			if (event.getEntityPlayer().isSneaking()) {
-				if ((event.getWorld().getBlockState(event.getPos()).getBlock() != null) && ((event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockCrusher)))
-				{
-					event.setUseBlock(Result.ALLOW);
-					WIPTech.logger.info("onBlockActivated event called for block " + event.getWorld().getBlockState(event.getPos()).getBlock() + " because PlayerInteractEvent.RightClickBlock#setUseBlock was set to " + event.getUseBlock());
-					return EnumActionResult.SUCCESS;
-				}
-			}
-		}
-		return EnumActionResult.PASS;
+		 */
 	}
 
 	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
@@ -236,11 +309,11 @@ public class EventSubscriber {
 			}
 		}
 		WIPTech.logger.info("Registered models");
-		
+
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrusher.class, new TESRCrusher());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbine.class, new TESRTurbine());
 		WIPTech.logger.info("Registered TileEntity Renders");
-		
+
 		/*for (EntityEntry entity: Entities.ENTITIES)
 		{
 
