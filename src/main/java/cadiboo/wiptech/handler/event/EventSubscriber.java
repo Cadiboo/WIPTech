@@ -17,27 +17,22 @@ import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Entities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
-import cadiboo.wiptech.item.ItemAluminiumIngot;
-import cadiboo.wiptech.item.ItemAluminiumNugget;
-import cadiboo.wiptech.item.ItemCopperIngot;
-import cadiboo.wiptech.item.ItemCopperNugget;
 import cadiboo.wiptech.item.ItemFerromagneticProjectile;
 import cadiboo.wiptech.item.ItemHammer;
-import cadiboo.wiptech.item.ItemTinIngot;
-import cadiboo.wiptech.item.ItemTinNugget;
 import cadiboo.wiptech.tileentity.TileEntityCapacitorBank;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -50,11 +45,11 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -133,6 +128,9 @@ public class EventSubscriber {
 	 * }
 	 */
 
+	//TODO this was just for testing remove me
+	public static final Item xxx = ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft", "gold_nugget"));
+	
 	public static final Item gold_nugget = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
 	public static final Item gold_ingot = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"));
 
@@ -140,6 +138,19 @@ public class EventSubscriber {
 		return item == gold_nugget || item == gold_ingot || item == Items.COPPER_NUGGET || item == Items.COPPER_INGOT
 				|| item == Items.ALUMINIUM_NUGGET || item == Items.ALUMINIUM_INGOT || item == Items.TIN_NUGGET
 				|| item == Items.TIN_INGOT;
+	}
+
+	private static boolean isHammerableBlock(Block blockIn) {
+		if ((blockIn == cadiboo.wiptech.init.Blocks.COPPER_NUGGET)) {
+			return true;
+		} else if (blockIn == cadiboo.wiptech.init.Blocks.COPPER_INGOT) {
+			return true;
+		} else if (blockIn == cadiboo.wiptech.init.Blocks.GOLD_NUGGET) {
+			return true;
+		} else if (blockIn == cadiboo.wiptech.init.Blocks.GOLD_INGOT) {
+			return true;
+		}
+		return false;
 	}
 
 	private static Block itemToPlace(Item item) {
@@ -156,8 +167,9 @@ public class EventSubscriber {
 		return net.minecraft.init.Blocks.AIR;
 	}
 
-	@SubscribeEvent(receiveCanceled = true)
+	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.HIGHEST)
 	public static EnumActionResult BlockRightClickEvent(PlayerInteractEvent.RightClickBlock event) {
+
 		// TODO redo this so least-likely is called first
 		if (event.getHand() == EnumHand.MAIN_HAND) {
 			if (event.getEntityPlayer().isSneaking()) {
@@ -173,61 +185,38 @@ public class EventSubscriber {
 			}
 		}
 
-		if (!(event.getWorld().getBlockState(event.getPos()).getBlock() instanceof BlockAnvil))
-			return EnumActionResult.PASS;
-		if (!isItemPlaceable(event.getItemStack().getItem()))
-			return EnumActionResult.PASS;
-		if (!(event.getWorld().getBlockState(event.getPos().up()).getBlock() instanceof BlockAir))
-			return EnumActionResult.PASS;
+		World world = event.getWorld();
+		BlockPos pos = event.getPos();
+		EntityPlayer player = event.getEntityPlayer();
+		if (world.getBlockState(pos).getBlock() instanceof BlockAnvil && event.getFace() == EnumFacing.UP)
+			if (world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos.up())) {
+				boolean flag = false;
 
-		event.setCanceled(true);
-		event.getWorld().setBlockState(event.getPos().up(),
-				itemToPlace(event.getItemStack().getItem()).getDefaultState());
-		if (!event.getEntityPlayer().isCreative())
-			event.getItemStack().shrink(1);
-		return EnumActionResult.FAIL;
-
-		// event.setCanceled(true);
-		// event.setResult(Result.DENY);
-		// event.setUseBlock(Result.DENY);
-		// TODO WHY DOESNT IT WORK
-		/*
-		 * if(event.getWorld().getBlockState(event.getPos()).getBlock() instanceof
-		 * BlockAnvil) { if(isItemPlaceable(event.getItemStack().getItem())) {
-		 * if(event.getWorld().getBlockState(event.getPos().up()).getBlock() instanceof
-		 * BlockAir) { event.setCanceled(true);
-		 * event.setCancellationResult(EnumActionResult.FAIL);
-		 * event.getWorld().setBlockState(event.getPos().up(),
-		 * itemToPlace(event.getItemStack().getItem()).getDefaultState()); if
-		 * (!event.getEntityPlayer().isCreative()) event.getItemStack().shrink(1);
-		 * return EnumActionResult.FAIL; } } }
-		 */
-
-		/*
-		 * 
-		 * 
-		 * Item item = event.getItemStack().getItem(); ItemStack stack =
-		 * event.getItemStack(); if(stack.isEmpty()) { event.setCanceled(true); //
-		 * return EnumActionResult.SUCCESS; } World world = event.getWorld(); BlockPos
-		 * pos = event.getPos(); EnumFacing side = event.getFace(); Item gold_nugget =
-		 * Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
-		 * Item gold_ingot = Item.REGISTRY.getObject(new ResourceLocation("minecraft",
-		 * "gold_ingot")); if (((item instanceof ItemCopperNugget)) || ((item instanceof
-		 * ItemCopperIngot)) || (item == gold_nugget) || (item == gold_ingot)) { if
-		 * (((world.getBlockState(pos).getBlock() instanceof BlockAnvil)) && (side ==
-		 * EnumFacing.UP) && (world.getBlockState(pos.up()) ==
-		 * net.minecraft.init.Blocks.AIR.getDefaultState())) { if ((item instanceof
-		 * ItemCopperNugget)) { world.setBlockState(pos.up(),
-		 * cadiboo.wiptech.init.Blocks.COPPER_NUGGET.getDefaultState()); } else if
-		 * ((item instanceof ItemCopperIngot)) { world.setBlockState(pos.up(),
-		 * cadiboo.wiptech.init.Blocks.COPPER_INGOT.getDefaultState()); } else if (item
-		 * == gold_nugget) { world.setBlockState(pos.up(),
-		 * cadiboo.wiptech.init.Blocks.GOLD_NUGGET.getDefaultState()); } else if (item
-		 * == gold_ingot) { world.setBlockState(pos.up(),
-		 * cadiboo.wiptech.init.Blocks.GOLD_INGOT.getDefaultState()); } if
-		 * (!event.getEntityPlayer().isCreative()) { stack.shrink(1); }
-		 * event.setCanceled(true); return EnumActionResult.SUCCESS; } }
-		 */
+				if (!isItemPlaceable(event.getItemStack().getItem()))
+					flag = isItemPlaceable(
+							player.getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem())
+							&& event.getItemStack().isEmpty();
+				else // placeable
+				{
+					if (world.isRemote) {
+						EnumHand hand = flag ? EnumHand.values()[event.getHand().ordinal() ^ 1] : event.getHand();
+						player.setActiveHand(hand);
+						player.swingArm(hand);
+					}
+					event.getWorld().setBlockState(event.getPos().up(),
+							itemToPlace(event.getItemStack().getItem()).getDefaultState());
+					if (!player.isCreative())
+						event.getItemStack().shrink(1);
+				}
+				if (flag || isItemPlaceable(event.getItemStack().getItem())) {
+					event.setCanceled(true);
+					return EnumActionResult.FAIL;
+				}
+			} else if (isHammerableBlock(world.getBlockState(pos.up()).getBlock())) {
+				event.setCanceled(true);
+				return EnumActionResult.FAIL;
+			}
+		return EnumActionResult.PASS;
 	}
 
 	@SubscribeEvent(priority = EventPriority.NORMAL, receiveCanceled = true)
