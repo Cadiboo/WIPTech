@@ -1,8 +1,5 @@
 package cadiboo.wiptech.client.render.tileentity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cadiboo.wiptech.block.BlockCrusher;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
@@ -26,8 +23,7 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 	public static final ItemStack CRUSHER_BIT_HOLDER = new ItemStack(Items.CRUSHER_BIT_HOLDER);
 
-	private boolean isItem(ItemStack stack)
-	{
+	private boolean isItem(ItemStack stack) {
 		return !(stack.getItem() instanceof ItemBlock);
 	}
 
@@ -39,8 +35,9 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
 	}
 
-	public void render(TileEntityCrusher te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
-	{
+	@Override
+	public void render(TileEntityCrusher te, double x, double y, double z, float partialTicks, int destroyStage,
+			float alpha) {
 		ItemStack stackCrusherBit = te.inventory.getStackInSlot(0);
 		ItemStack stackToCrush = te.inventory.getStackInSlot(1);
 
@@ -49,60 +46,64 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 		GlStateManager.enableBlend();
 		RenderHelper.enableStandardItemLighting();
 		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-		EnumFacing enumfacing = (EnumFacing)te.getWorld().getBlockState(te.getPos()).getValue(FACING);
-		if (!stackCrusherBit.isEmpty())
-		{
+		EnumFacing enumfacing = te.getWorld().getBlockState(te.getPos()).getValue(FACING);
+		if (!stackCrusherBit.isEmpty()) {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + 0.5D, y + 0.56D - 0.3D, z + 0.5D);
-			if (TileEntityCrusher.isCrushing(te))
-			{
+			if (TileEntityCrusher.isCrushing(te)) {
 
-				//REPLACE THIS WITH POSSIBLY WRITING THE PREVIOUS POS BUT PROBABLY CALCULATE THE _NEXT_ POS AND COMPARE
+				// REPLACE THIS WITH POSSIBLY WRITING THE PREVIOUS POS BUT PROBABLY CALCULATE
+				// THE _NEXT_ POS AND COMPARE
 
 				double pos = Clausen.cl2(TileEntityCrusher.getFractionOfCrushTimeRemaining(te) * 25.0D) - 0.25D;
-				double approxLastPos = Clausen.cl2(TileEntityCrusher.getFractionOfCrushTimeRemaining(te) - 0.25D) - 0.25D;
+				double approxLastPos = Clausen.cl2(TileEntityCrusher.getFractionOfCrushTimeRemaining(te) - 0.25D)
+						- 0.25D;
 
 				GlStateManager.translate(0.0D, pos / 15.0D, 0.0D);
 				if ((pos < approxLastPos) && (pos < -1.0D) && (stackCrusherBit.getItem() == Items.CRUSHER_BIT)) {
-					((BlockCrusher)te.getWorld().getBlockState(te.getPos()).getBlock()).animateCrush(te.getWorld().getBlockState(te.getPos()), te.getWorld(), te.getPos());
+					((BlockCrusher) te.getWorld().getBlockState(te.getPos()).getBlock())
+							.animateCrush(te.getWorld().getBlockState(te.getPos()), te.getWorld(), te.getPos());
 				}
 			}
 			double offset = 0.2D;
-			switch (enumfacing)
-			{
-			case NORTH: 
-				GlStateManager.translate(0.0D, 0.0D, offset); break;
-			case WEST: 
-				GlStateManager.translate(-offset, 0.0D, 0.0D); break;
-			case SOUTH: 
-				GlStateManager.translate(0.0D, 0.0D, -offset); break;
-			case UP: 
-				GlStateManager.translate(offset, 0.0D, 0.0D); break;
-			default: 
+			switch (enumfacing) {
+			case NORTH:
+				GlStateManager.translate(0.0D, 0.0D, offset);
+				break;
+			case WEST:
+				GlStateManager.translate(-offset, 0.0D, 0.0D);
+				break;
+			case SOUTH:
+				GlStateManager.translate(0.0D, 0.0D, -offset);
+				break;
+			case UP:
+				GlStateManager.translate(offset, 0.0D, 0.0D);
+				break;
+			default:
 				GlStateManager.translate(0.0F, 0.0F, 0.0F);
 			}
 			double smalloffset = 0.01D;
-			switch (enumfacing)
-			{
-			case NORTH: 
-				GlStateManager.translate(0.0D, 0.0D, -smalloffset); break;
-			case WEST: 
-				GlStateManager.translate(smalloffset, 0.0D, 0.0D); break;
-			case SOUTH: 
-				GlStateManager.translate(0.0D, 0.0D, smalloffset); break;
-			case UP: 
-				GlStateManager.translate(-smalloffset, 0.0D, 0.0D); break;
-			default: 
+			switch (enumfacing) {
+			case NORTH:
+				GlStateManager.translate(0.0D, 0.0D, -smalloffset);
+				break;
+			case WEST:
+				GlStateManager.translate(smalloffset, 0.0D, 0.0D);
+				break;
+			case SOUTH:
+				GlStateManager.translate(0.0D, 0.0D, smalloffset);
+				break;
+			case UP:
+				GlStateManager.translate(-smalloffset, 0.0D, 0.0D);
+				break;
+			default:
 				GlStateManager.translate(0.0F, 0.0F, 0.0F);
 			}
-			if (stackCrusherBit.getItem() == Items.HAMMER)
-			{
+			if (stackCrusherBit.getItem() == Items.HAMMER) {
 				GlStateManager.translate(0.0D, 0.5D, 0.0D);
 				GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
 				renderModel(stackCrusherBit, te.getWorld());
-			}
-			else
-			{
+			} else {
 				double itemScale = 0.25D;
 				double renderScale = 0.375D;
 				double scale = 1.4925D;
@@ -118,8 +119,7 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 			}
 			GlStateManager.popMatrix();
 		}
-		if (!stackToCrush.isEmpty())
-		{
+		if (!stackToCrush.isEmpty()) {
 			ItemStack stack = stackToCrush;
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + 0.5D, y, z + 0.5D);
@@ -128,31 +128,28 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 			double itemoffset = 0.0D;
 
 			boolean isItem = isItem(stack);
-			switch (enumfacing)
-			{
-			case NORTH: 
+			switch (enumfacing) {
+			case NORTH:
 				GlStateManager.translate(0.0D, 0.0D, isItem ? itemoffset : blockoffset);
 				break;
-			case WEST: 
+			case WEST:
 				GlStateManager.translate(-(isItem ? itemoffset : blockoffset), 0.0D, 0.0D);
 				break;
-			case UP: 
+			case UP:
 				GlStateManager.translate(isItem ? itemoffset : blockoffset, 0.0D, 0.0D);
 				break;
-			case SOUTH: 
+			case SOUTH:
 				GlStateManager.translate(0.0D, 0.0D, -(isItem ? itemoffset : blockoffset));
 				break;
-			default: 
+			default:
 				GlStateManager.translate(0.0F, 0.0F, 0.0F);
 			}
-			GlStateManager.rotate(-90 * ((EnumFacing)te.getWorld().getBlockState(te.getPos()).getValue(FACING)).getHorizontalIndex(), 0.0F, 1.0F, 0.0F);
-			if (isItem)
-			{
+			GlStateManager.rotate(-90 * te.getWorld().getBlockState(te.getPos()).getValue(FACING).getHorizontalIndex(),
+					0.0F, 1.0F, 0.0F);
+			if (isItem) {
 				GlStateManager.translate(0.0D, 0.26D, 0.0D);
 				GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
-			}
-			else
-			{
+			} else {
 				GlStateManager.translate(0.0D, 0.0D, 0.0D);
 			}
 			renderModel(stack, te.getWorld());

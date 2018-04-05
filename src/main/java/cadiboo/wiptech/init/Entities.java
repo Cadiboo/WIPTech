@@ -33,8 +33,6 @@ public class Entities {
 			.tracker(128, 5, false)
 			.build();
 
-
-
 	public static final EntityEntry[] ENTITIES = {
 			NAPALM,
 			FERROMAGNETICPROJECTILE,

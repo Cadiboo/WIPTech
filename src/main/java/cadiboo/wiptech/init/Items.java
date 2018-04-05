@@ -3,13 +3,51 @@ package cadiboo.wiptech.init;
 import java.util.ArrayList;
 import java.util.List;
 
-import cadiboo.wiptech.block.BlockBase;
-import cadiboo.wiptech.item.*;
-import net.minecraft.block.Block;
+import cadiboo.wiptech.item.ItemAlumina;
+import cadiboo.wiptech.item.ItemAluminiumCoil;
+import cadiboo.wiptech.item.ItemAluminiumIngot;
+import cadiboo.wiptech.item.ItemAluminiumNugget;
+import cadiboo.wiptech.item.ItemBase;
+import cadiboo.wiptech.item.ItemCapacitor;
+import cadiboo.wiptech.item.ItemCoilgun;
+import cadiboo.wiptech.item.ItemCopperCoil;
+import cadiboo.wiptech.item.ItemCopperIngot;
+import cadiboo.wiptech.item.ItemCopperNugget;
+import cadiboo.wiptech.item.ItemCopperStrand;
+import cadiboo.wiptech.item.ItemCrusherBit;
+import cadiboo.wiptech.item.ItemCrusherBitHolder;
+import cadiboo.wiptech.item.ItemFerromagneticProjectile;
+import cadiboo.wiptech.item.ItemFlamethrower;
+import cadiboo.wiptech.item.ItemGallium;
+import cadiboo.wiptech.item.ItemGalliumIngot;
+import cadiboo.wiptech.item.ItemGalliumWafer;
+import cadiboo.wiptech.item.ItemGoldCoil;
+import cadiboo.wiptech.item.ItemHammer;
+import cadiboo.wiptech.item.ItemIronOxide;
+import cadiboo.wiptech.item.ItemNapalm;
+import cadiboo.wiptech.item.ItemOsmiumIngot;
+import cadiboo.wiptech.item.ItemOsmiumNugget;
+import cadiboo.wiptech.item.ItemPlasmagun;
+import cadiboo.wiptech.item.ItemRailgun;
+import cadiboo.wiptech.item.ItemSilica;
+import cadiboo.wiptech.item.ItemSilicon;
+import cadiboo.wiptech.item.ItemSiliconWafer;
+import cadiboo.wiptech.item.ItemSilverCoil;
+import cadiboo.wiptech.item.ItemSilverIngot;
+import cadiboo.wiptech.item.ItemSilverNugget;
+import cadiboo.wiptech.item.ItemTestLauncher;
+import cadiboo.wiptech.item.ItemTestModularWeapon;
+import cadiboo.wiptech.item.ItemTinCoil;
+import cadiboo.wiptech.item.ItemTinIngot;
+import cadiboo.wiptech.item.ItemTinNugget;
+import cadiboo.wiptech.item.ItemTitania;
+import cadiboo.wiptech.item.ItemTitaniumIngot;
+import cadiboo.wiptech.item.ItemTitaniumNugget;
+import cadiboo.wiptech.item.ItemTungstenIngot;
+import cadiboo.wiptech.item.ItemTungstenNugget;
 import net.minecraft.item.Item;
 
-public class Items
-{
+public class Items {
 	public static final ItemCopperIngot COPPER_INGOT = new ItemCopperIngot("copper_ingot");
 	public static final ItemCopperNugget COPPER_NUGGET = new ItemCopperNugget("copper_nugget");
 	public static final ItemCopperStrand COPPER_STRAND = new ItemCopperStrand("copper_strand");
@@ -32,7 +70,8 @@ public class Items
 	public static final ItemTungstenNugget TUNGSTEN_NUGGET = new ItemTungstenNugget("tungsten_nugget");
 	public static final ItemOsmiumIngot OSMIUM_INGOT = new ItemOsmiumIngot("osmium_ingot");
 	public static final ItemOsmiumNugget OSMIUM_NUGGET = new ItemOsmiumNugget("osmium_nugget");
-	public static final ItemFerromagneticProjectile FERROMAGNETIC_PROJECILE = new ItemFerromagneticProjectile("ferromagnetic_projectile");
+	public static final ItemFerromagneticProjectile FERROMAGNETIC_PROJECILE = new ItemFerromagneticProjectile(
+			"ferromagnetic_projectile");
 	public static final ItemCrusherBit CRUSHER_BIT = new ItemCrusherBit("crusher_bit");
 	public static final ItemCrusherBitHolder CRUSHER_BIT_HOLDER = new ItemCrusherBitHolder("crusher_bit_holder");
 	public static final ItemGallium GALLIUM = new ItemGallium("gallium");
@@ -52,123 +91,77 @@ public class Items
 	public static final ItemRailgun RAILGUN = new ItemRailgun("railgun");
 	public static final ItemCoilgun COILGUN = new ItemCoilgun("coilgun");
 	public static final ItemPlasmagun PLASMA_GUN = new ItemPlasmagun("plasmagun");
-	
+
 	public static final ItemCapacitor CAPACITOR = new ItemCapacitor("capacitor");
 
 	public static final ItemTestLauncher TEST_LAUNCHER = new ItemTestLauncher("test_launcher");
 	public static final ItemTestModularWeapon TEST_MODULAR_WEAPON = new ItemTestModularWeapon("test_modular_weapon");
 
+	public static final Item[] ITEMS = { HAMMER, COPPER_INGOT, COPPER_NUGGET, COPPER_STRAND, COPPER_COIL,
 
-	public static final Item[] ITEMS = {
-			HAMMER, 
-			COPPER_INGOT, 
-			COPPER_NUGGET, 
-			COPPER_STRAND, 
-			COPPER_COIL, 
-			
-			SILVER_INGOT, 
-			SILVER_NUGGET, 
-			SILVER_COIL, 
-			
-			TIN_INGOT, 
-			TIN_NUGGET, 
-			TIN_COIL, 
-			
+			SILVER_INGOT, SILVER_NUGGET, SILVER_COIL,
+
+			TIN_INGOT, TIN_NUGGET, TIN_COIL,
+
 			GOLD_COIL,
-			
-			ALUMINIUM_INGOT, 
-			ALUMINIUM_NUGGET,
-			ALUMINIUM_COIL, 
-			
-			TUNGSTEN_INGOT, 
-			TUNGSTEN_NUGGET, 
-			OSMIUM_INGOT, 
-			OSMIUM_NUGGET, 
-			FERROMAGNETIC_PROJECILE, 
-			CRUSHER_BIT, 
-			CRUSHER_BIT_HOLDER, 
-			GALLIUM, 
-			GALLIUM_INGOT, 
-			GALLIUM_WAFER, 
-			ALUMINA, 
-			IRON_OXIDE, 
-			SILICA, 
-			SILICON, 
-			SILICON_WAFER, 
-			TITANIA, 
-			TITANIUM_INGOT,
-			TITANIUM_NUGGET,
-			FLAMETHROWER, 
-			NAPALM,
-			RAILGUN,
-			COILGUN,
-			PLASMA_GUN,
-			
+
+			ALUMINIUM_INGOT, ALUMINIUM_NUGGET, ALUMINIUM_COIL,
+
+			TUNGSTEN_INGOT, TUNGSTEN_NUGGET, OSMIUM_INGOT, OSMIUM_NUGGET, FERROMAGNETIC_PROJECILE,
+
+			CRUSHER_BIT, CRUSHER_BIT_HOLDER,
+
+			GALLIUM, GALLIUM_INGOT, GALLIUM_WAFER, ALUMINA, IRON_OXIDE, SILICA, SILICON, SILICON_WAFER, TITANIA,
+			TITANIUM_INGOT, TITANIUM_NUGGET,
+
+			FLAMETHROWER, NAPALM, RAILGUN, COILGUN, PLASMA_GUN,
+
 			CAPACITOR,
 
-			TEST_LAUNCHER,
-			TEST_MODULAR_WEAPON,
+			TEST_LAUNCHER, TEST_MODULAR_WEAPON,
 
 	};
-	
-	
-	
+
 	private static List<Item> Ingots = new ArrayList();
 	private static Boolean IngotsIterated = false;
 
-	public static List<Item> getIngots()
-	{
-		if (!IngotsIterated.booleanValue())
-		{
+	public static List<Item> getIngots() {
+		if (!IngotsIterated.booleanValue()) {
 			Item[] arrayOfItem;
 			int j = (arrayOfItem = ITEMS).length;
-			for (int i = 0; i < j; i++)
-			{
+			for (int i = 0; i < j; i++) {
 				Item item = arrayOfItem[i];
-				if (!Ingots.contains(item))
-				{
-					if (((item instanceof ItemBase)) && 
-							(((ItemBase)item).isIngot()))
-					{
+				if (!Ingots.contains(item)) {
+					if (((item instanceof ItemBase)) && (((ItemBase) item).isIngot())) {
 						Ingots.add(item);
 					}
-				}
-				else {
+				} else {
 					IngotsIterated = Boolean.valueOf(true);
 				}
 			}
 		}
 		return Ingots;
 	}
-	
+
 	private static List<Item> Nuggets = new ArrayList();
 	private static Boolean NuggetsIterated = false;
 
-	public static List<Item> getNuggets()
-	{
-		if (!NuggetsIterated.booleanValue())
-		{
+	public static List<Item> getNuggets() {
+		if (!NuggetsIterated.booleanValue()) {
 			Item[] arrayOfItem;
 			int j = (arrayOfItem = ITEMS).length;
-			for (int i = 0; i < j; i++)
-			{
+			for (int i = 0; i < j; i++) {
 				Item item = arrayOfItem[i];
-				if (!Nuggets.contains(item))
-				{
-					if (((item instanceof ItemBase)) && 
-							(((ItemBase)item).isNugget()))
-					{
+				if (!Nuggets.contains(item)) {
+					if (((item instanceof ItemBase)) && (((ItemBase) item).isNugget())) {
 						Nuggets.add(item);
 					}
-				}
-				else {
+				} else {
 					NuggetsIterated = Boolean.valueOf(true);
 				}
 			}
 		}
 		return Nuggets;
 	}
-	
-	
-	
+
 }

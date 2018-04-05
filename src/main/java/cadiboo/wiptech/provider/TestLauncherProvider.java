@@ -1,6 +1,5 @@
 package cadiboo.wiptech.provider;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.WeaponModular;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
 import cadiboo.wiptech.init.Capabilities;
@@ -14,35 +13,35 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class TestLauncherProvider implements ICapabilityProvider, INBTSerializable<NBTTagCompound> {
 
-	//IItemHandler inventory = (IItemHandler)TestLauncherProvider.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
-	
+	// IItemHandler inventory =
+	// (IItemHandler)TestLauncherProvider.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+	// EnumFacing.NORTH);
+
 	private final ItemStackHandler inventory;
 	private final WeaponModular weaponModules;
 
 	public TestLauncherProvider() {
-		inventory = new ItemStackHandler( 54 );
+		inventory = new ItemStackHandler(54);
 		weaponModules = new WeaponModular();
 		weaponModules.setCoil(Coils.TIN);
 	}
 
 	@Override
-	public boolean hasCapability( Capability<?> capability, EnumFacing facing ) {
-		if( capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return true;
-		}
-		else if( capability == Capabilities.MODULAR_WEAPON_CAPABILITY ){
+		} else if (capability == Capabilities.MODULAR_WEAPON_CAPABILITY) {
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public <T> T getCapability( Capability<T> capability, EnumFacing facing ) {
-		if( capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ) {
-			return (T) inventory; 
-		}
-		else if( capability == Capabilities.MODULAR_WEAPON_CAPABILITY ){
-			return (T) weaponModules; 
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return (T) inventory;
+		} else if (capability == Capabilities.MODULAR_WEAPON_CAPABILITY) {
+			return (T) weaponModules;
 		}
 		return null;
 	}
@@ -56,5 +55,5 @@ public class TestLauncherProvider implements ICapabilityProvider, INBTSerializab
 	public void deserializeNBT(NBTTagCompound nbt) {
 		this.inventory.deserializeNBT(nbt);
 	}
-	
+
 }

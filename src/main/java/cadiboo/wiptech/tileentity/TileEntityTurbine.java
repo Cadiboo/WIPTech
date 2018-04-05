@@ -23,87 +23,96 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 	public static final int ENERGY_STORAGE = 10000;
 	private boolean cachedCanProduce = false;
 
-	public CustomEnergyStorage energy = new CustomEnergyStorage(ENERGY_STORAGE, Integer.MAX_VALUE){
+	public CustomEnergyStorage energy = new CustomEnergyStorage(ENERGY_STORAGE, Integer.MAX_VALUE) {
 		@Override
 		public boolean canReceive() {
 			return false;
 		}
 	};
 
-	public static int getSlots() {return 2;}
+	public static int getSlots() {
+		return 2;
+	}
 
-	public ItemStackHandler inventory = new ItemStackHandler(getSlots())
-	{
-		protected void onContentsChanged(int slot)
-		{
-			if (!TileEntityTurbine.this.world.isRemote)
-			{
-				//TileEntityTurbine.this.lastChangeTime = TileEntityTurbine.this.world.getTotalWorldTime();
-				//PacketHandler.NETWORK.sendToAllAround(new PacketUpdateCrusher(TileEntityCrusher.this), new NetworkRegistry.TargetPoint(TileEntityCrusher.this.world.provider.getDimension(), TileEntityCrusher.this.pos.getX(), TileEntityCrusher.this.pos.getY(), TileEntityCrusher.this.pos.getZ(), 64.0D));
+	public ItemStackHandler inventory = new ItemStackHandler(getSlots()) {
+		@Override
+		protected void onContentsChanged(int slot) {
+			if (!TileEntityTurbine.this.world.isRemote) {
+				// TileEntityTurbine.this.lastChangeTime =
+				// TileEntityTurbine.this.world.getTotalWorldTime();
+				// PacketHandler.NETWORK.sendToAllAround(new
+				// PacketUpdateCrusher(TileEntityCrusher.this), new
+				// NetworkRegistry.TargetPoint(TileEntityCrusher.this.world.provider.getDimension(),
+				// TileEntityCrusher.this.pos.getX(), TileEntityCrusher.this.pos.getY(),
+				// TileEntityCrusher.this.pos.getZ(), 64.0D));
 			}
 		}
 	};
 
-	public void onLoad()
-	{
+	@Override
+	public void onLoad() {
 		if (this.world.isRemote) {
-			//PacketHandler.NETWORK.sendToServer(new PacketRequestUpdateCrusher(this));
+			// PacketHandler.NETWORK.sendToServer(new PacketRequestUpdateCrusher(this));
 		}
 	}
 
 	@Override
 	public void update() {
-		//WIPTech.logger.info(this.energy.getEnergyStored());
-		if(!world.isRemote){
+		// WIPTech.logger.info(this.energy.getEnergyStored());
+		if (!world.isRemote) {
 
-			if(this.canProduce()){
+			if (this.canProduce()) {
 				this.energy.forceReceive(this.getEnergyProduction(), false);
-				//TODO CHANGE THIS
-				//WIPTech.logger.info(energy.getEnergyStored());
+				// TODO CHANGE THIS
+				// WIPTech.logger.info(energy.getEnergyStored());
 				this.markDirty();
 			}
-			if(this.energy.getEnergyStored() > 0){
+			if (this.energy.getEnergyStored() > 0) {
 
-				//TODO maybe remove this and 1st item slot entirely //maybe not
+				// TODO maybe remove this and 1st item slot entirely //maybe not
 				ItemStack stack0 = this.inventory.getStackInSlot(0);
-				if(stack0!=null && !stack0.isEmpty()) {
+				if (stack0 != null && !stack0.isEmpty()) {
 					IEnergyStorage stackEnergy = stack0.getCapability(CapabilityEnergy.ENERGY, null);
-					if(stackEnergy!=null)
-						stackEnergy.extractEnergy(this.energy.forceReceive(stackEnergy.getEnergyStored(), false), false);
+					if (stackEnergy != null)
+						stackEnergy.extractEnergy(this.energy.forceReceive(stackEnergy.getEnergyStored(), false),
+								false);
 				}
 
-				ItemStack stack1 = this.inventory.getStackInSlot(getSlots()-1);
-				if(stack1!=null && !stack1.isEmpty()) {
+				ItemStack stack1 = this.inventory.getStackInSlot(getSlots() - 1);
+				if (stack1 != null && !stack1.isEmpty()) {
 					IEnergyStorage stackEnergy = stack1.getCapability(CapabilityEnergy.ENERGY, null);
-					if(stackEnergy!=null)
-						this.energy.extractEnergy(stackEnergy.receiveEnergy(this.energy.getEnergyStored(), false), false);
+					if (stackEnergy != null)
+						this.energy.extractEnergy(stackEnergy.receiveEnergy(this.energy.getEnergyStored(), false),
+								false);
 				}
 
-				pushEnergy(this.world, this.pos, this.energy, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST);
+				pushEnergy(this.world, this.pos, this.energy, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH,
+						EnumFacing.WEST, EnumFacing.EAST);
 			}
 		}
 	}
 
 	public int getEnergyProduction() {
-		return ENERGY_PRODUCTION_BASE*this.getPos().getY();
+		return ENERGY_PRODUCTION_BASE * this.getPos().getY();
 	}
 
 	public boolean canProduce() {
-		if(this.world.getTotalWorldTime() % 1 == 0)
+		if (this.world.getTotalWorldTime() % 1 == 0)
 			cachedCanProduce = this.world.canBlockSeeSky(getPos().up(6));
 		return cachedCanProduce;
 	}
 
-	public static int pushEnergy(World world, BlockPos pos, IEnergyStorage energy, EnumFacing... sides){
-		if(!world.isRemote && energy.canExtract()){
-			//WIPTech.logger.info("attempting to push");
-			for(EnumFacing side : sides){
+	public static int pushEnergy(World world, BlockPos pos, IEnergyStorage energy, EnumFacing... sides) {
+		if (!world.isRemote && energy.canExtract()) {
+			// WIPTech.logger.info("attempting to push");
+			for (EnumFacing side : sides) {
 				TileEntity tile = world.getTileEntity(pos.offset(side));
-				if(tile != null && tile.hasCapability(CapabilityEnergy.ENERGY, side.getOpposite())){
-					//WIPTech.logger.info("Pushing "+energy.getEnergyStored()+" energy");
+				if (tile != null && tile.hasCapability(CapabilityEnergy.ENERGY, side.getOpposite())) {
+					// WIPTech.logger.info("Pushing "+energy.getEnergyStored()+" energy");
 					IEnergyStorage storage = tile.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
-					if(storage != null && storage.canReceive()){
-						return energy.extractEnergy(storage.receiveEnergy(energy.extractEnergy(Integer.MAX_VALUE, true), false), false);
+					if (storage != null && storage.canReceive()) {
+						return energy.extractEnergy(
+								storage.receiveEnergy(energy.extractEnergy(Integer.MAX_VALUE, true), false), false);
 					}
 				}
 			}
@@ -111,21 +120,21 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 		return 0;
 	}
 
-	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return true;
-		if(capability == CapabilityEnergy.ENERGY)
+		if (capability == CapabilityEnergy.ENERGY)
 			return true;
 		return super.hasCapability(capability, facing);
 	}
 
+	@Override
 	@Nullable
-	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-	{
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return (T) inventory;
-		if(capability == CapabilityEnergy.ENERGY)
+		if (capability == CapabilityEnergy.ENERGY)
 			return (T) energy;
 		WIPTech.logger.info("shouldnt be here :/");
 		return super.getCapability(capability, facing);

@@ -29,23 +29,22 @@ public class GuiCoiler extends GuiContainer {
 	private static final int PROGRESS_HEIGHT = 17;
 	private InventoryPlayer playerInv;
 
-	public GuiCoiler(ContainerCoiler container, InventoryPlayer playerInv, TileEntityCoiler tileCoiler)
-	{
+	public GuiCoiler(ContainerCoiler container, InventoryPlayer playerInv, TileEntityCoiler tileCoiler) {
 		super(container);
 		this.tileEntity = tileCoiler;
 		this.playerInv = playerInv;
 	}
 
-	public void drawScreen(int mouseX, int mouseY, float partialTicks)
-	{
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
-		//drawDefaultBackground();
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		// drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(BG_TEXTURE);
 		int x = (this.width - this.xSize) / 2;
@@ -58,13 +57,12 @@ public class GuiCoiler extends GuiContainer {
 		drawTexturedModalRect(x + 48, y + 35, 176, 14, getWindProgressScaled(24), 17);
 	}
 
-	private int getWindProgressScaled(int textureSize)
-	{
-		return (int)Math.round(TileEntityCoiler.getFractionOfWindTimeComplete(this.tileEntity) * textureSize);
+	private int getWindProgressScaled(int textureSize) {
+		return (int) Math.round(TileEntityCoiler.getFractionOfWindTimeComplete(this.tileEntity) * textureSize);
 	}
 
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	@Override
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String name = I18n.format(Blocks.COILER.getUnlocalizedName() + ".name", new Object[0]);
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(this.playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 94, 4210752);
@@ -80,8 +78,7 @@ public class GuiCoiler extends GuiContainer {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	public static boolean isInRect(int x, int y, int xSize, int ySize, int mouseX, int mouseY)
-	{
+	public static boolean isInRect(int x, int y, int xSize, int ySize, int mouseX, int mouseY) {
 		return (mouseX >= x) && (mouseX <= x + xSize) && (mouseY >= y) && (mouseY <= y + ySize);
 	}
 }

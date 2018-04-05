@@ -36,23 +36,22 @@ public class GuiCrusher extends GuiContainer {
 	private static final int HOLDER_HEIGHT = 16;
 	private InventoryPlayer playerInv;
 
-	public GuiCrusher(ContainerCrusher container, InventoryPlayer playerInv, TileEntityCrusher tileCrusher)
-	{
+	public GuiCrusher(ContainerCrusher container, InventoryPlayer playerInv, TileEntityCrusher tileCrusher) {
 		super(container);
 		this.tileEntity = tileCrusher;
 		this.playerInv = playerInv;
 	}
 
-	public void drawScreen(int mouseX, int mouseY, float partialTicks)
-	{
+	@Override
+	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 		drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		renderHoveredToolTip(mouseX, mouseY);
 	}
 
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
-	{
-		//drawDefaultBackground();
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+		// drawDefaultBackground();
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.getTextureManager().bindTexture(BG_TEXTURE);
 		int x = (this.width - this.xSize) / 2;
@@ -64,24 +63,22 @@ public class GuiCrusher extends GuiContainer {
 
 		drawTexturedModalRect(x + 48, y + 35, 176, 14, getCrushProgressScaled(24), 17);
 
-		/*float oldZ = this.zLevel;
-		this.zLevel = 255.0F;
-		this.mc.getTextureManager().bindTexture(BG_TEXTURE);
-		drawModalRectWithCustomSizedTexture(x+1, y+1, 10, 10, 10, 10, 10, 10);
-		this.zLevel = oldZ;
-		this.mc.getTextureManager().bindTexture(BG_TEXTURE);
-		*/
-		//drawScaledCustomSizeModalRect(x+1, y+1, 177, 1, 12, 12, 12, 12, 24, 24);
+		/*
+		 * float oldZ = this.zLevel; this.zLevel = 255.0F;
+		 * this.mc.getTextureManager().bindTexture(BG_TEXTURE);
+		 * drawModalRectWithCustomSizedTexture(x+1, y+1, 10, 10, 10, 10, 10, 10);
+		 * this.zLevel = oldZ; this.mc.getTextureManager().bindTexture(BG_TEXTURE);
+		 */
+		// drawScaledCustomSizeModalRect(x+1, y+1, 177, 1, 12, 12, 12, 12, 24, 24);
 
 	}
 
-	private int getCrushProgressScaled(int textureSize)
-	{
-		return (int)Math.round(TileEntityCrusher.getFractionOfCrushTimeComplete(this.tileEntity) * textureSize);
+	private int getCrushProgressScaled(int textureSize) {
+		return (int) Math.round(TileEntityCrusher.getFractionOfCrushTimeComplete(this.tileEntity) * textureSize);
 	}
 
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
-	{
+	@Override
+	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
 		String name = WIPTech.proxy.localize(Blocks.CRUSHER.getUnlocalizedName() + ".name");
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(this.playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 94, 4210752);
@@ -98,25 +95,27 @@ public class GuiCrusher extends GuiContainer {
 
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-		if ((this.tileEntity.inventory.getStackInSlot(0) != null) && (!this.tileEntity.inventory.getStackInSlot(0).isEmpty()) && (this.tileEntity.inventory.getStackInSlot(0).getItem() == Items.CRUSHER_BIT))
-		{
+		if ((this.tileEntity.inventory.getStackInSlot(0) != null)
+				&& (!this.tileEntity.inventory.getStackInSlot(0).isEmpty())
+				&& (this.tileEntity.inventory.getStackInSlot(0).getItem() == Items.CRUSHER_BIT)) {
 			GlStateManager.disableLighting();
-			//GlStateManager.disableFog(); //Used to be the only thing that made it work, now it absolutely destroys everything when called
+			// GlStateManager.disableFog(); //Used to be the only thing that made it work,
+			// now it absolutely destroys everything when called
 
 			this.zLevel = 255.0F;
-			//this.itemRender.zLevel = 255.0F;
+			// this.itemRender.zLevel = 255.0F;
 			drawTexturedModalRect(24, 17, 176, 31, 16, 16);
 
 			this.zLevel = 0.0F;
-			//this.itemRender.zLevel = 0.0F;
+			// this.itemRender.zLevel = 0.0F;
 
 			GlStateManager.enableLighting();
-			//GlStateManager.enableFog(); //Used to be the only thing that made it work, now it absolutely destroys everything when called
+			// GlStateManager.enableFog(); //Used to be the only thing that made it work,
+			// now it absolutely destroys everything when called
 		}
 	}
 
-	public static boolean isInRect(int x, int y, int xSize, int ySize, int mouseX, int mouseY)
-	{
+	public static boolean isInRect(int x, int y, int xSize, int ySize, int mouseX, int mouseY) {
 		return (mouseX >= x) && (mouseX <= x + xSize) && (mouseY >= y) && (mouseY <= y + ySize);
 	}
 }

@@ -55,7 +55,7 @@ public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializa
 			return (T) this.weaponModules;
 		}
 		if (capability == CapabilityEnergy.ENERGY) {
-			return (T) (CustomEnergyStorage) this.energy;
+			return (T) this.energy;
 		}
 		return null;
 	}

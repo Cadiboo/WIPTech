@@ -28,17 +28,14 @@ public class Proxy implements IProxy {
 		return I18n.format(unlocalized, args);
 	}
 
-	public static CreativeTabs modTab = new CreativeTabs("wiptechtab")
-	{
+	public static CreativeTabs modTab = new CreativeTabs("wiptechtab") {
 		@Override
-		public ItemStack getTabIconItem()
-		{
+		public ItemStack getTabIconItem() {
 			return new ItemStack(Items.PLASMA_GUN);
 		}
 
 		@Override
-		public boolean hasSearchBar()
-		{
+		public boolean hasSearchBar() {
 			return true;
 		}
 
@@ -47,29 +44,35 @@ public class Proxy implements IProxy {
 			super.displayAllRelevantItems(list);
 
 			ItemStack plasmaGun = new ItemStack(Items.PLASMA_GUN);
-			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.GOLD).setRail(Rails.GOLD).setCircuit(Circuits.OVERCLOCKED);
+			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.GOLD)
+					.setRail(Rails.GOLD).setCircuit(Circuits.OVERCLOCKED);
 			list.add(plasmaGun);
 		}
 
 	}.setBackgroundImageName("item_search.png");
 
 	@Override
-	public void addToCreativeTab()
-	{
-		for(Item item : Items.ITEMS) {
+	public void addToCreativeTab() {
+		for (Item item : Items.ITEMS) {
 			item.setCreativeTab(modTab);
 		}
 
-		for(Block block :Blocks.BLOCKS) {
-			if ((block instanceof BlockBase))
-			{
-				if (!((BlockBase)block).isHiddenBlock()) {
+		for (Block block : Blocks.BLOCKS) {
+			if ((block instanceof BlockBase)) {
+				if (!((BlockBase) block).isHiddenBlock()) {
 					block.setCreativeTab(modTab);
 				}
 			}
 		}
 
-		WIPTech.logger.info("createCreativeTab - Added all Items and Blocks to " + WIPTech.proxy.localize(new StringBuilder().append(modTab).append(".name").toString(), new Object[0]) + " Tab");
+		WIPTech.logger.info("createCreativeTab - Added all Items and Blocks to "
+				+ WIPTech.proxy.localize(new StringBuilder().append(modTab).append(".name").toString(), new Object[0])
+				+ " Tab");
+	}
+
+	@Override
+	public String getSide() {
+		return "Client";
 	}
 
 }

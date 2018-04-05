@@ -3,7 +3,6 @@ package cadiboo.wiptech.capability;
 import java.util.ArrayList;
 import java.util.List;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.handler.EnumHandler;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
@@ -12,7 +11,7 @@ import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Scopes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCompound>{
+public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCompound> {
 
 	private Circuits circuit;
 	private Coils coil;
@@ -27,7 +26,7 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 
 	public static final int overheatTimer = 5;
 	public static final int burstShotsAllowed = 5;
-	public static final float shootChance = 1.5F; //0 = never; 1 = always; 2 = half the time; 3 = 1/3rd the time
+	public static final float shootChance = 1.5F; // 0 = never; 1 = always; 2 = half the time; 3 = 1/3rd the time
 	public static final float burstShootChance = 2F;
 	public static final int circuitOverclockedRepeats = 1;
 	public static final int energyCost = 100;
@@ -42,17 +41,17 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 	}
 
 	@Override
-	public List <? extends EnumHandler.WeaponModules> getModuleList() {
+	public List<? extends EnumHandler.WeaponModules> getModuleList() {
 		List modules = new ArrayList();
 
-		if(this.circuit!=null)
-			modules.add("circuit: "+this.circuit);
-		if(this.coil!=null)
-			modules.add("coil: "+this.coil);
-		if(this.scope!=null)
-			modules.add("scope: "+this.scope);
-		if(this.rail!=null)
-			modules.add("rail: "+this.rail);
+		if (this.circuit != null)
+			modules.add("circuit: " + this.circuit);
+		if (this.coil != null)
+			modules.add("coil: " + this.coil);
+		if (this.scope != null)
+			modules.add("scope: " + this.scope);
+		if (this.rail != null)
+			modules.add("rail: " + this.rail);
 
 		return modules;
 	}
@@ -74,14 +73,14 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 
 	@Override
 	public boolean isOverheated() {
-		return getTemperature()>getOverheatTemperature();
+		return getTemperature() > getOverheatTemperature();
 	}
 
 	@Override
 	public int getTemperature() {
 		return this.temperature;
 	}
-	
+
 	@Override
 	public void setTemperature(int temperature) {
 		this.temperature = temperature;
@@ -119,13 +118,13 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 
 	@Override
 	public void cool() {
-		if(this.getTemperature() > 0F)
+		if (this.getTemperature() > 0F)
 			this.temperature--;
 	}
 
 	@Override
 	public int getModules() {
-		return getModuleList().size(); //TODO make this its own function and therefore less processor intensive 
+		return getModuleList().size(); // TODO make this its own function and therefore less processor intensive
 	}
 
 	@Override
@@ -161,6 +160,7 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 		return this.scope;
 	}
 
+	@Override
 	public WeaponModular setRail(Rails rail) {
 		this.rail = rail;
 		return this;
@@ -171,33 +171,30 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 		return this.rail;
 	}
 
-
 	@Override
-	public NBTTagCompound serializeNBT()
-	{
+	public NBTTagCompound serializeNBT() {
 		NBTTagCompound nbt = new NBTTagCompound();
 
-		if(this.circuit!=null)
+		if (this.circuit != null)
 			nbt.setInteger("circuit", this.circuit.getID());
-		if(this.coil!=null)
+		if (this.coil != null)
 			nbt.setInteger("coil", this.coil.getID());
-		if(this.scope!=null)
+		if (this.scope != null)
 			nbt.setInteger("scope", this.scope.getID());
-		if(this.rail!=null)
+		if (this.rail != null)
 			nbt.setInteger("rail", this.rail.getID());
 		return nbt;
 	}
 
 	@Override
-	public void deserializeNBT(NBTTagCompound nbt)
-	{
-		if(nbt.hasKey("circuit"))
+	public void deserializeNBT(NBTTagCompound nbt) {
+		if (nbt.hasKey("circuit"))
 			this.circuit = Circuits.byID(nbt.getInteger("circuit"));
-		if(nbt.hasKey("coil"))
+		if (nbt.hasKey("coil"))
 			this.coil = Coils.byID(nbt.getInteger("coil"));
-		if(nbt.hasKey("scope"))
+		if (nbt.hasKey("scope"))
 			this.scope = Scopes.byID(nbt.getInteger("scope"));
-		if(nbt.hasKey("rail"))
+		if (nbt.hasKey("rail"))
 			this.rail = Rails.byID(nbt.getInteger("rail"));
 	}
 

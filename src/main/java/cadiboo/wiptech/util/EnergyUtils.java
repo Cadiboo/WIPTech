@@ -1,7 +1,5 @@
 package cadiboo.wiptech.util;
 
-import java.text.NumberFormat;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;

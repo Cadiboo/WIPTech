@@ -1,38 +1,26 @@
 package cadiboo.wiptech.client.render.entity;
 
-import java.util.List;
-import java.util.Random;
-
 import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.util.Reference;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.client.model.pipeline.IVertexConsumer;
-
 
 //Based on Immersive Engineering
 //https://github.com/BluSunrize/ImmersiveEngineering/blob/master/src/main/java/blusunrize/immersiveengineering/client/render/EntityRenderRevolvershot.java
@@ -45,40 +33,42 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 	private ItemStack ammoStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
 	private boolean overheated = false;
-	//Heading, Pitch, Roll
-	//Heading (being a rotation around an "up"-axis), pitch (being a rotation around a "right"-axis), and roll (being a rotation about a "forward"-axis)
+	// Heading, Pitch, Roll
+	// Heading (being a rotation around an "up"-axis), pitch (being a rotation
+	// around a "right"-axis), and roll (being a rotation about a "forward"-axis)
 
 	@Override
-	public void doRender(@Nonnull T entity, double x, double y, double z, float entityYaw, float partialTicks)
-	{
+	public void doRender(@Nonnull T entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		ammoStack = entity.getAmmoStack();
 		overheated = entity.isOverheated();
 
 		GlStateManager.pushMatrix();
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		GlStateManager.translate(x, y+0.25, z);
+		GlStateManager.translate(x, y + 0.25, z);
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableCull();
 
-		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0, 1, 0);
-		GlStateManager.rotate(-(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks), 1, 0, 0);
+		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0,
+				1, 0);
+		GlStateManager.rotate(
+				-(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks), 1, 0,
+				0);
 
-		//projectile shake
-		float renderShake = (float)entity.projectileShake - partialTicks;
-		
-		if (renderShake > 0.0F)
-		{
+		// projectile shake
+		float renderShake = entity.projectileShake - partialTicks;
+
+		if (renderShake > 0.0F) {
 			float angle = -MathHelper.sin(renderShake * 3.0F) * renderShake;
 			GlStateManager.rotate(angle, 0.0F, 0.0F, 1.0F);
 		}
 
-		if(entity.isPlasma()) {
+		if (entity.isPlasma()) {
 			GlStateManager.scale(0.5, 0.5, 0.5);
 
 			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_core.png"));
-			//GlStateManager.depthMask(true);
+			// GlStateManager.depthMask(true);
 			drawQuad(0, 1, 0, 1, 0.125, 0.125, 0.125, 1);
-			//GlStateManager.depthMask(false);
+			// GlStateManager.depthMask(false);
 
 			this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			RenderHelper.disableStandardItemLighting();
@@ -90,7 +80,7 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 			GlStateManager.disableAlpha();
 			GlStateManager.enableCull();
 			GlStateManager.depthMask(false);
-			//GlStateManager.translate(0.0F, -1.0F, -2.0F);
+			// GlStateManager.translate(0.0F, -1.0F, -2.0F);
 
 			GlStateManager.color(0.6F, 0.5F, 1);
 
@@ -109,35 +99,33 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 
 			return;
 
-		}
-		else
-		{
+		} else {
 			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(ammoStack);
-			if(model!=null) {
-				//List<BakedQuad> quads = model.getQuads(null, null, 0L);
-				//BakedQuad bakedquad = quads.get(0);
+			if (model != null) {
+				// List<BakedQuad> quads = model.getQuads(null, null, 0L);
+				// BakedQuad bakedquad = quads.get(0);
 
 				TextureAtlasSprite sprite = model.getQuads(null, null, 0L).get(0).getSprite();
 
-				//TextureAtlasSprite sprite = bakedquad.getSprite();
-				if(sprite!=null) {
+				// TextureAtlasSprite sprite = bakedquad.getSprite();
+				if (sprite != null) {
 
 					float minU = sprite.getMinU();
 					float maxU = sprite.getMaxU();
 					float minV = sprite.getMinV();
 					float maxV = sprite.getMaxV();
-					//float midU = sprite.getInterpolatedU(width/2) //TODO look at this
+					// float midU = sprite.getInterpolatedU(width/2) //TODO look at this
 
-					float width = maxU-minU;
-					float height = maxV-minV;
+					float width = maxU - minU;
+					float height = maxV - minV;
 
-					float midU = minU+(width/2);
-					float midV = minV+(height/2);
+					float midU = minU + (width / 2);
+					float midV = minV + (height / 2);
 
 					float multiplier = 1;
 					float scale = 1F;
 
-					switch(entity.getAmmoId()) {
+					switch (entity.getAmmoId()) {
 					default:
 						scale = 1F;
 						multiplier = 1;
@@ -154,17 +142,17 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 						multiplier = 2;
 						scale = 0.25F;
 						break;
-					case 9: //never happens
+					case 9: // never happens
 						scale = 1F;
 						break;
 					}
 
-					minU = midU-(width/(8F*multiplier));
-					maxU = midU+(width/(8F*multiplier));
-					minV = midV-(height/(8F*multiplier));
-					maxV = midV+(height/(8F*multiplier));
+					minU = midU - (width / (8F * multiplier));
+					maxU = midU + (width / (8F * multiplier));
+					minV = midV - (height / (8F * multiplier));
+					maxV = midV + (height / (8F * multiplier));
 
-					if(overheated)
+					if (overheated)
 						GlStateManager.color(1F, 0, 0);
 
 					drawQuad(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);
@@ -172,7 +160,6 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 				}
 			}
 		}
-
 
 		GlStateManager.disableCull();
 		GlStateManager.disableRescaleNormal();
@@ -185,12 +172,13 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		return TextureMap.LOCATION_MISSING_TEXTURE;
 	}
 
-	private void drawQuad (float minU, float maxU, float minV, float maxV, double width, double height, double length, double scale) {
+	private void drawQuad(float minU, float maxU, float minV, float maxV, double width, double height, double length,
+			double scale) {
 
 		GlStateManager.scale(scale, scale, scale);
 
-		double hlfU = minU + (maxU-minU)/2;
-		double hlfV = minV + (maxV-minV)/2;
+		double hlfU = minU + (maxU - minU) / 2;
+		double hlfV = minV + (maxV - minV) / 2;
 
 		double centre = 0d;
 
@@ -198,57 +186,57 @@ public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticPr
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
-		//UP
-		bufferbuilder.pos(-length,  height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-length,  height,  width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos( length,  height,  width).tex(minU, minV).endVertex();
-		bufferbuilder.pos( length,  height, -width).tex(minU, maxV).endVertex();
+		// UP
+		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
 
-		//DOWN
-		bufferbuilder.pos(-length, -height,  width).tex(minU, minV).endVertex();
+		// DOWN
+		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
 		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos( length, -height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos( length, -height,  width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
 
-		//LEFT
-		bufferbuilder.pos( length, -height,  width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos( length, -height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos( length,  height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos( length,  height,  width).tex(minU, minV).endVertex();
+		// LEFT
+		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
 
-		//RIGHT
+		// RIGHT
 		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length, -height,  width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length,  height,  width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-length,  height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
 
-		//BACK BOTTOM
+		// BACK BOTTOM
 		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length,  centre, -width).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos( length,  centre, -width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos( length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-length, centre, -width).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(length, centre, -width).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
 
-		//BACK TOP
-		bufferbuilder.pos(-length,  centre, -width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(-length,  height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos( length,  height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos( length,  centre, -width).tex(minU, hlfV).endVertex();
+		// BACK TOP
+		bufferbuilder.pos(-length, centre, -width).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(length, centre, -width).tex(minU, hlfV).endVertex();
 
-		//FRONT BOTTOM
-		bufferbuilder.pos( length, -height,  width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos( length,  centre,  width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(-length,  centre,  width).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos(-length, -height,  width).tex(minU, minV).endVertex();
+		// FRONT BOTTOM
+		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(length, centre, width).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(-length, centre, width).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
 
-		//FRONT TOP
-		bufferbuilder.pos( length,  centre,  width).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos( length,  height,  width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length,  height,  width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-length,  centre,  width).tex(maxU, hlfV).endVertex();
+		// FRONT TOP
+		bufferbuilder.pos(length, centre, width).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-length, centre, width).tex(maxU, hlfV).endVertex();
 
 		tessellator.draw();
 
-		GlStateManager.scale(1/scale, 1/scale, 1/scale);
+		GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
 	}
 
 }

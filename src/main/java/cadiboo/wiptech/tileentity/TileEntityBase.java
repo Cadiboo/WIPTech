@@ -53,21 +53,21 @@ public class TileEntityBase extends TileEntity {
 	@Nullable
 	@Override
 	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			IItemHandler inventory = getInventory(facing);
-			if(inventory != null){
+			if (inventory != null) {
 				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 			}
 		}
-		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			IFluidHandler tank = getTank(facing);
-			if(tank != null){
+			if (tank != null) {
 				return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(tank);
 			}
 		}
-		if(capability == CapabilityEnergy.ENERGY){
+		if (capability == CapabilityEnergy.ENERGY) {
 			IEnergyStorage energy = getEnergy(facing);
-			if(energy != null){
+			if (energy != null) {
 				return CapabilityEnergy.ENERGY.cast(energy);
 			}
 		}
@@ -75,27 +75,27 @@ public class TileEntityBase extends TileEntity {
 	}
 
 	@Nullable
-	public IItemHandler getInventory(@Nullable EnumFacing side){
+	public IItemHandler getInventory(@Nullable EnumFacing side) {
 		return null;
 	}
 
 	@Nullable
-	public IEnergyStorage getEnergy(@Nullable EnumFacing side){
+	public IEnergyStorage getEnergy(@Nullable EnumFacing side) {
 		return null;
 	}
 
 	@Nullable
-	public IFluidHandler getTank(@Nullable EnumFacing side){
+	public IFluidHandler getTank(@Nullable EnumFacing side) {
 		return null;
 	}
 
-	public void writeNBT(NBTTagCompound nbt, NBTType type){
-		if(type != NBTType.DROP){
+	public void writeNBT(NBTTagCompound nbt, NBTType type) {
+		if (type != NBTType.DROP) {
 			NBTTagCompound caps = new NBTTagCompound();
-			for(EnumFacing side : EnumFacing.values()){
+			for (EnumFacing side : EnumFacing.values()) {
 				NBTTagCompound capsSided = new NBTTagCompound();
 				this.writeCapabilities(capsSided, side);
-				if(!capsSided.hasNoTags()){
+				if (!capsSided.hasNoTags()) {
 					caps.setTag(side.toString().toLowerCase(Locale.ROOT), capsSided);
 				}
 			}
@@ -103,7 +103,7 @@ public class TileEntityBase extends TileEntity {
 			this.writeCapabilities(capsSided, null);
 			caps.setTag("default", capsSided);
 			nbt.setTag("TileBaseCapabilities", caps);
-		} else if(this.getEnergy(null) != null){
+		} else if (this.getEnergy(null) != null) {
 			nbt.setInteger("Energy", this.getEnergy(null).getEnergyStored());
 		}
 	}
@@ -125,48 +125,52 @@ public class TileEntityBase extends TileEntity {
 		}
 	}
 
-	protected void readCapabilities(NBTTagCompound nbt, @Nullable EnumFacing side){
+	protected void readCapabilities(NBTTagCompound nbt, @Nullable EnumFacing side) {
 		IItemHandler inventory = this.getInventory(side);
-		if(inventory != null && inventory instanceof IItemHandlerModifiable && nbt.hasKey("Inventory")){
-			for(int i = 0; i < inventory.getSlots(); i++){ // clear the inventory, otherwise empty stacks doesn't get overriden while syncing. Forge Bug?
+		if (inventory != null && inventory instanceof IItemHandlerModifiable && nbt.hasKey("Inventory")) {
+			for (int i = 0; i < inventory.getSlots(); i++) { // clear the inventory, otherwise empty stacks doesn't get
+																// overriden while syncing. Forge Bug?
 				((IItemHandlerModifiable) inventory).setStackInSlot(i, ItemStack.EMPTY);
 			}
 			CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, side, nbt.getTag("Inventory"));
 		}
 		IFluidHandler tank = getTank(side);
-		if(tank != null && tank instanceof IFluidTank && nbt.hasKey("FluidTank")){
+		if (tank != null && tank instanceof IFluidTank && nbt.hasKey("FluidTank")) {
 			CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(tank, side, nbt.getCompoundTag("FluidTank"));
 		}
 		IEnergyStorage energy = getEnergy(side);
-		if(energy != null && energy instanceof EnergyStorage && nbt.hasKey("Energy")){
+		if (energy != null && energy instanceof EnergyStorage && nbt.hasKey("Energy")) {
 			CapabilityEnergy.ENERGY.readNBT(energy, side, nbt.getTag("Energy"));
 		}
 	}
 
-	protected void writeCapabilities(NBTTagCompound nbt, @Nullable EnumFacing side){
+	protected void writeCapabilities(NBTTagCompound nbt, @Nullable EnumFacing side) {
 		IItemHandler inventory = this.getInventory(side);
-		if(inventory != null && inventory instanceof IItemHandlerModifiable){
+		if (inventory != null && inventory instanceof IItemHandlerModifiable) {
 			nbt.setTag("Inventory", CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, side));
 		}
 		IFluidHandler tank = getTank(side);
-		if(tank != null && tank instanceof IFluidTank){
+		if (tank != null && tank instanceof IFluidTank) {
 			nbt.setTag("FluidTank", CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.writeNBT(tank, side));
 		}
 		IEnergyStorage energy = getEnergy(side);
-		if(energy != null && energy instanceof EnergyStorage){
+		if (energy != null && energy instanceof EnergyStorage) {
 			nbt.setTag("Energy", CapabilityEnergy.ENERGY.writeNBT(energy, side));
 		}
 	}
 
 	private boolean isSyncDirty = false;
-	public void syncToClients(){
-		if(this.world != null && !this.world.isRemote){
-			if(world.getTotalWorldTime() % 10 == 0){
+
+	public void syncToClients() {
+		if (this.world != null && !this.world.isRemote) {
+			if (world.getTotalWorldTime() % 10 == 0) {
 				NBTTagCompound syncTag = new NBTTagCompound();
 				this.writeNBT(syncTag, NBTType.SYNC);
-				for(EntityPlayer player : this.world.playerEntities){
-					if(player instanceof EntityPlayerMP && player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 64){
-						PacketHandler.NETWORK.sendTo(new PacketSyncTileEntity(syncTag, this.pos), (EntityPlayerMP) player);
+				for (EntityPlayer player : this.world.playerEntities) {
+					if (player instanceof EntityPlayerMP
+							&& player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 64) {
+						PacketHandler.NETWORK.sendTo(new PacketSyncTileEntity(syncTag, this.pos),
+								(EntityPlayerMP) player);
 					}
 				}
 				this.isSyncDirty = false;
@@ -177,10 +181,11 @@ public class TileEntityBase extends TileEntity {
 	}
 
 	private boolean isRenderDirty = false;
+
 	@SideOnly(Side.CLIENT)
-	public void markForRenderUpdate(){
-		if(this.world != null && this.world.isRemote){
-			if(this.isRenderDirty && this.world.getTotalWorldTime() % 10 == 0){
+	public void markForRenderUpdate() {
+		if (this.world != null && this.world.isRemote) {
+			if (this.isRenderDirty && this.world.getTotalWorldTime() % 10 == 0) {
 				this.world.markBlockRangeForRenderUpdate(this.pos, this.pos);
 				this.isRenderDirty = true;
 			} else {
@@ -189,26 +194,28 @@ public class TileEntityBase extends TileEntity {
 		}
 	}
 
-	protected void updateBase(){
-		if(!this.world.isRemote && this.isSyncDirty){
+	protected void updateBase() {
+		if (!this.world.isRemote && this.isSyncDirty) {
 			this.syncToClients();
 		}
-		if(this.world.isRemote && this.isRenderDirty){
+		if (this.world.isRemote && this.isRenderDirty) {
 			this.markForRenderUpdate();
 		}
 	}
 
 	@SideOnly(Side.CLIENT)
-	public void onSyncPacket(){}
+	public void onSyncPacket() {
+	}
 
-	public void breakBlock(){
-		if(!this.world.isRemote){
+	public void breakBlock() {
+		if (!this.world.isRemote) {
 			List<IItemHandler> cached = new ArrayList<>();
-			for(EnumFacing side : EnumFacing.values()){
+			for (EnumFacing side : EnumFacing.values()) {
 				IItemHandler inv = this.getInventory(side);
-				if(inv != null && !cached.contains(inv)){
-					for(int i = 0; i < inv.getSlots(); i++){
-						InventoryHelper.spawnItemStack(this.world, this.pos.getX(), this.pos.getY(), this.pos.getZ(), inv.getStackInSlot(i));
+				if (inv != null && !cached.contains(inv)) {
+					for (int i = 0; i < inv.getSlots(); i++) {
+						InventoryHelper.spawnItemStack(this.world, this.pos.getX(), this.pos.getY(), this.pos.getZ(),
+								inv.getStackInSlot(i));
 					}
 					cached.add(inv);
 				}
@@ -217,22 +224,21 @@ public class TileEntityBase extends TileEntity {
 		}
 	}
 
-	public boolean isWorking(){
+	public boolean isWorking() {
 		return false;
 	}
 
 	public boolean canBeUsedBy(EntityPlayer player) {
-		return player.getDistanceSq(this.getPos().getX()+0.5D, this.pos.getY()+0.5D, this.pos.getZ()+0.5D) <= 64 && !this.isInvalid() && this.world.getTileEntity(this.pos) == this;
+		return player.getDistanceSq(this.getPos().getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64
+				&& !this.isInvalid() && this.world.getTileEntity(this.pos) == this;
 	}
 
-	public int getCurrentEnergyUsage(){
+	public int getCurrentEnergyUsage() {
 		return -1;
 	}
 
-	public enum NBTType{
-		SAVE,
-		DROP,
-		SYNC
+	public enum NBTType {
+		SAVE, DROP, SYNC
 	}
 
 }

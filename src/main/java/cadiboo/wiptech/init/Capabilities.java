@@ -25,33 +25,35 @@ public class Capabilities {
 	public static class CapabilityWeaponModular implements IStorage<IWeaponModular> {
 
 		@Override
-		public NBTTagCompound writeNBT(Capability<IWeaponModular> capability, IWeaponModular instance, EnumFacing side) {
+		public NBTTagCompound writeNBT(Capability<IWeaponModular> capability, IWeaponModular instance,
+				EnumFacing side) {
 			NBTTagCompound nbt = new NBTTagCompound();
-			/*WIPTech.logger.info(instance.getCircuit());
-			WIPTech.logger.info(instance.getCoil());
-			WIPTech.logger.info(instance.getScope());*/
-			if(instance.getCircuit()!=null)
+			// WIPTech.logger.info(instance.getCircuit());
+			// WIPTech.logger.info(instance.getCoil());
+			// WIPTech.logger.info(instance.getScope());
+			if (instance.getCircuit() != null)
 				nbt.setInteger("circuit", instance.getCircuit().getID());
-			if(instance.getCoil()!=null)
+			if (instance.getCoil() != null)
 				nbt.setInteger("coil", instance.getCoil().getID());
-			if(instance.getScope()!=null)
+			if (instance.getScope() != null)
 				nbt.setInteger("scope", instance.getScope().getID());
-			if(instance.getRail()!=null)
+			if (instance.getRail() != null)
 				nbt.setInteger("rail", instance.getRail().getID());
-			
+
 			return nbt;
 		}
 
 		@Override
-		public void readNBT(Capability<IWeaponModular> capability, IWeaponModular instance, EnumFacing side, NBTBase nbtBase) {
+		public void readNBT(Capability<IWeaponModular> capability, IWeaponModular instance, EnumFacing side,
+				NBTBase nbtBase) {
 			NBTTagCompound nbt = (NBTTagCompound) nbtBase;
-			if(nbt.hasKey("circuit"))
+			if (nbt.hasKey("circuit"))
 				instance.setCircuit(Circuits.byID(nbt.getInteger("circuit")));
-			if(nbt.hasKey("coil"))
+			if (nbt.hasKey("coil"))
 				instance.setCoil(Coils.byID(nbt.getInteger("coil")));
-			if(nbt.hasKey("scope"))
+			if (nbt.hasKey("scope"))
 				instance.setScope(Scopes.byID(nbt.getInteger("scope")));
-			if(nbt.hasKey("rail"))
+			if (nbt.hasKey("rail"))
 				instance.setRail(Rails.byID(nbt.getInteger("rail")));
 		}
 

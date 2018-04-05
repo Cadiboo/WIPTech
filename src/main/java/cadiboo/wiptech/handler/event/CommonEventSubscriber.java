@@ -4,19 +4,10 @@ import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.block.BlockIngotBase;
 import cadiboo.wiptech.block.BlockNuggetBase;
-import cadiboo.wiptech.client.render.entity.RenderEntityFerromagneticProjectileFactory;
-import cadiboo.wiptech.client.render.entity.RenderEntityNapalmFactory;
-import cadiboo.wiptech.client.render.tileentity.TESRCrusher;
-import cadiboo.wiptech.client.render.tileentity.TESRTurbine;
-import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
-import cadiboo.wiptech.entity.projectile.EntityNapalm;
-import cadiboo.wiptech.handler.EnumHandler;
-import cadiboo.wiptech.handler.EnumHandler.FerromagneticProjectiles;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Entities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
-import cadiboo.wiptech.item.ItemFerromagneticProjectile;
 import cadiboo.wiptech.item.ItemHammer;
 import cadiboo.wiptech.tileentity.TileEntityCapacitorBank;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
@@ -25,7 +16,6 @@ import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -36,23 +26,20 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
-@Mod.EventBusSubscriber
-public class EventSubscriber {
+@Mod.EventBusSubscriber(modid = Reference.ID)
+public class CommonEventSubscriber {
 
 	@SubscribeEvent
 	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
@@ -222,50 +209,5 @@ public class EventSubscriber {
 		WIPTech.logger.info(event.getDrops().get(0));
 		WIPTech.logger.info(itemStackToDrop);
 		itemStackToDrop = null;
-	}
-
-	@SubscribeEvent
-	public static void onBreak(BlockEvent.BreakEvent event) {
-	}
-
-	@SubscribeEvent
-	public static void registerModels(ModelRegistryEvent event) {
-		for (Block block : Blocks.BLOCKS) {
-			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
-					new ModelResourceLocation(block.getRegistryName(), "inventory"));
-		}
-
-		for (Item item : Items.ITEMS) {
-			if (!item.getHasSubtypes()) {
-				ModelLoader.setCustomModelResourceLocation(item, 0,
-						new ModelResourceLocation(item.getRegistryName(), "inventory"));
-			} else {
-
-				if (item instanceof ItemFerromagneticProjectile) {
-					for (FerromagneticProjectiles rod : EnumHandler.FerromagneticProjectiles.values()) {
-						ModelLoader.setCustomModelResourceLocation(item, rod.getID(),
-								new ModelResourceLocation("wiptech:rods/" + rod.getName()));
-					}
-				}
-
-			}
-		}
-		WIPTech.logger.info("Registered models");
-
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrusher.class, new TESRCrusher());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbine.class, new TESRTurbine());
-		WIPTech.logger.info("Registered TileEntity Renders");
-
-		/*
-		 * for (EntityEntry entity: Entities.ENTITIES) {
-		 * 
-		 * }
-		 */
-
-		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, new RenderEntityNapalmFactory());
-		RenderingRegistry.registerEntityRenderingHandler(EntityFerromagneticProjectile.class,
-				new RenderEntityFerromagneticProjectileFactory());
-
-		WIPTech.logger.info("Registered Entity Renders");
 	}
 }

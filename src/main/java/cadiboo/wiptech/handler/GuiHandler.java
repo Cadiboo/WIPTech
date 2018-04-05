@@ -29,13 +29,17 @@ public class GuiHandler implements IGuiHandler {
 	public Container getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		switch (ID) {
 		case CRUSHER:
-			return new ContainerCrusher(player.inventory, (TileEntityCrusher)world.getTileEntity(new BlockPos(x, y, z)));
+			return new ContainerCrusher(player.inventory,
+					(TileEntityCrusher) world.getTileEntity(new BlockPos(x, y, z)));
 		case COILER:
-			return new ContainerCoiler(player.inventory, (TileEntityCoiler)world.getTileEntity(new BlockPos(x, y, z)));
+			return new ContainerCoiler(player.inventory, (TileEntityCoiler) world.getTileEntity(new BlockPos(x, y, z)));
 		case TEST_LAUNCHER:
-			return new ContainerTestLauncher( player.getHeldItemMainhand().getCapability( CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null ), player );
+			return new ContainerTestLauncher(
+					player.getHeldItemMainhand().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null),
+					player);
 		case TURBINE:
-			return new ContainerTurbine(player.inventory, (TileEntityTurbine)world.getTileEntity(new BlockPos(x, y, z)));
+			return new ContainerTurbine(player.inventory,
+					(TileEntityTurbine) world.getTileEntity(new BlockPos(x, y, z)));
 		default:
 			return null;
 		}
@@ -45,17 +49,21 @@ public class GuiHandler implements IGuiHandler {
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		switch (ID) {
 		case CRUSHER:
-			return new GuiCrusher((ContainerCrusher) getServerGuiElement(ID, player, world, x, y, z), player.inventory, (TileEntityCrusher) world.getTileEntity(new BlockPos(x,y,z)));
+			return new GuiCrusher((ContainerCrusher) getServerGuiElement(ID, player, world, x, y, z), player.inventory,
+					(TileEntityCrusher) world.getTileEntity(new BlockPos(x, y, z)));
 		case COILER:
-			return new GuiCoiler((ContainerCoiler) getServerGuiElement(ID, player, world, x, y, z), player.inventory, (TileEntityCoiler) world.getTileEntity(new BlockPos(x,y,z)));
+			return new GuiCoiler((ContainerCoiler) getServerGuiElement(ID, player, world, x, y, z), player.inventory,
+					(TileEntityCoiler) world.getTileEntity(new BlockPos(x, y, z)));
 		case TEST_LAUNCHER:
-			return new GuiTestLauncher(player.getHeldItemMainhand().getCapability( CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null ), player );
+			return new GuiTestLauncher(
+					player.getHeldItemMainhand().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null),
+					player);
 		case TURBINE:
-			return new GuiTurbine((ContainerTurbine) getServerGuiElement(ID, player, world, x, y, z), player.inventory, (TileEntityTurbine) world.getTileEntity(new BlockPos(x,y,z)));
+			return new GuiTurbine((ContainerTurbine) getServerGuiElement(ID, player, world, x, y, z), player.inventory,
+					(TileEntityTurbine) world.getTileEntity(new BlockPos(x, y, z)));
 		default:
 			return null;
 		}
 	}
-
 
 }
