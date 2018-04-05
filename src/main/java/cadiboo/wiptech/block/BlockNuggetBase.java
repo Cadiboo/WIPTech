@@ -2,7 +2,9 @@ package cadiboo.wiptech.block;
 
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,6 +25,7 @@ public class BlockNuggetBase extends BlockBase {
 
 	public BlockNuggetBase(String name) {
 		super(name, Material.IRON);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		this.setNuggetBlock();
 	}
 
@@ -52,5 +55,29 @@ public class BlockNuggetBase extends BlockBase {
 		default:
 			return DEFAULT_AABB;
 		}
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
+
+		if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
+			enumfacing = EnumFacing.NORTH;
+		}
+
+		return this.getDefaultState().withProperty(FACING, enumfacing);
+	}
+
+	/**
+	 * Convert the BlockState into the correct metadata value
+	 */
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(FACING).getIndex();
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { FACING });
 	}
 }
