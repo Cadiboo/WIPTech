@@ -74,7 +74,7 @@ public class GuiCrusher extends GuiContainer {
 	}
 
 	private int getCrushProgressScaled(int textureSize) {
-		return (int) Math.round(TileEntityCrusher.getFractionOfCrushTimeComplete(this.tileEntity) * textureSize);
+		return (int) Math.round(this.tileEntity.getFractionOfCrushTimeComplete() * textureSize);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class GuiCrusher extends GuiContainer {
 
 		List<String> hoveringText = new ArrayList();
 		if (isInRect(this.guiLeft + 48, this.guiTop + 35, 24, 17, mouseX, mouseY)) {
-			hoveringText.add("Progress: " + TileEntityCrusher.getPercentageOfCrushTimeComplete(this.tileEntity) + "%");
+			hoveringText.add("Progress: " + this.tileEntity.getPercentageOfCrushTimeComplete() + "%");
 		}
 		if (!hoveringText.isEmpty()) {
 			drawHoveringText(hoveringText, mouseX - this.guiLeft, mouseY - this.guiTop, this.fontRenderer);
@@ -99,7 +99,8 @@ public class GuiCrusher extends GuiContainer {
 				&& (!this.tileEntity.inventory.getStackInSlot(0).isEmpty())
 				&& (this.tileEntity.inventory.getStackInSlot(0).getItem() == Items.CRUSHER_BIT)) {
 			GlStateManager.disableLighting();
-			// GlStateManager.disableFog(); //Used to be the only thing that made it work,
+			// GlStateManager.disableFog();
+			// Used to be the only thing that made it work,
 			// now it absolutely destroys everything when called
 
 			this.zLevel = 255.0F;
@@ -110,7 +111,8 @@ public class GuiCrusher extends GuiContainer {
 			// this.itemRender.zLevel = 0.0F;
 
 			GlStateManager.enableLighting();
-			// GlStateManager.enableFog(); //Used to be the only thing that made it work,
+			// GlStateManager.enableFog();
+			// Used to be the only thing that made it work,
 			// now it absolutely destroys everything when called
 		}
 	}

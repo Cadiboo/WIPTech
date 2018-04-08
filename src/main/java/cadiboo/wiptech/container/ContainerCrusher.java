@@ -1,98 +1,61 @@
 package cadiboo.wiptech.container;
 
-import cadiboo.wiptech.init.Items;
-import cadiboo.wiptech.init.Recipes;
-import cadiboo.wiptech.tileentity.TileEntityCrusher;
-
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.Nonnull;
+
+import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerCrusher extends Container {
-	private void addSlotToContainerCrusher(final TileEntityCrusher crusher, final int index, int xPos, int yPos)
-	{
-		IItemHandler inventory = (IItemHandler)crusher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
-		addSlotToContainer(new SlotItemHandler(inventory, index, xPos, yPos)
-		{
-			public void onSlotChanged()
-			{
+	private void addSlotToContainerCrusher(final TileEntityCrusher crusher, final int index, int xPos, int yPos) {
+		IItemHandler inventory = crusher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		addSlotToContainer(new SlotItemHandler(inventory, index, xPos, yPos) {
+			@Override
+			public void onSlotChanged() {
 				crusher.markDirty();
 			}
 
-			public boolean isItemValid(@Nonnull ItemStack stack)
-			{
-				boolean returnResult = false;
-
-				ItemStack slot0Stack = ((IItemHandler)crusher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(0);
-				if (slot0Stack.getItem() == Items.CRUSHER_BIT) {
-					for (ItemStack result : Recipes.getCrushResults(index - 1)) {
-						if ((!returnResult) && (result != null) && (result.getItem() == stack.getItem())) {
-							returnResult = true;
-						}
-					}
-				} else if (slot0Stack.getItem() == Items.HAMMER) {
-					for (ItemStack result : Recipes.getHammerResults(index - 1)) {
-						if ((!returnResult) && (result != null) && (result.getItem() == stack.getItem())) {
-							returnResult = true;
-						}
-					}
-				}
-				return returnResult;
+			@Override
+			public boolean isItemValid(@Nonnull ItemStack stack) {
+				return crusher.isItemValidProduct(stack, index);
 			}
 		});
 	}
 
-	public ContainerCrusher(InventoryPlayer playerInv, final TileEntityCrusher crusher)
-	{
-		IItemHandler inventory = (IItemHandler)crusher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
+	public ContainerCrusher(InventoryPlayer playerInv, final TileEntityCrusher crusher) {
+		IItemHandler inventory = crusher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 
-		addSlotToContainer(new SlotItemHandler(inventory, 0, 24, 17)
-		{
-			public void onSlotChanged()
-			{
+		addSlotToContainer(new SlotItemHandler(inventory, 0, 24, 17) {
+			@Override
+			public void onSlotChanged() {
 				crusher.markDirty();
 			}
 
-			public boolean isItemValid(@Nonnull ItemStack stack)
-			{
-				if ((stack.getItem() == Items.CRUSHER_BIT) || (stack.getItem() == Items.HAMMER)) {
-					return true;
-				}
-				return false;
+			@Override
+			public boolean isItemValid(@Nonnull ItemStack stack) {
+				return crusher.isItemValidTool(stack);
 			}
 
-			public int getSlotStackLimit()
-			{
+			@Override
+			public int getSlotStackLimit() {
 				return 1;
 			}
 		});
-		addSlotToContainer(new SlotItemHandler(inventory, 1, 24, 53)
-		{
-			public void onSlotChanged()
-			{
+		addSlotToContainer(new SlotItemHandler(inventory, 1, 24, 53) {
+			@Override
+			public void onSlotChanged() {
 				crusher.markDirty();
 			}
 
-			public boolean isItemValid(@Nonnull ItemStack stack)
-			{
-				ItemStack slot0Stack = ((IItemHandler)crusher.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(0);
-				if (slot0Stack.getItem() == Items.CRUSHER_BIT) {
-					return (Recipes.getCrushResult(stack) != null) && (Recipes.getCrushResult(stack).size() > 0);
-				}
-				if (slot0Stack.getItem() == Items.HAMMER) {
-					return (Recipes.getHammerResult(stack) != null) && (Recipes.getHammerResult(stack).size() > 0);
-				}
-				return false;
+			@Override
+			public boolean isItemValid(@Nonnull ItemStack stack) {
+				return crusher.isItemValidIngredient(stack);
 			}
 		});
 		addSlotToContainerCrusher(crusher, 2, 83, 19);
@@ -111,8 +74,8 @@ public class ContainerCrusher extends Container {
 		}
 	}
 
-	public boolean canInteractWith(EntityPlayer player)
-	{
+	@Override
+	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
 
@@ -150,6 +113,5 @@ public class ContainerCrusher extends Container {
 
 		return itemstack;
 	}
-
 
 }

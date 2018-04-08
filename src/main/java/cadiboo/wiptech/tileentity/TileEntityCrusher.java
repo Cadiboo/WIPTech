@@ -25,6 +25,9 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 
 	public float crushTime;
 	public long lastChangeTime;
+	private static final int[] SLOTS_TOP = new int[] { 0, 1 };
+	private static final int[] SLOTS_BOTTOM = new int[] { 2, 3, 4, 5, 6, 7 };
+	private static final int[] SLOTS_SIDES = new int[] { 0, 1 };
 
 	public static int getSlots() {
 		return 8;
@@ -41,14 +44,116 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 								TileEntityCrusher.this.pos.getZ(), 64.0D));
 			}
 		}
+
+		@Override
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			if (stack.isEmpty())
+				return ItemStack.EMPTY;
+
+			validateSlotIndex(slot);
+			if (slot == 0 && !isItemValidTool(stack))
+				return stack;
+			if (slot == 1 && !isItemValidIngredient(stack))
+				return stack;
+			if (slot > 1 && !isItemValidProduct(stack, slot))
+				return stack;
+			return super.insertItem(slot, stack, simulate);
+		};
 	};
+	public ItemStackHandler inventoryTop = new ItemStackHandler(SLOTS_TOP.length) {
+		@Override
+		public ItemStack getStackInSlot(int slot) {
+			validateSlotIndex(slot);
+			return inventory.getStackInSlot(slot);
+		}
+
+		@Override
+		public int getSlotLimit(int slot) {
+			return inventory.getSlotLimit(slot);
+		};
+
+		@Override
+		public void setStackInSlot(int slot, ItemStack stack) {
+			inventory.setStackInSlot(slot, stack);
+		};
+
+		@Override
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			return inventory.insertItem(slot, stack, simulate);
+		};
+
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			return inventory.extractItem(slot, amount, simulate);
+		};
+	};
+
+	public ItemStackHandler inventorySides = new ItemStackHandler(SLOTS_SIDES.length) {
+		@Override
+		public ItemStack getStackInSlot(int slot) {
+			validateSlotIndex(slot);
+			return inventory.getStackInSlot(slot);
+		}
+
+		@Override
+		public void setStackInSlot(int slot, ItemStack stack) {
+			inventory.setStackInSlot(slot, stack);
+		};
+
+		@Override
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			return inventory.insertItem(slot, stack, simulate);
+		};
+
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			return inventory.extractItem(slot, amount, simulate);
+		};
+	};
+
+	public ItemStackHandler inventoryBottom = new ItemStackHandler(SLOTS_BOTTOM.length) {
+		@Override
+		public ItemStack getStackInSlot(int slot) {
+			validateSlotIndex(slot);
+			return inventory.getStackInSlot(slot + 2);
+		}
+
+		@Override
+		public void setStackInSlot(int slot, ItemStack stack) {
+			inventory.setStackInSlot(slot + 2, stack);
+		};
+
+		@Override
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			return inventory.insertItem(slot + 2, stack, simulate);
+		};
+
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			return inventory.extractItem(slot + 2, amount, simulate);
+		};
+
+	};
+	public double lastCrushAnimation;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setTag("inventory", this.inventory.serializeNBT());
 		compound.setLong("lastChangeTime", this.lastChangeTime);
 		compound.setFloat("crushTime", this.crushTime);
+		compound.setDouble("lastCrushAnimation", this.lastCrushAnimation);
 		return super.writeToNBT(compound);
+	}
+
+	public boolean isItemValidIngredient(ItemStack stack) {
+		ItemStack slot0Stack = inventory.getStackInSlot(0);
+		if (slot0Stack.getItem() == Items.CRUSHER_BIT) {
+			return (Recipes.getCrushResult(stack) != null) && (Recipes.getCrushResult(stack).size() > 0);
+		}
+		if (slot0Stack.getItem() == Items.HAMMER) {
+			return (Recipes.getHammerResult(stack) != null) && (Recipes.getHammerResult(stack).size() > 0);
+		}
+		return false;
 	}
 
 	@Override
@@ -56,6 +161,7 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 		this.inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		this.lastChangeTime = compound.getLong("lastChangeTime");
 		this.crushTime = compound.getFloat("crushTime");
+		this.lastCrushAnimation = compound.getDouble("lastCrushAnimation");
 		super.readFromNBT(compound);
 	}
 
@@ -68,8 +174,17 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 	@Override
 	@Nullable
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) inventory
-				: super.getCapability(capability, facing);
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			if (facing != null)
+				if (facing == EnumFacing.DOWN)
+					return (T) inventoryBottom;
+				else if (facing == EnumFacing.UP)
+					return (T) inventoryTop;
+				else
+					return (T) inventorySides;
+			else
+				return (T) inventory;
+		return super.getCapability(capability, facing);
 	}
 
 	@Override
@@ -200,84 +315,90 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 		return false;
 	}
 
-	public static boolean isCrushing(TileEntityCrusher tileEntity) {
-		return tileEntity.isCrushing();
-	}
-
-	private boolean isCrushing() {
+	public boolean isCrushing() {
 		return this.crushTime > 0.0F;
 	}
 
-	public static float getCrushTime(TileEntityCrusher tileEntity) {
-		return tileEntity.getCrushTime();
-	}
-
-	private float getCrushTime() {
+	public float getCrushTime() {
 		return this.crushTime;
 	}
 
-	public void setCrushTime(TileEntityCrusher tileEntity, float time) {
-		tileEntity.setCrushTime(time);
-	}
-
-	private void setCrushTime(float time) {
+	public void setCrushTime(float time) {
 		this.crushTime = time;
 	}
 
-	public static int getTotalCrushTime(TileEntityCrusher tileEntity) {
-		return tileEntity.getTotalCrushTime();
-	}
+	public int getTotalCrushTime() {
+		ItemStack stack0 = this.inventory.getStackInSlot(0);
+		ItemStack stack1 = this.inventory.getStackInSlot(1);
+		if (stack0.isEmpty() || stack1.isEmpty())
+			return 0;
 
-	private int getTotalCrushTime() {
-		ItemStack stack = this.inventory.getStackInSlot(0);
-		if (stack.getItem() == Items.CRUSHER_BIT) {
-			return ((Integer) (!this.inventory.getStackInSlot(1).isEmpty()
-					? Recipes.getCrushResult(this.inventory.getStackInSlot(1)).get(7)
-					: Integer.valueOf(0))).intValue();
+		if (stack0.getItem() == Items.CRUSHER_BIT) {
+			ArrayList recipe = Recipes.getCrushResult(stack1);
+			if (recipe.size() > 0)
+				return (int) recipe.get(7);
 		}
-		if (stack.getItem() == Items.HAMMER) {
-			return ((Integer) (!this.inventory.getStackInSlot(1).isEmpty()
-					? Recipes.getHammerResult(this.inventory.getStackInSlot(1)).get(7)
-					: Integer.valueOf(0))).intValue();
+		if (stack0.getItem() == Items.HAMMER) {
+			ArrayList recipe = Recipes.getHammerResult(stack1);
+			if (recipe.size() > 0)
+				return (int) recipe.get(7);
 		}
 		return 0;
 	}
 
-	public static int getPercentageOfCrushTimeComplete(TileEntityCrusher tileEntity) {
-		return tileEntity.getPercentageOfCrushTimeComplete();
-	}
-
-	private int getPercentageOfCrushTimeComplete() {
+	public int getPercentageOfCrushTimeComplete() {
 		return (int) Math.round(getFractionOfCrushTimeComplete() * 100.0D);
 	}
 
-	public static double getFractionOfCrushTimeComplete(TileEntityCrusher tileEntity) {
-		return tileEntity.getFractionOfCrushTimeComplete();
+	public double getFractionOfCrushTimeComplete() {
+		return 1 - getFractionOfCrushTimeRemaining() == 1 ? 0 : 1 - getFractionOfCrushTimeRemaining();
 	}
 
-	private double getFractionOfCrushTimeComplete() {
-		if (getCrushTime() > 0.0F) {
-			return (getTotalCrushTime() - getCrushTime()) / getTotalCrushTime();
-		}
-		return 0.0D;
-	}
-
-	public static int getPercentageOfCrushTimeRemaining(TileEntityCrusher tileEntity) {
-		return tileEntity.getPercentageOfCrushTimeRemaining();
-	}
-
-	private int getPercentageOfCrushTimeRemaining() {
+	public int getPercentageOfCrushTimeRemaining() {
 		return (int) Math.round(getFractionOfCrushTimeRemaining() * 100.0D);
 	}
 
-	public static double getFractionOfCrushTimeRemaining(TileEntityCrusher tileEntity) {
-		return tileEntity.getFractionOfCrushTimeRemaining();
-	}
-
-	private double getFractionOfCrushTimeRemaining() {
-		if (getCrushTime() > 0.0F) {
+	public double getFractionOfCrushTimeRemaining() {
+		if (getCrushTime() > 0.0F && getTotalCrushTime() != 0) {
 			return getCrushTime() / getTotalCrushTime();
 		}
 		return getTotalCrushTime();
 	}
+
+	public int[] getSlotsForFace(EnumFacing side) {
+		if (side == EnumFacing.DOWN) {
+			return SLOTS_BOTTOM;
+		} else {
+			return side == EnumFacing.UP ? SLOTS_TOP : SLOTS_SIDES;
+		}
+	}
+
+	public boolean isItemValidProduct(ItemStack stack, int index) {
+		boolean returnResult = false;
+
+		ItemStack slot0Stack = inventory.getStackInSlot(0);
+		if (slot0Stack.getItem() == Items.CRUSHER_BIT) {
+			for (ItemStack result : Recipes.getCrushResults(index - 1)) {
+				if ((!returnResult) && (result != null) && (result.getItem() == stack.getItem())) {
+					returnResult = true;
+				}
+			}
+		} else if (slot0Stack.getItem() == Items.HAMMER) {
+			for (ItemStack result : Recipes.getHammerResults(index - 1)) {
+				if ((!returnResult) && (result != null) && (result.getItem() == stack.getItem())) {
+					returnResult = true;
+				}
+			}
+		}
+		return returnResult;
+	}
+
+	public boolean isItemValidTool(ItemStack stack) {
+		if ((stack.getItem() == Items.CRUSHER_BIT) || (stack.getItem() == Items.HAMMER)) {
+			if (inventory.getStackInSlot(0).isEmpty())
+				return true;
+		}
+		return false;
+	}
+
 }
