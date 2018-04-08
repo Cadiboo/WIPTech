@@ -15,9 +15,9 @@ import cadiboo.wiptech.item.ItemFerromagneticProjectile;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import cadiboo.wiptech.util.Reference;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -30,9 +30,10 @@ import net.minecraftforge.fml.relauncher.Side;
 public class ClientEventSubscriber {
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {
-		for (Block block : Blocks.BLOCKS) {
-			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
-					new ModelResourceLocation(block.getRegistryName(), "inventory"));
+		for (int i = 0; i < Blocks.BLOCKS.length; i++) {
+			if (!new ItemBlock(Blocks.BLOCKS[i]).getHasSubtypes())
+				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Blocks.BLOCKS[i]), 0,
+						new ModelResourceLocation(Blocks.BLOCKS[i].getRegistryName(), "inventory"));
 		}
 
 		for (Item item : Items.ITEMS) {

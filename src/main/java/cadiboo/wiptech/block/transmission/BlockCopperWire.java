@@ -1,5 +1,6 @@
-package cadiboo.wiptech.block;
+package cadiboo.wiptech.block.transmission;
 
+import cadiboo.wiptech.block.BlockBase;
 import net.minecraft.block.material.Material;
 
 public class BlockCopperWire

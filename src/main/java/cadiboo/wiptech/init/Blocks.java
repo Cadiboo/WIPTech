@@ -4,61 +4,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cadiboo.wiptech.block.BlockAluminiumBlock;
-import cadiboo.wiptech.block.BlockAluminiumEnamel;
 import cadiboo.wiptech.block.BlockAluminiumIngot;
 import cadiboo.wiptech.block.BlockAluminiumNugget;
 import cadiboo.wiptech.block.BlockAluminiumOre;
 import cadiboo.wiptech.block.BlockAluminiumRail;
 import cadiboo.wiptech.block.BlockAluminiumSpool;
-import cadiboo.wiptech.block.BlockAluminiumWire;
 import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.block.BlockBauxiteOre;
 import cadiboo.wiptech.block.BlockCapacitorBank;
 import cadiboo.wiptech.block.BlockCoiler;
 import cadiboo.wiptech.block.BlockCopperBlock;
-import cadiboo.wiptech.block.BlockCopperEnamel;
 import cadiboo.wiptech.block.BlockCopperIngot;
 import cadiboo.wiptech.block.BlockCopperNugget;
 import cadiboo.wiptech.block.BlockCopperOre;
 import cadiboo.wiptech.block.BlockCopperRail;
 import cadiboo.wiptech.block.BlockCopperSpool;
-import cadiboo.wiptech.block.BlockCopperWire;
 import cadiboo.wiptech.block.BlockCrusher;
-import cadiboo.wiptech.block.BlockGoldEnamel;
 import cadiboo.wiptech.block.BlockGoldIngot;
 import cadiboo.wiptech.block.BlockGoldNugget;
 import cadiboo.wiptech.block.BlockGoldRail;
 import cadiboo.wiptech.block.BlockGoldSpool;
-import cadiboo.wiptech.block.BlockGoldWire;
-import cadiboo.wiptech.block.BlockIronEnamel;
 import cadiboo.wiptech.block.BlockIronIngot;
 import cadiboo.wiptech.block.BlockIronNugget;
 import cadiboo.wiptech.block.BlockIronRail;
 import cadiboo.wiptech.block.BlockIronSpool;
-import cadiboo.wiptech.block.BlockIronWire;
 import cadiboo.wiptech.block.BlockOsmiumBlock;
 import cadiboo.wiptech.block.BlockOsmiumOre;
 import cadiboo.wiptech.block.BlockPeripheralBlock;
 import cadiboo.wiptech.block.BlockSilverBlock;
-import cadiboo.wiptech.block.BlockSilverEnamel;
 import cadiboo.wiptech.block.BlockSilverIngot;
 import cadiboo.wiptech.block.BlockSilverNugget;
 import cadiboo.wiptech.block.BlockSilverOre;
 import cadiboo.wiptech.block.BlockSilverRail;
 import cadiboo.wiptech.block.BlockSilverSpool;
-import cadiboo.wiptech.block.BlockSilverWire;
 import cadiboo.wiptech.block.BlockStrongPistonBase;
 import cadiboo.wiptech.block.BlockTinBlock;
-import cadiboo.wiptech.block.BlockTinEnamel;
 import cadiboo.wiptech.block.BlockTinIngot;
 import cadiboo.wiptech.block.BlockTinNugget;
 import cadiboo.wiptech.block.BlockTinOre;
 import cadiboo.wiptech.block.BlockTinRail;
 import cadiboo.wiptech.block.BlockTinSpool;
-import cadiboo.wiptech.block.BlockTinWire;
 import cadiboo.wiptech.block.BlockTungstenBlock;
 import cadiboo.wiptech.block.BlockTungstenOre;
 import cadiboo.wiptech.block.BlockTurbine;
+import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.block.transmission.BlockAluminiumEnamel;
+import cadiboo.wiptech.block.transmission.BlockAluminiumWire;
+import cadiboo.wiptech.block.transmission.BlockCopperEnamel;
+import cadiboo.wiptech.block.transmission.BlockCopperWire;
+import cadiboo.wiptech.block.transmission.BlockGoldEnamel;
+import cadiboo.wiptech.block.transmission.BlockGoldWire;
+import cadiboo.wiptech.block.transmission.BlockIronEnamel;
+import cadiboo.wiptech.block.transmission.BlockIronWire;
+import cadiboo.wiptech.block.transmission.BlockSilverEnamel;
+import cadiboo.wiptech.block.transmission.BlockSilverWire;
+import cadiboo.wiptech.block.transmission.BlockTinEnamel;
+import cadiboo.wiptech.block.transmission.BlockTinWire;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
@@ -126,11 +127,14 @@ public class Blocks {
 	public static final BlockCrusher CRUSHER = new BlockCrusher("crusher", Material.IRON);
 	public static final BlockCoiler COILER = new BlockCoiler("coiler", Material.IRON);
 
-	public static final BlockStrongPistonBase STRONG_PISTON = new BlockStrongPistonBase("strong_piston", null);
+	public static final BlockStrongPistonBase STRONG_PISTON = new BlockStrongPistonBase("strong_piston",
+			Material.GROUND);
 
 	public static final BlockTurbine TURBINE = new BlockTurbine("turbine", Material.IRON);
 	public static final BlockPeripheralBlock PERIPHERAL = new BlockPeripheralBlock("peripheral", Material.IRON);
 	public static final BlockCapacitorBank CAPACITOR_BANK = new BlockCapacitorBank("capacitor_bank", Material.IRON);
+
+	public static final BlockWire WIRE = new BlockWire("wire", Material.GLASS);
 
 	public static final Block[] BLOCKS = {
 
@@ -159,7 +163,9 @@ public class Blocks {
 
 			STRONG_PISTON,
 
-			TURBINE, PERIPHERAL, CAPACITOR_BANK, };
+			TURBINE, PERIPHERAL, CAPACITOR_BANK,
+
+			WIRE, };
 
 	private static List<Block> Ores = new ArrayList();
 	private static Boolean OresIterated = Boolean.valueOf(false);

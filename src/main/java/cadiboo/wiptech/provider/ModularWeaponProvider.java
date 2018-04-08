@@ -29,7 +29,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializable<NBTTagCompound> {
 
-	private static final int WEAPON_ENERGY_CAPACITY = 10000;
+	public static final int WEAPON_ENERGY_CAPACITY = 10000;
 	private final WeaponModular weaponModules;
 	private final CustomEnergyStorage energy;
 

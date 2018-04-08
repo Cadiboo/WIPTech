@@ -31,7 +31,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 
 public class ItemPlasmagun extends ItemBase {
 
-	private static ItemStack plasmaStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 9); // Plasma
+	private static final ItemStack PLASMA_STACK = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 9); // Plasma
 
 	public ItemPlasmagun(String name) {
 		super(name);
@@ -40,10 +40,12 @@ public class ItemPlasmagun extends ItemBase {
 		setCreativeTab(CreativeTabs.COMBAT);
 	}
 
+	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 
+	@Override
 	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
@@ -174,9 +176,9 @@ public class ItemPlasmagun extends ItemBase {
 			}
 			modules.setLastShootTime(worldIn.getTotalWorldTime());
 
-			EntityFerromagneticProjectile projectile = ((ItemFerromagneticProjectile) plasmaStack.getItem())
-					.createProjectile(worldIn, plasmaStack, player, true);
-			velocity = EntityFerromagneticProjectile.getProjectileVelocity(plasmaStack)
+			EntityFerromagneticProjectile projectile = ((ItemFerromagneticProjectile) PLASMA_STACK.getItem())
+					.createProjectile(worldIn, PLASMA_STACK, player, true);
+			velocity = EntityFerromagneticProjectile.getProjectileVelocity(PLASMA_STACK)
 					* modules.getCoil().getEfficiencyFraction();
 			projectile.setDamage(projectile.getDamage() * modules.getRail().getEfficiencyFraction());
 			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
@@ -196,6 +198,7 @@ public class ItemPlasmagun extends ItemBase {
 
 	}
 
+	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 		WIPTech.logger.info(itemstack.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored());
@@ -211,6 +214,7 @@ public class ItemPlasmagun extends ItemBase {
 		return new ActionResult(EnumActionResult.SUCCESS, itemstack);
 	}
 
+	@Override
 	public int getItemEnchantability() {
 		return 0;
 	}
