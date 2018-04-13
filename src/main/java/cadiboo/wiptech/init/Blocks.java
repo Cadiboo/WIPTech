@@ -243,4 +243,23 @@ public class Blocks {
 		return IngotBlocks;
 	}
 
+	private static List<Block> IngredientBlocks = new ArrayList();
+	private static Boolean IngredientBlocksIterated = Boolean.valueOf(false);
+
+	public static List<Block> getIngredientBlocks() {
+		if (!IngredientBlocksIterated)
+			for (int i = 0; i < BLOCKS.length; i++) {
+				if (IngredientBlocks.contains(BLOCKS[i])) {
+					IngredientBlocksIterated = true;
+					break;
+				}
+				if (!(BLOCKS[i] instanceof BlockBase))
+					break;
+				BlockBase block = (BlockBase) BLOCKS[i];
+				if (block.isNuggetBlock() || block.isIngotBlock())
+					IngredientBlocks.add(block);
+			}
+		return IngredientBlocks;
+	}
+
 }

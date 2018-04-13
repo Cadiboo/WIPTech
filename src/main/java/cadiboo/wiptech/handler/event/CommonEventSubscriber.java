@@ -35,7 +35,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
 @Mod.EventBusSubscriber(modid = Reference.ID)
@@ -155,8 +154,7 @@ public class CommonEventSubscriber {
 			return EnumActionResult.PASS;
 
 		if (!(world.getBlockState(pos.up()).getBlock().isReplaceable(world, pos.up()))) {
-			if (Blocks.getIngotBlocks().contains((world.getBlockState(pos.up()).getBlock()))
-					|| Blocks.getNuggetBlocks().contains((world.getBlockState(pos.up()).getBlock()))) {
+			if (Blocks.getIngredientBlocks().contains((world.getBlockState(pos.up()).getBlock()))) {
 				event.setCanceled(true);
 				return EnumActionResult.FAIL;
 			}
@@ -193,8 +191,7 @@ public class CommonEventSubscriber {
 			return;
 		if (!(event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockAnvil))
 			return;
-		if (!Blocks.getIngotBlocks().contains(event.getState().getBlock())
-				&& !Blocks.getNuggetBlocks().contains(event.getState().getBlock()))
+		if (!(Blocks.getIngredientBlocks().contains(event.getState().getBlock())))
 			return;
 		ItemStack itemStackToDrop = new ItemStack(BlockNuggetBase.getItemToDrop(event.getState().getBlock()));
 		if (event.getHarvester().getHeldItemMainhand().getItem() instanceof ItemHammer)
