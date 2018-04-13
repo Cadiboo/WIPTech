@@ -16,18 +16,23 @@ public class BlockWire extends BlockBase {
 	public static final PropertyEnum<ConductiveMetals> METAL = PropertyEnum.<ConductiveMetals>create("metal",
 			ConductiveMetals.class);
 	public static final PropertyBool ENAMEL = PropertyBool.create("enamel");
+
 	public static final int METALS_LENGTH = ConductiveMetals.values().length;
 
 	public BlockWire(String name, Material material) {
 		super(name, material);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(METAL, ConductiveMetals.TIN));
+		this.setDefaultState(
+				this.blockState.getBaseState().withProperty(METAL, ConductiveMetals.TIN).withProperty(ENAMEL, false));
 		this.setCircuit();
 	}
 
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 		for (int i = 0; i < METALS_LENGTH * 2; i++) {
+			WIPTech.logger.info(i);
+			WIPTech.logger.info(items);
 			items.add(new ItemStack(this, 1, i));
+			WIPTech.logger.info(items.get(items.size() - 1));
 		}
 	}
 
@@ -44,13 +49,13 @@ public class BlockWire extends BlockBase {
 		state = state.withProperty(ENAMEL, meta > METALS_LENGTH - 1);
 		int metaData = meta;
 		if (meta > METALS_LENGTH - 1)
-			metaData += METALS_LENGTH;
+			metaData -= METALS_LENGTH;
 		state = state.withProperty(METAL, ConductiveMetals.byMetadata(metaData));
 		return state;
 	}
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { METAL });
+		return new BlockStateContainer(this, new IProperty[] { METAL, ENAMEL });
 	}
 }
