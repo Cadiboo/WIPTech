@@ -46,8 +46,15 @@ import cadiboo.wiptech.item.ItemTitaniumNugget;
 import cadiboo.wiptech.item.ItemTungstenIngot;
 import cadiboo.wiptech.item.ItemTungstenNugget;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
 public class Items {
+
+	public static final Item GOLD_NUGGET = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_nugget"));
+	public static final Item GOLD_INGOT = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "gold_ingot"));
+	public static final Item IRON_NUGGET = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "iron_nugget"));
+	public static final Item IRON_INGOT = Item.REGISTRY.getObject(new ResourceLocation("minecraft", "iron_ingot"));
+
 	public static final ItemCopperIngot COPPER_INGOT = new ItemCopperIngot("copper_ingot");
 	public static final ItemCopperNugget COPPER_NUGGET = new ItemCopperNugget("copper_nugget");
 	public static final ItemCopperStrand COPPER_STRAND = new ItemCopperStrand("copper_strand");
