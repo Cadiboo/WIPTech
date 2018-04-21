@@ -16,7 +16,6 @@ import cadiboo.wiptech.item.ItemCopperNugget;
 import cadiboo.wiptech.item.ItemCopperStrand;
 import cadiboo.wiptech.item.ItemCrusherBit;
 import cadiboo.wiptech.item.ItemCrusherBitHolder;
-import cadiboo.wiptech.item.ItemFerromagneticProjectile;
 import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemGallium;
 import cadiboo.wiptech.item.ItemGalliumIngot;
@@ -27,6 +26,7 @@ import cadiboo.wiptech.item.ItemIronOxide;
 import cadiboo.wiptech.item.ItemNapalm;
 import cadiboo.wiptech.item.ItemOsmiumIngot;
 import cadiboo.wiptech.item.ItemOsmiumNugget;
+import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.item.ItemPlasmagun;
 import cadiboo.wiptech.item.ItemRailgun;
 import cadiboo.wiptech.item.ItemSilica;
@@ -70,8 +70,8 @@ public class Items {
 	public static final ItemTungstenNugget TUNGSTEN_NUGGET = new ItemTungstenNugget("tungsten_nugget");
 	public static final ItemOsmiumIngot OSMIUM_INGOT = new ItemOsmiumIngot("osmium_ingot");
 	public static final ItemOsmiumNugget OSMIUM_NUGGET = new ItemOsmiumNugget("osmium_nugget");
-	public static final ItemFerromagneticProjectile FERROMAGNETIC_PROJECILE = new ItemFerromagneticProjectile(
-			"ferromagnetic_projectile");
+	public static final ItemParamagneticProjectile PARAMAGNETIC_PROJECILE = new ItemParamagneticProjectile(
+			"Paramagnetic_projectile");
 	public static final ItemCrusherBit CRUSHER_BIT = new ItemCrusherBit("crusher_bit");
 	public static final ItemCrusherBitHolder CRUSHER_BIT_HOLDER = new ItemCrusherBitHolder("crusher_bit_holder");
 	public static final ItemGallium GALLIUM = new ItemGallium("gallium");
@@ -107,7 +107,7 @@ public class Items {
 
 			ALUMINIUM_INGOT, ALUMINIUM_NUGGET, ALUMINIUM_COIL,
 
-			TUNGSTEN_INGOT, TUNGSTEN_NUGGET, OSMIUM_INGOT, OSMIUM_NUGGET, FERROMAGNETIC_PROJECILE,
+			TUNGSTEN_INGOT, TUNGSTEN_NUGGET, OSMIUM_INGOT, OSMIUM_NUGGET, PARAMAGNETIC_PROJECILE,
 
 			CRUSHER_BIT, CRUSHER_BIT_HOLDER,
 

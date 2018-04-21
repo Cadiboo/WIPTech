@@ -19,10 +19,10 @@ public class Entities {
 			.tracker(64, 5, true)
 			.build();
 	
-	public static final EntityEntry FERROMAGNETICPROJECTILE = EntityEntryBuilder.create()
-			.entity(EntityFerromagneticProjectile.class)
-			.id(new ResourceLocation(Reference.ID, "ferromagneticprojectile"), ID++)
-			.name("ferromagneticprojectile")
+	public static final EntityEntry PARAMAGNETICPROJECTILE = EntityEntryBuilder.create()
+			.entity(EntityParamagneticProjectile.class)
+			.id(new ResourceLocation(Reference.ID, "paramagneticprojectile"), ID++)
+			.name("paramagneticprojectile")
 			.tracker(128, 1, true)
 			.build();
 	
@@ -35,9 +35,8 @@ public class Entities {
 
 	public static final EntityEntry[] ENTITIES = {
 			NAPALM,
-			FERROMAGNETICPROJECTILE,
+			PARAMAGNETICPROJECTILE,
 			RAILGUN,
-			
 	};
 
 }

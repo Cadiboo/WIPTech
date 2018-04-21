@@ -1,11 +1,13 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
+import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.provider.ModularWeaponProvider;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow.PickupStatus;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
@@ -18,10 +20,20 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 public class ItemTestModularWeapon extends ItemBase {
 
 	// private final IWeaponModular modules = null;
-	private static final ItemStack PROJECTILE_STACK = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 2);
+	private static final ItemStack PROJECTILE_STACK = new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 2);
 
 	public ItemTestModularWeapon(String name) {
 		super(name);
+	}
+
+	@Override
+	public int getMaxItemUseDuration(ItemStack stack) {
+		return 72000;
+	}
+
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack) {
+		return EnumAction.BOW;
 	}
 
 	@Override
@@ -61,11 +73,13 @@ public class ItemTestModularWeapon extends ItemBase {
 
 		if (!worldIn.isRemote) {
 
-			EntityFerromagneticProjectile projectile = ((ItemFerromagneticProjectile) PROJECTILE_STACK.getItem())
-					.createProjectile(worldIn, PROJECTILE_STACK, player, true);
-			velocity = EntityFerromagneticProjectile.getProjectileVelocity(PROJECTILE_STACK);
+			EntityParamagneticProjectile projectile = ((ItemParamagneticProjectile) PROJECTILE_STACK.getItem())
+					.createProjectile(worldIn, PROJECTILE_STACK, player, false);
+			velocity = EntityParamagneticProjectile.getProjectileVelocity(PROJECTILE_STACK);
 			projectile.setDamage(projectile.getDamage());
 			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
+
+			projectile.pickupStatus = PickupStatus.CREATIVE_ONLY;
 
 			worldIn.spawnEntity(projectile);
 		}

@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 
-import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
+import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.client.Minecraft;
@@ -25,13 +25,13 @@ import net.minecraft.util.math.MathHelper;
 //Based on Immersive Engineering
 //https://github.com/BluSunrize/ImmersiveEngineering/blob/master/src/main/java/blusunrize/immersiveengineering/client/render/EntityRenderRevolvershot.java
 
-public class RenderEntityFerromagneticProjectile<T extends EntityFerromagneticProjectile> extends Render<T> {
+public class RenderEntityParamagneticProjectile<T extends EntityParamagneticProjectile> extends Render<T> {
 
-	protected RenderEntityFerromagneticProjectile(RenderManager renderManager) {
+	protected RenderEntityParamagneticProjectile(RenderManager renderManager) {
 		super(renderManager);
 	}
 
-	private ItemStack ammoStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE);
+	private ItemStack ammoStack = new ItemStack(Items.PARAMAGNETIC_PROJECILE);
 	private boolean overheated = false;
 	// Heading, Pitch, Roll
 	// Heading (being a rotation around an "up"-axis), pitch (being a rotation

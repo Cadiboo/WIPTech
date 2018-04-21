@@ -2,7 +2,7 @@ package cadiboo.wiptech.item;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.IWeaponModular;
-import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
+import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
 import cadiboo.wiptech.handler.GuiHandler;
 import cadiboo.wiptech.init.Capabilities;
@@ -30,8 +30,7 @@ public class ItemTestLauncher extends ItemBase {
 	private long thirdlastShootTime;
 	private long fourthlastShootTime;
 
-	public ItemTestLauncher(String name)
-	{
+	public ItemTestLauncher(String name) {
 		super(name);
 		this.maxStackSize = 1;
 		setMaxDamage(0);
@@ -43,81 +42,84 @@ public class ItemTestLauncher extends ItemBase {
 		this.fourthlastShootTime = thirdlastShootTime;
 	}
 
-	public int getMaxItemUseDuration(ItemStack stack)
-	{
+	@Override
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 
-	public EnumAction getItemUseAction(ItemStack stack)
-	{
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack itemStackIn, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-		if (entityLiving instanceof EntityPlayer)
-		{
+	public void onPlayerStoppedUsing(ItemStack itemStackIn, World worldIn, EntityLivingBase entityLiving,
+			int timeLeft) {
+		if (entityLiving instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entityLiving;
 			ItemStack ammoStack = ItemStack.EMPTY;
 
-			if (this.getMaxItemUseDuration(itemStackIn) - timeLeft <= 0) return;
+			if (this.getMaxItemUseDuration(itemStackIn) - timeLeft <= 0)
+				return;
 
-			if (!ammoStack.isEmpty() || player.capabilities.isCreativeMode)
-			{
-				if (ammoStack.isEmpty())
-				{
-					ammoStack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN MEDIUM
+			if (!ammoStack.isEmpty() || player.capabilities.isCreativeMode) {
+				if (ammoStack.isEmpty()) {
+					ammoStack = new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 5); // TUNGSTEN MEDIUM
 				}
 
 				float velocity = 0;
 
 				IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
 
-				boolean flag = player.capabilities.isCreativeMode || (ammoStack.getItem() instanceof ItemFerromagneticProjectile && ((ItemFerromagneticProjectile) ammoStack.getItem()).isInfinite(ammoStack, itemStackIn, player));
+				boolean flag = player.capabilities.isCreativeMode
+						|| (ammoStack.getItem() instanceof ItemParamagneticProjectile
+								&& ((ItemParamagneticProjectile) ammoStack.getItem()).isInfinite(ammoStack, itemStackIn,
+										player));
 
 				this.fourthlastShootTime = this.thirdlastShootTime;
 				this.thirdlastShootTime = this.secondlastShootTime;
 				this.secondlastShootTime = this.lastShootTime;
 				this.lastShootTime = worldIn.getTotalWorldTime();
 
-				if((this.lastShootTime - this.secondlastShootTime + this.thirdlastShootTime - fourthlastShootTime)<5) {
+				if ((this.lastShootTime - this.secondlastShootTime + this.thirdlastShootTime
+						- fourthlastShootTime) < 5) {
 					this.overheat = true;
 				} else {
 					this.overheat = false;
 				}
 
+				if (!worldIn.isRemote) {
 
-				if (!worldIn.isRemote)
-				{
-
-					ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(ammoStack.getItem() instanceof ItemFerromagneticProjectile ? ammoStack.getItem() : Items.FERROMAGNETIC_PROJECILE);
-					EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, ammoStack, player, false);
-					velocity = (EntityFerromagneticProjectile.getProjectileVelocity(ammoStack))*(modules.getCoil().getEfficiencyFraction());
+					ItemParamagneticProjectile itemprojectile = (ItemParamagneticProjectile) (ammoStack
+							.getItem() instanceof ItemParamagneticProjectile ? ammoStack.getItem()
+									: Items.PARAMAGNETIC_PROJECILE);
+					EntityParamagneticProjectile projectile = itemprojectile.createProjectile(worldIn, ammoStack,
+							player, false);
+					velocity = (EntityParamagneticProjectile.getProjectileVelocity(ammoStack))
+							* (modules.getCoil().getEfficiencyFraction());
 					WIPTech.logger.info(velocity);
-					WIPTech.logger.info(EntityFerromagneticProjectile.getProjectileVelocity(ammoStack));
+					WIPTech.logger.info(EntityParamagneticProjectile.getProjectileVelocity(ammoStack));
 					WIPTech.logger.info(modules.getCoil().getEfficiencyFraction());
 					projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
 
-					if(this.overheat) {
+					if (this.overheat) {
 						projectile.setTemperature(projectile.getTemperature() + 25F);
 					}
 
-					if (flag)
-					{
+					if (flag) {
 						projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
 					}
 
 					worldIn.spawnEntity(projectile);
 				}
 
-				worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+				worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT,
+						SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
-				if (!flag)
-				{
+				if (!flag) {
 					ammoStack.shrink(1);
 
-					if (ammoStack.isEmpty())
-					{
+					if (ammoStack.isEmpty()) {
 						player.inventory.deleteStack(ammoStack);
 					}
 				}
@@ -125,14 +127,14 @@ public class ItemTestLauncher extends ItemBase {
 		}
 	}
 
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-	{
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 
-		if( itemstack.getItem() == Items.TEST_LAUNCHER ) {
+		if (itemstack.getItem() == Items.TEST_LAUNCHER) {
 			WIPTech.logger.info(itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).getModuleList());
 
-			if (!worldIn.isRemote && playerIn.isSneaking()){
+			if (!worldIn.isRemote && playerIn.isSneaking()) {
 				playerIn.openGui(WIPTech.instance, GuiHandler.TEST_LAUNCHER, worldIn, 0, 0, 0);
 			}
 		}
@@ -140,14 +142,14 @@ public class ItemTestLauncher extends ItemBase {
 		return new ActionResult(EnumActionResult.SUCCESS, itemstack);
 	}
 
-	public int getItemEnchantability()
-	{
+	@Override
+	public int getItemEnchantability() {
 		return 0;
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities( ItemStack item, NBTTagCompound nbt ) {
-		if( item.getItem() == Items.TEST_LAUNCHER ) {
+	public ICapabilityProvider initCapabilities(ItemStack item, NBTTagCompound nbt) {
+		if (item.getItem() == Items.TEST_LAUNCHER) {
 			return new TestLauncherProvider();
 		}
 		return null;

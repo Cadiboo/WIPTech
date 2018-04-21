@@ -22,12 +22,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class EntityFerromagneticProjectile extends EntityProjectileBase {
+public class EntityParamagneticProjectile extends EntityProjectileBase {
 
 	private static final DataParameter<Integer> AMMO_ID = EntityDataManager
-			.<Integer>createKey(EntityFerromagneticProjectile.class, DataSerializers.VARINT);
+			.<Integer>createKey(EntityParamagneticProjectile.class, DataSerializers.VARINT);
 	private static final DataParameter<Float> TEMPERATURE = EntityDataManager
-			.<Float>createKey(EntityFerromagneticProjectile.class, DataSerializers.FLOAT);
+			.<Float>createKey(EntityParamagneticProjectile.class, DataSerializers.FLOAT);
 
 	public static final int overheatFireTime = 5;
 	public static final int overheatTemperature = 50;
@@ -99,7 +99,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 	}
 
 	public int getAmmoId() {
-		return ((Integer) this.dataManager.get(AMMO_ID)).intValue();
+		return this.dataManager.get(AMMO_ID).intValue();
 	}
 
 	public boolean isOverheated() {
@@ -122,15 +122,15 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 		return this.getTemperature() >= ingiteTemperature;
 	}
 
-	public EntityFerromagneticProjectile(World worldIn) {
+	public EntityParamagneticProjectile(World worldIn) {
 		super(worldIn);
 	}
 
-	public EntityFerromagneticProjectile(World worldIn, EntityLivingBase shooter) {
+	public EntityParamagneticProjectile(World worldIn, EntityLivingBase shooter) {
 		super(worldIn, shooter);
 	}
 
-	public EntityFerromagneticProjectile(World worldIn, double x, double y, double z) {
+	public EntityParamagneticProjectile(World worldIn, double x, double y, double z) {
 		super(worldIn, x, y, z);
 	}
 
@@ -224,14 +224,14 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			this.inTile.onEntityCollidedWithBlock(this.world, blockpos, iblockstate, this);
 		}
 
-		this.motionX = (double) ((float) (raytraceResultIn.hitVec.x - this.posX));
-		this.motionY = (double) ((float) (raytraceResultIn.hitVec.y - this.posY));
-		this.motionZ = (double) ((float) (raytraceResultIn.hitVec.z - this.posZ));
+		this.motionX = ((float) (raytraceResultIn.hitVec.x - this.posX));
+		this.motionY = ((float) (raytraceResultIn.hitVec.y - this.posY));
+		this.motionZ = ((float) (raytraceResultIn.hitVec.z - this.posZ));
 		float f2 = MathHelper
 				.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-		this.posX -= this.motionX / (double) f2 * 0.05000000074505806D;
-		this.posY -= this.motionY / (double) f2 * 0.05000000074505806D;
-		this.posZ -= this.motionZ / (double) f2 * 0.05000000074505806D;
+		this.posX -= this.motionX / f2 * 0.05000000074505806D;
+		this.posY -= this.motionY / f2 * 0.05000000074505806D;
+		this.posZ -= this.motionZ / f2 * 0.05000000074505806D;
 		this.playSound(SoundEvents.BLOCK_STONE_BREAK, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 		this.inGround = true;
 		this.projectileShake = 5;
@@ -280,10 +280,8 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 					float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
 					if (f1 > 0.0F) {
-						entitylivingbase.addVelocity(
-								this.motionX * (double) this.knockbackStrength * 0.6000000238418579D / (double) f1,
-								0.1D,
-								this.motionZ * (double) this.knockbackStrength * 0.6000000238418579D / (double) f1);
+						entitylivingbase.addVelocity(this.motionX * this.knockbackStrength * 0.6000000238418579D / f1,
+								0.1D, this.motionZ * this.knockbackStrength * 0.6000000238418579D / f1);
 					}
 				}
 
@@ -378,7 +376,7 @@ public class EntityFerromagneticProjectile extends EntityProjectileBase {
 			return ItemStack.EMPTY;
 		}
 		// itemIn, amount, meta
-		return new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, ammoId);
+		return new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, ammoId);
 	}
 
 	public float getStuckDepth() {

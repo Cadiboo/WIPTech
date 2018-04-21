@@ -3,7 +3,7 @@ package cadiboo.wiptech.item;
 import java.util.List;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
+import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityProjectileBase;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.client.util.ITooltipFlag;
@@ -78,7 +78,7 @@ public class ItemRailgun extends ItemBase {
 
 	protected boolean isAmmo(ItemStack stack)
 	{
-		return stack.getItem() instanceof ItemFerromagneticProjectile && 3 >= stack.getMetadata() && stack.getMetadata() <=5 ;
+		return stack.getItem() instanceof ItemParamagneticProjectile && 3 >= stack.getMetadata() && stack.getMetadata() <=5 ;
 	}
 
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
@@ -97,11 +97,11 @@ public class ItemRailgun extends ItemBase {
 			{
 				if (itemstack.isEmpty())
 				{
-					//itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN MEDIUM
-					itemstack = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 2); //TUNGSTEN LARGE
+					//itemstack = new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN MEDIUM
+					itemstack = new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 2); //TUNGSTEN LARGE
 				}
 
-				float velocity = EntityFerromagneticProjectile.getProjectileVelocity(stack);
+				float velocity = EntityParamagneticProjectile.getProjectileVelocity(stack);
 
 				if ((double)velocity >= 0.1D)
 				{
@@ -109,12 +109,12 @@ public class ItemRailgun extends ItemBase {
 
 					if (!worldIn.isRemote)
 					{
-						ItemFerromagneticProjectile itemprojectile = (ItemFerromagneticProjectile)(itemstack.getItem() instanceof ItemFerromagneticProjectile ? itemstack.getItem() : Items.FERROMAGNETIC_PROJECILE);
-						EntityFerromagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer, false);
+						ItemParamagneticProjectile itemprojectile = (ItemParamagneticProjectile)(itemstack.getItem() instanceof ItemParamagneticProjectile ? itemstack.getItem() : Items.PARAMAGNETIC_PROJECILE);
+						EntityParamagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer, false);
 						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
 						if(this.overheat) {
 							//projectile.setOverheat(this.overheat);
-							projectile.setFire(EntityFerromagneticProjectile.overheatFireTime);
+							projectile.setFire(EntityParamagneticProjectile.overheatFireTime);
 						}
 
 						WIPTech.logger.info("Railgun Overheat: "+overheat);

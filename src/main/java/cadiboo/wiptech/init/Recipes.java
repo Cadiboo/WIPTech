@@ -56,15 +56,15 @@ public class Recipes {
 				new ItemStack(AIR), new ItemStack(AIR), 20);
 
 		addHammerRecipe(new ItemStack(Item.REGISTRY.getObject(new ResourceLocation("minecraft", "iron_ingot"))),
-				new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 0), new ItemStack(AIR), new ItemStack(AIR),
+				new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 0), new ItemStack(AIR), new ItemStack(AIR),
 				new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
-		addHammerRecipe(new ItemStack(Items.OSMIUM_INGOT), new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 1),
+		addHammerRecipe(new ItemStack(Items.OSMIUM_INGOT), new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 1),
 				new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
-		addHammerRecipe(new ItemStack(Items.TUNGSTEN_INGOT), new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 2),
+		addHammerRecipe(new ItemStack(Items.TUNGSTEN_INGOT), new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 2),
 				new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
 		for (int i = 0; i < 5 + 1; i++) {
-			addHammerRecipe(new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, i),
-					new ItemStack(Items.FERROMAGNETIC_PROJECILE, 3, i + 3), new ItemStack(AIR), new ItemStack(AIR),
+			addHammerRecipe(new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, i),
+					new ItemStack(Items.PARAMAGNETIC_PROJECILE, 3, i + 3), new ItemStack(AIR), new ItemStack(AIR),
 					new ItemStack(AIR), new ItemStack(AIR), new ItemStack(AIR), 20);
 		}
 	}

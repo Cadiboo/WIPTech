@@ -5,7 +5,7 @@ import java.util.List;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.IWeaponModular;
 import cadiboo.wiptech.capability.WeaponModular;
-import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
+import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
 import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
@@ -31,7 +31,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 
 public class ItemPlasmagun extends ItemBase {
 
-	private static final ItemStack PLASMA_STACK = new ItemStack(Items.FERROMAGNETIC_PROJECILE, 1, 9); // Plasma
+	private static final ItemStack PLASMA_STACK = new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 9); // Plasma
 
 	public ItemPlasmagun(String name) {
 		super(name);
@@ -176,9 +176,9 @@ public class ItemPlasmagun extends ItemBase {
 			}
 			modules.setLastShootTime(worldIn.getTotalWorldTime());
 
-			EntityFerromagneticProjectile projectile = ((ItemFerromagneticProjectile) PLASMA_STACK.getItem())
+			EntityParamagneticProjectile projectile = ((ItemParamagneticProjectile) PLASMA_STACK.getItem())
 					.createProjectile(worldIn, PLASMA_STACK, player, true);
-			velocity = EntityFerromagneticProjectile.getProjectileVelocity(PLASMA_STACK)
+			velocity = EntityParamagneticProjectile.getProjectileVelocity(PLASMA_STACK)
 					* modules.getCoil().getEfficiencyFraction();
 			projectile.setDamage(projectile.getDamage() * modules.getRail().getEfficiencyFraction());
 			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);

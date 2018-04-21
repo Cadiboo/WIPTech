@@ -1,12 +1,39 @@
 package cadiboo.wiptech.handler;
 
-import cadiboo.wiptech.item.ItemFerromagneticProjectile;
+import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 public class EnumHandler {
+
+	public static enum Metals implements IStringSerializable {
+
+		TIN(0, "tin"), ALUMINIUM(2, "aluminium"), COPPER(4, "copper"), SILVER(5, "silver");
+
+		private int ID;
+		private String name;
+
+		private Metals(int id, String name) {
+			this.ID = id;
+			this.name = name;
+		}
+
+		public static Metals byID(int i) {
+			return Metals.values()[i];
+		}
+
+		public int getID() {
+			return ID;
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+	}
+
 	public static enum ConductiveMetals implements IStringSerializable {
 
 		// Material IACS (International Annealed Copper Standard)
@@ -79,16 +106,16 @@ public class EnumHandler {
 	}
 
 	public static ResourceLocation[] getResourceLocations(int i) {
-		ResourceLocation[] string = new ResourceLocation[ItemFerromagneticProjectile.subTypesAmmount];
-		for (int j = 0; j < FerromagneticProjectiles.values().length; j++) {
-			string[j] = new ResourceLocation(Reference.ID, FerromagneticProjectiles.values()[j].getName());
+		ResourceLocation[] string = new ResourceLocation[ItemParamagneticProjectile.subTypesAmmount];
+		for (int j = 0; j < ParamagneticProjectiles.values().length; j++) {
+			string[j] = new ResourceLocation(Reference.ID, ParamagneticProjectiles.values()[j].getName());
 		}
 		// TODO TOFINDOUT this is never called, why did I make it?
 
 		return string;
 	}
 
-	public static enum FerromagneticProjectiles implements IStringSerializable {
+	public static enum ParamagneticProjectiles implements IStringSerializable {
 		IRON_LARGE(0, "iron_large", TextFormatting.WHITE), OSMIUM_LARGE(1, "osmium_large",
 				TextFormatting.DARK_BLUE), TUNGSTEN_LARGE(2, "tungsten_large", TextFormatting.GRAY), IRON_MEDIUM(3,
 						"iron_medium", TextFormatting.WHITE), OSMIUM_MEDIUM(4, "osmium_medium",
@@ -103,7 +130,7 @@ public class EnumHandler {
 		private String name;
 		private TextFormatting chatColor;
 
-		private FerromagneticProjectiles(int ID, String name, TextFormatting chatColorIn) {
+		private ParamagneticProjectiles(int ID, String name, TextFormatting chatColorIn) {
 			this.ID = ID;
 			this.name = name;
 			this.chatColor = chatColorIn;
@@ -127,11 +154,11 @@ public class EnumHandler {
 			return getName();
 		}
 
-		public static FerromagneticProjectiles byMetadata(int i) {
-			if (i > ItemFerromagneticProjectile.subTypesAmmountZI) {
-				return FerromagneticProjectiles.values()[0];
+		public static ParamagneticProjectiles byMetadata(int i) {
+			if (i > ItemParamagneticProjectile.subTypesAmmountZI) {
+				return ParamagneticProjectiles.values()[0];
 			}
-			return FerromagneticProjectiles.values()[i];
+			return ParamagneticProjectiles.values()[i];
 		}
 
 		public int getMetadata() {

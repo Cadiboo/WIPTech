@@ -1,17 +1,19 @@
 package cadiboo.wiptech.handler.event;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.client.render.entity.RenderEntityFerromagneticProjectileFactory;
+import cadiboo.wiptech.block.BlockMetalBlock;
 import cadiboo.wiptech.client.render.entity.RenderEntityNapalmFactory;
+import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectileFactory;
 import cadiboo.wiptech.client.render.tileentity.TESRCrusher;
 import cadiboo.wiptech.client.render.tileentity.TESRTurbine;
-import cadiboo.wiptech.entity.projectile.EntityFerromagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
+import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.handler.EnumHandler;
-import cadiboo.wiptech.handler.EnumHandler.FerromagneticProjectiles;
+import cadiboo.wiptech.handler.EnumHandler.Metals;
+import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectiles;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
-import cadiboo.wiptech.item.ItemFerromagneticProjectile;
+import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import cadiboo.wiptech.util.Reference;
@@ -34,6 +36,14 @@ public class ClientEventSubscriber {
 			if (!new ItemBlock(Blocks.BLOCKS[i]).getHasSubtypes())
 				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Blocks.BLOCKS[i]), 0,
 						new ModelResourceLocation(Blocks.BLOCKS[i].getRegistryName(), "inventory"));
+			else {
+				if (Blocks.BLOCKS[i] instanceof BlockMetalBlock)
+					for (int j = 0; j < Metals.values().length; i++) {
+						ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Blocks.BLOCKS[i]), 0,
+								new ModelResourceLocation(Reference.ID + ":" + Metals.byID(j).getName() + "_block",
+										"inventory"));
+					}
+			}
 		}
 
 		for (Item item : Items.ITEMS) {
@@ -42,10 +52,10 @@ public class ClientEventSubscriber {
 						new ModelResourceLocation(item.getRegistryName(), "inventory"));
 			} else {
 
-				if (item instanceof ItemFerromagneticProjectile) {
-					for (FerromagneticProjectiles rod : EnumHandler.FerromagneticProjectiles.values()) {
+				if (item instanceof ItemParamagneticProjectile) {
+					for (ParamagneticProjectiles rod : EnumHandler.ParamagneticProjectiles.values()) {
 						ModelLoader.setCustomModelResourceLocation(item, rod.getID(),
-								new ModelResourceLocation("wiptech:rods/" + rod.getName()));
+								new ModelResourceLocation(Reference.ID + ":rods/" + rod.getName()));
 					}
 				}
 
@@ -64,8 +74,8 @@ public class ClientEventSubscriber {
 		 */
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, new RenderEntityNapalmFactory());
-		RenderingRegistry.registerEntityRenderingHandler(EntityFerromagneticProjectile.class,
-				new RenderEntityFerromagneticProjectileFactory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityParamagneticProjectile.class,
+				new RenderEntityParamagneticProjectileFactory());
 
 		WIPTech.logger.info("Registered Entity Renders");
 	}

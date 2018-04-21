@@ -28,6 +28,7 @@ import cadiboo.wiptech.block.BlockIronIngot;
 import cadiboo.wiptech.block.BlockIronNugget;
 import cadiboo.wiptech.block.BlockIronRail;
 import cadiboo.wiptech.block.BlockIronSpool;
+import cadiboo.wiptech.block.BlockMetalBlock;
 import cadiboo.wiptech.block.BlockOsmiumBlock;
 import cadiboo.wiptech.block.BlockOsmiumOre;
 import cadiboo.wiptech.block.BlockPeripheralBlock;
@@ -64,6 +65,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 public class Blocks {
+
+	public static final BlockMetalBlock METAL_BLOCK = new BlockMetalBlock("metal_block", Material.IRON);
 
 	public static final BlockCopperBlock COPPER_BLOCK = new BlockCopperBlock("copper_block", Material.IRON);
 	public static final BlockCopperOre COPPER_ORE = new BlockCopperOre("copper_ore", Material.ROCK);
@@ -138,6 +141,8 @@ public class Blocks {
 
 	public static final Block[] BLOCKS = {
 
+			METAL_BLOCK, WIRE,
+
 			COPPER_BLOCK, COPPER_ORE, COPPER_SPOOL, COPPER_RAIL, COPPER_WIRE, COPPER_NUGGET, COPPER_INGOT,
 			COPPER_ENAMEL,
 
@@ -163,9 +168,7 @@ public class Blocks {
 
 			STRONG_PISTON,
 
-			TURBINE, PERIPHERAL, CAPACITOR_BANK,
-
-			WIRE, };
+			TURBINE, PERIPHERAL, CAPACITOR_BANK, };
 
 	private static List<Block> Ores = new ArrayList();
 	private static Boolean OresIterated = Boolean.valueOf(false);
