@@ -29,10 +29,10 @@ public class BlockWire extends BlockBase {
 	@Override
 	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
 		for (int i = 0; i < METALS_LENGTH * 2; i++) {
-			WIPTech.logger.info(i);
-			WIPTech.logger.info(items);
+			// WIPTech.logger.info(i);
+			// WIPTech.logger.info(items);
 			items.add(new ItemStack(this, 1, i));
-			WIPTech.logger.info(items.get(items.size() - 1));
+			// WIPTech.logger.info(items.get(items.size() - 1));
 		}
 	}
 
