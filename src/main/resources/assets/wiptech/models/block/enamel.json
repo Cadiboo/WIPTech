@@ -1,0 +1,41 @@
+{
+	"textures": {
+		"particle": "#wire"
+	},
+	"elements": [
+		{
+			"name": "enamel",
+			"from": [6, 6, 6],
+			"to": [10, 10, 10],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#enamel"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#enamel"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#enamel"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#enamel"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#enamel"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#enamel"}
+			}
+		},
+		{
+			"name": "wire",
+			"from": [7, 7, 7],
+			"to": [9, 9, 9],
+			"faces": {
+				"north": {
+					"uv": [12, 5, 14, 6],
+					"texture": "#wire",
+					"rotation": 180
+				},
+				"east": {"uv": [13, 5, 14, 6], "texture": "#wire"},
+				"south": {
+					"uv": [12, 5, 14, 6],
+					"texture": "#wire"
+				},
+				"west": {"uv": [12, 5, 13, 6], "texture": "#wire"},
+				"up": {"uv": [12, 5, 14, 6], "texture": "#wire"},
+				"down": {"uv": [12, 5, 14, 6], "texture": "#wire"}
+			}
+		}
+
+	]
+}

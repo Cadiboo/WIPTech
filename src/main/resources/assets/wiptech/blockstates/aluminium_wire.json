@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "wiptech:aluminium_wire"}],
+	"facing=north": { "model": "wiptech:aluminium_wire" },
+        "facing=east":  { "model": "wiptech:aluminium_wire", "y": 90 },
+	"facing=south": { "model": "wiptech:aluminium_wire", "y": 180 },
+        "facing=west":  { "model": "wiptech:aluminium_wire", "y": 270 },
+        "inventory": { "model": "wiptech:aluminium_wire"}
+    }
+}

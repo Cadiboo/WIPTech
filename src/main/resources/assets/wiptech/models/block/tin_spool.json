@@ -1,6 +1,6 @@
 {
-    "parent": "block/cube_all",
+    "parent": "wiptech:block/spool",
     "textures": {
-        "all": "wiptech:blocks/tin_spool"
+        "wire": "wiptech:blocks/tin_enamel_repeating"
     }
 }

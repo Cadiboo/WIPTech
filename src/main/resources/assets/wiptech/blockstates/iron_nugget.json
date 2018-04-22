@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "wiptech:iron_nugget"}],
+	"facing=north": { "model": "wiptech:iron_nugget" },
+        "facing=east":  { "model": "wiptech:iron_nugget", "y": 90 },
+	"facing=south": { "model": "wiptech:iron_nugget", "y": 180 },
+        "facing=west":  { "model": "wiptech:iron_nugget", "y": 270 },
+        "inventory": { "model": "iron_nugget"}
+    }
+}

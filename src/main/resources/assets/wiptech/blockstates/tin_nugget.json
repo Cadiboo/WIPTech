@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "wiptech:tin_nugget"}],
+	"facing=north": { "model": "wiptech:tin_nugget" },
+        "facing=east":  { "model": "wiptech:tin_nugget", "y": 90 },
+	"facing=south": { "model": "wiptech:tin_nugget", "y": 180 },
+        "facing=west":  { "model": "wiptech:tin_nugget", "y": 270 },
+        "inventory": { "model": "wiptech:tin_nugget"}
+    }
+}

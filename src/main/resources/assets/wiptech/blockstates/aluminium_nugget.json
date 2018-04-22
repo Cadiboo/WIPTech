@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "wiptech:aluminium_nugget"}],
+	"facing=north": { "model": "wiptech:aluminium_nugget" },
+        "facing=east":  { "model": "wiptech:aluminium_nugget", "y": 90 },
+	"facing=south": { "model": "wiptech:aluminium_nugget", "y": 180 },
+        "facing=west":  { "model": "wiptech:aluminium_nugget", "y": 270 },
+        "inventory": { "model": "wiptech:aluminium_nugget"}
+    }
+}

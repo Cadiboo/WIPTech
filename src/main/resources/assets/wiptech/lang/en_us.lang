@@ -1,11 +1,11 @@
 itemGroup.wiptechtab=WIP Tech
 #Entity
-entity.ferromagneticprojectile.name=Ferromagnetic Projectile
+entity.paramagneticprojectile.name=Paramagnetic Projectile
 entity.napalm.name=Napalm
 
 ##Deaths
-death.attack.napalm=%1$s was annihilated by %2$s
-death.attack.napalm.item=%1$s was annihilated by %2$s using %3$s
+death.attack.napalm=%1$s was melted by %2$s
+death.attack.napalm.item=%1$s was melted by %2$s using %3$s
 
 death.attack.railgunprojectile=%1$s was annihilated by %2$s
 death.attack.railgunprojectile.item=%1$s was annihilated by %2$s using %3$s
@@ -43,9 +43,9 @@ item.titania.name=Titania (Titanium Oxide)
 item.titanium_ingot.name=Titanium Ingot
 
 #Iron
-item.ferromagnetic_projectile.iron_large.name=Large Iron Rod
-item.ferromagnetic_projectile.iron_medium.name=Iron Rod
-item.ferromagnetic_projectile.iron_small.name=Iron Pellet
+item.paramagnetic_projectile.iron_large.name=Large Iron Rod
+item.paramagnetic_projectile.iron_medium.name=Iron Rod
+item.paramagnetic_projectile.iron_small.name=Iron Pellet
 
 #Aluminium (Aluminum for Americans)
 tile.aluminium_ore.name=Aluminum Ore
@@ -73,18 +73,18 @@ tile.tungsten_ore.name=Tungsten Ore
 tile.tungsten_block.name=Tungsten Block
 item.tungsten_ingot.name=Tungsten Ingot
 item.tungsten_nugget.name=Tungsten Nugget
-item.ferromagnetic_projectile.tungsten_large.name=Large Tungsten Rod
-item.ferromagnetic_projectile.tungsten_medium.name=Tungsten Rod
-item.ferromagnetic_projectile.tungsten_small.name=Tungsten Pellet
+item.paramagnetic_projectile.tungsten_large.name=Large Tungsten Rod
+item.paramagnetic_projectile.tungsten_medium.name=Tungsten Rod
+item.paramagnetic_projectile.tungsten_small.name=Tungsten Pellet
 
 #Osmium
 tile.osmium_ore.name=Osmium Ore
 tile.osmium_block.name=Osmium Block
 item.osmium_ingot.name=Osmium Ingot
 item.osmium_nugget.name=Osmium Nugget
-item.ferromagnetic_projectile.osmium_large.name=Large Osmium Rod
-item.ferromagnetic_projectile.osmium_medium.name=Osmium Rod
-item.ferromagnetic_projectile.osmium_small.name=Osmium Pellet
+item.paramagnetic_projectile.osmium_large.name=Large Osmium Rod
+item.paramagnetic_projectile.osmium_medium.name=Osmium Rod
+item.paramagnetic_projectile.osmium_small.name=Osmium Pellet
 
 #Machines
 tile.strong_piston.name=Strong(Reinforced?) Piston

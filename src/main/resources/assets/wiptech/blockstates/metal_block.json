@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "normal":           [{"model": "wiptech:gold_wire"}],
+        "metal=tin":        { "model": "wiptech:tin_block" },
+        "metal=copper":     { "model": "wiptech:copper_block" },
+        "metal=aluminium":  { "model": "wiptech:aluminium_block" },
+        "metal=silver":     { "model": "wiptech:silver_block" }
+    }
+}

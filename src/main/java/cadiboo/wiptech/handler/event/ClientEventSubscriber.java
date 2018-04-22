@@ -1,9 +1,8 @@
 package cadiboo.wiptech.handler.event;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.block.BlockPeripheralBlock;
-import cadiboo.wiptech.block.BlockResourceBlock113;
-import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.client.render.entity.RenderEntityNapalmFactory;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectileFactory;
 import cadiboo.wiptech.client.render.tileentity.TESRCrusher;
@@ -11,7 +10,6 @@ import cadiboo.wiptech.client.render.tileentity.TESRTurbine;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectiles;
-import cadiboo.wiptech.handler.EnumHandler.ResourceBlocks;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
@@ -37,52 +35,12 @@ public class ClientEventSubscriber {
 		blocks: for (int i = 0; i < Blocks.BLOCKS.length; i++) {
 			if (Blocks.BLOCKS[i] instanceof BlockPeripheralBlock)
 				continue blocks;
+			if (Blocks.BLOCKS[i] instanceof BlockBase && ((BlockBase) Blocks.BLOCKS[i]).isHiddenBlock())
+				continue blocks;
 
-			WIPTech.logger.info(Blocks.BLOCKS[i]);
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Blocks.BLOCKS[i]), 0,
+					new ModelResourceLocation(Blocks.BLOCKS[i].getRegistryName(), "inventory"));
 
-			if (Blocks.BLOCKS[i] instanceof BlockResourceBlock113) {
-
-				for (int j = 0; j < ResourceBlocks.values().length; j++) {
-
-					ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Blocks.BLOCKS[i]), ResourceBlocks.values()[j].getID(),
-							new ModelResourceLocation(Blocks.BLOCKS[i].getRegistryName(), "resource=" + ResourceBlocks.values()[j].getName()));
-
-					// WIPTech.logger.info(new
-					// ModelResourceLocation(Blocks.BLOCKS[i].getRegistryName(), "inventory"));
-					// ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Blocks.BLOCKS[i]),
-					// Metals.values()[j].getID(),
-					// new ModelResourceLocation(Reference.ID + ":" + Metals.values()[j].getName() +
-					// "_block"));
-					// WIPTech.logger.info(Item.getItemFromBlock(Blocks.BLOCKS[i]) + " | " +
-					// Metals.values()[j].getID()
-					// + " | "
-					// + new ModelResourceLocation(Reference.ID + ":" + Metals.values()[j].getName()
-					// + "_block"));
-				}
-
-				// for (int j = 0; j < Metals.values().length; j++) {
-				//
-				// ModelResourceLocation blockModelResourceLocation = new ModelResourceLocation(
-				// new ResourceLocation(Reference.ID, Metals.byID(j).getName() + "_block"),
-				// "normal");
-				//
-				// ModelResourceLocation itemModelResourceLocation = new ModelResourceLocation(
-				// Reference.ID + ":" + Metals.byID(j).getName() + "_block", "inventory");
-				// //
-				// ModelLoader.setCustomModelResourceLocation(StartupCommon.itemBlockVariants,
-				// // BlockVariants.EnumColour.BLUE.getMetadata(), itemModelResourceLocation);
-				//
-				// // Metals.byID(j).getName() + "_block"
-				// ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Blocks.BLOCKS[j]),
-				// j,
-				// blockModelResourceLocation);
-				// }
-			} else if (Blocks.BLOCKS[i] instanceof BlockWire) {
-
-			} else {
-				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Blocks.BLOCKS[i]), 0,
-						new ModelResourceLocation(Blocks.BLOCKS[i].getRegistryName(), "inventory"));
-			}
 		}
 
 		for (int i = 0; i < Items.ITEMS.length; i++) {

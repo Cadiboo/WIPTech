@@ -1,0 +1,6 @@
+{
+    "parent": "wiptech:block/nugget_left",
+    "textures": {
+        "nugget": "wiptech:items/silver_nugget"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "wiptech:block/spool",
+    "textures": {
+        "wire": "wiptech:blocks/iron_enamel_repeating"
+    }
+}

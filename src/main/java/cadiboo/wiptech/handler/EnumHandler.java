@@ -1,37 +1,173 @@
 package cadiboo.wiptech.handler;
 
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
-import cadiboo.wiptech.util.Reference;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 
 public class EnumHandler {
 
-	public static enum Metals implements IStringSerializable {
+	public static enum BlockItems implements IStringSerializable {
 
-		TIN(0, "tin"), ALUMINIUM(2, "aluminium"), COPPER(4, "copper"), SILVER(5, "silver");
+		COPPER_INGOT(0, "copper_ingot"),
 
-		private int ID;
-		private String name;
+		TIN_INGOT(1, "tin_ingot"),
 
-		private Metals(int id, String name) {
+		ALUMINIUM_INGOT(2, "aluminium_ingot"),
+
+		SILVER_INGOT(3, "silver_ingot"),
+
+		GOLD_INGOT(4, "osmium_ingot"),
+
+		IRON_INGOT(5, "tungsten_ingot"),
+
+		COPPER_NUGGET(6, "copper_nugget"),
+
+		TIN_NUGGET(7, "tin_nugget"),
+
+		ALUMINIUM_NUGGET(8, "aluminium_nugget"),
+
+		SILVER_NUGGET(9, "silver_nugget"),
+
+		GOLD_NUGGET(10, "osmium_nugget"),
+
+		IRON_NUGGET(11, "tungsten_nugget");
+
+		private int		ID;
+		private String	name;
+
+		private BlockItems(int id, String name) {
 			this.ID = id;
 			this.name = name;
 		}
 
-		public static Metals byID(int i) {
-			return Metals.values()[i];
-		}
-
-		public int getID() {
-			return ID;
+		public static BlockItems byID(int i) {
+			return BlockItems.values()[i];
 		}
 
 		@Override
 		public String getName() {
 			return this.name;
 		}
+
+		public int getID() {
+			return this.ID;
+		}
+
+	}
+
+	public static enum ResourceBlocks implements IStringSerializable {
+
+		COPPER(0, "copper"),
+
+		TIN(1, "tin"),
+
+		ALUMINIUM(2, "aluminium"),
+
+		SILVER(3, "silver"),
+
+		OSMIUM(4, "osmium"),
+
+		TUNGSTEN(5, "tungsten"),
+
+		TITANIUM(6, "titanium");
+
+		private int		ID;
+		private String	name;
+
+		private ResourceBlocks(int id, String name) {
+			this.ID = id;
+			this.name = name;
+		}
+
+		public static ResourceBlocks byID(int i) {
+			return ResourceBlocks.values()[i];
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+
+		public int getID() {
+			return this.ID;
+		}
+
+	}
+
+	public static enum Ores implements IStringSerializable {
+
+		COPPER(0, "copper"),
+
+		TIN(1, "tin"),
+
+		ALUMINIUM(2, "aluminium"),
+
+		SILVER(3, "silver"),
+
+		OSMIUM(4, "osmium"),
+
+		TUNGSTEN(5, "tungsten"),
+
+		BAUXITE(6, "bauxite");
+
+		private int		ID;
+		private String	name;
+
+		private Ores(int id, String name) {
+			this.ID = id;
+			this.name = name;
+		}
+
+		public static Ores byID(int i) {
+			return Ores.values()[i];
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+
+		public int getID() {
+			return this.ID;
+		}
+
+	}
+
+	public static enum IngredientBlocks implements IStringSerializable {
+
+		COPPER(0, "copper"),
+
+		TIN(1, "tin"),
+
+		ALUMINIUM(2, "aluminium"),
+
+		SILVER(3, "silver"),
+
+		GOLD(4, "osmium"),
+
+		IRON(5, "tungsten");
+
+		private int		ID;
+		private String	name;
+
+		private IngredientBlocks(int id, String name) {
+			this.ID = id;
+			this.name = name;
+		}
+
+		public static IngredientBlocks byID(int i) {
+			return IngredientBlocks.values()[i];
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+
+		public int getID() {
+			return this.ID;
+		}
+
 	}
 
 	public static enum ConductiveMetals implements IStringSerializable {
@@ -59,14 +195,22 @@ public class EnumHandler {
 		// COPPER (4, "copper", 100, TextFormatting.RED),
 		// SILVER (5, "silver", 105, TextFormatting.WHITE);
 
-		TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61,
-				TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4, "copper", 100,
-						TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
+		TIN(0, "tin", 15, TextFormatting.WHITE),
 
-		private int ID;
-		private String name;
-		private TextFormatting chatColor;
-		private int conductivity;
+		IRON(1, "iron", 17, TextFormatting.GRAY),
+
+		ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY),
+
+		GOLD(3, "gold", 70, TextFormatting.GOLD),
+
+		COPPER(4, "copper", 100, TextFormatting.RED),
+
+		SILVER(5, "silver", 105, TextFormatting.WHITE);
+
+		private int				ID;
+		private String			name;
+		private TextFormatting	chatColor;
+		private int				conductivity;
 
 		private ConductiveMetals(int ID, String name, int conductivity, TextFormatting chatColorIn) {
 			this.ID = ID;
@@ -81,19 +225,11 @@ public class EnumHandler {
 		}
 
 		public int getID() {
-			return ID;
-		}
-
-		public int getMetadata() {
-			return this.getID();
+			return this.ID;
 		}
 
 		public static ConductiveMetals byID(int i) {
 			return ConductiveMetals.values()[i];
-		}
-
-		public static ConductiveMetals byMetadata(int i) {
-			return byID(i);
 		}
 
 		public float getConductivityFraction() {
@@ -105,30 +241,17 @@ public class EnumHandler {
 		}
 	}
 
-	public static ResourceLocation[] getResourceLocations(int i) {
-		ResourceLocation[] string = new ResourceLocation[ItemParamagneticProjectile.subTypesAmmount];
-		for (int j = 0; j < ParamagneticProjectiles.values().length; j++) {
-			string[j] = new ResourceLocation(Reference.ID, ParamagneticProjectiles.values()[j].getName());
-		}
-		// TODO TOFINDOUT this is never called, why did I make it?
-
-		return string;
-	}
-
 	public static enum ParamagneticProjectiles implements IStringSerializable {
-		IRON_LARGE(0, "iron_large", TextFormatting.WHITE), OSMIUM_LARGE(1, "osmium_large",
-				TextFormatting.DARK_BLUE), TUNGSTEN_LARGE(2, "tungsten_large", TextFormatting.GRAY), IRON_MEDIUM(3,
-						"iron_medium", TextFormatting.WHITE), OSMIUM_MEDIUM(4, "osmium_medium",
-								TextFormatting.DARK_BLUE), TUNGSTEN_MEDIUM(5, "tungsten_medium",
-										TextFormatting.GRAY), IRON_SMALL(6, "iron_small",
-												TextFormatting.WHITE), OSMIUM_SMALL(7, "osmium_small",
-														TextFormatting.DARK_BLUE), TUNGSTEN_SMALL(8, "tungsten_small",
-																TextFormatting.GRAY);// ,
+		IRON_LARGE(0, "iron_large", TextFormatting.WHITE), OSMIUM_LARGE(1, "osmium_large", TextFormatting.DARK_BLUE), TUNGSTEN_LARGE(2,
+				"tungsten_large", TextFormatting.GRAY), IRON_MEDIUM(3, "iron_medium", TextFormatting.WHITE), OSMIUM_MEDIUM(4, "osmium_medium",
+						TextFormatting.DARK_BLUE), TUNGSTEN_MEDIUM(5, "tungsten_medium", TextFormatting.GRAY), IRON_SMALL(6, "iron_small",
+								TextFormatting.WHITE), OSMIUM_SMALL(7, "osmium_small",
+										TextFormatting.DARK_BLUE), TUNGSTEN_SMALL(8, "tungsten_small", TextFormatting.GRAY);// ,
 		// PLASMA(9,"plasma", TextFormatting.GOLD); //nano
 
-		private int ID;
-		private String name;
-		private TextFormatting chatColor;
+		private int				ID;
+		private String			name;
+		private TextFormatting	chatColor;
 
 		private ParamagneticProjectiles(int ID, String name, TextFormatting chatColorIn) {
 			this.ID = ID;
@@ -178,14 +301,14 @@ public class EnumHandler {
 			 * Nickel Aluminum Bronze 7%
 			 */
 
-			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium",
-					61, TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4, "copper", 100,
-							TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
+			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61,
+					TextFormatting.GRAY), GOLD(3, "gold", 70,
+							TextFormatting.GOLD), COPPER(4, "copper", 100, TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
 
-			private int ID;
-			private String name;
-			private TextFormatting chatColor;
-			private int efficiency;
+			private int				ID;
+			private String			name;
+			private TextFormatting	chatColor;
+			private int				efficiency;
 
 			private Rails(int ID, String name, int efficiency, TextFormatting chatColorIn) {
 				this.ID = ID;
@@ -218,13 +341,12 @@ public class EnumHandler {
 		}
 
 		public static enum Circuits implements IStringSerializable, IWeaponModule {
-			MANUAL(0, "manual", TextFormatting.WHITE), BURST3(1, "burst3", TextFormatting.RED), BURST5(2, "burst5",
-					TextFormatting.RED), BURST10(3, "burst10", TextFormatting.RED), AUTO(4, "auto",
-							TextFormatting.DARK_RED), OVERCLOCKED(5, "overclocked", TextFormatting.AQUA);
+			MANUAL(0, "manual", TextFormatting.WHITE), BURST3(1, "burst3", TextFormatting.RED), BURST5(2, "burst5", TextFormatting.RED), BURST10(3,
+					"burst10", TextFormatting.RED), AUTO(4, "auto", TextFormatting.DARK_RED), OVERCLOCKED(5, "overclocked", TextFormatting.AQUA);
 
-			private int ID;
-			private String name;
-			private TextFormatting chatColor;
+			private int				ID;
+			private String			name;
+			private TextFormatting	chatColor;
 
 			private Circuits(int ID, String name, TextFormatting chatColorIn) {
 				this.ID = ID;
@@ -248,12 +370,11 @@ public class EnumHandler {
 		}
 
 		public static enum Scopes implements IStringSerializable, IWeaponModule {
-			ACOG(0, "acog", TextFormatting.WHITE), ZOOM(1, "zoom", TextFormatting.GRAY), LASER(2, "laser",
-					TextFormatting.RED);
+			ACOG(0, "acog", TextFormatting.WHITE), ZOOM(1, "zoom", TextFormatting.GRAY), LASER(2, "laser", TextFormatting.RED);
 
-			private int ID;
-			private String name;
-			private TextFormatting chatColor;
+			private int				ID;
+			private String			name;
+			private TextFormatting	chatColor;
 
 			private Scopes(int ID, String name, TextFormatting chatColorIn) {
 				this.ID = ID;
@@ -286,14 +407,14 @@ public class EnumHandler {
 			 * Nickel Aluminum Bronze 7%
 			 */
 
-			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium",
-					61, TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4, "copper", 100,
-							TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
+			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61,
+					TextFormatting.GRAY), GOLD(3, "gold", 70,
+							TextFormatting.GOLD), COPPER(4, "copper", 100, TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
 
-			private int ID;
-			private String name;
-			private TextFormatting chatColor;
-			private int efficiency;
+			private int				ID;
+			private String			name;
+			private TextFormatting	chatColor;
+			private int				efficiency;
 
 			private Coils(int ID, String name, int efficiency, TextFormatting chatColorIn) {
 				this.ID = ID;

@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "normal": [
+            {"model": "wiptech:aluminium_ingot"}
+        ],
+        "facing=north": { "model": "wiptech:aluminium_ingot", "y": 90 },
+        "facing=east":  { "model": "wiptech:aluminium_ingot", "y": 180 },
+        "facing=south": { "model": "wiptech:aluminium_ingot", "y": 270 },
+        "facing=west":  { "model": "wiptech:aluminium_ingot", "y": 0 },
+        "inventory": { "model": "wiptech:aluminium_ingot"}
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "wiptech:tin_enamel"}],
+	"facing=north": { "model": "wiptech:tin_enamel" },
+        "facing=east":  { "model": "wiptech:tin_enamel", "y": 90 },
+	"facing=south": { "model": "wiptech:tin_enamel", "y": 180 },
+        "facing=west":  { "model": "wiptech:tin_enamel", "y": 270 },
+        "inventory": { "model": "wiptech:tin_enamel"}
+    }
+}

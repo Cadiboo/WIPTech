@@ -10,14 +10,14 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockBase extends Block {
 
-	public BlockBase(String name, Material materialIn) {
+	public BlockBase(String nameIn, Material materialIn) {
 		super(materialIn);
 
 		setHardness(1.0F);
 		setHarvestLevel(null, 0);
 
-		this.setRegistryName(new ResourceLocation(Reference.ID, name));
-		this.setUnlocalizedName(name);
+		this.setRegistryName(new ResourceLocation(Reference.ID, nameIn));
+		this.setUnlocalizedName(nameIn);
 	}
 
 	// Beacon Base
@@ -30,19 +30,6 @@ public class BlockBase extends Block {
 	@Override
 	public boolean isBeaconBase(IBlockAccess worldObj, BlockPos pos, BlockPos beacon) {
 		return this == beaconBase;
-	}
-
-	// Ore Block
-	private Block isOreBlock;
-
-	public Block setOreBlock() {
-		this.setHarvestLevel("Stone", 3);
-		this.setHardness(3.0F);
-		return isOreBlock = this;
-	}
-
-	public final boolean isOreBlock() {
-		return this == isOreBlock;
 	}
 
 	// Tile Entity
@@ -77,6 +64,10 @@ public class BlockBase extends Block {
 
 	public boolean isHiddenBlock() {
 		return this == hiddenBlock;
+	}
+
+	public boolean isNonHiddenBlock() {
+		return !this.isHiddenBlock();
 	}
 
 	// Tile Block Only (No item created for it)

@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "normal": [
+            {"model": "wiptech:capacitor_bank"}
+        ],
+        "inventory": { "model": "wiptech:capacitor_bank" }
+    }
+}

@@ -10,9 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Recipes {
-	private static ArrayList<ArrayList> crushRecipes = new ArrayList();
-	private static ArrayList<ArrayList> hammerRecipes = new ArrayList();
-	private static ArrayList<ArrayList> coilRecipes = new ArrayList();
+	private static ArrayList<ArrayList>	crushRecipes	= new ArrayList();
+	private static ArrayList<ArrayList>	hammerRecipes	= new ArrayList();
+	private static ArrayList<ArrayList>	coilRecipes		= new ArrayList();
 
 	private static final Block AIR = net.minecraft.init.Blocks.AIR;
 
@@ -22,17 +22,17 @@ public class Recipes {
 		addCoilRecipes();
 		WIPTech.logger.info("Registered Processing Recipes");
 
-		GameRegistry.addSmelting(Blocks.COPPER_ORE, new ItemStack(Items.COPPER_INGOT, 1), 0.0F);
-		GameRegistry.addSmelting(Blocks.TIN_ORE, new ItemStack(Items.TIN_INGOT, 1), 0.0F);
-		GameRegistry.addSmelting(Blocks.ALUMINIUM_ORE, new ItemStack(Items.ALUMINIUM_INGOT, 1), 0.0F);
-		GameRegistry.addSmelting(Blocks.SILVER_ORE, new ItemStack(Items.SILVER_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(Blocks.COPPER_ORE, new ItemStack(Blocks.COPPER_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(Blocks.TIN_ORE, new ItemStack(Blocks.TIN_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(Blocks.ALUMINIUM_ORE, new ItemStack(Blocks.ALUMINIUM_INGOT, 1), 0.0F);
+		GameRegistry.addSmelting(Blocks.SILVER_ORE, new ItemStack(Blocks.SILVER_INGOT, 1), 0.0F);
 		GameRegistry.addSmelting(Blocks.TUNGSTEN_ORE, new ItemStack(Items.TUNGSTEN_INGOT, 1), 0.0F);
 		GameRegistry.addSmelting(Blocks.OSMIUM_ORE, new ItemStack(Items.OSMIUM_INGOT, 1), 0.0F);
 		WIPTech.logger.info("Registered Ore Smelting");
 
 		GameRegistry.addSmelting(Items.ALUMINA, new ItemStack(Items.ALUMINIUM_INGOT, 2), 0.0F);
 		GameRegistry.addSmelting(Items.GALLIUM, new ItemStack(Items.GALLIUM_INGOT, 2), 0.0F);
-		GameRegistry.addSmelting(Items.IRON_OXIDE, new ItemStack(net.minecraft.init.Items.IRON_INGOT, 2), 0.0F);
+		GameRegistry.addSmelting(Items.IRON_OXIDE, new ItemStack(Items.IRON_INGOT), 0.0F);
 		GameRegistry.addSmelting(Items.SILICA, new ItemStack(Items.SILICON, 2), 0.0F);
 		GameRegistry.addSmelting(Items.TITANIA, new ItemStack(Items.TITANIUM_INGOT, 2), 0.0F);
 		WIPTech.logger.info("Registered Item Smelting");
@@ -40,35 +40,52 @@ public class Recipes {
 
 	private static void addHammerRecipes() {
 
-		addHammerRecipe(20, new ItemStack(Items.COPPER_NUGGET), new ItemStack(Blocks.COPPER_WIRE));
-		addHammerRecipe(20, new ItemStack(Items.COPPER_INGOT), new ItemStack(Blocks.COPPER_RAIL));
+		// addHammerRecipe(20, new ItemStack(Blocks.COPPER_INGOT), new
+		// ItemStack(Items.COPPER_RAIL));
+		// addHammerRecipe(20, new ItemStack(Blocks.TIN_INGOT), new
+		// ItemStack(Items.TIN_RAIL));
+		// addHammerRecipe(20, new ItemStack(Blocks.ALUMINIUM_INGOT), new
+		// ItemStack(Items.ALUMINIUM_RAIL));
+		// addHammerRecipe(20, new ItemStack(Blocks.SILVER_INGOT), new
+		// ItemStack(Items.SILVER_RAIL));
+		// addHammerRecipe(20, new ItemStack(Blocks.IRON_INGOT), new
+		// ItemStack(Items.IRON_RAIL));
+		// addHammerRecipe(20, new ItemStack(Blocks.GOLD_INGOT), new
+		// ItemStack(Items.GOLD_RAIL));
 
-		addHammerRecipe(20, new ItemStack(Items.GOLD_NUGGET), new ItemStack(Blocks.GOLD_WIRE));
-		addHammerRecipe(20, new ItemStack(Items.GOLD_INGOT), new ItemStack(Blocks.GOLD_RAIL));
+		addHammerRecipe(20, new ItemStack(Blocks.COPPER_NUGGET), new ItemStack(Blocks.COPPER_WIRE));
+		addHammerRecipe(20, new ItemStack(Blocks.TIN_NUGGET), new ItemStack(Blocks.TIN_WIRE));
+		addHammerRecipe(20, new ItemStack(Blocks.ALUMINIUM_NUGGET), new ItemStack(Blocks.ALUMINIUM_WIRE));
+		addHammerRecipe(20, new ItemStack(Blocks.SILVER_NUGGET), new ItemStack(Blocks.SILVER_WIRE));
+		addHammerRecipe(20, new ItemStack(Blocks.IRON_NUGGET), new ItemStack(Blocks.IRON_WIRE));
+		addHammerRecipe(20, new ItemStack(Blocks.GOLD_NUGGET), new ItemStack(Blocks.GOLD_WIRE));
 
 		addHammerRecipe(20, new ItemStack(Items.IRON_INGOT), new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 0));
 		addHammerRecipe(20, new ItemStack(Items.OSMIUM_INGOT), new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 1));
 		addHammerRecipe(20, new ItemStack(Items.TUNGSTEN_INGOT), new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 2));
 		for (int i = 0; i < 5 + 1; i++) {
-			addHammerRecipe(20, new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, i),
-					new ItemStack(Items.PARAMAGNETIC_PROJECILE, 3, i + 3));
+			addHammerRecipe(20, new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, i), new ItemStack(Items.PARAMAGNETIC_PROJECILE, 3, i + 3));
 		}
 	}
 
 	private static void addCoilRecipes() {
-		addCoilRecipe(20, new ItemStack(Blocks.GOLD_ENAMEL, 16), new ItemStack(Blocks.GOLD_SPOOL, 1));
-
-		addCoilRecipe(20, new ItemStack(Blocks.GOLD_SPOOL), new ItemStack(Items.GOLD_COIL, 4));
-
-		addCoilRecipe(20, new ItemStack(Blocks.COPPER_ENAMEL, 16), new ItemStack(Blocks.COPPER_SPOOL, 1));
-
-		addCoilRecipe(20, new ItemStack(Blocks.COPPER_SPOOL), new ItemStack(Items.COPPER_COIL, 4));
+		// addCoilRecipe(20, new ItemStack(Blocks.GOLD_ENAMEL, 16), new
+		// ItemStack(Blocks.GOLD_SPOOL, 1));
+		//
+		// addCoilRecipe(20, new ItemStack(Blocks.GOLD_SPOOL), new
+		// ItemStack(Items.GOLD_COIL, 4));
+		//
+		// addCoilRecipe(20, new ItemStack(Blocks.COPPER_ENAMEL, 16), new
+		// ItemStack(Blocks.COPPER_SPOOL, 1));
+		//
+		// addCoilRecipe(20, new ItemStack(Blocks.COPPER_SPOOL), new
+		// ItemStack(Items.COPPER_COIL, 4));
 	}
 
 	private static void addCrushRecipes() {
-		addCrushRecipe(100, new ItemStack(Blocks.BAUXITE_ORE), new ItemStack(Items.ALUMINA),
-				new ItemStack(Items.GALLIUM), new ItemStack(Items.IRON_OXIDE), new ItemStack(Items.SILICA),
-				new ItemStack(Items.TITANIA), new ItemStack(net.minecraft.init.Blocks.GRAVEL));
+		addCrushRecipe(100, new ItemStack(Blocks.BAUXITE_ORE), new ItemStack(Items.ALUMINA), new ItemStack(Items.GALLIUM),
+				new ItemStack(Items.IRON_OXIDE), new ItemStack(Items.SILICA), new ItemStack(Items.TITANIA),
+				new ItemStack(net.minecraft.init.Blocks.GRAVEL));
 
 		addCrushRecipe(20, new ItemStack(net.minecraft.init.Blocks.SAND), new ItemStack(Items.SILICON));
 	}

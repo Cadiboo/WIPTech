@@ -1,0 +1,12 @@
+{
+    "variants": {
+        "normal": [
+            {"model": "wiptech:silver_ingot"}
+        ],
+        "facing=north": { "model": "wiptech:silver_ingot", "y": 90 },
+        "facing=east":  { "model": "wiptech:silver_ingot", "y": 180 },
+        "facing=south": { "model": "wiptech:silver_ingot", "y": 270 },
+        "facing=west":  { "model": "wiptech:silver_ingot", "y": 0 },
+        "inventory": { "model": "wiptech:silver_ingot"}
+    }
+}

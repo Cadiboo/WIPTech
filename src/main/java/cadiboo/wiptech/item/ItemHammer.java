@@ -12,8 +12,8 @@ import net.minecraft.item.ItemTool;
 import net.minecraftforge.common.util.EnumHelper;
 
 public class ItemHammer extends ItemTool {
-	public static Item.ToolMaterial WIPTECHHAMMER = EnumHelper.addToolMaterial("WIPTECHHAMMER", 3, 250, 6.0F, 2.0F, 14);
-	private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(Blocks.getIngredientBlocks());
+	public static Item.ToolMaterial	WIPTECHHAMMER	= EnumHelper.addToolMaterial("WIPTECHHAMMER", 3, 250, 6.0F, 2.0F, 14);
+	private static final Set<Block>	EFFECTIVE_ON	= Sets.newHashSet(Blocks.getBlockItems());
 
 	public ItemHammer(String name, float attackDamage, Item.ToolMaterial material, Set effectiveBlocks) {
 		super(attackDamage, attackDamage, material, effectiveBlocks);
@@ -31,10 +31,12 @@ public class ItemHammer extends ItemTool {
 
 	@Override
 	public boolean canHarvestBlock(IBlockState blockIn) {
-		Block block = blockIn.getBlock();
-		if (EFFECTIVE_ON.contains(block)) {
+		if (EFFECTIVE_ON.contains(blockIn.getBlock())) {
 			return true;
 		}
 		return false;
 	}
+
+	// TODO knockback?
+
 }

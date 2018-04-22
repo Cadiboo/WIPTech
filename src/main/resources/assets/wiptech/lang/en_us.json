@@ -1,0 +1,87 @@
+{
+	"itemGroup.wiptechtab": "WIP Tech",
+	"entity.paramagneticprojectile.name": "Paramagnetic Projectile",
+	"entity.napalm.name": "Napalm",
+
+	"death.attack.napalm": "%1$s was melted by %2$s",
+	"death.attack.napalm.item": "%1$s was melted by %2$s using %3$s",
+
+	"death.attack.railgunprojectile": "%1$s was annihilated by %2$s",
+	"death.attack.railgunprojectile.item": "%1$s was annihilated by %2$s using %3$s",
+
+	"death.attack.coilgunprojectile": "%1$s was turned into a sieve by %2$s",
+	"death.attack.coilgunprojectile.item": "%1$s was turned into a sieve by %2$s using %3$s",
+
+	"death.attack.plasmaprojectile": "%1$s was incinerated by %2$s",
+	"death.attack.plasmaprojectile.item": "%1$s was incinerated by %2$s using %3$s",
+
+	"block.copper_ore": "Copper Ore",
+	"block.copper_block": "Copper Block",
+	"item.copper_ingot": "Copper Ingot",
+	"item.copper_nugget": "Copper Nugget",
+	"item.copper_strand": "Copper Strand",
+	"item.copper_enamel": "Enamel Copper Wire",
+	"block.copper_spool": "Copper Spool",
+	"item.copper_coil": "Copper Coil",
+
+	"item.gold_enamel": "Enamel Gold Wire",
+	"block.gold_spool": "Gold Spool",
+	"item.gold_coil": "Gold Coil",
+
+	"block.bauxite_ore": "Bauxite Ore",
+	"item.alumina": "Alumina (Aluminum Oxide)",
+	"item.gallium": "Gallium",
+	"item.gallium_ingot": "Gallium Ingot",
+	"item.iron_oxide": "Iron Oxide",
+	"item.silica": "Silica (Silicon Oxide)",
+	"item.silicon": "Silicon",
+	"item.titania": "Titania (Titanium Oxide)",
+	"item.titanium_ingot": "Titanium Ingot",
+
+	"item.paramagnetic_projectile.iron_large": "Large Iron Rod",
+	"item.paramagnetic_projectile.iron_medium": "Iron Rod",
+	"item.paramagnetic_projectile.iron_small": "Iron Pellet",
+
+	"block.aluminium_ore": "Aluminum Ore",
+	"block.aluminium_block": "Aluminum Block",
+	"item.aluminium_ingot": "Aluminum Ingot",
+	"item.aluminium_nugget": "Aluminum Nugget",
+	"item.aluminium_strand": "Aluminium Strand",
+	"item.aluminium_enamel": "Enamel Aluminium Wire",
+	"block.aluminium_spool": "Aluminium Spool",
+	"item.aluminium_coil": "Aluminium Coil",
+
+	"block.tin_ore": "Cassiterite",
+	"tile.tin_ore.info": "Tin Ore",
+	"block.tin_block": "Tin Block",
+	"item.tin_ingot": "Tin Ingot",
+	"item.tin_nugget": "Tin Nugget",
+	"item.tin_strand": "Tin Strand",
+	"item.tin_enamel": "Enamel Tin Wire",
+	"block.tin_spool": "Tin Spool",
+	"item.tin_coil": "Tin Coil",
+
+	"block.tungsten_ore": "Tungsten Ore",
+	"block.tungsten_block": "Tungsten Block",
+	"item.tungsten_ingot": "Tungsten Ingot",
+	"item.tungsten_nugget": "Tungsten Nugget",
+	"item.paramagnetic_projectile.tungsten_large": "Large Tungsten Rod",
+	"item.paramagnetic_projectile.tungsten_medium": "Tungsten Rod",
+	"item.paramagnetic_projectile.tungsten_small": "Tungsten Pellet",
+
+	"block.osmium_ore": "Osmium Ore",
+	"block.osmium_block": "Osmium Block",
+	"item.osmium_ingot": "Osmium Ingot",
+	"item.osmium_nugget": "Osmium Nugget",
+	"item.paramagnetic_projectile.osmium_large": "Large Osmium Rod",
+	"item.paramagnetic_projectile.osmium_medium": "Osmium Rod",
+	"item.paramagnetic_projectile.osmium_small": "Osmium Pellet",
+
+	"block.strong_piston": "Strong(Reinforced?) Piston",
+	"block.crusher": "Crusher",
+	"item.crusher_bit": "Crusher Bit",
+	"item.crusher_bit_holder": "Crusher Bit Anchor",
+	"block.coiler": "Coil Winder",
+	"block.turbine": "Wind Turbine",
+	"block.peripheral": "Peripheral Block"
+}

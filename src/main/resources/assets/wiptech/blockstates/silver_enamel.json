@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "normal": [{"model": "wiptech:silver_enamel"}],
+	"facing=north": { "model": "wiptech:silver_enamel" },
+        "facing=east":  { "model": "wiptech:silver_enamel", "y": 90 },
+	"facing=south": { "model": "wiptech:silver_enamel", "y": 180 },
+        "facing=west":  { "model": "wiptech:silver_enamel", "y": 270 },
+        "inventory": { "model": "wiptech:silver_enamel"}
+    }
+}

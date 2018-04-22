@@ -1,0 +1,6 @@
+{
+    "parent": "wiptech:block/wire",
+    "textures": {
+        "metal": "wiptech:items/tin_ingot"
+    }
+}

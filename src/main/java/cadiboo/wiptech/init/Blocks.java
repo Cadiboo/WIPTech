@@ -3,194 +3,126 @@ package cadiboo.wiptech.init;
 import java.util.ArrayList;
 import java.util.List;
 
-import cadiboo.wiptech.block.BlockAluminiumBlock;
-import cadiboo.wiptech.block.BlockAluminiumIngot;
-import cadiboo.wiptech.block.BlockAluminiumNugget;
-import cadiboo.wiptech.block.BlockAluminiumOre;
-import cadiboo.wiptech.block.BlockAluminiumRail;
-import cadiboo.wiptech.block.BlockAluminiumSpool;
 import cadiboo.wiptech.block.BlockBase;
-import cadiboo.wiptech.block.BlockBauxiteOre;
 import cadiboo.wiptech.block.BlockCapacitorBank;
 import cadiboo.wiptech.block.BlockCoiler;
-import cadiboo.wiptech.block.BlockCopperBlock;
-import cadiboo.wiptech.block.BlockCopperIngot;
-import cadiboo.wiptech.block.BlockCopperNugget;
-import cadiboo.wiptech.block.BlockCopperOre;
-import cadiboo.wiptech.block.BlockCopperRail;
-import cadiboo.wiptech.block.BlockCopperSpool;
 import cadiboo.wiptech.block.BlockCrusher;
-import cadiboo.wiptech.block.BlockGoldIngot;
-import cadiboo.wiptech.block.BlockGoldNugget;
-import cadiboo.wiptech.block.BlockGoldRail;
-import cadiboo.wiptech.block.BlockGoldSpool;
-import cadiboo.wiptech.block.BlockIronIngot;
-import cadiboo.wiptech.block.BlockIronNugget;
-import cadiboo.wiptech.block.BlockIronRail;
-import cadiboo.wiptech.block.BlockIronSpool;
-import cadiboo.wiptech.block.BlockMetalBlock;
-import cadiboo.wiptech.block.BlockOsmiumBlock;
-import cadiboo.wiptech.block.BlockOsmiumOre;
+import cadiboo.wiptech.block.BlockItem;
+import cadiboo.wiptech.block.BlockOre;
 import cadiboo.wiptech.block.BlockPeripheralBlock;
-import cadiboo.wiptech.block.BlockSilverBlock;
-import cadiboo.wiptech.block.BlockSilverIngot;
-import cadiboo.wiptech.block.BlockSilverNugget;
-import cadiboo.wiptech.block.BlockSilverOre;
-import cadiboo.wiptech.block.BlockSilverRail;
-import cadiboo.wiptech.block.BlockSilverSpool;
+import cadiboo.wiptech.block.BlockResourceBlock;
+import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockStrongPistonBase;
-import cadiboo.wiptech.block.BlockTinBlock;
-import cadiboo.wiptech.block.BlockTinIngot;
-import cadiboo.wiptech.block.BlockTinNugget;
-import cadiboo.wiptech.block.BlockTinOre;
-import cadiboo.wiptech.block.BlockTinRail;
-import cadiboo.wiptech.block.BlockTinSpool;
-import cadiboo.wiptech.block.BlockTungstenBlock;
-import cadiboo.wiptech.block.BlockTungstenOre;
 import cadiboo.wiptech.block.BlockTurbine;
 import cadiboo.wiptech.block.BlockWire;
-import cadiboo.wiptech.block.transmission.BlockAluminiumEnamel;
-import cadiboo.wiptech.block.transmission.BlockAluminiumWire;
-import cadiboo.wiptech.block.transmission.BlockCopperEnamel;
-import cadiboo.wiptech.block.transmission.BlockCopperWire;
-import cadiboo.wiptech.block.transmission.BlockGoldEnamel;
-import cadiboo.wiptech.block.transmission.BlockGoldWire;
-import cadiboo.wiptech.block.transmission.BlockIronEnamel;
-import cadiboo.wiptech.block.transmission.BlockIronWire;
-import cadiboo.wiptech.block.transmission.BlockSilverEnamel;
-import cadiboo.wiptech.block.transmission.BlockSilverWire;
-import cadiboo.wiptech.block.transmission.BlockTinEnamel;
-import cadiboo.wiptech.block.transmission.BlockTinWire;
+import cadiboo.wiptech.handler.EnumHandler.BlockItems;
+import cadiboo.wiptech.handler.EnumHandler.ConductiveMetals;
+import cadiboo.wiptech.handler.EnumHandler.Ores;
+import cadiboo.wiptech.handler.EnumHandler.ResourceBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 public class Blocks {
 
-	public static final BlockMetalBlock METAL_BLOCK = new BlockMetalBlock("metal_block", Material.IRON);
+	// 1.13
+	public static final BlockOre	COPPER_ORE		= new BlockOre("copper_ore", Material.ROCK, Ores.COPPER);
+	public static final BlockOre	TIN_ORE			= new BlockOre("tin_ore", Material.ROCK, Ores.TIN);
+	public static final BlockOre	ALUMINIUM_ORE	= new BlockOre("aluminium_ore", Material.ROCK, Ores.ALUMINIUM);
+	public static final BlockOre	SILVER_ORE		= new BlockOre("silver_ore", Material.ROCK, Ores.SILVER);
+	public static final BlockOre	BAUXITE_ORE		= new BlockOre("bauxite_ore", Material.ROCK, Ores.BAUXITE);
+	public static final BlockOre	OSMIUM_ORE		= new BlockOre("osmium_ore", Material.ROCK, Ores.OSMIUM);
+	public static final BlockOre	TUNGSTEN_ORE	= new BlockOre("tungsten_ore", Material.ROCK, Ores.TUNGSTEN);
 
-	public static final BlockCopperBlock COPPER_BLOCK = new BlockCopperBlock("copper_block", Material.IRON);
-	public static final BlockCopperOre COPPER_ORE = new BlockCopperOre("copper_ore", Material.ROCK);
-	public static final BlockCopperSpool COPPER_SPOOL = new BlockCopperSpool("copper_spool", Material.IRON);
-	public static final BlockCopperRail COPPER_RAIL = new BlockCopperRail("copper_rail", Material.CIRCUITS);
-	public static final BlockCopperWire COPPER_WIRE = new BlockCopperWire("copper_wire", Material.CIRCUITS);
-	public static final BlockCopperNugget COPPER_NUGGET = new BlockCopperNugget("copper_nugget_block");
-	public static final BlockCopperIngot COPPER_INGOT = new BlockCopperIngot("copper_ingot_block");
-	public static final BlockCopperEnamel COPPER_ENAMEL = new BlockCopperEnamel("copper_enamel", Material.CIRCUITS);
+	public static final BlockResourceBlock	COPPER_BLOCK	= new BlockResourceBlock("copper_block", Material.IRON, ResourceBlocks.COPPER);
+	public static final BlockResourceBlock	TIN_BLOCK		= new BlockResourceBlock("tin_block", Material.IRON, ResourceBlocks.TIN);
+	public static final BlockResourceBlock	ALUMINIUM_BLOCK	= new BlockResourceBlock("aluminium_block", Material.IRON, ResourceBlocks.ALUMINIUM);
+	public static final BlockResourceBlock	SILVER_BLOCK	= new BlockResourceBlock("silver_block", Material.IRON, ResourceBlocks.SILVER);
+	public static final BlockResourceBlock	OSMIUM_BLOCK	= new BlockResourceBlock("osmium_block", Material.IRON, ResourceBlocks.OSMIUM);
+	public static final BlockResourceBlock	TUNGSTEN_BLOCK	= new BlockResourceBlock("tungsten_block", Material.IRON, ResourceBlocks.TUNGSTEN);
+	public static final BlockResourceBlock	TITANIUM_BLOCK	= new BlockResourceBlock("titanium_block", Material.IRON, ResourceBlocks.TITANIUM);
 
-	public static final BlockTinBlock TIN_BLOCK = new BlockTinBlock("tin_block", Material.IRON);
-	public static final BlockTinOre TIN_ORE = new BlockTinOre("tin_ore", Material.ROCK);
-	public static final BlockTinSpool TIN_SPOOL = new BlockTinSpool("tin_spool", Material.IRON);
-	public static final BlockTinRail TIN_RAIL = new BlockTinRail("tin_rail", Material.CIRCUITS);
-	public static final BlockTinWire TIN_WIRE = new BlockTinWire("tin_wire", Material.CIRCUITS);
-	public static final BlockTinNugget TIN_NUGGET = new BlockTinNugget("tin_nugget_block");
-	public static final BlockTinIngot TIN_INGOT = new BlockTinIngot("tin_ingot_block");
-	public static final BlockTinEnamel TIN_ENAMEL = new BlockTinEnamel("tin_enamel", Material.CIRCUITS);
+	public static final BlockSpool	COPPER_SPOOL	= new BlockSpool("copper_spool", Material.IRON, ConductiveMetals.COPPER);
+	public static final BlockSpool	TIN_SPOOL		= new BlockSpool("tin_spool", Material.IRON, ConductiveMetals.TIN);
+	public static final BlockSpool	ALUMINIUM_SPOOL	= new BlockSpool("aluminium_spool", Material.IRON, ConductiveMetals.ALUMINIUM);
+	public static final BlockSpool	SILVER_SPOOL	= new BlockSpool("silver_spool", Material.IRON, ConductiveMetals.SILVER);
+	public static final BlockSpool	IRON_SPOOL		= new BlockSpool("iron_spool", Material.IRON, ConductiveMetals.IRON);
+	public static final BlockSpool	GOLD_SPOOL		= new BlockSpool("gold_spool", Material.IRON, ConductiveMetals.GOLD);
 
-	public static final BlockAluminiumBlock ALUMINIUM_BLOCK = new BlockAluminiumBlock("aluminium_block", Material.IRON);
-	public static final BlockAluminiumOre ALUMINIUM_ORE = new BlockAluminiumOre("aluminium_ore", Material.ROCK);
-	public static final BlockAluminiumSpool ALUMINIUM_SPOOL = new BlockAluminiumSpool("aluminium_spool", Material.IRON);
-	public static final BlockAluminiumRail ALUMINIUM_RAIL = new BlockAluminiumRail("aluminium_rail", Material.CIRCUITS);
-	public static final BlockAluminiumWire ALUMINIUM_WIRE = new BlockAluminiumWire("aluminium_wire", Material.CIRCUITS);
-	public static final BlockAluminiumNugget ALUMINIUM_NUGGET = new BlockAluminiumNugget("aluminium_nugget_block");
-	public static final BlockAluminiumIngot ALUMINIUM_INGOT = new BlockAluminiumIngot("aluminium_ingot_block");
-	public static final BlockAluminiumEnamel ALUMINIUM_ENAMEL = new BlockAluminiumEnamel("aluminium_enamel",
-			Material.CIRCUITS);
+	public static final BlockItem	COPPER_INGOT	= new BlockItem("copper_ingot", Material.IRON, BlockItems.COPPER_INGOT);
+	public static final BlockItem	TIN_INGOT		= new BlockItem("tin_ingot", Material.IRON, BlockItems.TIN_INGOT);
+	public static final BlockItem	ALUMINIUM_INGOT	= new BlockItem("aluminium_ingot", Material.IRON, BlockItems.ALUMINIUM_INGOT);
+	public static final BlockItem	SILVER_INGOT	= new BlockItem("silver_ingot", Material.IRON, BlockItems.SILVER_INGOT);
+	public static final BlockItem	IRON_INGOT		= (BlockItem) new BlockItem("iron_ingot", Material.IRON, BlockItems.IRON_INGOT).setHiddenBlock();
+	public static final BlockItem	GOLD_INGOT		= (BlockItem) new BlockItem("gold_ingot", Material.IRON, BlockItems.GOLD_INGOT).setHiddenBlock();
 
-	public static final BlockSilverBlock SILVER_BLOCK = new BlockSilverBlock("silver_block", Material.IRON);
-	public static final BlockSilverOre SILVER_ORE = new BlockSilverOre("silver_ore", Material.ROCK);
-	public static final BlockSilverSpool SILVER_SPOOL = new BlockSilverSpool("silver_spool", Material.IRON);
-	public static final BlockSilverRail SILVER_RAIL = new BlockSilverRail("silver_rail", Material.CIRCUITS);
-	public static final BlockSilverWire SILVER_WIRE = new BlockSilverWire("silver_wire", Material.CIRCUITS);
-	public static final BlockSilverNugget SILVER_NUGGET = new BlockSilverNugget("silver_nugget_block");
-	public static final BlockSilverIngot SILVER_INGOT = new BlockSilverIngot("silver_ingot_block");
-	public static final BlockSilverEnamel SILVER_ENAMEL = new BlockSilverEnamel("silver_enamel", Material.CIRCUITS);
+	public static final BlockItem	COPPER_NUGGET		= new BlockItem("copper_nugget", Material.IRON, BlockItems.COPPER_NUGGET);
+	public static final BlockItem	TIN_NUGGET			= new BlockItem("tin_nugget", Material.IRON, BlockItems.TIN_NUGGET);
+	public static final BlockItem	ALUMINIUM_NUGGET	= new BlockItem("aluminium_nugget", Material.IRON, BlockItems.ALUMINIUM_NUGGET);
+	public static final BlockItem	SILVER_NUGGET		= new BlockItem("silver_nugget", Material.IRON, BlockItems.SILVER_NUGGET);
+	public static final BlockItem	IRON_NUGGET			= (BlockItem) new BlockItem("iron_nugget", Material.IRON, BlockItems.IRON_NUGGET)
+			.setHiddenBlock();
+	public static final BlockItem	GOLD_NUGGET			= (BlockItem) new BlockItem("gold_nugget", Material.IRON, BlockItems.GOLD_NUGGET)
+			.setHiddenBlock();
 
-	public static final BlockGoldSpool GOLD_SPOOL = new BlockGoldSpool("gold_spool", Material.IRON);
-	public static final BlockGoldRail GOLD_RAIL = new BlockGoldRail("gold_rail", Material.CIRCUITS);
-	public static final BlockGoldWire GOLD_WIRE = new BlockGoldWire("gold_wire", Material.CIRCUITS);
-	public static final BlockGoldIngot GOLD_INGOT = new BlockGoldIngot("gold_ingot_block");
-	public static final BlockGoldNugget GOLD_NUGGET = new BlockGoldNugget("gold_nugget_block");
-	public static final BlockGoldEnamel GOLD_ENAMEL = new BlockGoldEnamel("gold_enamel", Material.CIRCUITS);
+	public static final BlockWire	COPPER_WIRE		= new BlockWire("copper_wire", Material.IRON, ConductiveMetals.COPPER, false);
+	public static final BlockWire	TIN_WIRE		= new BlockWire("tin_wire", Material.IRON, ConductiveMetals.TIN, false);
+	public static final BlockWire	ALUMINIUM_WIRE	= new BlockWire("aluminium_wire", Material.IRON, ConductiveMetals.ALUMINIUM, false);
+	public static final BlockWire	SILVER_WIRE		= new BlockWire("silver_wire", Material.IRON, ConductiveMetals.SILVER, false);
+	public static final BlockWire	IRON_WIRE		= new BlockWire("iron_wire", Material.IRON, ConductiveMetals.IRON, false);
+	public static final BlockWire	GOLD_WIRE		= new BlockWire("gold_wire", Material.IRON, ConductiveMetals.GOLD, false);
 
-	public static final BlockIronSpool IRON_SPOOL = new BlockIronSpool("iron_spool", Material.IRON);
-	public static final BlockIronRail IRON_RAIL = new BlockIronRail("iron_rail", Material.CIRCUITS);
-	public static final BlockIronWire IRON_WIRE = new BlockIronWire("iron_wire", Material.CIRCUITS);
-	public static final BlockIronIngot IRON_INGOT = new BlockIronIngot("iron_ingot_block");
-	public static final BlockIronNugget IRON_NUGGET = new BlockIronNugget("iron_nugget_block");
-	public static final BlockIronEnamel IRON_ENAMEL = new BlockIronEnamel("iron_enamel", Material.CIRCUITS);
+	public static final BlockWire	COPPER_ENAMEL		= new BlockWire("copper_enamel", Material.IRON, ConductiveMetals.COPPER, true);
+	public static final BlockWire	TIN_ENAMEL			= new BlockWire("tin_enamel", Material.IRON, ConductiveMetals.TIN, true);
+	public static final BlockWire	ALUMINIUM_ENAMEL	= new BlockWire("aluminium_enamel", Material.IRON, ConductiveMetals.ALUMINIUM, true);
+	public static final BlockWire	SILVER_ENAMEL		= new BlockWire("silver_enamel", Material.IRON, ConductiveMetals.SILVER, true);
+	public static final BlockWire	IRON_ENAMEL			= new BlockWire("iron_enamel", Material.IRON, ConductiveMetals.IRON, true);
+	public static final BlockWire	GOLD_ENAMEL			= new BlockWire("gold_enamel", Material.IRON, ConductiveMetals.GOLD, true);
 
-	public static final BlockBauxiteOre BAUXITE_ORE = new BlockBauxiteOre("bauxite_ore", Material.ROCK);
+	// 1.12
+	public static final BlockCrusher	CRUSHER	= new BlockCrusher("crusher", Material.IRON);
+	public static final BlockCoiler		COILER	= new BlockCoiler("coiler", Material.IRON);
 
-	public static final BlockTungstenOre TUNGSTEN_ORE = new BlockTungstenOre("tungsten_ore", Material.ROCK);
-	public static final BlockTungstenBlock TUNGSTEN_BLOCK = new BlockTungstenBlock("tungsten_block", Material.IRON);
+	public static final BlockStrongPistonBase STRONG_PISTON = new BlockStrongPistonBase("strong_piston", Material.GROUND);
 
-	public static final BlockOsmiumOre OSMIUM_ORE = new BlockOsmiumOre("osmium_ore", Material.ROCK);
-	public static final BlockOsmiumBlock OSMIUM_BLOCK = new BlockOsmiumBlock("osmium_block", Material.IRON);
-
-	public static final BlockCrusher CRUSHER = new BlockCrusher("crusher", Material.IRON);
-	public static final BlockCoiler COILER = new BlockCoiler("coiler", Material.IRON);
-
-	public static final BlockStrongPistonBase STRONG_PISTON = new BlockStrongPistonBase("strong_piston",
-			Material.GROUND);
-
-	public static final BlockTurbine TURBINE = new BlockTurbine("turbine", Material.IRON);
-	public static final BlockPeripheralBlock PERIPHERAL = new BlockPeripheralBlock("peripheral", Material.IRON);
-	public static final BlockCapacitorBank CAPACITOR_BANK = new BlockCapacitorBank("capacitor_bank", Material.IRON);
-
-	public static final BlockWire WIRE = new BlockWire("wire", Material.GLASS);
+	public static final BlockTurbine			TURBINE			= new BlockTurbine("turbine", Material.IRON);
+	public static final BlockPeripheralBlock	PERIPHERAL		= new BlockPeripheralBlock("peripheral", Material.IRON);
+	public static final BlockCapacitorBank		CAPACITOR_BANK	= new BlockCapacitorBank("capacitor_bank", Material.IRON);
 
 	public static final Block[] BLOCKS = {
 
-			METAL_BLOCK, WIRE,
+			COPPER_ORE, TIN_ORE, ALUMINIUM_ORE, SILVER_ORE, BAUXITE_ORE, OSMIUM_ORE, TUNGSTEN_ORE,
 
-			COPPER_BLOCK, COPPER_ORE, COPPER_SPOOL, COPPER_RAIL, COPPER_WIRE, COPPER_NUGGET, COPPER_INGOT,
-			COPPER_ENAMEL,
+			COPPER_BLOCK, TIN_BLOCK, ALUMINIUM_BLOCK, SILVER_BLOCK, OSMIUM_BLOCK, TUNGSTEN_BLOCK, TITANIUM_BLOCK,
 
-			TIN_BLOCK, TIN_ORE, TIN_SPOOL, TIN_RAIL, TIN_WIRE, TIN_NUGGET, TIN_INGOT, TIN_ENAMEL,
+			// COPPER_, TIN_, ALUMINIUM_, SILVER_, IRON_, GOLD_,
 
-			ALUMINIUM_BLOCK, ALUMINIUM_ORE, ALUMINIUM_SPOOL, ALUMINIUM_RAIL, ALUMINIUM_WIRE, ALUMINIUM_NUGGET,
-			ALUMINIUM_INGOT, ALUMINIUM_ENAMEL,
+			COPPER_SPOOL, TIN_SPOOL, ALUMINIUM_SPOOL, SILVER_SPOOL, IRON_SPOOL, GOLD_SPOOL,
 
-			SILVER_BLOCK, SILVER_ORE, SILVER_SPOOL, SILVER_RAIL, SILVER_WIRE, SILVER_NUGGET, SILVER_INGOT,
-			SILVER_ENAMEL,
+			COPPER_INGOT, TIN_INGOT, ALUMINIUM_INGOT, SILVER_INGOT, IRON_INGOT, GOLD_INGOT,
 
-			GOLD_SPOOL, GOLD_RAIL, GOLD_WIRE, GOLD_NUGGET, GOLD_INGOT, GOLD_ENAMEL,
+			COPPER_NUGGET, TIN_NUGGET, ALUMINIUM_NUGGET, SILVER_NUGGET, IRON_NUGGET, GOLD_NUGGET,
 
-			IRON_SPOOL, IRON_RAIL, IRON_WIRE, IRON_NUGGET, IRON_INGOT, IRON_ENAMEL,
+			COPPER_WIRE, TIN_WIRE, ALUMINIUM_WIRE, SILVER_WIRE, IRON_WIRE, GOLD_WIRE,
 
-			BAUXITE_ORE,
-
-			TUNGSTEN_ORE, TUNGSTEN_BLOCK,
-
-			OSMIUM_ORE, OSMIUM_BLOCK,
+			COPPER_ENAMEL, TIN_ENAMEL, ALUMINIUM_ENAMEL, SILVER_ENAMEL, IRON_ENAMEL, GOLD_ENAMEL,
 
 			CRUSHER, COILER,
 
 			STRONG_PISTON,
 
-			TURBINE, PERIPHERAL, CAPACITOR_BANK, };
-
-	private static List<Block> Ores = new ArrayList();
-	private static Boolean OresIterated = Boolean.valueOf(false);
+			TURBINE, PERIPHERAL, /* CAPACITOR_BANK, */ };
 
 	public static List<Block> getOres() {
-		if (!OresIterated.booleanValue()) {
-			for (int i = 0; i < BLOCKS.length; i++) {
-				Block block = BLOCKS[i];
-				if (!Ores.contains(block)) {
-					if ((block instanceof BlockBase) && ((BlockBase) block).isOreBlock()) {
-						Ores.add(block);
-					}
-				} else {
-					OresIterated = Boolean.valueOf(true);
-				}
-			}
+		List<Block> OreBlocks = new ArrayList<Block>();
+		for (int i = 0; i < BLOCKS.length; i++) {
+			if (BLOCKS[i] instanceof BlockOre)
+				OreBlocks.add(BLOCKS[i]);
 		}
-		return Ores;
+		return OreBlocks;
 	}
 
-	private static List<Block> TileEntities = new ArrayList();
-	private static Boolean TileEntitiesIterated = Boolean.valueOf(false);
+	private static List<Block>	TileEntities			= new ArrayList();
+	private static Boolean		TileEntitiesIterated	= Boolean.valueOf(false);
 
 	public static List<Block> getTileEntities() {
 		if (!TileEntitiesIterated.booleanValue()) {
@@ -208,61 +140,13 @@ public class Blocks {
 		return TileEntities;
 	}
 
-	private static List<Block> NuggetBlocks = new ArrayList();
-	private static Boolean NuggetBlocksIterated = Boolean.valueOf(false);
-
-	public static List<Block> getNuggetBlocks() {
-		if (!NuggetBlocksIterated.booleanValue()) {
-			for (int i = 0; i < BLOCKS.length; i++) {
-				Block block = BLOCKS[i];
-				if (!NuggetBlocks.contains(block)) {
-					if ((block instanceof BlockBase) && ((BlockBase) block).isNuggetBlock()) {
-						NuggetBlocks.add(block);
-					}
-				} else {
-					NuggetBlocksIterated = Boolean.valueOf(true);
-				}
-			}
+	public static List<Block> getBlockItems() {
+		List<Block> BlockItems = new ArrayList<Block>();
+		for (int i = 0; i < BLOCKS.length; i++) {
+			if (BLOCKS[i] instanceof BlockItem)
+				BlockItems.add(BLOCKS[i]);
 		}
-		return NuggetBlocks;
-	}
-
-	private static List<Block> IngotBlocks = new ArrayList();
-	private static Boolean IngotBlocksIterated = Boolean.valueOf(false);
-
-	public static List<Block> getIngotBlocks() {
-		if (!IngotBlocksIterated.booleanValue()) {
-			for (int i = 0; i < BLOCKS.length; i++) {
-				Block block = BLOCKS[i];
-				if (!IngotBlocks.contains(block)) {
-					if ((block instanceof BlockBase) && ((BlockBase) block).isIngotBlock()) {
-						IngotBlocks.add(block);
-					}
-				} else {
-					IngotBlocksIterated = Boolean.valueOf(true);
-				}
-			}
-		}
-		return IngotBlocks;
-	}
-
-	private static List<Block> IngredientBlocks = new ArrayList();
-	private static Boolean IngredientBlocksIterated = Boolean.valueOf(false);
-
-	public static List<Block> getIngredientBlocks() {
-		if (!IngredientBlocksIterated)
-			for (int i = 0; i < BLOCKS.length; i++) {
-				if (IngredientBlocks.contains(BLOCKS[i])) {
-					IngredientBlocksIterated = true;
-					break;
-				}
-				if (!(BLOCKS[i] instanceof BlockBase))
-					break;
-				BlockBase block = (BlockBase) BLOCKS[i];
-				if (block.isNuggetBlock() || block.isIngotBlock())
-					IngredientBlocks.add(block);
-			}
-		return IngredientBlocks;
+		return BlockItems;
 	}
 
 }

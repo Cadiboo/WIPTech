@@ -1,0 +1,6 @@
+{
+    "parent": "wiptech:block/ingot",
+    "textures": {
+       "ingot": "items/iron_ingot"
+    }
+}
