@@ -82,7 +82,7 @@ public class Blocks {
 	public static final BlockCrusher	CRUSHER	= new BlockCrusher("crusher", Material.IRON);
 	public static final BlockCoiler		COILER	= new BlockCoiler("coiler", Material.IRON);
 
-	public static final BlockStrongPistonBase STRONG_PISTON = new BlockStrongPistonBase("strong_piston", Material.GROUND);
+	public static final BlockStrongPistonBase STRONG_PISTON = new BlockStrongPistonBase("strong_piston", true);
 
 	public static final BlockTurbine			TURBINE			= new BlockTurbine("turbine", Material.IRON);
 	public static final BlockPeripheralBlock	PERIPHERAL		= new BlockPeripheralBlock("peripheral", Material.IRON);
