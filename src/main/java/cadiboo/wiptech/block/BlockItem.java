@@ -8,9 +8,14 @@ import cadiboo.wiptech.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +23,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockItem extends BlockBase {
+
+	public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
 	private static final AxisAlignedBB	DEFAULT_AABB	= new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 0.25D, 0.75D);
 	private static final AxisAlignedBB	NS_AABB			= DEFAULT_AABB;
@@ -27,6 +34,7 @@ public class BlockItem extends BlockBase {
 
 	public BlockItem(String name, Material materialIn, BlockItems itemIn) {
 		super(name, materialIn);
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 		this.setBeaconBase();
 		this.setTransparentBlock();
 		this.item = itemIn;
@@ -48,6 +56,8 @@ public class BlockItem extends BlockBase {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+		if (item.getName().contains("nugget"))
+			return DEFAULT_AABB;
 		// switch (state.getValue(FACING)) {
 		// case NORTH:
 		// case SOUTH:
@@ -83,6 +93,33 @@ public class BlockItem extends BlockBase {
 		else
 			return Block.getBlockFromItem(itemIn);
 
+	}
+
+	@Override
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta,
+			EntityLivingBase placer) {
+		return this.getDefaultState().withProperty(FACING, Utils.getStateFromPos(worldIn, pos.down()).getValue(FACING));
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, new IProperty[] { FACING });
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		EnumFacing enumfacing = EnumFacing.getFront(meta);
+
+		if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
+			enumfacing = EnumFacing.NORTH;
+		}
+
+		return this.getDefaultState().withProperty(FACING, enumfacing);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(FACING).getIndex();
 	}
 
 }
