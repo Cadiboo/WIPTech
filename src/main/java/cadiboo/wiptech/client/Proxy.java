@@ -1,6 +1,5 @@
 package cadiboo.wiptech.client;
 
-import cadiboo.wiptech.IProxy;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
@@ -11,6 +10,7 @@ import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.provider.ModularWeaponProvider;
 import cadiboo.wiptech.util.CustomEnergyStorage;
+import cadiboo.wiptech.util.IProxy;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;

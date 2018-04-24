@@ -1,7 +1,7 @@
 package cadiboo.wiptech.server;
 
-import cadiboo.wiptech.IProxy;
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.util.IProxy;
 import net.minecraft.util.text.translation.I18n;
 
 public class Proxy implements IProxy {
