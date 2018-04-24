@@ -242,11 +242,9 @@ public class EnumHandler {
 	}
 
 	public static enum ParamagneticProjectiles implements IStringSerializable {
-		IRON_LARGE(0, "iron_large", TextFormatting.WHITE), OSMIUM_LARGE(1, "osmium_large", TextFormatting.DARK_BLUE), TUNGSTEN_LARGE(2,
-				"tungsten_large", TextFormatting.GRAY), IRON_MEDIUM(3, "iron_medium", TextFormatting.WHITE), OSMIUM_MEDIUM(4, "osmium_medium",
-						TextFormatting.DARK_BLUE), TUNGSTEN_MEDIUM(5, "tungsten_medium", TextFormatting.GRAY), IRON_SMALL(6, "iron_small",
-								TextFormatting.WHITE), OSMIUM_SMALL(7, "osmium_small",
-										TextFormatting.DARK_BLUE), TUNGSTEN_SMALL(8, "tungsten_small", TextFormatting.GRAY);// ,
+		IRON_LARGE(0, "iron_large", TextFormatting.WHITE), OSMIUM_LARGE(1, "osmium_large", TextFormatting.DARK_BLUE), TUNGSTEN_LARGE(2, "tungsten_large", TextFormatting.GRAY), IRON_MEDIUM(3,
+				"iron_medium", TextFormatting.WHITE), OSMIUM_MEDIUM(4, "osmium_medium", TextFormatting.DARK_BLUE), TUNGSTEN_MEDIUM(5, "tungsten_medium", TextFormatting.GRAY), IRON_SMALL(6,
+						"iron_small", TextFormatting.WHITE), OSMIUM_SMALL(7, "osmium_small", TextFormatting.DARK_BLUE), TUNGSTEN_SMALL(8, "tungsten_small", TextFormatting.GRAY);// ,
 		// PLASMA(9,"plasma", TextFormatting.GOLD); //nano
 
 		private int				ID;
@@ -301,9 +299,8 @@ public class EnumHandler {
 			 * Nickel Aluminum Bronze 7%
 			 */
 
-			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61,
-					TextFormatting.GRAY), GOLD(3, "gold", 70,
-							TextFormatting.GOLD), COPPER(4, "copper", 100, TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
+			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4,
+					"copper", 100, TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
 
 			private int				ID;
 			private String			name;
@@ -341,8 +338,8 @@ public class EnumHandler {
 		}
 
 		public static enum Circuits implements IStringSerializable, IWeaponModule {
-			MANUAL(0, "manual", TextFormatting.WHITE), BURST3(1, "burst3", TextFormatting.RED), BURST5(2, "burst5", TextFormatting.RED), BURST10(3,
-					"burst10", TextFormatting.RED), AUTO(4, "auto", TextFormatting.DARK_RED), OVERCLOCKED(5, "overclocked", TextFormatting.AQUA);
+			MANUAL(0, "manual", TextFormatting.WHITE), BURST3(1, "burst3", TextFormatting.RED), BURST5(2, "burst5", TextFormatting.RED), BURST10(3, "burst10", TextFormatting.RED), AUTO(4, "auto",
+					TextFormatting.DARK_RED), OVERCLOCKED(5, "overclocked", TextFormatting.AQUA);
 
 			private int				ID;
 			private String			name;
@@ -407,9 +404,8 @@ public class EnumHandler {
 			 * Nickel Aluminum Bronze 7%
 			 */
 
-			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61,
-					TextFormatting.GRAY), GOLD(3, "gold", 70,
-							TextFormatting.GOLD), COPPER(4, "copper", 100, TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
+			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4,
+					"copper", 100, TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
 
 			private int				ID;
 			private String			name;
@@ -446,6 +442,41 @@ public class EnumHandler {
 				return this.efficiency;
 			}
 
+		}
+
+	}
+
+	public static enum ToolTypes implements IStringSerializable {
+
+		SHOVEL(0, "shovel"),
+
+		PICKAXE(1, "pickaxe"),
+
+		SWORD(2, "sword"),
+
+		HOE(3, "hoe"),
+
+		AXE(4, "axe");
+
+		private int		ID;
+		private String	name;
+
+		private ToolTypes(int id, String name) {
+			this.ID = id;
+			this.name = name;
+		}
+
+		public static ToolTypes byID(int i) {
+			return ToolTypes.values()[i];
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+
+		public int getID() {
+			return this.ID;
 		}
 
 	}

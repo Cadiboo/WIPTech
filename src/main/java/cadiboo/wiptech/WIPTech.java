@@ -7,6 +7,7 @@ import cadiboo.wiptech.handler.GuiHandler;
 import cadiboo.wiptech.handler.network.PacketHandler;
 import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Recipes;
+import cadiboo.wiptech.util.IProxy;
 import cadiboo.wiptech.util.Reference;
 import cadiboo.wiptech.world.WorldGen;
 import net.minecraftforge.fml.common.Mod;

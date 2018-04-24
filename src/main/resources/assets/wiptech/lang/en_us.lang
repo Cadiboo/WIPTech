@@ -19,54 +19,82 @@ death.attack.plasmaprojectile.item=%1$s was incinerated by %2$s using %3$s
 #Copper
 tile.copper_ore.name=Copper Ore
 tile.copper_block.name=Copper Block
-item.copper_ingot.name=Copper Ingot
-item.copper_nugget.name=Copper Nugget
-item.copper_strand.name=Copper Strand
-item.copper_enamel.name=Enamel Copper Wire
+tile.copper_ingot.name=Copper Ingot
+tile.copper_nugget.name=Copper Nugget
+tile.copper_wire.name=Copper Wire
+tile.copper_enamel.name=Enamel Copper Wire
 tile.copper_spool.name=Copper Spool
 item.copper_coil.name=Copper Coil
+item.copper_rail.name=Copper Rail
 
 #Gold
-item.gold_enamel.name=Enamel Gold Wire
+tile.gold_enamel.name=Enamel Gold Wire
+tile.gold_wire.name=Gold Wire
 tile.gold_spool.name=Gold Spool
 item.gold_coil.name=Gold Coil
+item.gold_rail.name=Gold Rail
 
 #Bauxite
 tile.bauxite_ore.name=Bauxite Ore
+tile.bauxite_ore.tooltip=Primary source of Aluminum. By-Products include Gallium, Iron Oxides, Silica and Titania.
 item.alumina.name=Alumina (Aluminum Oxide)
 item.gallium.name=Gallium
 item.gallium_ingot.name=Gallium Ingot
+item.gallium_wafer.name=Gallium Wafer
+tile.gallium_block.name= Gallium Block
 item.iron_oxide.name=Iron Oxide
 item.silica.name=Silica (Silicon Oxide)
 item.silicon.name=Silicon
+item.silicon_wafer.name=Silicon Wafer
+tile.silicon_block.name=Silicon Block
 item.titania.name=Titania (Titanium Oxide)
 item.titanium_ingot.name=Titanium Ingot
+item.titanium_nugget.name=Titanium Nugget
+tile.titanium_block.name=Titanium Block
 
 #Iron
 item.paramagnetic_projectile.iron_large.name=Large Iron Rod
 item.paramagnetic_projectile.iron_medium.name=Iron Rod
 item.paramagnetic_projectile.iron_small.name=Iron Pellet
+item.iron_rail.name=Iron Rail
+tile.iron_wire.name=Iron Wire
+tile.iron_enamel.name=Iron Enamel
+tile.iron_spool.name=Iron Spool
+item.iron_coil.name=Iron Coil
 
 #Aluminium (Aluminum for Americans)
 tile.aluminium_ore.name=Aluminum Ore
 tile.aluminium_block.name=Aluminum Block
-item.aluminium_ingot.name=Aluminum Ingot
-item.aluminium_nugget.name=Aluminum Nugget
-item.aluminium_strand.name=Aluminium Strand
-item.aluminium_enamel.name=Enamel Aluminium Wire
-tile.aluminium_spool.name=Aluminium Spool
-item.aluminium_coil.name=Aluminium Coil
+tile.aluminium_ingot.name=Aluminum Ingot
+tile.aluminium_nugget.name=Aluminum Nugget
+tile.aluminium_wire.name=Aluminum Wire
+tile.aluminium_enamel.name=Enamel Aluminum Wire
+tile.aluminium_spool.name=Aluminum Spool
+item.aluminium_coil.name=Aluminum Coil
+item.aluminium_rail.name=Aluminum Rail
 
 #Tin
 tile.tin_ore.name=Cassiterite
 tile.tin_ore.info=Tin Ore
 tile.tin_block.name=Tin Block
-item.tin_ingot.name=Tin Ingot
-item.tin_nugget.name=Tin Nugget
-item.tin_strand.name=Tin Strand
-item.tin_enamel.name=Enamel Tin Wire
+tile.tin_ingot.name=Tin Ingot
+tile.tin_nugget.name=Tin Nugget
+tile.tin_wire.name=Tin Wire
+tile.tin_enamel.name=Enamel Tin Wire
 tile.tin_spool.name=Tin Spool
 item.tin_coil.name=Tin Coil
+item.tin_rail.name=Tin Rail
+
+#Silver
+tile.silver_ore.name=Silver Ore
+tile.silver_block.name=Silver Block
+tile.silver_ingot.name=Silver Ingot
+tile.silver_nugget.name=Silver Nugget
+tile.silver_wire.name=Silver Wire
+tile.silver_enamel.name=Enamel Silver Wire
+tile.silver_spool.name=Silver Spool
+item.silver_coil.name=Silver Coil
+item.silver_rail.name=Silver Rail
 
 #Tungsten
 tile.tungsten_ore.name=Tungsten Ore
@@ -98,5 +126,18 @@ tile.coiler.name=Coil Winder
 tile.turbine.name=Wind Turbine
 ##Peripheral
 tile.peripheral.name=Peripheral Block
+
+#Tools
+item.hammer.name=Hammer
+item.flamethrower.name=Flamethrower
+item.railgun.name=Railgun
+item.coilgun.name=Coilgun
+item.plasmagun.name=Hybrid Plasma Accelerator
+item.capacitor.name=Capacitor
+item.super_capacitor.name=Super Capacitor
+
+
+item.osmium_axe.name=Osmium Axeitem.tungsten_axe.name=Tungsten Axeitem.copper_axe.name=Copper Axeitem.silver_axe.name=Silver Axeitem.tin_axe.name=Tin Axeitem.titanium_axe.name=Titanium Axeitem.aluminium_axe.name=Aluminium Axeitem.osmium_hoe.name=Osmium Hoeitem.tungsten_hoe.name=Tungsten Hoeitem.copper_hoe.name=Copper Hoeitem.silver_hoe.name=Silver Hoeitem.tin_hoe.name=Tin Hoeitem.titanium_hoe.name=Titanium Hoeitem.aluminium_hoe.name=Aluminium Hoeitem.osmium_sword.name=Osmium Sworditem.tungsten_sword.name=Tungsten Sworditem.copper_sword.name=Copper Sworditem.silver_sword.name=Silver Sworditem.tin_sword.name=Tin Sworditem.titanium_sword.name=Titanium Sworditem.aluminium_sword.name=Aluminium Sworditem.osmium_pickaxe.name=Osmium Pickaxeitem.tungsten_pickaxe.name=Tungsten Pickaxeitem.copper_pickaxe.name=Copper Pickaxeitem.silver_pickaxe.name=Silver Pickaxeitem.tin_pickaxe.name=Tin Pickaxeitem.titanium_pickaxe.name=Titanium Pickaxeitem.aluminium_pickaxe.name=Aluminium Pickaxe
+item.osmium_shovel.name=Osmium Shovelitem.tungsten_shovel.name=Tungsten Shovelitem.copper_shovel.name=Copper Shovelitem.silver_shovel.name=Silver Shovelitem.tin_shovel.name=Tin Shovelitem.titanium_shovel.name=Titanium Shovelitem.aluminium_shovel.name=Aluminium Shovelitem.osmium_helmet.name=Osmium Helmetitem.tungsten_helmet.name=Tungsten Helmetitem.copper_helmet.name=Copper Helmetitem.silver_helmet.name=Silver Helmetitem.tin_helmet.name=Tin Helmetitem.titanium_helmet.name=Titanium Helmetitem.aluminium_helmet.name=Aluminium Helmetitem.osmium_chestplate.name=Osmium Chestplateitem.tungsten_chestplate.name=Tungsten Chestplateitem.copper_chestplate.name=Copper Chestplateitem.silver_chestplate.name=Silver Chestplateitem.tin_chestplate.name=Tin Chestplateitem.titanium_chestplate.name=Titanium Chestplateitem.aluminium_chestplate.name=Aluminium Chestplateitem.osmium_leggings.name=Osmium Leggingsitem.tungsten_leggings.name=Tungsten Leggingsitem.copper_leggings.name=Copper Leggingsitem.silver_leggings.name=Silver Leggingsitem.tin_leggings.name=Tin Leggingsitem.titanium_leggings.name=Titanium Leggingsitem.aluminium_leggings.name=Aluminium Leggingsitem.osmium_boots.name=Osmium Bootsitem.tungsten_boots.name=Tungsten Bootsitem.copper_boots.name=Copper Bootsitem.silver_boots.name=Silver Bootsitem.tin_boots.name=Tin Bootsitem.titanium_boots.name=Titanium Bootsitem.aluminium_boots.name=Aluminium Boots
 
 

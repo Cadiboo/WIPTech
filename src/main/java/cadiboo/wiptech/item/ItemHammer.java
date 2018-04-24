@@ -5,6 +5,7 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 
 import cadiboo.wiptech.init.Blocks;
+import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -17,7 +18,7 @@ public class ItemHammer extends ItemTool {
 
 	public ItemHammer(String name, float attackDamage, Item.ToolMaterial material, Set effectiveBlocks) {
 		super(attackDamage, attackDamage, material, effectiveBlocks);
-		setRegistryName("wiptech", name);
+		setRegistryName(Reference.ID, name);
 		setUnlocalizedName(name);
 	}
 

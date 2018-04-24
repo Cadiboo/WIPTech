@@ -30,7 +30,7 @@ public class Recipes {
 		GameRegistry.addSmelting(Blocks.OSMIUM_ORE, new ItemStack(Items.OSMIUM_INGOT, 1), 0.0F);
 		WIPTech.logger.info("Registered Ore Smelting");
 
-		GameRegistry.addSmelting(Items.ALUMINA, new ItemStack(Items.ALUMINIUM_INGOT, 2), 0.0F);
+		GameRegistry.addSmelting(Items.ALUMINA, new ItemStack(Blocks.ALUMINIUM_INGOT, 2), 0.0F);
 		GameRegistry.addSmelting(Items.GALLIUM, new ItemStack(Items.GALLIUM_INGOT, 2), 0.0F);
 		GameRegistry.addSmelting(Items.IRON_OXIDE, new ItemStack(Items.IRON_INGOT), 0.0F);
 		GameRegistry.addSmelting(Items.SILICA, new ItemStack(Items.SILICON, 2), 0.0F);

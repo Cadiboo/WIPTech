@@ -1,0 +1,1 @@
+{  "type": "minecraft:crafting_shaped",  "pattern": [    "XXX",    "X X"  ],  "key": {    "X": {      "item": "wiptech:aluminium_ingot"    }  },  "result": {    "item": "wiptech:aluminium_helmet"  }}

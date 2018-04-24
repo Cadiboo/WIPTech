@@ -1,0 +1,1 @@
+{  "type": "minecraft:crafting_shaped",  "pattern": [    "XX",    "X#",    " #"  ],  "key": {    "#": {      "item": "minecraft:stick"    },    "X": {      "item": "wiptech:osmium_ingot"    }  },  "result": {    "item": "wiptech:osmium_axe"  }}

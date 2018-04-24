@@ -1,0 +1,1 @@
+{  "type": "minecraft:crafting_shaped",  "pattern": [    "XXX",    " # ",    " # "  ],  "key": {    "#": {      "item": "minecraft:stick"    },    "X": {      "item": "wiptech:tungsten_ingot"    }  },  "result": {    "item": "wiptech:tungsten_pickaxe"  }}

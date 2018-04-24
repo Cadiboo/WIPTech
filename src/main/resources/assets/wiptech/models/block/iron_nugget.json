@@ -1,6 +1,6 @@
 {
     "parent": "wiptech:block/nugget_right",
     "textures": {
-        "metal": "items/iron_nugget"
+        "nugget": "items/iron_nugget"
     }
 }

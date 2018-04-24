@@ -1,0 +1,1 @@
+{  "type": "minecraft:crafting_shaped",  "pattern": [    "###",    "###",    "###"  ],  "key": {    "#": {      "item": "wiptech:titanium_ingot"    }  },  "result": {    "item": "wiptech:titanium_block"  }}
