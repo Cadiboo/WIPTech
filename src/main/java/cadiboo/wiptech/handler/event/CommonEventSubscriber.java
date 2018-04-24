@@ -34,13 +34,13 @@ import net.minecraftforge.oredict.OreDictionary;
 public class CommonEventSubscriber {
 
 	@SubscribeEvent
-	public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
+	public static void registerEntities(final RegistryEvent.Register<EntityEntry> event) {
 		event.getRegistry().registerAll(Entities.ENTITIES);
 		WIPTech.logger.info("Registered Entities");
 	}
 
 	@SubscribeEvent
-	public static void registerBlocks(RegistryEvent.Register<Block> event) {
+	public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(cadiboo.wiptech.init.Blocks.BLOCKS);
 		WIPTech.logger.info("Registered Blocks");
 
@@ -53,7 +53,7 @@ public class CommonEventSubscriber {
 	}
 
 	@SubscribeEvent
-	public static void registerItems(RegistryEvent.Register<Item> event) {
+	public static void registerItems(final RegistryEvent.Register<Item> event) {
 
 		event.getRegistry().registerAll(cadiboo.wiptech.init.Items.ITEMS);
 
@@ -127,11 +127,12 @@ public class CommonEventSubscriber {
 	}
 
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.HIGHEST)
-	public static EnumActionResult BlockRightClickEvent(PlayerInteractEvent.RightClickBlock event) {
+	public static EnumActionResult BlockRightClickEvent(final PlayerInteractEvent.RightClickBlock event) {
 		if (!(Utils.getBlockFromPos(event.getWorld(), event.getPos()) instanceof BlockAnvil) || event.getFace() != EnumFacing.UP)
 			return EnumActionResult.PASS;
 
-		if (Utils.getBlockFromPos(event.getWorld(), event.getPos().up()) instanceof BlockItem) {
+		if (Utils.getBlockFromPos(event.getWorld(), event.getPos().up()) instanceof BlockItem && (isBlockItem(event.getItemStack().getItem())
+				|| isBlockItem(event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem()))) {
 			event.setCanceled(true);
 			return EnumActionResult.FAIL;
 		}
@@ -142,7 +143,11 @@ public class CommonEventSubscriber {
 				|| (isBlockItem(event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem())
 						&& event.getItemStack().isEmpty())) {
 			if (Blocks.COPPER_INGOT.canPlaceBlockAt(event.getWorld(), event.getPos().up())) {
-				event.getWorld().setBlockState(event.getPos().up(), BlockItem.getBlockToPlace(event.getItemStack().getItem()).getDefaultState(), 2);
+				event.getWorld().setBlockState(event.getPos().up(),
+						BlockItem.getBlockToPlace(event.getItemStack().getItem()).getStateForPlacement(event.getWorld(), event.getPos().up(),
+								event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z,
+								event.getItemStack().getMetadata(), event.getEntityPlayer()),
+						2);
 				if (!event.getEntityPlayer().isCreative())
 					event.getItemStack().shrink(1);
 				event.setCanceled(true);
@@ -153,13 +158,26 @@ public class CommonEventSubscriber {
 		return EnumActionResult.PASS;
 	}
 
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public static void BlockBreakEvent(final BlockEvent.BreakEvent event) {
+		WIPTech.logger.info(event);
+
+		if (event.getState().getBlock() instanceof BlockAnvil) {
+			WIPTech.logger.info("anvil");
+			if (!(Utils.getBlockFromPos(event.getWorld(), event.getPos().up()) instanceof BlockItem))
+				return;
+			event.getWorld().destroyBlock(event.getPos().up(), !event.getPlayer().isCreative());
+		}
+
+	}
+
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void onHarvest(BlockEvent.HarvestDropsEvent event) {
+	public static void onHarvest(final BlockEvent.HarvestDropsEvent event) {
 		if (event.getHarvester() == null)
 			return;
 		if (!(event.getState().getBlock() instanceof BlockItem))
 			return;
-		if (!(event.getWorld().getBlockState(event.getPos().down()).getBlock() instanceof BlockAnvil))
+		if (!(Utils.getBlockFromPos(event.getWorld(), event.getPos().down()) instanceof BlockAnvil))
 			return;
 		if (event.getHarvester().getHeldItem(EnumHand.values()[event.getHarvester().getActiveHand().ordinal()]).getItem() != Items.HAMMER)
 			return;
