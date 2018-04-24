@@ -2,7 +2,7 @@
     "textures": {
 	"bottom": "blocks/piston_bottom",
         "side": "blocks/piston_side",
-        "platform": "wiptech:blocks/strong_piston_top",
+        "platform": "wiptech:blocks/strong_piston_top_normal",
         "particle": "blocks/piston_side"
     },
     "elements": [

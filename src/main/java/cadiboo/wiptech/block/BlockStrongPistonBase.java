@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Lists;
 
 import cadiboo.wiptech.block.state.BlockStrongPistonStructureHelper;
+import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonBase;
@@ -20,7 +21,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -57,7 +57,7 @@ public class BlockStrongPistonBase extends BlockPistonBase {
 	public static boolean canPush(IBlockState state, World worldIn, BlockPos pos, EnumFacing facing, boolean destroyBlocks, EnumFacing face) {
 		Block block = state.getBlock();
 
-		if (block == Blocks.OBSIDIAN)
+		if (block == net.minecraft.init.Blocks.OBSIDIAN)
 			return true;
 		else
 			return BlockPistonBase.canPush(state, worldIn, pos, facing, destroyBlocks, face);
@@ -169,7 +169,8 @@ public class BlockStrongPistonBase extends BlockPistonBase {
 			}
 
 			worldIn.setBlockState(pos,
-					Blocks.PISTON_EXTENSION.getDefaultState().withProperty(BlockPistonMoving.FACING, enumfacing).withProperty(BlockPistonMoving.TYPE,
+					net.minecraft.init.Blocks.PISTON_EXTENSION.getDefaultState().withProperty(BlockPistonMoving.FACING, enumfacing).withProperty(
+							BlockPistonMoving.TYPE,
 							this.isSticky ? BlockPistonExtension.EnumPistonType.STICKY : BlockPistonExtension.EnumPistonType.DEFAULT),
 					3);
 			worldIn.setTileEntity(pos, BlockPistonMoving.createTilePiston(this.getStateFromMeta(param), enumfacing, false, true));
@@ -180,7 +181,7 @@ public class BlockStrongPistonBase extends BlockPistonBase {
 				Block block = iblockstate.getBlock();
 				boolean flag1 = false;
 
-				if (block == Blocks.PISTON_EXTENSION) {
+				if (block == net.minecraft.init.Blocks.PISTON_EXTENSION) {
 					TileEntity tileentity = worldIn.getTileEntity(blockpos);
 
 					if (tileentity instanceof TileEntityPiston) {
@@ -195,7 +196,8 @@ public class BlockStrongPistonBase extends BlockPistonBase {
 
 				if (!flag1 && !iblockstate.getBlock().isAir(iblockstate, worldIn, blockpos)
 						&& canPush(iblockstate, worldIn, blockpos, enumfacing.getOpposite(), false, enumfacing)
-						&& (iblockstate.getMobilityFlag() == EnumPushReaction.NORMAL || block == Blocks.PISTON || block == Blocks.STICKY_PISTON)) {
+						&& (iblockstate.getMobilityFlag() == EnumPushReaction.NORMAL || block == Blocks.STRONG_PISTON
+								|| block == Blocks.STRONG_PISTON)) {
 					this.doMove(worldIn, pos, enumfacing, false);
 				}
 			} else {
@@ -249,7 +251,7 @@ public class BlockStrongPistonBase extends BlockPistonBase {
 				// mimic vanilla behavior.
 				float chance = iblockstate.getBlock() instanceof BlockSnow ? -1.0f : 1.0f;
 				iblockstate.getBlock().dropBlockAsItemWithChance(worldIn, blockpos1, iblockstate, chance, 0);
-				worldIn.setBlockState(blockpos1, Blocks.AIR.getDefaultState(), 4);
+				worldIn.setBlockState(blockpos1, net.minecraft.init.Blocks.AIR.getDefaultState(), 4);
 				--k;
 				aiblockstate[k] = iblockstate;
 			}
@@ -257,9 +259,9 @@ public class BlockStrongPistonBase extends BlockPistonBase {
 			for (int l = list.size() - 1; l >= 0; --l) {
 				BlockPos blockpos3 = list.get(l);
 				IBlockState iblockstate2 = worldIn.getBlockState(blockpos3);
-				worldIn.setBlockState(blockpos3, Blocks.AIR.getDefaultState(), 2);
+				worldIn.setBlockState(blockpos3, net.minecraft.init.Blocks.AIR.getDefaultState(), 2);
 				blockpos3 = blockpos3.offset(enumfacing);
-				worldIn.setBlockState(blockpos3, Blocks.PISTON_EXTENSION.getDefaultState().withProperty(FACING, direction), 4);
+				worldIn.setBlockState(blockpos3, net.minecraft.init.Blocks.PISTON_EXTENSION.getDefaultState().withProperty(FACING, direction), 4);
 				worldIn.setTileEntity(blockpos3, BlockPistonMoving.createTilePiston(list1.get(l), direction, extending, false));
 				--k;
 				aiblockstate[k] = iblockstate2;
@@ -268,13 +270,13 @@ public class BlockStrongPistonBase extends BlockPistonBase {
 			BlockPos blockpos2 = pos.offset(direction);
 
 			if (extending) {
-				BlockPistonExtension.EnumPistonType blockpistonextension$enumpistontype = this.isSticky ? BlockPistonExtension.EnumPistonType.STICKY
-						: BlockPistonExtension.EnumPistonType.DEFAULT;
-				IBlockState iblockstate3 = Blocks.PISTON_HEAD.getDefaultState().withProperty(BlockPistonExtension.FACING, direction)
-						.withProperty(BlockPistonExtension.TYPE, blockpistonextension$enumpistontype);
-				IBlockState iblockstate1 = Blocks.PISTON_EXTENSION.getDefaultState().withProperty(BlockPistonMoving.FACING, direction).withProperty(
-						BlockPistonMoving.TYPE,
-						this.isSticky ? BlockPistonExtension.EnumPistonType.STICKY : BlockPistonExtension.EnumPistonType.DEFAULT);
+				BlockStrongPistonExtension.EnumPistonType type = this.isSticky ? BlockStrongPistonExtension.EnumPistonType.STICKY
+						: BlockStrongPistonExtension.EnumPistonType.NORMAL;
+				IBlockState iblockstate3 = Blocks.STRONG_PISTON_HEAD.getDefaultState().withProperty(BlockStrongPistonExtension.FACING, direction)
+						.withProperty(BlockStrongPistonExtension.TYPE, type);
+				IBlockState iblockstate1 = net.minecraft.init.Blocks.PISTON_EXTENSION.getDefaultState()
+						.withProperty(BlockPistonMoving.FACING, direction).withProperty(BlockPistonMoving.TYPE,
+								this.isSticky ? BlockPistonExtension.EnumPistonType.STICKY : BlockPistonExtension.EnumPistonType.DEFAULT);
 				worldIn.setBlockState(blockpos2, iblockstate1, 4);
 				worldIn.setTileEntity(blockpos2, BlockPistonMoving.createTilePiston(iblockstate3, direction, true, true));
 			}
@@ -288,7 +290,7 @@ public class BlockStrongPistonBase extends BlockPistonBase {
 			}
 
 			if (extending) {
-				worldIn.notifyNeighborsOfStateChange(blockpos2, Blocks.PISTON_HEAD, false);
+				worldIn.notifyNeighborsOfStateChange(blockpos2, net.minecraft.init.Blocks.PISTON_HEAD, false);
 			}
 
 			return true;

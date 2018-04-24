@@ -13,6 +13,7 @@ import cadiboo.wiptech.block.BlockPeripheralBlock;
 import cadiboo.wiptech.block.BlockResourceBlock;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockStrongPistonBase;
+import cadiboo.wiptech.block.BlockStrongPistonExtension;
 import cadiboo.wiptech.block.BlockTurbine;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.handler.EnumHandler.BlockItems;
@@ -82,7 +83,9 @@ public class Blocks {
 	public static final BlockCrusher	CRUSHER	= new BlockCrusher("crusher", Material.IRON);
 	public static final BlockCoiler		COILER	= new BlockCoiler("coiler", Material.IRON);
 
-	public static final BlockStrongPistonBase STRONG_PISTON = new BlockStrongPistonBase("strong_piston", true);
+	public static final BlockStrongPistonBase		STRONG_PISTON			= new BlockStrongPistonBase("strong_piston", false);
+	public static final BlockStrongPistonBase		STRONG_PISTON_STICKY	= new BlockStrongPistonBase("strong_piston_sticky", true);
+	public static final BlockStrongPistonExtension	STRONG_PISTON_HEAD		= new BlockStrongPistonExtension("strong_piston_head");
 
 	public static final BlockTurbine			TURBINE			= new BlockTurbine("turbine", Material.IRON);
 	public static final BlockPeripheralBlock	PERIPHERAL		= new BlockPeripheralBlock("peripheral", Material.IRON);
@@ -108,7 +111,7 @@ public class Blocks {
 
 			CRUSHER, COILER,
 
-			STRONG_PISTON,
+			STRONG_PISTON, STRONG_PISTON_STICKY, STRONG_PISTON_HEAD,
 
 			TURBINE, PERIPHERAL, /* CAPACITOR_BANK, */ };
 
