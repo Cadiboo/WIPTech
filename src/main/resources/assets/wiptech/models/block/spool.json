@@ -3,7 +3,7 @@
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"textures": {
 		"planks": "blocks/planks_oak",
-		"missing": "wiptech:util/transparent1x1.png",
+		"missing": "wiptech:util/transparent1x1",
 		"particle": "#wire"
 	},
 	"elements": [
