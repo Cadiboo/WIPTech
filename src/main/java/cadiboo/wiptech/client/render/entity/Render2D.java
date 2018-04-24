@@ -1,28 +1,28 @@
 package cadiboo.wiptech.client.render.entity;
 
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderBasic<T extends Entity> extends Render<T> {
-	protected final Item item;
-	private final RenderItem itemRenderer;
-	private float scale;
+public class Render2D<T extends Entity> extends Render<T> {
 
-	public RenderBasic(RenderManager renderManagerIn, Item itemIn, RenderItem itemRendererIn, float scale) {
+	protected final ResourceLocation	texture;
+	private float						scale;
+
+	public Render2D(RenderManager renderManagerIn, ResourceLocation texture, float scale) {
 		super(renderManagerIn);
-		this.item = itemIn;
-		this.itemRenderer = itemRendererIn;
+		this.texture = texture;
 		this.scale = scale;
 	}
 
@@ -32,17 +32,24 @@ public class RenderBasic<T extends Entity> extends Render<T> {
 		GlStateManager.translate((float) x, (float) y, (float) z);
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-		GlStateManager.rotate(
-				(this.renderManager.options.thirdPersonView == 2 ? -1 : 1) * this.renderManager.playerViewX, 1.0F, 0.0F,
-				0.0F);
+		GlStateManager.rotate((this.renderManager.options.thirdPersonView == 2 ? -1 : 1) * this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 		GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		bindTexture(texture);
 		GlStateManager.scale(this.scale, this.scale, this.scale);
 		if (this.renderOutlines) {
 			GlStateManager.enableColorMaterial();
 			GlStateManager.enableOutlineMode(getTeamColor(entity));
 		}
-		this.itemRenderer.renderItem(getStackToRender(entity), ItemCameraTransforms.TransformType.GROUND);
+
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+		bufferbuilder.pos(-1, -1, -1).tex(0, 1).endVertex();
+		bufferbuilder.pos(-1, 0, -1).tex(0, 0).endVertex();
+		bufferbuilder.pos(1, 0, -1).tex(1, 0).endVertex();
+		bufferbuilder.pos(1, -1, -1).tex(1, 1).endVertex();
+
 		if (this.renderOutlines) {
 			GlStateManager.disableOutlineMode();
 			GlStateManager.disableColorMaterial();
@@ -52,12 +59,8 @@ public class RenderBasic<T extends Entity> extends Render<T> {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 	}
 
-	public ItemStack getStackToRender(T entityIn) {
-		return new ItemStack(this.item);
-	}
-
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {
-		return TextureMap.LOCATION_BLOCKS_TEXTURE;
+		return TextureMap.LOCATION_MISSING_TEXTURE;
 	}
 }

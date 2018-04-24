@@ -5,7 +5,6 @@ import javax.annotation.Nonnull;
 import org.lwjgl.opengl.GL11;
 
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
-import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -31,8 +30,10 @@ public class RenderEntityParamagneticProjectile<T extends EntityParamagneticProj
 		super(renderManager);
 	}
 
-	private ItemStack ammoStack = new ItemStack(Items.PARAMAGNETIC_PROJECILE);
-	private boolean overheated = false;
+	private ItemStack	ammoStack;
+	private boolean		overheated;
+
+	public static final ResourceLocation LOCATION_PLASMA_CORE_TEXTURE = new ResourceLocation(Reference.ID, "textures/entities/plasma_core.png");
 	// Heading, Pitch, Roll
 	// Heading (being a rotation around an "up"-axis), pitch (being a rotation
 	// around a "right"-axis), and roll (being a rotation about a "forward"-axis)
@@ -48,11 +49,8 @@ public class RenderEntityParamagneticProjectile<T extends EntityParamagneticProj
 		GlStateManager.enableRescaleNormal();
 		GlStateManager.enableCull();
 
-		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0,
-				1, 0);
-		GlStateManager.rotate(
-				-(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks), 1, 0,
-				0);
+		GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks, 0, 1, 0);
+		GlStateManager.rotate(-(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks), 1, 0, 0);
 
 		// projectile shake
 		float renderShake = entity.projectileShake - partialTicks;
@@ -65,9 +63,9 @@ public class RenderEntityParamagneticProjectile<T extends EntityParamagneticProj
 		if (entity.isPlasma()) {
 			GlStateManager.scale(0.5, 0.5, 0.5);
 
-			this.bindTexture(new ResourceLocation(Reference.ID, "textures/entities/plasma_core.png"));
+			this.bindTexture(LOCATION_PLASMA_CORE_TEXTURE);
 			// GlStateManager.depthMask(true);
-			drawQuad(0, 1, 0, 1, 0.125, 0.125, 0.125, 1);
+			drawCuboid(0, 1, 0, 1, 0.125, 0.125, 0.125, 1);
 			// GlStateManager.depthMask(false);
 
 			this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
@@ -84,7 +82,7 @@ public class RenderEntityParamagneticProjectile<T extends EntityParamagneticProj
 
 			GlStateManager.color(0.6F, 0.5F, 1);
 
-			drawQuad(0, 1, 0, 1, 0.25, 0.25, 0.25, 1);
+			drawCuboid(0, 1, 0, 1, 0.25, 0.25, 0.25, 1);
 
 			GlStateManager.depthMask(true);
 			GlStateManager.disableCull();
@@ -126,25 +124,25 @@ public class RenderEntityParamagneticProjectile<T extends EntityParamagneticProj
 					float scale = 1F;
 
 					switch (entity.getAmmoId()) {
-					default:
-						scale = 1F;
-						multiplier = 1;
-						break;
-					case 3:
-					case 4:
-					case 5:
-						multiplier = 2;
-						scale = 0.5F;
-						break;
-					case 6:
-					case 7:
-					case 8:
-						multiplier = 2;
-						scale = 0.25F;
-						break;
-					case 9: // never happens
-						scale = 1F;
-						break;
+						default:
+							scale = 1F;
+							multiplier = 1;
+							break;
+						case 3:
+						case 4:
+						case 5:
+							multiplier = 2;
+							scale = 0.5F;
+							break;
+						case 6:
+						case 7:
+						case 8:
+							multiplier = 2;
+							scale = 0.25F;
+							break;
+						case 9: // never happens
+							scale = 1F;
+							break;
 					}
 
 					minU = midU - (width / (8F * multiplier));
@@ -155,7 +153,7 @@ public class RenderEntityParamagneticProjectile<T extends EntityParamagneticProj
 					if (overheated)
 						GlStateManager.color(1F, 0, 0);
 
-					drawQuad(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);
+					drawCuboid(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);
 
 				}
 			}
@@ -172,8 +170,7 @@ public class RenderEntityParamagneticProjectile<T extends EntityParamagneticProj
 		return TextureMap.LOCATION_MISSING_TEXTURE;
 	}
 
-	private void drawQuad(float minU, float maxU, float minV, float maxV, double width, double height, double length,
-			double scale) {
+	private void drawCuboid(float minU, float maxU, float minV, float maxV, double width, double height, double length, double scale) {
 
 		GlStateManager.scale(scale, scale, scale);
 
