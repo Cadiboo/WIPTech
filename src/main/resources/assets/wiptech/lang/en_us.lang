@@ -1,7 +1,21 @@
+#TEST
+item.test_launcher.name=TEST Launcher (Inventory)
+item.test_modular_weapon.name=TEST Modular Weapon (Rapid Fire)
+
 itemGroup.wiptechtab=WIP Tech
 #Entity
 entity.paramagneticprojectile.name=Paramagnetic Projectile
 entity.napalm.name=Napalm
+entity.iron_large.name=Large Iron Rod
+entity.iron_medium.name=Iron Rod
+entity.iron_small.name=Iron Pellet
+entity.osmium_large.name=Large Osmium Rod
+entity.osmium_medium.name=Osmium Rod
+entity.osmium_small.name=Osmium Pellet
+entity.tungsten_large.name=Large Tungsten Rod
+entity.tungsten_medium.name=Tungsten Rod
+entity.tungsten_small.name=Tungsten Pellet
+
 
 ##Deaths
 death.attack.napalm=%1$s was melted by %2$s
@@ -144,7 +158,6 @@ item.coilgun.name=Coilgun
 item.plasmagun.name=Hybrid Plasma Accelerator
 item.capacitor.name=Capacitor
 item.super_capacitor.name=Super Capacitor
-
 
 item.osmium_axe.name=Osmium Axeitem.tungsten_axe.name=Tungsten Axeitem.copper_axe.name=Copper Axeitem.silver_axe.name=Silver Axeitem.tin_axe.name=Tin Axeitem.titanium_axe.name=Titanium Axeitem.aluminium_axe.name=Aluminium Axeitem.osmium_hoe.name=Osmium Hoeitem.tungsten_hoe.name=Tungsten Hoeitem.copper_hoe.name=Copper Hoeitem.silver_hoe.name=Silver Hoeitem.tin_hoe.name=Tin Hoeitem.titanium_hoe.name=Titanium Hoeitem.aluminium_hoe.name=Aluminium Hoeitem.osmium_sword.name=Osmium Sworditem.tungsten_sword.name=Tungsten Sworditem.copper_sword.name=Copper Sworditem.silver_sword.name=Silver Sworditem.tin_sword.name=Tin Sworditem.titanium_sword.name=Titanium Sworditem.aluminium_sword.name=Aluminium Sworditem.osmium_pickaxe.name=Osmium Pickaxeitem.tungsten_pickaxe.name=Tungsten Pickaxeitem.copper_pickaxe.name=Copper Pickaxeitem.silver_pickaxe.name=Silver Pickaxeitem.tin_pickaxe.name=Tin Pickaxeitem.titanium_pickaxe.name=Titanium Pickaxeitem.aluminium_pickaxe.name=Aluminium Pickaxe
 item.osmium_shovel.name=Osmium Shovelitem.tungsten_shovel.name=Tungsten Shovelitem.copper_shovel.name=Copper Shovelitem.silver_shovel.name=Silver Shovelitem.tin_shovel.name=Tin Shovelitem.titanium_shovel.name=Titanium Shovelitem.aluminium_shovel.name=Aluminium Shovelitem.osmium_helmet.name=Osmium Helmetitem.tungsten_helmet.name=Tungsten Helmetitem.copper_helmet.name=Copper Helmetitem.silver_helmet.name=Silver Helmetitem.tin_helmet.name=Tin Helmetitem.titanium_helmet.name=Titanium Helmetitem.aluminium_helmet.name=Aluminium Helmetitem.osmium_chestplate.name=Osmium Chestplateitem.tungsten_chestplate.name=Tungsten Chestplateitem.copper_chestplate.name=Copper Chestplateitem.silver_chestplate.name=Silver Chestplateitem.tin_chestplate.name=Tin Chestplateitem.titanium_chestplate.name=Titanium Chestplateitem.aluminium_chestplate.name=Aluminium Chestplateitem.osmium_leggings.name=Osmium Leggingsitem.tungsten_leggings.name=Tungsten Leggingsitem.copper_leggings.name=Copper Leggingsitem.silver_leggings.name=Silver Leggingsitem.tin_leggings.name=Tin Leggingsitem.titanium_leggings.name=Titanium Leggingsitem.aluminium_leggings.name=Aluminium Leggingsitem.osmium_boots.name=Osmium Bootsitem.tungsten_boots.name=Tungsten Bootsitem.copper_boots.name=Copper Bootsitem.silver_boots.name=Silver Bootsitem.tin_boots.name=Tin Bootsitem.titanium_boots.name=Titanium Bootsitem.aluminium_boots.name=Aluminium Boots

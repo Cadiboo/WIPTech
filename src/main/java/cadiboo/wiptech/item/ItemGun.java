@@ -66,7 +66,7 @@ public class ItemGun extends ItemBase {
 
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
-		// TODO Auto-generated method stub
+		this.onPlayerStoppedUsing(stack, player.getEntityWorld(), player, 10);
 		super.onUsingTick(stack, player, count);
 	}
 
@@ -94,7 +94,7 @@ public class ItemGun extends ItemBase {
 		if (!worldIn.isRemote) {
 			ItemParamagneticProjectile113 item = (ItemParamagneticProjectile113) ammo.getItem();
 			EntityArrow projectile = item.createProjectile(worldIn, stack, player);
-			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 1.0F);
+			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.0F);
 
 			if (player.isCreative()) {
 				projectile.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
@@ -110,13 +110,13 @@ public class ItemGun extends ItemBase {
 			ammo.shrink(1);
 		}
 
-		reloadTimeRemaining = 20;
+		// reloadTimeRemaining = 20;
 
 		player.addStat(StatList.getObjectUseStats(this));
 	}
 
 	private ItemParamagneticProjectile113 getDefaultAmmo() {
-		return Items.IRON_LARGE;
+		return Items.TUNGSTEN_LARGE;
 	}
 
 	@Override

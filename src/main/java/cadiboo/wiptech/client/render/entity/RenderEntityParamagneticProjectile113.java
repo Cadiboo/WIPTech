@@ -1,7 +1,5 @@
 package cadiboo.wiptech.client.render.entity;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
@@ -9,16 +7,12 @@ import org.lwjgl.opengl.GL11;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
 import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectiles;
 import cadiboo.wiptech.util.Reference;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
@@ -92,28 +86,29 @@ public class RenderEntityParamagneticProjectile113<T extends EntityParamagneticP
 			return;
 		}
 
-		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(ammoStack);
-		if (model == null)
-			return;
-		List<BakedQuad> quads = model.getQuads(null, null, 0L);
-		if (quads == null || quads.size() <= 0)
-			return;
-		TextureAtlasSprite sprite = quads.get(0).getSprite();
-		if (sprite == null)
-			return;
+		// IBakedModel model =
+		// Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(ammoStack);
+		// if (model == null)
+		// return;
+		// List<BakedQuad> quads = model.getQuads(null, null, 0L);
+		// if (quads == null || quads.size() <= 0)
+		// return;
+		// TextureAtlasSprite sprite = quads.get(0).getSprite();
+		// if (sprite == null)
+		// return;
+		//
+		// float minU = sprite.getMinU();
+		// float maxU = sprite.getMaxU();
+		// float minV = sprite.getMinV();
+		// float maxV = sprite.getMaxV();
+		//
+		// float width = maxU - minU;
+		// float height = maxV - minV;
+		//
+		// float midU = minU + (width / 2);
+		// float midV = minV + (height / 2);
 
-		float minU = sprite.getMinU();
-		float maxU = sprite.getMaxU();
-		float minV = sprite.getMinV();
-		float maxV = sprite.getMaxV();
-
-		float width = maxU - minU;
-		float height = maxV - minV;
-
-		float midU = minU + (width / 2);
-		float midV = minV + (height / 2);
-
-		float multiplier = 1;
+		float multiplier = 2;
 		float scale = 1;
 
 		switch (entity.getType().getSize()) {
@@ -130,6 +125,17 @@ public class RenderEntityParamagneticProjectile113<T extends EntityParamagneticP
 				break;
 		}
 
+		float minU = 0;
+		float maxU = 1;
+		float minV = 0;
+		float maxV = 1;
+
+		float width = maxU - minU;
+		float height = maxV - minV;
+
+		float midU = minU + (width / 2);
+		float midV = minV + (height / 2);
+
 		minU = midU - (width / (8F * multiplier));
 		maxU = midU + (width / (8F * multiplier));
 		minV = midV - (height / (8F * multiplier));
@@ -137,6 +143,8 @@ public class RenderEntityParamagneticProjectile113<T extends EntityParamagneticP
 
 		if (entity.getTemperature() > entity.getOverheatTemperature())
 			GlStateManager.color(1F, 0, 0);
+
+		this.bindTexture(entity.getTexture());
 
 		drawCuboid(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);
 
