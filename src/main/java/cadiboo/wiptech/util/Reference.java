@@ -9,7 +9,7 @@ public class Reference {
 
 	public static final String	ID					= "wiptech";
 	public static final String	NAME				= "WIPTech";
-	public static final String	VERSION				= "0.13.2";
+	public static final String	VERSION				= "0.14.0";
 	public static final String	ACCEPTED_VERSIONS	= "[1.12.2]";
 
 	public static final String ENERGY_UNIT = "Pirate Ninjas";
