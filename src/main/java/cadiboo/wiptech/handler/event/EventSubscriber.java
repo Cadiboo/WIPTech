@@ -31,7 +31,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 @Mod.EventBusSubscriber(modid = Reference.ID)
-public class CommonEventSubscriber {
+public class EventSubscriber {
 
 	@SubscribeEvent
 	public static void registerEntities(final RegistryEvent.Register<EntityEntry> event) {
@@ -122,8 +122,7 @@ public class CommonEventSubscriber {
 	}
 
 	private static boolean isBlockItem(Item item) {
-		return Block.getBlockFromItem(item) instanceof BlockItem || item == Items.IRON_INGOT || item == Items.GOLD_INGOT || item == Items.IRON_NUGGET
-				|| item == Items.GOLD_NUGGET;
+		return Block.getBlockFromItem(item) instanceof BlockItem || item == Items.IRON_INGOT || item == Items.GOLD_INGOT || item == Items.IRON_NUGGET || item == Items.GOLD_NUGGET;
 	}
 
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.HIGHEST)
@@ -131,8 +130,8 @@ public class CommonEventSubscriber {
 		if (!(Utils.getBlockFromPos(event.getWorld(), event.getPos()) instanceof BlockAnvil) || event.getFace() != EnumFacing.UP)
 			return EnumActionResult.PASS;
 
-		if (Utils.getBlockFromPos(event.getWorld(), event.getPos().up()) instanceof BlockItem && (isBlockItem(event.getItemStack().getItem())
-				|| isBlockItem(event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem()))) {
+		if (Utils.getBlockFromPos(event.getWorld(), event.getPos().up()) instanceof BlockItem
+				&& (isBlockItem(event.getItemStack().getItem()) || isBlockItem(event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem()))) {
 			event.setCanceled(true);
 			return EnumActionResult.FAIL;
 		}
@@ -140,14 +139,10 @@ public class CommonEventSubscriber {
 		// should be put on more than one line
 		// event stack is placeable ||(other hand stack is placeable && event stack=air)
 		if (isBlockItem(event.getItemStack().getItem())
-				|| (isBlockItem(event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem())
-						&& event.getItemStack().isEmpty())) {
+				|| (isBlockItem(event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem()) && event.getItemStack().isEmpty())) {
 			if (Blocks.COPPER_INGOT.canPlaceBlockAt(event.getWorld(), event.getPos().up())) {
-				event.getWorld().setBlockState(event.getPos().up(),
-						BlockItem.getBlockToPlace(event.getItemStack().getItem()).getStateForPlacement(event.getWorld(), event.getPos().up(),
-								event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z,
-								event.getItemStack().getMetadata(), event.getEntityPlayer()),
-						2);
+				event.getWorld().setBlockState(event.getPos().up(), BlockItem.getBlockToPlace(event.getItemStack().getItem()).getStateForPlacement(event.getWorld(), event.getPos().up(),
+						event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z, event.getItemStack().getMetadata(), event.getEntityPlayer()), 2);
 				if (!event.getEntityPlayer().isCreative())
 					event.getItemStack().shrink(1);
 				event.setCanceled(true);

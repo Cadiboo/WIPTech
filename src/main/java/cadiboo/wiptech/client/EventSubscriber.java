@@ -1,4 +1,4 @@
-package cadiboo.wiptech.handler.event;
+package cadiboo.wiptech.client;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockBase;
@@ -29,7 +29,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = Reference.ID)
-public class ClientEventSubscriber {
+public class EventSubscriber {
 
 	@SubscribeEvent
 	public static void registerModels(ModelRegistryEvent event) {
@@ -39,6 +39,8 @@ public class ClientEventSubscriber {
 				continue blockItemModels;
 			if (Blocks.BLOCKS[i] instanceof BlockBase && ((BlockBase) Blocks.BLOCKS[i]).isHiddenBlock())
 				continue blockItemModels;
+
+			WIPTech.logger.info(Blocks.BLOCKS[i]);
 
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Blocks.BLOCKS[i]), 0, new ModelResourceLocation(Blocks.BLOCKS[i].getRegistryName(), "inventory"));
 		}
