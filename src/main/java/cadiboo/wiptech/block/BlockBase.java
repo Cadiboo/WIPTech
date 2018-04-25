@@ -76,18 +76,6 @@ public class BlockBase extends Block {
 		return !this.isHiddenBlock();
 	}
 
-	// Tile Block Only (No item created for it)
-	private Block tileOnly;
-
-	public Block setTileOnly() {
-		this.setHiddenBlock();
-		return tileOnly = this;
-	}
-
-	public boolean isTileOnly() {
-		return this == tileOnly;
-	}
-
 	// Circuit Material (non-solid, breaks easily)
 	private Block circuitMaterial;
 
@@ -133,32 +121,6 @@ public class BlockBase extends Block {
 	@Override
 	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return transparentBlock == this ? 0 : super.getLightOpacity(state, world, pos);
-	}
-
-	// Nugget Block
-	private Block isNuggetBlock;
-
-	public Block setNuggetBlock() {
-		this.setCircuitMaterial();
-		this.setTileOnly();
-		return isNuggetBlock = this;
-	}
-
-	public final boolean isNuggetBlock() {
-		return this == isNuggetBlock;
-	}
-
-	// Ingot Block
-	private Block isIngotBlock;
-
-	public Block setIngotBlock() {
-		this.setCircuitMaterial();
-		this.setTileOnly();
-		return isIngotBlock = this;
-	}
-
-	public final boolean isIngotBlock() {
-		return this == isIngotBlock;
 	}
 
 	@Override

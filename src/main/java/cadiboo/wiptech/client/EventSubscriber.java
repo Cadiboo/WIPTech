@@ -1,8 +1,6 @@
 package cadiboo.wiptech.client;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.block.BlockBase;
-import cadiboo.wiptech.block.BlockStrongPistonExtension;
 import cadiboo.wiptech.client.render.entity.RenderEntityNapalmFactory;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectile113;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectileFactory;
@@ -35,9 +33,7 @@ public class EventSubscriber {
 	public static void registerModels(ModelRegistryEvent event) {
 
 		blockItemModels: for (int i = 0; i < Blocks.BLOCKS.length; i++) {
-			if (Blocks.BLOCKS[i] instanceof BlockStrongPistonExtension)
-				continue blockItemModels;
-			if (Blocks.BLOCKS[i] instanceof BlockBase && ((BlockBase) Blocks.BLOCKS[i]).isHiddenBlock())
+			if (Blocks.getHiddenBlocks().contains(Blocks.BLOCKS[i]))
 				continue blockItemModels;
 
 			WIPTech.logger.info(Blocks.BLOCKS[i]);
@@ -46,6 +42,7 @@ public class EventSubscriber {
 		}
 
 		for (int i = 0; i < Items.ITEMS.length; i++) {
+			WIPTech.logger.info(Items.ITEMS[i]);
 			if (!Items.ITEMS[i].getHasSubtypes()) {
 				ModelLoader.setCustomModelResourceLocation(Items.ITEMS[i], 0, new ModelResourceLocation(Items.ITEMS[i].getRegistryName(), "inventory"));
 			} else if (Items.ITEMS[i] instanceof ItemParamagneticProjectile) {

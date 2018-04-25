@@ -1,8 +1,13 @@
 package cadiboo.wiptech.item;
 
+import java.util.List;
+
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.util.Reference;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
 public class ItemBase extends Item {
 
@@ -57,6 +62,13 @@ public class ItemBase extends Item {
 
 	public final boolean isCoil() {
 		return this == isCoil;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		String itemTooltip = WIPTech.proxy.localize(stack.getUnlocalizedName() + ".tooltip", new Object[0]);
+		if (!itemTooltip.equalsIgnoreCase(stack.getUnlocalizedName() + ".tooltip"))
+			tooltip.add(itemTooltip);
 	}
 
 }

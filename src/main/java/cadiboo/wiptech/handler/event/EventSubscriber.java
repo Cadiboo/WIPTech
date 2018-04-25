@@ -1,7 +1,6 @@
 package cadiboo.wiptech.handler.event;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.block.BlockItem;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Entities;
@@ -60,29 +59,8 @@ public class EventSubscriber {
 		WIPTech.logger.info("Registered Items");
 
 		for (int i = 0; i < Blocks.BLOCKS.length; i++) {
-			if (Blocks.BLOCKS[i] instanceof BlockBase && ((BlockBase) Blocks.BLOCKS[i]).isHiddenBlock())
+			if (Blocks.getHiddenBlocks().contains(Blocks.BLOCKS[i]))
 				continue;
-
-			// if (Blocks.BLOCKS[i] instanceof BlockMetalBlock)
-			// event.getRegistry().register(
-			// new
-			// ItemBlockMetalBlock(Blocks.BLOCKS[i]).setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
-			// else if (Blocks.BLOCKS[i] instanceof BlockWire)
-			// event.getRegistry().register(
-			// new
-			// ItemBlockWire(Blocks.BLOCKS[i]).setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
-			// else if (Blocks.BLOCKS[i] instanceof BlockSpool)
-			// event.getRegistry().register(
-			// new
-			// ItemBlockSpool(Blocks.BLOCKS[i]).setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
-			// else if (Blocks.BLOCKS[i] instanceof BlockOre)
-			// event.getRegistry().register(
-			// new
-			// ItemBlockOre(Blocks.BLOCKS[i]).setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
-			// else if (Blocks.BLOCKS[i] instanceof BlockIngredientBlock)
-			// event.getRegistry().register(new ItemBlockIngredientBlock(Blocks.BLOCKS[i])
-			// .setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
-			// else
 			event.getRegistry().register(new ItemBlock(Blocks.BLOCKS[i]).setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
 		}
 

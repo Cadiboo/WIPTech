@@ -1,7 +1,6 @@
 package cadiboo.wiptech.client;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Rails;
@@ -11,10 +10,8 @@ import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.provider.ModularWeaponProvider;
 import cadiboo.wiptech.util.CustomEnergyStorage;
 import cadiboo.wiptech.util.IProxy;
-import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -49,10 +46,8 @@ public class Proxy implements IProxy {
 			super.displayAllRelevantItems(list);
 
 			ItemStack plasmaGun = new ItemStack(Items.PLASMA_GUN);
-			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.GOLD)
-					.setRail(Rails.GOLD).setCircuit(Circuits.OVERCLOCKED);
-			((CustomEnergyStorage) plasmaGun.getCapability(CapabilityEnergy.ENERGY, null))
-					.setEnergyStored(ModularWeaponProvider.WEAPON_ENERGY_CAPACITY);
+			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.GOLD).setRail(Rails.GOLD).setCircuit(Circuits.OVERCLOCKED);
+			((CustomEnergyStorage) plasmaGun.getCapability(CapabilityEnergy.ENERGY, null)).setEnergyStored(ModularWeaponProvider.WEAPON_ENERGY_CAPACITY);
 			list.add(plasmaGun);
 		}
 
@@ -60,21 +55,19 @@ public class Proxy implements IProxy {
 
 	@Override
 	public void addToCreativeTab() {
-		for (Item item : Items.ITEMS) {
-			item.setCreativeTab(modTab);
+
+		for (int i = 0; i < Items.ITEMS.length; i++) {
+			Items.ITEMS[i].setCreativeTab(modTab);
 		}
 
-		for (Block block : Blocks.BLOCKS) {
-			if ((block instanceof BlockBase)) {
-				if (!((BlockBase) block).isHiddenBlock()) {
-					block.setCreativeTab(modTab);
-				}
-			}
+		for (int i = 0; i < Blocks.BLOCKS.length; i++) {
+			if (Blocks.getHiddenBlocks().contains(Blocks.BLOCKS[i]))
+				continue;
+			Blocks.BLOCKS[i].setCreativeTab(modTab);
 		}
 
-		WIPTech.logger.info("createCreativeTab - Added all Items and Blocks to "
-				+ WIPTech.proxy.localize(new StringBuilder().append(modTab).append(".name").toString(), new Object[0])
-				+ " Tab");
+		WIPTech.logger.info("createCreativeTab - Added all Items and Blocks to " + WIPTech.proxy.localize(new StringBuilder().append(modTab).append(".name").toString(), new Object[0]) + " Tab");
+
 	}
 
 	@Override

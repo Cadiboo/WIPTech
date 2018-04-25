@@ -2,6 +2,9 @@ package cadiboo.wiptech.init;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import com.google.common.collect.Sets;
 
 import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.block.BlockCapacitorBank;
@@ -60,10 +63,8 @@ public class Blocks {
 	public static final BlockItem	TIN_NUGGET			= new BlockItem("tin_nugget", Material.IRON, BlockItems.TIN_NUGGET);
 	public static final BlockItem	ALUMINIUM_NUGGET	= new BlockItem("aluminium_nugget", Material.IRON, BlockItems.ALUMINIUM_NUGGET);
 	public static final BlockItem	SILVER_NUGGET		= new BlockItem("silver_nugget", Material.IRON, BlockItems.SILVER_NUGGET);
-	public static final BlockItem	IRON_NUGGET			= (BlockItem) new BlockItem("iron_nugget", Material.IRON, BlockItems.IRON_NUGGET)
-			.setHiddenBlock();
-	public static final BlockItem	GOLD_NUGGET			= (BlockItem) new BlockItem("gold_nugget", Material.IRON, BlockItems.GOLD_NUGGET)
-			.setHiddenBlock();
+	public static final BlockItem	IRON_NUGGET			= (BlockItem) new BlockItem("iron_nugget", Material.IRON, BlockItems.IRON_NUGGET).setHiddenBlock();
+	public static final BlockItem	GOLD_NUGGET			= (BlockItem) new BlockItem("gold_nugget", Material.IRON, BlockItems.GOLD_NUGGET).setHiddenBlock();
 
 	public static final BlockWire	COPPER_WIRE		= new BlockWire("copper_wire", Material.IRON, ConductiveMetals.COPPER, false);
 	public static final BlockWire	TIN_WIRE		= new BlockWire("tin_wire", Material.IRON, ConductiveMetals.TIN, false);
@@ -114,6 +115,16 @@ public class Blocks {
 			STRONG_PISTON, STRONG_PISTON_STICKY, STRONG_PISTON_HEAD,
 
 			TURBINE, PERIPHERAL, /* CAPACITOR_BANK, */ };
+
+	public static final Set<Block> HIDDEN_BLOCKS = Sets.newHashSet(STRONG_PISTON_HEAD, PERIPHERAL);
+
+	public static Set<Block> getHiddenBlocks() {
+		for (int i = 0; i < BLOCKS.length; i++) {
+			if (BLOCKS[i] instanceof BlockBase && ((BlockBase) Blocks.BLOCKS[i]).isHiddenBlock())
+				HIDDEN_BLOCKS.add(BLOCKS[i]);
+		}
+		return HIDDEN_BLOCKS;
+	}
 
 	public static List<Block> getOres() {
 		List<Block> OreBlocks = new ArrayList<Block>();

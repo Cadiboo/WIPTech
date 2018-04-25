@@ -34,8 +34,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockStrongPistonExtension extends BlockDirectional {
 
-	public static final PropertyEnum<BlockStrongPistonExtension.EnumPistonType>	TYPE	= PropertyEnum.<BlockStrongPistonExtension.EnumPistonType>create(
-			"type", BlockStrongPistonExtension.EnumPistonType.class);
+	public static final PropertyEnum<BlockStrongPistonExtension.EnumPistonType>	TYPE	= PropertyEnum.<BlockStrongPistonExtension.EnumPistonType>create("type",
+			BlockStrongPistonExtension.EnumPistonType.class);
 	public static final PropertyBool											SHORT	= PropertyBool.create("short");
 
 	protected static final AxisAlignedBB	PISTON_EXTENSION_EAST_AABB	= new AxisAlignedBB(0.75D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
@@ -61,8 +61,8 @@ public class BlockStrongPistonExtension extends BlockDirectional {
 		super(Material.PISTON);
 		this.setRegistryName(new ResourceLocation(Reference.ID, name));
 		this.setUnlocalizedName(name);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH)
-				.withProperty(TYPE, BlockStrongPistonExtension.EnumPistonType.NORMAL).withProperty(SHORT, Boolean.valueOf(false)));
+		this.setDefaultState(
+				this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(TYPE, BlockStrongPistonExtension.EnumPistonType.NORMAL).withProperty(SHORT, Boolean.valueOf(false)));
 		this.setSoundType(SoundType.STONE);
 		this.setHardness(0.5F);
 	}
@@ -149,8 +149,7 @@ public class BlockStrongPistonExtension extends BlockDirectional {
 		pos = pos.offset(enumfacing);
 		IBlockState iblockstate = worldIn.getBlockState(pos);
 
-		if ((iblockstate.getBlock() == Blocks.STRONG_PISTON || iblockstate.getBlock() == Blocks.STRONG_PISTON_STICKY)
-				&& iblockstate.getValue(BlockStrongPistonBase.EXTENDED).booleanValue()) {
+		if ((iblockstate.getBlock() == Blocks.STRONG_PISTON || iblockstate.getBlock() == Blocks.STRONG_PISTON_STICKY) && iblockstate.getValue(BlockStrongPistonBase.EXTENDED).booleanValue()) {
 			iblockstate.getBlock().dropBlockAsItem(worldIn, pos, iblockstate, 0);
 			worldIn.setBlockToAir(pos);
 		}
@@ -228,8 +227,7 @@ public class BlockStrongPistonExtension extends BlockDirectional {
 
 	@Override
 	public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-		return new ItemStack(
-				state.getValue(TYPE) == BlockStrongPistonExtension.EnumPistonType.STICKY ? Blocks.STRONG_PISTON_STICKY : Blocks.STRONG_PISTON);
+		return new ItemStack(state.getValue(TYPE) == BlockStrongPistonExtension.EnumPistonType.STICKY ? Blocks.STRONG_PISTON_STICKY : Blocks.STRONG_PISTON);
 	}
 
 	/**
