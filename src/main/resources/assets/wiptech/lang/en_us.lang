@@ -56,6 +56,9 @@ tile.titanium_block.name=Titanium Block
 item.paramagnetic_projectile.iron_large.name=Large Iron Rod
 item.paramagnetic_projectile.iron_medium.name=Iron Rod
 item.paramagnetic_projectile.iron_small.name=Iron Pellet
+item.iron_large.name=Large Iron Rod
+item.iron_medium.name=Iron Rod
+item.iron_small.name=Iron Pellet
 item.iron_rail.name=Iron Rail
 tile.iron_wire.name=Iron Wire
 tile.iron_enamel.name=Iron Enamel
@@ -104,6 +107,9 @@ item.tungsten_nugget.name=Tungsten Nugget
 item.paramagnetic_projectile.tungsten_large.name=Large Tungsten Rod
 item.paramagnetic_projectile.tungsten_medium.name=Tungsten Rod
 item.paramagnetic_projectile.tungsten_small.name=Tungsten Pellet
+item.tungsten_large.name=Large Tungsten Rod
+item.tungsten_medium.name=Tungsten Rod
+item.tungsten_small.name=Tungsten Pellet
 
 #Osmium
 tile.osmium_ore.name=Osmium Ore
@@ -113,6 +119,9 @@ item.osmium_nugget.name=Osmium Nugget
 item.paramagnetic_projectile.osmium_large.name=Large Osmium Rod
 item.paramagnetic_projectile.osmium_medium.name=Osmium Rod
 item.paramagnetic_projectile.osmium_small.name=Osmium Pellet
+item.osmium_large.name=Large Osmium Rod
+item.osmium_medium.name=Osmium Rod
+item.osmium_small.name=Osmium Pellet
 
 #Machines
 tile.strong_piston.name=Strong(Reinforced?) Piston

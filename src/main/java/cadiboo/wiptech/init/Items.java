@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cadiboo.wiptech.handler.EnumHandler.ConductiveMetals;
+import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectiles;
 import cadiboo.wiptech.handler.EnumHandler.ToolTypes;
 import cadiboo.wiptech.item.ItemArmor;
 import cadiboo.wiptech.item.ItemBase;
@@ -13,8 +14,10 @@ import cadiboo.wiptech.item.ItemCoilgun;
 import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemGallium;
 import cadiboo.wiptech.item.ItemGalliumIngot;
+import cadiboo.wiptech.item.ItemGun;
 import cadiboo.wiptech.item.ItemHammer;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
+import cadiboo.wiptech.item.ItemParamagneticProjectile113;
 import cadiboo.wiptech.item.ItemPlasmagun;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.item.ItemRailgun;
@@ -139,6 +142,22 @@ public class Items {
 	public static final ItemBase	SILICA			= new ItemBase("silica");
 	public static final ItemBase	TITANIA			= new ItemBase("titania");
 
+	// semi
+
+	public static final ItemParamagneticProjectile113	IRON_SMALL		= new ItemParamagneticProjectile113("iron_small", ParamagneticProjectiles.IRON_SMALL);
+	public static final ItemParamagneticProjectile113	OSMIUM_SMALL	= new ItemParamagneticProjectile113("osmium_small", ParamagneticProjectiles.OSMIUM_SMALL);
+	public static final ItemParamagneticProjectile113	TUNGSTEN_SMALL	= new ItemParamagneticProjectile113("tungsten_small", ParamagneticProjectiles.TUNGSTEN_SMALL);
+
+	public static final ItemParamagneticProjectile113	IRON_MEDIUM		= new ItemParamagneticProjectile113("iron_medium", ParamagneticProjectiles.IRON_MEDIUM);
+	public static final ItemParamagneticProjectile113	OSMIUM_MEDIUM	= new ItemParamagneticProjectile113("osmium_medium", ParamagneticProjectiles.OSMIUM_MEDIUM);
+	public static final ItemParamagneticProjectile113	TUNGSTEN_MEDIUM	= new ItemParamagneticProjectile113("tungsten_medium", ParamagneticProjectiles.TUNGSTEN_MEDIUM);
+
+	public static final ItemParamagneticProjectile113	IRON_LARGE		= new ItemParamagneticProjectile113("iron_large", ParamagneticProjectiles.IRON_LARGE);
+	public static final ItemParamagneticProjectile113	OSMIUM_LARGE	= new ItemParamagneticProjectile113("osmium_large", ParamagneticProjectiles.OSMIUM_LARGE);
+	public static final ItemParamagneticProjectile113	TUNGSTEN_LARGE	= new ItemParamagneticProjectile113("tungsten_large", ParamagneticProjectiles.TUNGSTEN_LARGE);
+
+	public static final ItemGun GUN = new ItemGun("gun");
+
 	// 1.12
 
 	public static final ItemParamagneticProjectile	PARAMAGNETIC_PROJECILE	= new ItemParamagneticProjectile("paramagnetic_projectile");
@@ -192,6 +211,14 @@ public class Items {
 			COPPER_BOOTS, TIN_BOOTS, ALUMINIUM_BOOTS, SILVER_BOOTS, TUNGSTEN_BOOTS, OSMIUM_BOOTS, TITANIUM_BOOTS,
 
 			//
+
+			IRON_SMALL, OSMIUM_SMALL, TUNGSTEN_SMALL,
+
+			IRON_MEDIUM, OSMIUM_MEDIUM, TUNGSTEN_MEDIUM,
+
+			IRON_LARGE, OSMIUM_LARGE, TUNGSTEN_LARGE,
+
+			GUN,
 
 			//
 

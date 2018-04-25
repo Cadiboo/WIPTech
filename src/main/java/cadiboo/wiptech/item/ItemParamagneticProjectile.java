@@ -21,8 +21,9 @@ public class ItemParamagneticProjectile extends ItemBase {
 			// "plasma",
 
 	};
-	public static final int subTypesAmmount = itemNames.length;
-	public static int subTypesAmmountZI = itemNames.length - 1; // Zero Indexed
+
+	public static final int	subTypesAmmount		= itemNames.length;
+	public static int		subTypesAmmountZI	= itemNames.length - 1;	// Zero Indexed
 
 	public ItemParamagneticProjectile(String name) {
 		super(name);
@@ -35,8 +36,7 @@ public class ItemParamagneticProjectile extends ItemBase {
 		int i = stack.getMetadata();
 		if (i > subTypesAmmount)
 			i = 0;
-		return super.getUnlocalizedName() + "."
-				+ EnumHandler.ParamagneticProjectiles.byMetadata(i).getUnlocalizedName();
+		return super.getUnlocalizedName() + "." + EnumHandler.ParamagneticProjectiles.byID(i).getName();
 	}
 
 	@Override
@@ -48,8 +48,7 @@ public class ItemParamagneticProjectile extends ItemBase {
 		}
 	}
 
-	public EntityParamagneticProjectile createProjectile(World worldIn, ItemStack stack, EntityLivingBase shooter,
-			boolean isPlasma) {
+	public EntityParamagneticProjectile createProjectile(World worldIn, ItemStack stack, EntityLivingBase shooter, boolean isPlasma) {
 		EntityParamagneticProjectile projectile = new EntityParamagneticProjectile(worldIn, shooter);
 		if (!isPlasma)
 			projectile.setAmmoId(stack.getMetadata());

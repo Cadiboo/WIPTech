@@ -1,6 +1,5 @@
 package cadiboo.wiptech.handler;
 
-import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.text.TextFormatting;
 
@@ -241,52 +240,6 @@ public class EnumHandler {
 		}
 	}
 
-	public static enum ParamagneticProjectiles implements IStringSerializable {
-		IRON_LARGE(0, "iron_large", TextFormatting.WHITE), OSMIUM_LARGE(1, "osmium_large", TextFormatting.DARK_BLUE), TUNGSTEN_LARGE(2, "tungsten_large", TextFormatting.GRAY), IRON_MEDIUM(3,
-				"iron_medium", TextFormatting.WHITE), OSMIUM_MEDIUM(4, "osmium_medium", TextFormatting.DARK_BLUE), TUNGSTEN_MEDIUM(5, "tungsten_medium", TextFormatting.GRAY), IRON_SMALL(6,
-						"iron_small", TextFormatting.WHITE), OSMIUM_SMALL(7, "osmium_small", TextFormatting.DARK_BLUE), TUNGSTEN_SMALL(8, "tungsten_small", TextFormatting.GRAY);// ,
-		// PLASMA(9,"plasma", TextFormatting.GOLD); //nano
-
-		private int				ID;
-		private String			name;
-		private TextFormatting	chatColor;
-
-		private ParamagneticProjectiles(int ID, String name, TextFormatting chatColorIn) {
-			this.ID = ID;
-			this.name = name;
-			this.chatColor = chatColorIn;
-		}
-
-		@Override
-		public String getName() {
-			return this.name;
-		}
-
-		public String getUnlocalizedName() {
-			return this.getName();
-		}
-
-		public int getID() {
-			return ID;
-		}
-
-		@Override
-		public String toString() {
-			return getName();
-		}
-
-		public static ParamagneticProjectiles byMetadata(int i) {
-			if (i > ItemParamagneticProjectile.subTypesAmmountZI) {
-				return ParamagneticProjectiles.values()[0];
-			}
-			return ParamagneticProjectiles.values()[i];
-		}
-
-		public int getMetadata() {
-			return getID();
-		}
-	}
-
 	public static final class WeaponModules {
 
 		public static enum Rails implements IStringSerializable, IWeaponModule {
@@ -479,6 +432,100 @@ public class EnumHandler {
 			return this.ID;
 		}
 
+	}
+
+	public static enum ParamagneticProjectiles implements IStringSerializable {
+		IRON_LARGE(0, "iron_large", ParamagneticProjectileSizes.LARGE, 1, 1, 1, TextFormatting.WHITE),
+
+		OSMIUM_LARGE(1, "osmium_large", ParamagneticProjectileSizes.LARGE, 1, 1, 1, TextFormatting.DARK_BLUE),
+
+		TUNGSTEN_LARGE(2, "tungsten_large", ParamagneticProjectileSizes.LARGE, 1, 1, 1, TextFormatting.GRAY),
+
+		IRON_MEDIUM(3, "iron_medium", ParamagneticProjectileSizes.MEDIUM, 1, 1, 1, TextFormatting.WHITE),
+
+		OSMIUM_MEDIUM(4, "osmium_medium", ParamagneticProjectileSizes.MEDIUM, 1, 1, 1, TextFormatting.DARK_BLUE),
+
+		TUNGSTEN_MEDIUM(5, "tungsten_medium", ParamagneticProjectileSizes.MEDIUM, 1, 1, 1, TextFormatting.GRAY),
+
+		IRON_SMALL(6, "iron_small", ParamagneticProjectileSizes.SMALL, 1, 1, 1, TextFormatting.WHITE),
+
+		OSMIUM_SMALL(7, "osmium_small", ParamagneticProjectileSizes.SMALL, 1, 1, 1, TextFormatting.DARK_BLUE),
+
+		TUNGSTEN_SMALL(8, "tungsten_small", ParamagneticProjectileSizes.SMALL, 1, 1, 1, TextFormatting.GRAY),
+
+		PLASMA(9, "plasma", ParamagneticProjectileSizes.NANO, 1, 1, 1, TextFormatting.GOLD);
+
+		private int							ID;
+		private String						name;
+		private ParamagneticProjectileSizes	size;
+		private float						damage;
+		private float						velocity;
+		private float						knockback;
+		private TextFormatting				chatColor;
+
+		private ParamagneticProjectiles(int ID, String name, ParamagneticProjectileSizes size, float damage, float velocity, float knockback, TextFormatting chatColorIn) {
+			this.ID = ID;
+			this.name = name;
+			this.size = size;
+			this.damage = damage;
+			this.velocity = velocity;
+			this.knockback = knockback;
+			this.chatColor = chatColorIn;
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+
+		public int getID() {
+			return this.ID;
+		}
+
+		public static ParamagneticProjectiles byID(int i) {
+			return ParamagneticProjectiles.values()[i];
+		}
+
+		public float getVelocity() {
+			return this.velocity;
+		}
+
+		public float getDamage() {
+			return this.damage;
+		}
+
+		public float getKnockback() {
+			return this.knockback;
+		}
+
+		public ParamagneticProjectileSizes getSize() {
+			return this.size;
+		}
+	}
+
+	public static enum ParamagneticProjectileSizes implements IStringSerializable {
+		LARGE(0, "large"), MEDIUM(0, "medium"), SMALL(0, "small"), NANO(0, "nano");
+
+		private int		ID;
+		private String	name;
+
+		private ParamagneticProjectileSizes(int ID, String name) {
+			this.ID = ID;
+			this.name = name;
+		}
+
+		public int getID() {
+			return this.ID;
+		}
+
+		public static ParamagneticProjectiles byID(int i) {
+			return ParamagneticProjectiles.values()[i];
+		}
+
+		@Override
+		public String getName() {
+			return this.getName();
+		}
 	}
 
 }
