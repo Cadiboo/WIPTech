@@ -2,6 +2,6 @@
     "parent": "wiptech:block/enamel",
     "textures": {
 	"enamel": "blocks/concrete_brown",
-	"wire": "wiptech:items/iron_ingot"
+	"wire": "items/iron_ingot"
     }
 }
