@@ -6,8 +6,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
@@ -17,35 +15,37 @@ public class ContainerTurbine extends Container {
 	public ContainerTurbine(InventoryPlayer playerInv, final TileEntityTurbine turbine) {
 		IItemHandler inventory = turbine.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		addSlotToContainer(new SlotItemHandler(inventory, 0, 36, 35) {
-			@Override
-			public void onSlotChanged() {
-				turbine.markDirty();
-			}
 
-			@Override
-			public boolean isItemValid(ItemStack stack) {
-				IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY, null);
-				if (energy != null)
-					if (energy.canExtract())
-						return true;
-				return false;
-			}
+			// @Override
+			// public void onSlotChanged() {
+			// turbine.markDirty();
+			// }
+			//
+			// @Override
+			// public boolean isItemValid(ItemStack stack) {
+			// IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY, null);
+			// if (energy != null)
+			// if (energy.canExtract())
+			// return true;
+			// return false;
+			// }
 
 		});
 		addSlotToContainer(new SlotItemHandler(inventory, 1, 124, 35) {
-			@Override
-			public void onSlotChanged() {
-				turbine.markDirty();
-			}
 
-			@Override
-			public boolean isItemValid(ItemStack stack) {
-				IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY, null);
-				if (energy != null)
-					if (energy.canReceive())
-						return true;
-				return false;
-			}
+			// @Override
+			// public void onSlotChanged() {
+			// turbine.markDirty();
+			// }
+			//
+			// @Override
+			// public boolean isItemValid(ItemStack stack) {
+			// IEnergyStorage energy = stack.getCapability(CapabilityEnergy.ENERGY, null);
+			// if (energy != null)
+			// if (energy.canReceive())
+			// return true;
+			// return false;
+			// }
 
 		});
 		for (int i = 0; i < 3; i++) {

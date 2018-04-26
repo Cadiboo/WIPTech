@@ -2,13 +2,13 @@ package cadiboo.wiptech.tileentity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.handler.network.PacketHandler;
 import cadiboo.wiptech.handler.network.PacketSyncTileEntity;
+import cadiboo.wiptech.util.Reference;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryHelper;
@@ -17,7 +17,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -30,7 +29,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class TileEntityBase extends TileEntity {
+public abstract class TileEntityBase extends TileEntity {
 
 	@Override
 	public final void readFromNBT(NBTTagCompound compound) {
@@ -89,47 +88,65 @@ public class TileEntityBase extends TileEntity {
 		return null;
 	}
 
+	// public void writeNBT(NBTTagCompound nbt, NBTType type) {
+	// if (type != NBTType.DROP) {
+	// NBTTagCompound caps = new NBTTagCompound();
+	// for (EnumFacing side : EnumFacing.values()) {
+	// NBTTagCompound capsSided = new NBTTagCompound();
+	// this.writeCapabilities(capsSided, side);
+	// if (!capsSided.hasNoTags()) {
+	// caps.setTag(side.toString().toLowerCase(Locale.ROOT), capsSided);
+	// }
+	// }
+	// NBTTagCompound capsSided = new NBTTagCompound();
+	// this.writeCapabilities(capsSided, null);
+	// caps.setTag("default", capsSided);
+	// nbt.setTag("TileBaseCapabilities", caps);
+	// } else if (this.getEnergy(null) != null) {
+	// nbt.setInteger("Energy", this.getEnergy(null).getEnergyStored());
+	// }
+	// }
+
+	// public void readNBT(NBTTagCompound nbt, NBTType type) {
+	// if (type != NBTType.DROP) {
+	// NBTTagCompound caps = nbt.getCompoundTag("TileBaseCapabilities");
+	// for (EnumFacing side : EnumFacing.values()) {
+	// String name = side.toString().toLowerCase(Locale.ROOT);
+	// if (caps.hasKey(name, Constants.NBT.TAG_COMPOUND)) {
+	// this.readCapabilities(caps.getCompoundTag(name), side);
+	// }
+	// }
+	// if (caps.hasKey("default", Constants.NBT.TAG_COMPOUND)) {
+	// this.readCapabilities(caps.getCompoundTag("default"), null);
+	// }
+	// } else if (this.getEnergy(null) != null) {
+	// this.getEnergy(null).receiveEnergy(nbt.getInteger("Energy"), false);
+	// }
+	// }
+
 	public void writeNBT(NBTTagCompound nbt, NBTType type) {
-		if (type != NBTType.DROP) {
-			NBTTagCompound caps = new NBTTagCompound();
-			for (EnumFacing side : EnumFacing.values()) {
-				NBTTagCompound capsSided = new NBTTagCompound();
-				this.writeCapabilities(capsSided, side);
-				if (!capsSided.hasNoTags()) {
-					caps.setTag(side.toString().toLowerCase(Locale.ROOT), capsSided);
-				}
-			}
-			NBTTagCompound capsSided = new NBTTagCompound();
-			this.writeCapabilities(capsSided, null);
-			caps.setTag("default", capsSided);
-			nbt.setTag("TileBaseCapabilities", caps);
-		} else if (this.getEnergy(null) != null) {
-			nbt.setInteger("Energy", this.getEnergy(null).getEnergyStored());
-		}
+		NBTTagCompound caps = new NBTTagCompound();
+		if (type != NBTType.DROP)
+			this.writeCapabilities(caps, null);
+		else if (this.getEnergy(null) != null)
+			caps.setInteger("Energy", this.getEnergy(null).getEnergyStored());
+		nbt.setTag(Reference.ID, caps);
 	}
 
 	public void readNBT(NBTTagCompound nbt, NBTType type) {
+		NBTTagCompound caps = nbt.getCompoundTag(Reference.ID);
 		if (type != NBTType.DROP) {
-			NBTTagCompound caps = nbt.getCompoundTag("TileBaseCapabilities");
-			for (EnumFacing side : EnumFacing.values()) {
-				String name = side.toString().toLowerCase(Locale.ROOT);
-				if (caps.hasKey(name, Constants.NBT.TAG_COMPOUND)) {
-					this.readCapabilities(caps.getCompoundTag(name), side);
-				}
-			}
-			if (caps.hasKey("default", Constants.NBT.TAG_COMPOUND)) {
-				this.readCapabilities(caps.getCompoundTag("default"), null);
-			}
+			this.readCapabilities(caps, null);
 		} else if (this.getEnergy(null) != null) {
-			this.getEnergy(null).receiveEnergy(nbt.getInteger("Energy"), false);
+			this.getEnergy(null).receiveEnergy(caps.getInteger("Energy"), false);
 		}
 	}
 
 	protected void readCapabilities(NBTTagCompound nbt, @Nullable EnumFacing side) {
 		IItemHandler inventory = this.getInventory(side);
 		if (inventory != null && inventory instanceof IItemHandlerModifiable && nbt.hasKey("Inventory")) {
-			for (int i = 0; i < inventory.getSlots(); i++) { // clear the inventory, otherwise empty stacks doesn't get
-																// overriden while syncing. Forge Bug?
+			for (int i = 0; i < inventory.getSlots(); i++) { // clear the inventory, otherwise empty stacks doesn't get overriden while
+																// syncing. Forge Bug?
 				((IItemHandlerModifiable) inventory).setStackInSlot(i, ItemStack.EMPTY);
 			}
 			CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, side, nbt.getTag("Inventory"));
@@ -144,6 +161,7 @@ public class TileEntityBase extends TileEntity {
 		}
 	}
 
+	/* Writes all caps for side */
 	protected void writeCapabilities(NBTTagCompound nbt, @Nullable EnumFacing side) {
 		IItemHandler inventory = this.getInventory(side);
 		if (inventory != null && inventory instanceof IItemHandlerModifiable) {
@@ -167,10 +185,8 @@ public class TileEntityBase extends TileEntity {
 				NBTTagCompound syncTag = new NBTTagCompound();
 				this.writeNBT(syncTag, NBTType.SYNC);
 				for (EntityPlayer player : this.world.playerEntities) {
-					if (player instanceof EntityPlayerMP
-							&& player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 64) {
-						PacketHandler.NETWORK.sendTo(new PacketSyncTileEntity(syncTag, this.pos),
-								(EntityPlayerMP) player);
+					if (player instanceof EntityPlayerMP && player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 64) {
+						PacketHandler.NETWORK.sendTo(new PacketSyncTileEntity(syncTag, this.pos), (EntityPlayerMP) player);
 					}
 				}
 				this.isSyncDirty = false;
@@ -214,8 +230,7 @@ public class TileEntityBase extends TileEntity {
 				IItemHandler inv = this.getInventory(side);
 				if (inv != null && !cached.contains(inv)) {
 					for (int i = 0; i < inv.getSlots(); i++) {
-						InventoryHelper.spawnItemStack(this.world, this.pos.getX(), this.pos.getY(), this.pos.getZ(),
-								inv.getStackInSlot(i));
+						InventoryHelper.spawnItemStack(this.world, this.pos.getX(), this.pos.getY(), this.pos.getZ(), inv.getStackInSlot(i));
 					}
 					cached.add(inv);
 				}
@@ -224,17 +239,8 @@ public class TileEntityBase extends TileEntity {
 		}
 	}
 
-	public boolean isWorking() {
-		return false;
-	}
-
 	public boolean canBeUsedBy(EntityPlayer player) {
-		return player.getDistanceSq(this.getPos().getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64
-				&& !this.isInvalid() && this.world.getTileEntity(this.pos) == this;
-	}
-
-	public int getCurrentEnergyUsage() {
-		return -1;
+		return player.getDistanceSq(this.getPos().getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D) <= 64 && !this.isInvalid() && this.world.getTileEntity(this.pos) == this;
 	}
 
 	public enum NBTType {

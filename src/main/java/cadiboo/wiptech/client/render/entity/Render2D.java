@@ -46,8 +46,8 @@ public class Render2D<T extends Entity> extends Render<T> {
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		bufferbuilder.pos(-1, -1, -1).tex(0, 1).endVertex();
-		bufferbuilder.pos(-1, 0, -1).tex(0, 0).endVertex();
-		bufferbuilder.pos(1, 0, -1).tex(1, 0).endVertex();
+		bufferbuilder.pos(-1, 1, -1).tex(0, 0).endVertex();
+		bufferbuilder.pos(1, 1, -1).tex(1, 0).endVertex();
 		bufferbuilder.pos(1, -1, -1).tex(1, 1).endVertex();
 
 		if (this.renderOutlines) {

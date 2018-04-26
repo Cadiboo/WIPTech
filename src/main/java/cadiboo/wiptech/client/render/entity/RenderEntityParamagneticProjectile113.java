@@ -2,19 +2,15 @@ package cadiboo.wiptech.client.render.entity;
 
 import javax.annotation.Nonnull;
 
-import org.lwjgl.opengl.GL11;
-
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
 import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectiles;
 import cadiboo.wiptech.util.Reference;
-import net.minecraft.client.renderer.BufferBuilder;
+import cadiboo.wiptech.util.Utils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -56,7 +52,7 @@ public class RenderEntityParamagneticProjectile113<T extends EntityParamagneticP
 		if (entity.getType() == ParamagneticProjectiles.PLASMA) {
 			GlStateManager.scale(0.5, 0.5, 0.5);
 			this.bindTexture(LOCATION_PLASMA_CORE_TEXTURE);
-			drawCuboid(0, 1, 0, 1, 0.125, 0.125, 0.125, 1);
+			Utils.drawSeamlessCuboid(0, 1, 0, 1, 0.125, 0.125, 0.125, 1);
 
 			this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			RenderHelper.disableStandardItemLighting();
@@ -71,7 +67,7 @@ public class RenderEntityParamagneticProjectile113<T extends EntityParamagneticP
 
 			GlStateManager.color(0.6F, 0.5F, 1);
 
-			drawCuboid(0, 1, 0, 1, 0.25, 0.25, 0.25, 1);
+			Utils.drawSeamlessCuboid(0, 1, 0, 1, 0.25, 0.25, 0.25, 1);
 
 			GlStateManager.depthMask(true);
 			GlStateManager.disableCull();
@@ -146,7 +142,7 @@ public class RenderEntityParamagneticProjectile113<T extends EntityParamagneticP
 
 		this.bindTexture(entity.getTexture());
 
-		drawCuboid(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);
+		Utils.drawSeamlessCuboid(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);
 
 		GlStateManager.disableCull();
 		GlStateManager.disableRescaleNormal();
@@ -158,72 +154,6 @@ public class RenderEntityParamagneticProjectile113<T extends EntityParamagneticP
 	@Override
 	protected ResourceLocation getEntityTexture(@Nonnull T entity) {
 		return TextureMap.LOCATION_MISSING_TEXTURE;
-	}
-
-	private void drawCuboid(float minU, float maxU, float minV, float maxV, double width, double height, double length, double scale) {
-
-		GlStateManager.scale(scale, scale, scale);
-
-		double hlfU = minU + (maxU - minU) / 2;
-		double hlfV = minV + (maxV - minV) / 2;
-
-		double centre = 0d;
-
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
-		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-
-		// UP
-		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
-
-		// DOWN
-		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
-
-		// LEFT
-		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
-
-		// RIGHT
-		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
-
-		// BACK BOTTOM
-		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length, centre, -width).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos(length, centre, -width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
-
-		// BACK TOP
-		bufferbuilder.pos(-length, centre, -width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(length, centre, -width).tex(minU, hlfV).endVertex();
-
-		// FRONT BOTTOM
-		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(length, centre, width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(-length, centre, width).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
-
-		// FRONT TOP
-		bufferbuilder.pos(length, centre, width).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-length, centre, width).tex(maxU, hlfV).endVertex();
-
-		tessellator.draw();
-
-		GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
 	}
 
 }

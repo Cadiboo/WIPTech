@@ -17,18 +17,34 @@ public class Configuration {
 
 	public static class Projectile {
 
-		public Projectile(final boolean HurtEnderman, /* final boolean HurtDragon, */ final boolean HurtWither) {
+		public Projectile(final boolean HurtEnderman, final boolean HurtWither) {
 			this.HurtEnderman = HurtEnderman;
-			// this.HurtDragon = HurtDragon;
 			this.HurtWither = HurtWither;
 		}
 
 		@Comment("If projectiles will hurt Endermen")
-		public boolean HurtEnderman;
-		// @Comment("If projectiles will hurt Dragons even if they are Invulnerable")
-		// public boolean HurtDragon = false;
+		public boolean	HurtEnderman;
 		@Comment("If projectiles will hurt Withers even if they are Armored")
-		public boolean HurtWither = false;
+		public boolean	HurtWither	= false;
+	}
+
+	@Comment("Energy Settings")
+	public static final Energy energy = new Energy(10, 10, 10);
+
+	public static class Energy {
+
+		public Energy(final int TurbineProduction, final int CrusherUsage, final int CoilerUsage) {
+			this.TurbineProduction = TurbineProduction;
+			this.CrusherUsage = CrusherUsage;
+			this.CoilerUsage = CoilerUsage;
+		}
+
+		@Comment("How many " + Reference.ENERGY_UNIT + "the Turbine produces each tick (multiplied by its Y height)")
+		public int	TurbineProduction;
+		@Comment("How many " + Reference.ENERGY_UNIT + "the Crusher uses each tick it is active")
+		public int	CrusherUsage;
+		@Comment("How many " + Reference.ENERGY_UNIT + "the Coiler uses each tick it is active")
+		public int	CoilerUsage;
 	}
 
 	@Mod.EventBusSubscriber(modid = Reference.ID)

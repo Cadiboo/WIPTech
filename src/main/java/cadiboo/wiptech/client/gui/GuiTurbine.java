@@ -14,9 +14,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 public class GuiTurbine extends GuiContainer {
-	TileEntityTurbine tileEntity;
-	private static final ResourceLocation BG_TEXTURE = new ResourceLocation("wiptech", "textures/gui/turbine.png");
-	private InventoryPlayer playerInv;
+	TileEntityTurbine						tileEntity;
+	private static final ResourceLocation	BG_TEXTURE	= new ResourceLocation("wiptech", "textures/gui/turbine.png");
+	private InventoryPlayer					playerInv;
 
 	public GuiTurbine(ContainerTurbine container, InventoryPlayer playerInv, TileEntityTurbine tileTurbine) {
 		super(container);
@@ -38,7 +38,19 @@ public class GuiTurbine extends GuiContainer {
 		int x = (this.width - this.xSize) / 2;
 		int y = (this.height - this.ySize) / 2;
 
+		// y + (int) Math.round(52D * (getEnergyPercentage() / 100D))
+
 		drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
+		drawTexturedModalRect(x + 84, y + 17 + 52 - (int) Math.round(52D * (getEnergyPercentage() / 100D)), this.xSize, 0, 10, (int) Math.round(52D * (getEnergyPercentage() / 100D)));
+	}
+
+	protected double getEnergyPercentage() {
+		return ((double) this.tileEntity.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored() / (double) this.tileEntity.getCapability(CapabilityEnergy.ENERGY, null).getMaxEnergyStored()
+				* 100D);
+	}
+
+	protected int getEnergyPercentageInt() {
+		return (int) Math.round(getEnergyPercentage());
 	}
 
 	@Override
@@ -48,12 +60,8 @@ public class GuiTurbine extends GuiContainer {
 		this.fontRenderer.drawString(this.playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 94, 4210752);
 
 		List<String> hoveringText = new ArrayList();
-		if (isInRect(this.guiLeft + 48, this.guiTop + 35, 24, 17, mouseX, mouseY)) {
-			hoveringText
-					.add("Energy: "
-							+ this.tileEntity.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored()
-									/ this.tileEntity.getCapability(CapabilityEnergy.ENERGY, null).getMaxEnergyStored()
-							+ "%");
+		if (isInRect(this.guiLeft + 83, this.guiTop + 16, 10, 54, mouseX, mouseY)) {
+			hoveringText.add("Energy: " + getEnergyPercentageInt() + "%");
 		}
 		if (!hoveringText.isEmpty()) {
 			drawHoveringText(hoveringText, mouseX - this.guiLeft, mouseY - this.guiTop, this.fontRenderer);

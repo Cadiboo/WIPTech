@@ -6,6 +6,7 @@ import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectile11
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectileFactory;
 import cadiboo.wiptech.client.render.tileentity.TESRCrusher;
 import cadiboo.wiptech.client.render.tileentity.TESRTurbine;
+import cadiboo.wiptech.client.render.tileentity.TESRWire;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
@@ -15,6 +16,7 @@ import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
+import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -61,15 +63,12 @@ public class EventSubscriber {
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrusher.class, new TESRCrusher());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbine.class, new TESRTurbine());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWire.class, new TESRWire());
 		WIPTech.logger.info("Registered TileEntity Renders");
 
-		// for (int i = 0; i < Entities.ENTITIES.length; i++) {
 		RenderingRegistry.registerEntityRenderingHandler(EntityParamagneticProjectile113.class, renderManager -> new RenderEntityParamagneticProjectile113(renderManager));
-		// }
-
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, new RenderEntityNapalmFactory());
 		RenderingRegistry.registerEntityRenderingHandler(EntityParamagneticProjectile.class, new RenderEntityParamagneticProjectileFactory());
-
 		WIPTech.logger.info("Registered Entity Renders");
 	}
 }

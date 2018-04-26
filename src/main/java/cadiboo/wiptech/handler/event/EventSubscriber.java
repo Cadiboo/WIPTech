@@ -9,6 +9,7 @@ import cadiboo.wiptech.tileentity.TileEntityCapacitorBank;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
+import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.Reference;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.block.Block;
@@ -47,6 +48,7 @@ public class EventSubscriber {
 		GameRegistry.registerTileEntity(TileEntityCoiler.class, Reference.ID + "TileEntityCoiler");
 		GameRegistry.registerTileEntity(TileEntityTurbine.class, Reference.ID + "TileEntityTurbine");
 		GameRegistry.registerTileEntity(TileEntityCapacitorBank.class, Reference.ID + "TileEntityCapacitorBank");
+		GameRegistry.registerTileEntity(TileEntityWire.class, Reference.ID + "TileEntityWire");
 
 		WIPTech.logger.info("Registered TileEntities");
 	}

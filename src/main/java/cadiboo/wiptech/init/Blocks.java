@@ -135,23 +135,14 @@ public class Blocks {
 		return OreBlocks;
 	}
 
-	private static List<Block>	TileEntities			= new ArrayList();
-	private static Boolean		TileEntitiesIterated	= Boolean.valueOf(false);
+	public static final Set<Block> TILE_ENTITIES = Sets.newHashSet();
 
-	public static List<Block> getTileEntities() {
-		if (!TileEntitiesIterated.booleanValue()) {
-			for (int i = 0; i < BLOCKS.length; i++) {
-				Block block = BLOCKS[i];
-				if (!TileEntities.contains(block)) {
-					if (((BlockBase) block).isTileEntity()) {
-						TileEntities.add(block);
-					}
-				} else {
-					TileEntitiesIterated = Boolean.valueOf(true);
-				}
-			}
+	public static Set<Block> getTileEntities() {
+		for (int i = 0; i < BLOCKS.length; i++) {
+			if (BLOCKS[i] instanceof BlockBase && ((BlockBase) Blocks.BLOCKS[i]).isTileEntity())
+				HIDDEN_BLOCKS.add(BLOCKS[i]);
 		}
-		return TileEntities;
+		return HIDDEN_BLOCKS;
 	}
 
 	public static List<Block> getBlockItems() {

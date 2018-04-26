@@ -147,6 +147,7 @@ item.crusher_bit_holder.name=Crusher Bit Anchor
 tile.coiler.name=Coil Winder
 ##Turbine
 tile.turbine.name=Wind Turbine
+tile.turbine.tooltip=Its windy!
 ##Peripheral
 tile.peripheral.name=Peripheral Block
 
