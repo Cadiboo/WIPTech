@@ -4,6 +4,7 @@ import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.handler.GuiHandler;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
+import cadiboo.wiptech.util.CustomEnergyStorage;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,6 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -36,7 +38,7 @@ public class BlockTurbine extends BlockTileEntity<TileEntityTurbine> {
 		if (te instanceof TileEntityTurbine) {
 			if (itemStackIn.hasTagCompound()) {
 				int energy = itemStackIn.getTagCompound().getInteger("Energy");
-				((TileEntityTurbine) te).energy.setEnergyStored(energy);
+				((CustomEnergyStorage) ((TileEntityTurbine) te).getCapability(CapabilityEnergy.ENERGY, null)).setEnergyStored(energy);
 			}
 		}
 	}

@@ -1,15 +1,10 @@
 package cadiboo.wiptech.tileentity;
 
-import javax.annotation.Nullable;
-
 import cadiboo.wiptech.capability.ItemEnergyItemHandler;
 import cadiboo.wiptech.config.Configuration;
 import cadiboo.wiptech.util.CustomEnergyStorage;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -34,7 +29,7 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 		rightSlot = new ItemEnergyItemHandler(1);
 	}
 
-	public CustomEnergyStorage energy = new CustomEnergyStorage(10000, Integer.MAX_VALUE) {
+	private CustomEnergyStorage energy = new CustomEnergyStorage(10000, Integer.MAX_VALUE) {
 		@Override
 		public boolean canReceive() {
 			return false;
@@ -65,7 +60,8 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 
 			pushEnergy(this.world, this.pos, this.energy, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST);
 		}
-		sendUpdates();
+		this.updateBase();
+		syncToClients();
 	}
 
 	public static int pushEnergy(World world, BlockPos pos, IEnergyStorage energy, EnumFacing... sides) {
@@ -89,37 +85,37 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 		return cachedCanProduce;
 	}
 
-	private void sendUpdates() {
-		world.markBlockRangeForRenderUpdate(pos, pos);
-		world.notifyBlockUpdate(pos, getState(), getState(), 3);
-		world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
-		markDirty();
-	}
+	// private void sendUpdates() {
+	// world.markBlockRangeForRenderUpdate(pos, pos);
+	// world.notifyBlockUpdate(pos, getState(), getState(), 3);
+	// world.scheduleBlockUpdate(pos, this.getBlockType(), 0, 0);
+	// markDirty();
+	// }
 
 	private IBlockState getState() {
 		return world.getBlockState(pos);
 	}
 
-	@Override
-	@Nullable
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(this.pos, 3, this.getUpdateTag());
-	}
-
-	@Override
-	public NBTTagCompound getUpdateTag() {
-		// NBTTagCompound compound = new NBTTagCompound();
-		// compound.setInteger("Energy", this.getCapability(CapabilityEnergy.ENERGY,
-		// null).getEnergyStored());
-		// return this.writeToNBT(compound);
-		return super.getUpdateTag();
-	}
-
-	@Override
-	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-		super.onDataPacket(net, pkt);
-		handleUpdateTag(pkt.getNbtCompound());
-	}
+	// @Override
+	// @Nullable
+	// public SPacketUpdateTileEntity getUpdatePacket() {
+	// return new SPacketUpdateTileEntity(this.pos, 3, this.getUpdateTag());
+	// }
+	//
+	// @Override
+	// public NBTTagCompound getUpdateTag() {
+	// // NBTTagCompound compound = new NBTTagCompound();
+	// // compound.setInteger("Energy", this.getCapability(CapabilityEnergy.ENERGY,
+	// // null).getEnergyStored());
+	// // return this.writeToNBT(compound);
+	// return super.getUpdateTag();
+	// }
+	//
+	// @Override
+	// public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+	// super.onDataPacket(net, pkt);
+	// handleUpdateTag(pkt.getNbtCompound());
+	// }
 
 	@Override
 	public IItemHandler getInventory(EnumFacing side) {

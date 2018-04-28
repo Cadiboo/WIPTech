@@ -6,12 +6,11 @@ import org.lwjgl.opengl.GL11;
 
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.util.Reference;
-import net.minecraft.client.Minecraft;
+import cadiboo.wiptech.util.Utils;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -98,64 +97,58 @@ public class RenderEntityParamagneticProjectile<T extends EntityParamagneticProj
 			return;
 
 		} else {
-			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(ammoStack);
-			if (model != null) {
-				// List<BakedQuad> quads = model.getQuads(null, null, 0L);
-				// BakedQuad bakedquad = quads.get(0);
+			TextureAtlasSprite sprite = Utils.getSpriteFromItemStack(ammoStack);
 
-				TextureAtlasSprite sprite = model.getQuads(null, null, 0L).get(0).getSprite();
+			// TextureAtlasSprite sprite = bakedquad.getSprite();
+			if (sprite != null) {
 
-				// TextureAtlasSprite sprite = bakedquad.getSprite();
-				if (sprite != null) {
+				float minU = sprite.getMinU();
+				float maxU = sprite.getMaxU();
+				float minV = sprite.getMinV();
+				float maxV = sprite.getMaxV();
+				// float midU = sprite.getInterpolatedU(width/2) //TODO look at this
 
-					float minU = sprite.getMinU();
-					float maxU = sprite.getMaxU();
-					float minV = sprite.getMinV();
-					float maxV = sprite.getMaxV();
-					// float midU = sprite.getInterpolatedU(width/2) //TODO look at this
+				float width = maxU - minU;
+				float height = maxV - minV;
 
-					float width = maxU - minU;
-					float height = maxV - minV;
+				float midU = minU + (width / 2);
+				float midV = minV + (height / 2);
 
-					float midU = minU + (width / 2);
-					float midV = minV + (height / 2);
+				float multiplier = 1;
+				float scale = 1F;
 
-					float multiplier = 1;
-					float scale = 1F;
-
-					switch (entity.getAmmoId()) {
-						default:
-							scale = 1F;
-							multiplier = 1;
-							break;
-						case 3:
-						case 4:
-						case 5:
-							multiplier = 2;
-							scale = 0.5F;
-							break;
-						case 6:
-						case 7:
-						case 8:
-							multiplier = 2;
-							scale = 0.25F;
-							break;
-						case 9: // never happens
-							scale = 1F;
-							break;
-					}
-
-					minU = midU - (width / (8F * multiplier));
-					maxU = midU + (width / (8F * multiplier));
-					minV = midV - (height / (8F * multiplier));
-					maxV = midV + (height / (8F * multiplier));
-
-					if (overheated)
-						GlStateManager.color(1F, 0, 0);
-
-					drawCuboid(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);
-
+				switch (entity.getAmmoId()) {
+					default:
+						scale = 1F;
+						multiplier = 1;
+						break;
+					case 3:
+					case 4:
+					case 5:
+						multiplier = 2;
+						scale = 0.5F;
+						break;
+					case 6:
+					case 7:
+					case 8:
+						multiplier = 2;
+						scale = 0.25F;
+						break;
+					case 9: // never happens
+						scale = 1F;
+						break;
 				}
+
+				minU = midU - (width / (8F * multiplier));
+				maxU = midU + (width / (8F * multiplier));
+				minV = midV - (height / (8F * multiplier));
+				maxV = midV + (height / (8F * multiplier));
+
+				if (overheated)
+					GlStateManager.color(1F, 0, 0);
+
+				drawCuboid(minU, maxU, minV, maxV, 1, 0.25, 0.25, scale);
+
 			}
 		}
 
