@@ -1,4 +1,4 @@
-package cadiboo.wiptech.handler.event;
+package cadiboo.wiptech.handler;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockItem;
