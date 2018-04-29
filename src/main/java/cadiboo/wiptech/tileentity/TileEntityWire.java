@@ -4,7 +4,6 @@ import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.config.Configuration;
 import cadiboo.wiptech.util.CustomEnergyStorage;
 import cadiboo.wiptech.util.Utils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -34,20 +33,23 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 					if (!(Utils.getBlockFromPos(world, pos.offset(face)) instanceof BlockWire)) {
 						IEnergyStorage storage = world.getTileEntity(pos.offset(face)).getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
 						if (storage.canReceive() /* && !storage.canExtract() */) {
-							energy.extractEnergy(storage.receiveEnergy(energy.extractEnergy(energy.getEnergyStored() / (face.getIndex() + 1), true), false), false);
+							energy.extractEnergy(storage.receiveEnergy(energy.extractEnergy(energy.getEnergyStored() / EnumFacing.VALUES.length, true), false), false);
 						}
 					} else {
+						// WIPTech.info(face);
 						IEnergyStorage storage = world.getTileEntity(pos.offset(face)).getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
-						if (storage.getEnergyStored() <= energy.getEnergyStored()) {
-							energy.extractEnergy(storage.receiveEnergy(energy.extractEnergy(energy.getEnergyStored(), true), false), false);
+						if (storage.getEnergyStored() < energy.getEnergyStored()) {
+							energy.extractEnergy(storage.receiveEnergy(energy.extractEnergy(energy.getEnergyStored() / EnumFacing.VALUES.length, true), false), false);
 						}
 					}
 				}
+				if (getWorld().getWorldTime() % 10 == 0 || getWorld().isAnyPlayerWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), 6))
+					syncToClients();
 			}
-			if (getWorld().getWorldTime() % 5 == 0)
-				syncToClients();
-		} else if (Minecraft.getMinecraft().objectMouseOver.getBlockPos().equals(this.getPos()))
-			syncToClients();
+		}
+		// else if
+		// (Minecraft.getMinecraft().objectMouseOver.getBlockPos().equals(this.getPos()))
+		// syncToClients();
 		this.energy.setCapacity(Math.round(Configuration.energy.BaseWireStorage * ((BlockWire) this.getBlockType()).getMetal().getConductivityFraction()));
 	}
 
