@@ -24,6 +24,8 @@ I'll include how to do this and put the necessary files here soon
 # UNTIL I DO THIS
 just set up workspace with the correct version of forge (currently forge-1.12.2-14.23.3.2655) and replace the default /src/ folder with the mods src folder from [here](https://github.com/Cadiboo/WIPTech/tree/master/)
 
+I Promise I'll actually do this soon
+
 ## Issue reporting
 Please include the following:
 
