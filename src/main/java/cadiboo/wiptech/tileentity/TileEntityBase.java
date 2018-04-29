@@ -164,10 +164,11 @@ public abstract class TileEntityBase extends TileEntity {
 		// WIPTech.logger.info("NBT has Int Energy: " + nbt.hasKey("Energy"));
 		// WIPTech.logger.info("NBT Int Energy: " + nbt.getInteger("Energy"));
 		// WIPTech.logger.info("nbt: " + nbt);
-		if (energy != null && energy instanceof EnergyStorage && nbt.hasKey("Energy")) {
+		if (energy != null && energy instanceof IEnergyStorage && nbt.hasKey("Energy")) {
 			// WIPTech.logger.info(nbt.getInteger("Energy"));
-			energy.extractEnergy(Integer.MAX_VALUE, false);
+			// energy.extractEnergy(Integer.MAX_VALUE, false);
 			((CustomEnergyStorage) energy).setEnergyStored(nbt.getInteger("Energy"));
+			// WIPTech.logger.info("energy: " + energy);
 		}
 	}
 

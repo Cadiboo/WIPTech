@@ -29,15 +29,15 @@ public class Configuration {
 	}
 
 	@Comment("Energy Settings")
-	public static final Energy energy = new Energy(1, 10, 10, 100);
+	public static final Energy energy = new Energy(1, 10, 10, 100000);
 
 	public static class Energy {
 
-		public Energy(final int TurbineProduction, final int CrusherUsage, final int CoilerUsage, final int WireStorage) {
+		public Energy(final int TurbineProduction, final int CrusherUsage, final int CoilerUsage, final int BaseWireStorage) {
 			this.TurbineProduction = TurbineProduction;
 			this.CrusherUsage = CrusherUsage;
 			this.CoilerUsage = CoilerUsage;
-			this.WireStorage = WireStorage;
+			this.BaseWireStorage = BaseWireStorage;
 		}
 
 		@Comment("How many " + Reference.ENERGY_UNIT + "the Turbine produces each tick (multiplied by its Y height)")
@@ -46,8 +46,8 @@ public class Configuration {
 		public int	CrusherUsage;
 		@Comment("How many " + Reference.ENERGY_UNIT + "the Coiler uses each tick it is active")
 		public int	CoilerUsage;
-		@Comment("The Storage Capacity of each Wire")
-		public int	WireStorage;
+		@Comment("The Storage Capacity of each Wire multiplied by its conductive power")
+		public int	BaseWireStorage;
 	}
 
 	@Mod.EventBusSubscriber(modid = Reference.ID)

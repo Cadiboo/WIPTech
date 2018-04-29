@@ -4,6 +4,7 @@ import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.config.Configuration;
 import cadiboo.wiptech.util.CustomEnergyStorage;
 import cadiboo.wiptech.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -13,7 +14,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileEntityWire extends TileEntityBase implements ITickable {
 
-	private CustomEnergyStorage energy = new CustomEnergyStorage(Configuration.energy.WireStorage, Integer.MAX_VALUE) {
+	private CustomEnergyStorage energy = new CustomEnergyStorage(Configuration.energy.BaseWireStorage, Integer.MAX_VALUE) {
 		@Override
 		public boolean canExtract() {
 			return super.canExtract();
@@ -43,10 +44,11 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 					}
 				}
 			}
+			if (getWorld().getWorldTime() % 5 == 0)
+				syncToClients();
+		} else if (Minecraft.getMinecraft().objectMouseOver.getBlockPos().equals(this.getPos()))
 			syncToClients();
-		}
-		this.energy.setCapacity(Math.round(Configuration.energy.WireStorage / ((BlockWire) this.getBlockType()).getMetal().getConductivityFraction()));
-		super.updateBase();
+		this.energy.setCapacity(Math.round(Configuration.energy.BaseWireStorage * ((BlockWire) this.getBlockType()).getMetal().getConductivityFraction()));
 	}
 
 	public boolean isConnectedTo(EnumFacing face) {

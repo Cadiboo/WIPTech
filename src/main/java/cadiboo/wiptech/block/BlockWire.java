@@ -75,15 +75,17 @@ public class BlockWire extends BlockTileEntity<TileEntityWire> {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityWire)
 			if (!((TileEntityWire) tile).dumpEnergy()) // couldnt dump energy into nearby storages
-				player.attackEntityFrom(DamageSource.causeElectricityDamage(), 1);
+				player.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * ((TileEntityWire) worldIn.getTileEntity(pos)).getCapability(CapabilityEnergy.ENERGY, null)
+						.extractEnergy(((TileEntityWire) worldIn.getTileEntity(pos)).getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored(), false)));
 		super.onBlockHarvested(worldIn, pos, state, player);
 	}
 
 	@Override
 	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
 		if (!this.isEnamel())
-			entityIn.attackEntityFrom(DamageSource.causeElectricityDamage(),
-					(float) (0.001 * ((TileEntityWire) worldIn.getTileEntity(pos)).getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored()));
+			if (!(entityIn instanceof EntityPlayer && ((EntityPlayer) entityIn).isCreative()))
+				entityIn.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * ((TileEntityWire) worldIn.getTileEntity(pos)).getCapability(CapabilityEnergy.ENERGY, null)
+						.extractEnergy(((TileEntityWire) worldIn.getTileEntity(pos)).getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored(), false)));
 		super.onEntityWalk(worldIn, pos, entityIn);
 	}
 

@@ -2,7 +2,6 @@ package cadiboo.wiptech.block;
 
 import java.util.List;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -125,9 +124,6 @@ public class BlockBase extends Block {
 
 	@Override
 	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		String itemTooltip = WIPTech.proxy.localize(stack.getUnlocalizedName() + ".tooltip", new Object[0]);
-		if (!itemTooltip.equalsIgnoreCase(stack.getUnlocalizedName() + ".tooltip"))
-			tooltip.add(itemTooltip);
 	}
 
 }
