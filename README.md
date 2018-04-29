@@ -4,20 +4,19 @@ Made for 1.12.2 with Minecraft Forge
 A Technology based mod that adds many real life (and some theoretically possible) experimental technologies.
 
 ## Includes
-- (*)Accurate recipes
-- *Accurate machines
+- Accurate recipes
+- Accurate machines
 - Power (Wires, Generators)
 - Coilgun
 - Gauss Cannon
-- *Railgun
+- Railgun
 - Mounted Railgun
-- *Flamethrower
+- Flamethrower
 - Plasma Drill
 - Plasma Cannon
 - Taser
 
-## Dowload
-### (May not be the latest version)
+## Download ### (May not be the latest version)
 [https://github.com/Cadiboo/WIPTech/tree/master/build/libs](https://github.com/Cadiboo/WIPTech/tree/master/build/libs)
 
 ## Setting up a Workspace/Compiling from Source
