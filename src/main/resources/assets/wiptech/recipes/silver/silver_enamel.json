@@ -1,0 +1,3 @@
+{  "type": "minecraft:crafting_shaped",  "pattern": [    "###",    "#X#",    "###"  ],  "key": {    "#": {      "item": "wiptech:silver_wire"    },
+    "X": {      "item": "minecraft:concrete"    }  },  "result": {    "item": "wiptech:silver_enamel"  }}
+
