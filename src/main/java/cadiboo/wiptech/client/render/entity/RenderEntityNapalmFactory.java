@@ -10,6 +10,6 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 public class RenderEntityNapalmFactory implements IRenderFactory<EntityNapalm> {
 	@Override
 	public Render<? super EntityNapalm> createRenderFor(RenderManager manager) {
-		return new Render2D(manager, new ResourceLocation(Reference.ID, "textures/entities/napalm.png"), 0);
+		return new Render2D(manager, new ResourceLocation(Reference.ID, "textures/entities/napalm.png"), 1);
 	}
 }

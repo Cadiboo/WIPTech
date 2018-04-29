@@ -50,6 +50,8 @@ public class Render2D<T extends Entity> extends Render<T> {
 		bufferbuilder.pos(1, 1, -1).tex(1, 0).endVertex();
 		bufferbuilder.pos(1, -1, -1).tex(1, 1).endVertex();
 
+		tessellator.draw();
+
 		if (this.renderOutlines) {
 			GlStateManager.disableOutlineMode();
 			GlStateManager.disableColorMaterial();
