@@ -1,13 +1,16 @@
 package cadiboo.wiptech.block;
 
+import cadiboo.wiptech.util.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -66,6 +69,14 @@ public class BlockPeripheralBlock extends BlockBase {
 				return pos.down(i);
 		}
 		return null;
+	}
+
+	@Override
+	public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+		BlockPos blockPos = getTileEntityPos(world, pos);
+		if (blockPos != null)
+			return Utils.getBlockFromPos(world, blockPos).getPickBlock(state, target, world, blockPos, player);
+		return super.getPickBlock(state, target, world, pos, player);
 	}
 
 }
