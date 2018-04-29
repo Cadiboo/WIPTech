@@ -2,7 +2,12 @@
 item.test_launcher.name=TEST Launcher (Inventory)
 item.test_modular_weapon.name=TEST Modular Weapon (Rapid Fire)
 
+#Misc
+conductivity=conductivity
+
+#Creative Tab
 itemGroup.wiptechtab=WIP Tech
+
 #Entity
 entity.paramagneticprojectile.name=Paramagnetic Projectile
 entity.napalm.name=Napalm
@@ -15,7 +20,6 @@ entity.osmium_small.name=Osmium Pellet
 entity.tungsten_large.name=Large Tungsten Rod
 entity.tungsten_medium.name=Tungsten Rod
 entity.tungsten_small.name=Tungsten Pellet
-
 
 ##Deaths
 death.attack.napalm=%1$s was melted by %2$s
@@ -30,7 +34,11 @@ death.attack.coilgunprojectile.item=%1$s was turned into a sieve by %2$s using %
 death.attack.plasmaprojectile=%1$s was incinerated by %2$s
 death.attack.plasmaprojectile.item=%1$s was incinerated by %2$s using %3$s
 
-#Copper
+death.attack.electricity=%1$s was electrocuted
+
+#Blocks & Items
+
+##Copper
 tile.copper_ore.name=Copper Ore
 tile.copper_block.name=Copper Block
 tile.copper_ingot.name=Copper Ingot
@@ -41,14 +49,14 @@ tile.copper_spool.name=Copper Spool
 item.copper_coil.name=Copper Coil
 item.copper_rail.name=Copper Rail
 
-#Gold
+##Gold
 tile.gold_enamel.name=Enamel Gold Wire
 tile.gold_wire.name=Gold Wire
 tile.gold_spool.name=Gold Spool
 item.gold_coil.name=Gold Coil
 item.gold_rail.name=Gold Rail
 
-#Bauxite
+##Bauxite
 tile.bauxite_ore.name=Bauxite Ore
 tile.bauxite_ore.tooltip=Primary source of Aluminum. By-Products include Gallium, Iron Oxides, Silica and Titania.
 item.alumina.name=Alumina (Aluminum Oxide)
@@ -66,7 +74,7 @@ item.titanium_ingot.name=Titanium Ingot
 item.titanium_nugget.name=Titanium Nugget
 tile.titanium_block.name=Titanium Block
 
-#Iron
+##Iron
 item.paramagnetic_projectile.iron_large.name=Large Iron Rod
 item.paramagnetic_projectile.iron_medium.name=Iron Rod
 item.paramagnetic_projectile.iron_small.name=Iron Pellet
@@ -79,7 +87,7 @@ tile.iron_enamel.name=Iron Enamel
 tile.iron_spool.name=Iron Spool
 item.iron_coil.name=Iron Coil
 
-#Aluminium (Aluminum for Americans)
+##Aluminium (Aluminum for Americans)
 tile.aluminium_ore.name=Aluminum Ore
 tile.aluminium_block.name=Aluminum Block
 tile.aluminium_ingot.name=Aluminum Ingot
@@ -90,7 +98,7 @@ tile.aluminium_spool.name=Aluminum Spool
 item.aluminium_coil.name=Aluminum Coil
 item.aluminium_rail.name=Aluminum Rail
 
-#Tin
+##Tin
 tile.tin_ore.name=Cassiterite
 tile.tin_ore.info=Tin Ore
 tile.tin_block.name=Tin Block
@@ -102,7 +110,7 @@ tile.tin_spool.name=Tin Spool
 item.tin_coil.name=Tin Coil
 item.tin_rail.name=Tin Rail
 
-#Silver
+##Silver
 tile.silver_ore.name=Silver Ore
 tile.silver_block.name=Silver Block
 tile.silver_ingot.name=Silver Ingot
@@ -113,7 +121,7 @@ tile.silver_spool.name=Silver Spool
 item.silver_coil.name=Silver Coil
 item.silver_rail.name=Silver Rail
 
-#Tungsten
+##Tungsten
 tile.tungsten_ore.name=Tungsten Ore
 tile.tungsten_block.name=Tungsten Block
 item.tungsten_ingot.name=Tungsten Ingot
@@ -125,7 +133,7 @@ item.tungsten_large.name=Large Tungsten Rod
 item.tungsten_medium.name=Tungsten Rod
 item.tungsten_small.name=Tungsten Pellet
 
-#Osmium
+##Osmium
 tile.osmium_ore.name=Osmium Ore
 tile.osmium_block.name=Osmium Block
 item.osmium_ingot.name=Osmium Ingot
