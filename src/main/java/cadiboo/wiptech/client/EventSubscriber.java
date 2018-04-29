@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockPeripheralBlock;
+import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.client.render.entity.Render2D;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectile113;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectileFactory;
@@ -144,6 +145,11 @@ public class EventSubscriber {
 	@SubscribeEvent
 	public static void onTooltipEvent(final ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
+
+		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockWire) {
+			event.getToolTip().add(WIPTech.proxy.localize("wire.tooltip", new Object[0]));
+		}
+
 		if (stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase(Reference.ID)) {
 			String itemTooltip = WIPTech.proxy.localize(stack.getUnlocalizedName() + ".tooltip", new Object[0]);
 			if (!itemTooltip.equalsIgnoreCase(stack.getUnlocalizedName() + ".tooltip"))

@@ -4,6 +4,7 @@ item.test_modular_weapon.name=TEST Modular Weapon (Rapid Fire)
 
 #Misc
 conductivity=conductivity
+wire.tooltip=Don't try and use these for long-distance energy transmission in a southerly or easterly direction... just. don't. It doesn't work.
 
 #Creative Tab
 itemGroup.wiptechtab=WIP Tech
