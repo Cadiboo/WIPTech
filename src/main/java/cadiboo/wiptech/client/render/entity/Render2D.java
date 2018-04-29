@@ -31,11 +31,12 @@ public class Render2D<T extends Entity> extends Render<T> {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x, (float) y, (float) z);
 		GlStateManager.enableRescaleNormal();
+		GlStateManager.disableLighting();
 		GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate((this.renderManager.options.thirdPersonView == 2 ? -1 : 1) * this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-		GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
 		bindTexture(texture);
 		GlStateManager.scale(this.scale, this.scale, this.scale);
+
 		if (this.renderOutlines) {
 			GlStateManager.enableColorMaterial();
 			GlStateManager.enableOutlineMode(getTeamColor(entity));
@@ -56,6 +57,7 @@ public class Render2D<T extends Entity> extends Render<T> {
 			GlStateManager.disableOutlineMode();
 			GlStateManager.disableColorMaterial();
 		}
+		GlStateManager.enableLighting();
 		GlStateManager.disableRescaleNormal();
 		GlStateManager.popMatrix();
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
