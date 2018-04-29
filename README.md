@@ -16,7 +16,7 @@ A Technology based mod that adds many real life (and some theoretically possible
 - Plasma Cannon
 - Taser
 
-## Download (May not be the latest version)
+## Download (May not be the latest version or a stable version)
 [https://github.com/Cadiboo/WIPTech/tree/master/build/libs](https://github.com/Cadiboo/WIPTech/tree/master/build/libs)
 
 ## Setting up a Workspace/Compiling from Source
