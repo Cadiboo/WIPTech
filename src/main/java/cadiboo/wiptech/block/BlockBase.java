@@ -1,17 +1,12 @@
 package cadiboo.wiptech.block;
 
-import java.util.List;
-
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public class BlockBase extends Block {
 
@@ -121,9 +116,4 @@ public class BlockBase extends Block {
 	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return transparentBlock == this ? 0 : super.getLightOpacity(state, world, pos);
 	}
-
-	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-	}
-
 }
