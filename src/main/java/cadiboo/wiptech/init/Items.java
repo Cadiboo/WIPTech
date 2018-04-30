@@ -18,11 +18,13 @@ import cadiboo.wiptech.item.ItemGun;
 import cadiboo.wiptech.item.ItemHammer;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.item.ItemParamagneticProjectile113;
+import cadiboo.wiptech.item.ItemPlasmaTool;
 import cadiboo.wiptech.item.ItemPlasmagun;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.item.ItemRailgun;
 import cadiboo.wiptech.item.ItemSilicon;
 import cadiboo.wiptech.item.ItemSiliconWafer;
+import cadiboo.wiptech.item.ItemTaser;
 import cadiboo.wiptech.item.ItemTestLauncher;
 import cadiboo.wiptech.item.ItemTestModularWeapon;
 import cadiboo.wiptech.item.ItemTool;
@@ -176,6 +178,9 @@ public class Items {
 	public static final ItemTestLauncher		TEST_LAUNCHER		= new ItemTestLauncher("test_launcher");
 	public static final ItemTestModularWeapon	TEST_MODULAR_WEAPON	= new ItemTestModularWeapon("test_modular_weapon");
 
+	public static final ItemTaser		TASER		= new ItemTaser("taser");
+	public static final ItemPlasmaTool	PLASMA_TOOL	= new ItemPlasmaTool("plasma_tool");
+
 	public static final Item[] ITEMS = {
 
 			COPPER_RAIL, TIN_RAIL, ALUMINIUM_RAIL, SILVER_RAIL, IRON_RAIL, GOLD_RAIL,
@@ -233,6 +238,8 @@ public class Items {
 			CAPACITOR,
 
 			TEST_LAUNCHER, TEST_MODULAR_WEAPON,
+
+			TASER, PLASMA_TOOL
 
 	};
 
