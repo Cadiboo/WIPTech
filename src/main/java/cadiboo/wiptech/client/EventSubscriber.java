@@ -19,6 +19,7 @@ import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
 import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectiles;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
@@ -162,6 +163,10 @@ public class EventSubscriber {
 
 		if (stack.getItem() instanceof ItemRail) {
 			event.getToolTip().add(WIPTech.proxy.localize("efficiency") + ": " + ((ItemRail) stack.getItem()).getMetal().getConductivityPercentage() + "%");
+		}
+
+		if (stack.getItem() instanceof ItemCoil) {
+			event.getToolTip().add(WIPTech.proxy.localize("efficiency") + ": " + ((ItemCoil) stack.getItem()).getMetal().getConductivityPercentage() + "%");
 			// event.getToolTip().add(WIPTech.proxy.localize("lang.efficiency.name: %s",
 			// ((ItemRail) stack.getItem()).getMetal().getConductivityPercentage()) + "%");
 		}
