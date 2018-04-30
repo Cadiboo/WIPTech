@@ -102,6 +102,9 @@ public class EventSubscriber {
 			Block blockHit = mc.world.getBlockState(posHit.getBlockPos()).getBlock();
 			TileEntity tileHit = mc.world.getTileEntity(posHit.getBlockPos());
 
+			// WIPTech.logger.info(posHit);
+			// WIPTech.logger.info(posHit.getBlockPos());
+
 			if (blockHit instanceof BlockPeripheralBlock)
 				tileHit = mc.world.getTileEntity(((BlockPeripheralBlock) blockHit).getTileEntityPos(mc.world, posHit.getBlockPos()));
 
