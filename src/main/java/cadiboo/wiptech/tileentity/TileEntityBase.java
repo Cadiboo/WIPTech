@@ -192,20 +192,23 @@ public abstract class TileEntityBase extends TileEntity {
 
 	public void syncToClients() {
 		if (this.world != null && !this.world.isRemote) {
-			if (true) {
-				// world.getTotalWorldTime() % 10 == 0
-				NBTTagCompound syncTag = new NBTTagCompound();
-				this.writeNBT(syncTag, NBTType.SYNC);
-				for (EntityPlayer player : this.world.playerEntities) {
-					if (player instanceof EntityPlayerMP && player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= 64) {
-						PacketHandler.NETWORK.sendTo(new PacketSyncTileEntity(syncTag, this.pos), (EntityPlayerMP) player);
-					}
-				}
-				this.isSyncDirty = false;
-			} else {
-				this.isSyncDirty = true;
+			for (EntityPlayer player : this.world.playerEntities) {
+				syncToClient(player);
 			}
 		}
+	}
+
+	public void syncToClient(EntityPlayer player) {
+		NBTTagCompound syncTag = new NBTTagCompound();
+		this.writeNBT(syncTag, NBTType.SYNC);
+
+		if (player instanceof EntityPlayerMP && player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= this.getMaxSyncDistanceSquared()) {
+			PacketHandler.NETWORK.sendTo(new PacketSyncTileEntity(syncTag, this.pos), (EntityPlayerMP) player);
+		}
+	}
+
+	private double getMaxSyncDistanceSquared() {
+		return 64;
 	}
 
 	private boolean isRenderDirty = false;

@@ -1,6 +1,7 @@
 package cadiboo.wiptech.util;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.energy.EnergyStorage;
 
 //Coppied from https://www.programcreek.com/java-api-examples/?code=canitzp/Metalworks/Metalworks-master/src/main/java/de/canitzp/metalworks/
@@ -102,5 +103,9 @@ public class CustomEnergyStorage extends EnergyStorage {
 			this.setEnergyStored(this.getEnergyStored() + energyReceived);
 		}
 		return energyReceived;
+	}
+
+	public int receiveEnergy(int receiveEnergy, boolean simulate, EnumFacing side) {
+		return this.receiveEnergy(receiveEnergy, simulate);
 	}
 }
