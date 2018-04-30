@@ -3,7 +3,9 @@ package cadiboo.wiptech.client;
 import org.lwjgl.opengl.GL11;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.block.BlockMotor;
 import cadiboo.wiptech.block.BlockPeripheralBlock;
+import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.client.render.entity.Render2D;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectile113;
@@ -18,6 +20,7 @@ import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectiles;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
+import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import cadiboo.wiptech.tileentity.TileEntityWire;
@@ -148,6 +151,30 @@ public class EventSubscriber {
 	@SubscribeEvent
 	public static void onTooltipEvent(final ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
+
+		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockWire) {
+			event.getToolTip().add(WIPTech.proxy.localize("conductivity") + ": " + ((BlockWire) Block.getBlockFromItem(stack.getItem())).getMetal().getConductivityPercentage() + "%");
+		}
+
+		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockSpool) {
+			event.getToolTip().add(WIPTech.proxy.localize("conductivity") + ": " + ((BlockSpool) Block.getBlockFromItem(stack.getItem())).getMetal().getConductivityPercentage() + "%");
+		}
+
+		if (stack.getItem() instanceof ItemRail) {
+			event.getToolTip().add(WIPTech.proxy.localize("efficiency") + ": " + ((ItemRail) stack.getItem()).getMetal().getConductivityPercentage() + "%");
+			// event.getToolTip().add(WIPTech.proxy.localize("lang.efficiency.name: %s",
+			// ((ItemRail) stack.getItem()).getMetal().getConductivityPercentage()) + "%");
+		}
+
+		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockMotor) {
+			event.getToolTip().add(WIPTech.proxy.localize("conductivity") + ": " + ((BlockMotor) Block.getBlockFromItem(stack.getItem())).getMetal().getConductivityPercentage() + "%");
+		}
+
+		// || Block.getBlockFromItem(stack.getItem()) instanceof BlockSpool ||
+		// Block.getBlockFromItem(stack.getItem()) instanceof BlockTurbine ||
+		// Block.getBlockFromItem(stack.getItem()) instanceof BlockMotor ||
+		// Block.getBlockFromItem(stack.getItem()) instanceof ItemServo ||
+		// Block.getBlockFromItem(stack.getItem()) instanceof ItemRail) {
 
 		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockWire) {
 			event.getToolTip().add(WIPTech.proxy.localize("wire.tooltip", new Object[0]));

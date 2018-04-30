@@ -3,9 +3,9 @@ item.test_launcher.name=TEST Launcher (Inventory)
 item.test_modular_weapon.name=TEST Modular Weapon (Rapid Fire)
 
 #Misc
-conductivity=conductivity
-wire.tooltip=Don't try and use these for long-distance energy transmission in a southerly or easterly direction... just. don't. It doesn't work.
-
+conductivity=Conductivity
+efficiency=Efficiency
+wire.tooltip=Maybe don't try and use these for long-distance energy transmission. It doesn't work amazingly.
 #Creative Tab
 itemGroup.wiptechtab=WIP Tech
 
@@ -36,6 +36,7 @@ death.attack.plasmaprojectile=%1$s was incinerated by %2$s
 death.attack.plasmaprojectile.item=%1$s was incinerated by %2$s using %3$s
 
 death.attack.electricity=%1$s was electrocuted
+death.attack.electricity=%1$s briefly helped to complete an electric circuit.
 
 #Blocks & Items
 
@@ -147,13 +148,20 @@ item.osmium_medium.name=Osmium Rod
 item.osmium_small.name=Osmium Pellet
 
 #Machines
-tile.strong_piston.name=Strong(Reinforced?) Piston
+tile.strong_piston.name=Strong Piston
+tile.strong_piston.tooltip=Strong enough to push Obsidian
+tile.strong_piston_sticky.name=Strong Sticky Piston
+tile.strong_piston_sticky.tooltip=Strong enough to push and pull Obsidian
+tile.motor.name=Motor
+item.servo.name=Servo
 ##Crusher
 tile.crusher.name=Crusher
+tile.crusher.tooltip=Powerful enough to reduce even the toughest materials to bits. Can both crush and hammer. Broken until 1.13
 item.crusher_bit.name=Crusher Bit
 item.crusher_bit_holder.name=Crusher Bit Anchor
 ##Coiler
 tile.coiler.name=Coil Winder
+tile.coiler.tooltip=Takes spools and winds them into coils with a high electromagnetic power
 ##Turbine
 tile.turbine.name=Wind Turbine
 tile.turbine.tooltip=Its windy!

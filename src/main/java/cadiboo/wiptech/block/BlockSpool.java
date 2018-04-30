@@ -14,4 +14,8 @@ public class BlockSpool extends BlockBase {
 		this.metal = metalIn;
 	}
 
+	public ConductiveMetals getMetal() {
+		return metal;
+	}
+
 }
