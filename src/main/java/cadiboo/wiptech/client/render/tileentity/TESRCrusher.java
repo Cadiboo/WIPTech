@@ -19,13 +19,15 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
 
 public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 
-	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	public static final ItemStack CRUSHER_BIT_HOLDER = new ItemStack(Items.CRUSHER_BIT_HOLDER);
+	public static final PropertyDirection	FACING				= BlockHorizontal.FACING;
+	public static final ItemStack			CRUSHER_BIT_HOLDER	= new ItemStack(Items.CRUSHER_BIT_HOLDER);
+	private static final ResourceLocation	IRON_TEXTURE		= new ResourceLocation("minecraft", "textures/blocks/iron_block.png");
 
 	private boolean isItemBlock(ItemStack stack) {
 		return stack.getItem() instanceof ItemBlock;
@@ -40,8 +42,34 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 	}
 
 	@Override
-	public void render(TileEntityCrusher te, double x, double y, double z, float partialTicks, int destroyStage,
-			float alpha) {
+	public void render(TileEntityCrusher te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+		if (!Minecraft.getMinecraft().gameSettings.fancyGraphics) {
+			GlStateManager.pushMatrix();
+			GlStateManager.translate(x + 0.5D, y + 0.5D, z + 0.5D);
+			switch (te.getWorld().getBlockState(te.getPos()).getValue(FACING)) {
+				case NORTH:
+					GlStateManager.translate(0.0D, 0.0D, 0.5625D);
+					break;
+				case EAST:
+					GlStateManager.translate(-0.5625D, 0.0D, 0.0D);
+					break;
+				case SOUTH:
+					GlStateManager.translate(0.0D, 0.0D, -0.5625D);
+					break;
+				case WEST:
+					GlStateManager.translate(0.5625D, 0.0D, 0.0D);
+					break;
+				default:
+					GlStateManager.translate(0.0F, 0.0F, 0.0F);
+					WIPTech.logger.info("Crusher Simple Rendering Offset Error!!");
+			}
+			GlStateManager.rotate(-90 * te.getWorld().getBlockState(te.getPos()).getValue(FACING).getOpposite().getHorizontalIndex(), 0.0F, 1F, 0.0F);
+			bindTexture(IRON_TEXTURE);
+			Utils.drawQuad(0, 1, 0, 1, 0.5F, 0.5F, 0.99);
+			GlStateManager.popMatrix();
+			return;
+		}
+
 		ItemStack stackCrusherBit = te.inventory.getStackInSlot(0);
 		ItemStack stackToCrush = te.inventory.getStackInSlot(1);
 
@@ -60,47 +88,45 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 				GlStateManager.translate(0.0D, pos, 0.0D);
 				if (stackCrusherBit.getItem() == Items.CRUSHER_BIT && Minecraft.getMinecraft().inGameHasFocus) {
 					if (pos > -0.05 && pos < 0.05 && pos < te.lastCrushAnimation)
-						((BlockCrusher) Utils.getBlockFromPos(te.getWorld(), te.getPos())).animateCrush(
-								Utils.getStateFromPos(te.getWorld(), te.getPos()), te.getWorld(), te.getPos(),
-								new Random());
+						((BlockCrusher) Utils.getBlockFromPos(te.getWorld(), te.getPos())).animateCrush(Utils.getStateFromPos(te.getWorld(), te.getPos()), te.getWorld(), te.getPos(), new Random());
 				}
 				te.lastCrushAnimation = pos;
 			}
 			double offset = 0.2D;
 			switch (enumfacing) {
-			case NORTH:
-				GlStateManager.translate(0.0D, 0.0D, offset);
-				break;
-			case EAST:
-				GlStateManager.translate(-offset, 0.0D, 0.0D);
-				break;
-			case SOUTH:
-				GlStateManager.translate(0.0D, 0.0D, -offset);
-				break;
-			case WEST:
-				GlStateManager.translate(offset, 0.0D, 0.0D);
-				break;
-			default:
-				GlStateManager.translate(0.0F, 0.0F, 0.0F);
-				WIPTech.logger.info("Crusher Rendering Offset Error!!");
+				case NORTH:
+					GlStateManager.translate(0.0D, 0.0D, offset);
+					break;
+				case EAST:
+					GlStateManager.translate(-offset, 0.0D, 0.0D);
+					break;
+				case SOUTH:
+					GlStateManager.translate(0.0D, 0.0D, -offset);
+					break;
+				case WEST:
+					GlStateManager.translate(offset, 0.0D, 0.0D);
+					break;
+				default:
+					GlStateManager.translate(0.0F, 0.0F, 0.0F);
+					WIPTech.logger.info("Crusher Rendering Offset Error!!");
 			}
 			double smalloffset = 0.01D;
 			switch (enumfacing) {
-			case NORTH:
-				GlStateManager.translate(0.0D, 0.0D, -smalloffset);
-				break;
-			case EAST:
-				GlStateManager.translate(smalloffset, 0.0D, 0.0D);
-				break;
-			case SOUTH:
-				GlStateManager.translate(0.0D, 0.0D, smalloffset);
-				break;
-			case WEST:
-				GlStateManager.translate(-smalloffset, 0.0D, 0.0D);
-				break;
-			default:
-				GlStateManager.translate(0.0F, 0.0F, 0.0F);
-				WIPTech.logger.info("Crusher Rendering Small Offset Error!!");
+				case NORTH:
+					GlStateManager.translate(0.0D, 0.0D, -smalloffset);
+					break;
+				case EAST:
+					GlStateManager.translate(smalloffset, 0.0D, 0.0D);
+					break;
+				case SOUTH:
+					GlStateManager.translate(0.0D, 0.0D, smalloffset);
+					break;
+				case WEST:
+					GlStateManager.translate(-smalloffset, 0.0D, 0.0D);
+					break;
+				default:
+					GlStateManager.translate(0.0F, 0.0F, 0.0F);
+					WIPTech.logger.info("Crusher Rendering Small Offset Error!!");
 			}
 			if (stackCrusherBit.getItem() == Items.HAMMER) {
 				GlStateManager.translate(0.0D, 0.5D, 0.0D);
@@ -132,24 +158,23 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 
 			boolean isItem = !isItemBlock(stack);
 			switch (enumfacing) {
-			case NORTH:
-				GlStateManager.translate(0.0D, 0.0D, isItem ? itemoffset : blockoffset);
-				break;
-			case EAST:
-				GlStateManager.translate(-(isItem ? itemoffset : blockoffset), 0.0D, 0.0D);
-				break;
-			case SOUTH:
-				GlStateManager.translate(0.0D, 0.0D, -(isItem ? itemoffset : blockoffset));
-				break;
-			case WEST:
-				GlStateManager.translate(isItem ? itemoffset : blockoffset, 0.0D, 0.0D);
-				break;
-			default:
-				GlStateManager.translate(0.0F, 0.0F, 0.0F);
-				WIPTech.logger.info("Crusher Rendering StackToCrush Offset Error!!");
+				case NORTH:
+					GlStateManager.translate(0.0D, 0.0D, isItem ? itemoffset : blockoffset);
+					break;
+				case EAST:
+					GlStateManager.translate(-(isItem ? itemoffset : blockoffset), 0.0D, 0.0D);
+					break;
+				case SOUTH:
+					GlStateManager.translate(0.0D, 0.0D, -(isItem ? itemoffset : blockoffset));
+					break;
+				case WEST:
+					GlStateManager.translate(isItem ? itemoffset : blockoffset, 0.0D, 0.0D);
+					break;
+				default:
+					GlStateManager.translate(0.0F, 0.0F, 0.0F);
+					WIPTech.logger.info("Crusher Rendering StackToCrush Offset Error!!");
 			}
-			GlStateManager.rotate(-90 * te.getWorld().getBlockState(te.getPos()).getValue(FACING).getHorizontalIndex(),
-					0.0F, 1.0F, 0.0F);
+			GlStateManager.rotate(-90 * te.getWorld().getBlockState(te.getPos()).getValue(FACING).getHorizontalIndex(), 0.0F, 1.0F, 0.0F);
 			if (isItem) {
 				GlStateManager.translate(0.0D, 0.26D, 0.0D);
 				GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);

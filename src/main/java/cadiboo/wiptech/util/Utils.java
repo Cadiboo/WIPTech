@@ -46,7 +46,7 @@ public class Utils {
 		return sprite;
 	}
 
-	public static void drawCuboid(float minU, float maxU, float minV, float maxV, double width, double height, double length, double scale) {
+	public static void drawCuboid(float minU, float maxU, float minV, float maxV, double x_size, double y_size, double z_size, double scale) {
 
 		GlStateManager.scale(scale, scale, scale);
 
@@ -60,47 +60,47 @@ public class Utils {
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		// UP
-		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size, y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size, y_size, -z_size).tex(minU, maxV).endVertex();
 
 		// DOWN
-		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
 
 		// LEFT
-		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(x_size, y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(x_size, y_size, z_size).tex(minU, minV).endVertex();
 
 		// RIGHT
-		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, -z_size).tex(maxU, maxV).endVertex();
 
 		// BACK
-		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length, height, -width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(length, height, -width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, -z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size, y_size, -z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
 
 		// FRONT
-		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(length, height, width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-length, height, width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size, y_size, z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
 
 		tessellator.draw();
 
 		GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
 	}
 
-	public static void drawSeamlessCuboid(float minU, float maxU, float minV, float maxV, double width, double height, double length, double scale) {
+	public static void drawSeamlessCuboid(float minU, float maxU, float minV, float maxV, double z_size, double y_size, double x_size, double scale) {
 
 		GlStateManager.scale(scale, scale, scale);
 
@@ -114,52 +114,75 @@ public class Utils {
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		// UP
-		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size, y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size, y_size, -z_size).tex(minU, maxV).endVertex();
 
 		// DOWN
-		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
 
 		// LEFT
-		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(x_size, y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(x_size, y_size, z_size).tex(minU, minV).endVertex();
 
 		// RIGHT
-		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, -z_size).tex(maxU, maxV).endVertex();
 
 		// BACK BOTTOM
-		bufferbuilder.pos(-length, -height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-length, centre, -width).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos(length, centre, -width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(length, -height, -width).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, centre, -z_size).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(x_size, centre, -z_size).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
 
 		// BACK TOP
-		bufferbuilder.pos(-length, centre, -width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(-length, height, -width).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(length, height, -width).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(length, centre, -width).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(-x_size, centre, -z_size).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(x_size, y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(x_size, centre, -z_size).tex(minU, hlfV).endVertex();
 
 		// FRONT BOTTOM
-		bufferbuilder.pos(length, -height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(length, centre, width).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(-length, centre, width).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos(-length, -height, width).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size, centre, z_size).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(-x_size, centre, z_size).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
 
 		// FRONT TOP
-		bufferbuilder.pos(length, centre, width).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos(length, height, width).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-length, height, width).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-length, centre, width).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(x_size, centre, z_size).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(x_size, y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-x_size, centre, z_size).tex(maxU, hlfV).endVertex();
+
+		tessellator.draw();
+
+		GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
+	}
+
+	public static void drawQuad(float minU, float maxU, float minV, float maxV, double x_size, double y_size, double scale) {
+		GlStateManager.scale(scale, scale, scale);
+
+		double hlfU = minU + (maxU - minU) / 2;
+		double hlfV = minV + (maxV - minV) / 2;
+
+		double centre = 0d;
+
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+
+		// BACK
+		bufferbuilder.pos(-x_size, -y_size, -1).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size, y_size, -1).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size, y_size, -1).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size, -y_size, -1).tex(maxU, maxV).endVertex();
 
 		tessellator.draw();
 
