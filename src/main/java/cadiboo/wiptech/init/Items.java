@@ -236,46 +236,8 @@ public class Items {
 
 	};
 
-	private static List<Item>	Ingots			= new ArrayList();
-	private static Boolean		IngotsIterated	= false;
+	public static void instantiateItems() {
 
-	public static List<Item> getIngots() {
-		if (!IngotsIterated.booleanValue()) {
-			Item[] arrayOfItem;
-			int j = (arrayOfItem = ITEMS).length;
-			for (int i = 0; i < j; i++) {
-				Item item = arrayOfItem[i];
-				if (!Ingots.contains(item)) {
-					if (((item instanceof ItemBase)) && (((ItemBase) item).isIngot())) {
-						Ingots.add(item);
-					}
-				} else {
-					IngotsIterated = Boolean.valueOf(true);
-				}
-			}
-		}
-		return Ingots;
-	}
-
-	private static List<Item>	Nuggets			= new ArrayList();
-	private static Boolean		NuggetsIterated	= false;
-
-	public static List<Item> getNuggets() {
-		if (!NuggetsIterated.booleanValue()) {
-			Item[] arrayOfItem;
-			int j = (arrayOfItem = ITEMS).length;
-			for (int i = 0; i < j; i++) {
-				Item item = arrayOfItem[i];
-				if (!Nuggets.contains(item)) {
-					if (((item instanceof ItemBase)) && (((ItemBase) item).isNugget())) {
-						Nuggets.add(item);
-					}
-				} else {
-					NuggetsIterated = Boolean.valueOf(true);
-				}
-			}
-		}
-		return Nuggets;
 	}
 
 	private static List<Item>	IngredientItems			= new ArrayList();
