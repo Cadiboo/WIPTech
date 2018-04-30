@@ -36,7 +36,7 @@ death.attack.plasmaprojectile=%1$s was incinerated by %2$s
 death.attack.plasmaprojectile.item=%1$s was incinerated by %2$s using %3$s
 
 death.attack.electricity=%1$s was electrocuted
-death.attack.electricity=%1$s briefly helped to complete an electric circuit.
+##death.attack.electricity=%1$s briefly completed an electric circuit.
 
 #Blocks & Items
 
