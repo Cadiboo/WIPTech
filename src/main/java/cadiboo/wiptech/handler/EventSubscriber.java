@@ -28,7 +28,6 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 @Mod.EventBusSubscriber(modid = Reference.ID)
 public class EventSubscriber {
@@ -78,23 +77,26 @@ public class EventSubscriber {
 		// }
 		// }
 
-		for (int i = 0; i < Items.getIngots().size(); i++) {
-			String name = Items.getIngots().get(i).getUnlocalizedName().replace("_ingot", "").replace("item.", "");
-			if (name.length() > 0) {
-				name = name.substring(0, 1).toUpperCase() + name.substring(1);
-				OreDictionary.registerOre("ingot" + name, Items.getIngots().get(i));
-				name = null;
-			}
-		}
-
-		for (int i = 0; i < Items.getNuggets().size(); i++) {
-			String name = Items.getNuggets().get(i).getUnlocalizedName().replace("_nugget", "").replace("item.", "");
-			if (name.length() > 0) {
-				name = name.substring(0, 1).toUpperCase() + name.substring(1);
-				OreDictionary.registerOre("nugget" + name, Items.getNuggets().get(i));
-				name = null;
-			}
-		}
+		// for (int i = 0; i < Items.getIngots().size(); i++) {
+		// String name = Items.getIngots().get(i).getUnlocalizedName().replace("_ingot",
+		// "").replace("item.", "");
+		// if (name.length() > 0) {
+		// name = name.substring(0, 1).toUpperCase() + name.substring(1);
+		// OreDictionary.registerOre("ingot" + name, Items.getIngots().get(i));
+		// name = null;
+		// }
+		// }
+		//
+		// for (int i = 0; i < Items.getNuggets().size(); i++) {
+		// String name =
+		// Items.getNuggets().get(i).getUnlocalizedName().replace("_nugget",
+		// "").replace("item.", "");
+		// if (name.length() > 0) {
+		// name = name.substring(0, 1).toUpperCase() + name.substring(1);
+		// OreDictionary.registerOre("nugget" + name, Items.getNuggets().get(i));
+		// name = null;
+		// }
+		// }
 
 		WIPTech.logger.error("use the 1.13 equivalent of ore dict! ore dict is already being phased out in this mod");
 		WIPTech.logger.info("Registered OreDictionary");
@@ -135,10 +137,7 @@ public class EventSubscriber {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void BlockBreakEvent(final BlockEvent.BreakEvent event) {
-		WIPTech.logger.info(event);
-
 		if (event.getState().getBlock() instanceof BlockAnvil) {
-			WIPTech.logger.info("anvil");
 			if (!(Utils.getBlockFromPos(event.getWorld(), event.getPos().up()) instanceof BlockItem))
 				return;
 			event.getWorld().destroyBlock(event.getPos().up(), !event.getPlayer().isCreative());
