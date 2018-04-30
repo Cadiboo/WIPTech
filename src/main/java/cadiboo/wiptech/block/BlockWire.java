@@ -59,13 +59,13 @@ public class BlockWire extends BlockTileEntity<TileEntityWire> {
 			if (((TileEntityWire) tile).isConnectedTo(EnumFacing.UP))
 				BB = BB.union(this.isEnamel() ? UP_BB.grow(0.0625, 0, 0.0625) : UP_BB);
 			if (((TileEntityWire) tile).isConnectedTo(EnumFacing.NORTH))
-				BB = BB.union(this.isEnamel() ? NORTH_BB.grow(0.0625, 0, 0.0625) : NORTH_BB);
+				BB = BB.union(this.isEnamel() ? NORTH_BB.grow(0.0625, 0.0625, 0) : NORTH_BB);
 			if (((TileEntityWire) tile).isConnectedTo(EnumFacing.SOUTH))
-				BB = BB.union(this.isEnamel() ? SOUTH_BB.grow(0.0625, 0, 0.0625) : SOUTH_BB);
+				BB = BB.union(this.isEnamel() ? SOUTH_BB.grow(0.0625, 0.0625, 0) : SOUTH_BB);
 			if (((TileEntityWire) tile).isConnectedTo(EnumFacing.WEST))
-				BB = BB.union(this.isEnamel() ? WEST_BB.grow(0.0625, 0, 0.0625) : WEST_BB);
+				BB = BB.union(this.isEnamel() ? WEST_BB.grow(0, 0.0625, 0.0625) : WEST_BB);
 			if (((TileEntityWire) tile).isConnectedTo(EnumFacing.EAST))
-				BB = BB.union(this.isEnamel() ? EAST_BB.grow(0.0625, 0, 0.0625) : EAST_BB);
+				BB = BB.union(this.isEnamel() ? EAST_BB.grow(0, 0.0625, 0.0625) : EAST_BB);
 		}
 		return BB;
 	}
