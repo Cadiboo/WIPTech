@@ -10,7 +10,7 @@ public class ModelEnamel extends ModelBase {
 	public ModelEnamel() {
 		enamel = new ModelRenderer(this, 0, 0);
 		enamel.setTextureSize(16, 16);
-		enamel.addBox(1, -2, -2, 7, 4, 4);
+		enamel.addBox(2, -2, -2, 6, 4, 4);
 		enamel.mirror = true;
 	}
 
