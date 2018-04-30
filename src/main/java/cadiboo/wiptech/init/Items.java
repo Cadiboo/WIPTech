@@ -236,10 +236,6 @@ public class Items {
 
 	};
 
-	public static void instantiateItems() {
-
-	}
-
 	private static List<Item>	IngredientItems			= new ArrayList();
 	private static Boolean		IngredientItemsIterated	= Boolean.valueOf(false);
 
