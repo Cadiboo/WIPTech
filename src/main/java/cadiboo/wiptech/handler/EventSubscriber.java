@@ -48,15 +48,12 @@ public class EventSubscriber {
 		GameRegistry.registerTileEntity(TileEntityTurbine.class, Reference.ID + "TileEntityTurbine");
 		GameRegistry.registerTileEntity(TileEntityCapacitorBank.class, Reference.ID + "TileEntityCapacitorBank");
 		GameRegistry.registerTileEntity(TileEntityWire.class, Reference.ID + "TileEntityWire");
-
 		WIPTech.logger.info("Registered TileEntities");
 	}
 
 	@SubscribeEvent
 	public static void registerItems(final RegistryEvent.Register<Item> event) {
-
 		event.getRegistry().registerAll(cadiboo.wiptech.init.Items.ITEMS);
-
 		WIPTech.logger.info("Registered Items");
 
 		for (int i = 0; i < Blocks.BLOCKS.length; i++) {
@@ -64,42 +61,10 @@ public class EventSubscriber {
 				continue;
 			event.getRegistry().register(new ItemBlock(Blocks.BLOCKS[i]).setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
 		}
-
 		WIPTech.logger.info("And ItemBlocks");
 
-		// for (int i = 0; i < Blocks.getOres().size(); i++) {
-		// String name = Blocks.getOres().get(i).getUnlocalizedName().replace("_ore",
-		// "").replace("tile.", "");
-		// if (name.length() > 0) {
-		// name = name.substring(0, 1).toUpperCase() + name.substring(1);
-		// OreDictionary.registerOre("ore" + name, Blocks.getOres().get(i));
-		// name = null;
-		// }
-		// }
-
-		// for (int i = 0; i < Items.getIngots().size(); i++) {
-		// String name = Items.getIngots().get(i).getUnlocalizedName().replace("_ingot",
-		// "").replace("item.", "");
-		// if (name.length() > 0) {
-		// name = name.substring(0, 1).toUpperCase() + name.substring(1);
-		// OreDictionary.registerOre("ingot" + name, Items.getIngots().get(i));
-		// name = null;
-		// }
-		// }
-		//
-		// for (int i = 0; i < Items.getNuggets().size(); i++) {
-		// String name =
-		// Items.getNuggets().get(i).getUnlocalizedName().replace("_nugget",
-		// "").replace("item.", "");
-		// if (name.length() > 0) {
-		// name = name.substring(0, 1).toUpperCase() + name.substring(1);
-		// OreDictionary.registerOre("nugget" + name, Items.getNuggets().get(i));
-		// name = null;
-		// }
-		// }
-
-		WIPTech.logger.error("use the 1.13 equivalent of ore dict! ore dict is already being phased out in this mod");
-		WIPTech.logger.info("Registered OreDictionary");
+		WIPTech.logger.error("use the 1.13 vanilla equivalent of ore dict! ore dict is already being phased out in this mod");
+		// WIPTech.logger.info("Registered OreDictionary");
 
 	}
 
