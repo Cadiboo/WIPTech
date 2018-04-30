@@ -11,6 +11,7 @@ import cadiboo.wiptech.block.BlockCapacitorBank;
 import cadiboo.wiptech.block.BlockCoiler;
 import cadiboo.wiptech.block.BlockCrusher;
 import cadiboo.wiptech.block.BlockItem;
+import cadiboo.wiptech.block.BlockMotor;
 import cadiboo.wiptech.block.BlockOre;
 import cadiboo.wiptech.block.BlockPeripheralBlock;
 import cadiboo.wiptech.block.BlockResourceBlock;
@@ -51,6 +52,13 @@ public class Blocks {
 	public static final BlockSpool	SILVER_SPOOL	= new BlockSpool("silver_spool", Material.IRON, ConductiveMetals.SILVER);
 	public static final BlockSpool	IRON_SPOOL		= new BlockSpool("iron_spool", Material.IRON, ConductiveMetals.IRON);
 	public static final BlockSpool	GOLD_SPOOL		= new BlockSpool("gold_spool", Material.IRON, ConductiveMetals.GOLD);
+
+	public static final BlockMotor	COPPER_MOTOR	= new BlockMotor("copper_motor", Material.IRON, ConductiveMetals.COPPER);
+	public static final BlockMotor	TIN_MOTOR		= new BlockMotor("tin_motor", Material.IRON, ConductiveMetals.TIN);
+	public static final BlockMotor	ALUMINIUM_MOTOR	= new BlockMotor("aluminium_motor", Material.IRON, ConductiveMetals.ALUMINIUM);
+	public static final BlockMotor	SILVER_MOTOR	= new BlockMotor("silver_motor", Material.IRON, ConductiveMetals.SILVER);
+	public static final BlockMotor	IRON_MOTOR		= new BlockMotor("iron_motor", Material.IRON, ConductiveMetals.IRON);
+	public static final BlockMotor	GOLD_MOTOR		= new BlockMotor("gold_motor", Material.IRON, ConductiveMetals.GOLD);
 
 	public static final BlockItem	COPPER_INGOT	= new BlockItem("copper_ingot", Material.IRON, BlockItems.COPPER_INGOT);
 	public static final BlockItem	TIN_INGOT		= new BlockItem("tin_ingot", Material.IRON, BlockItems.TIN_INGOT);
@@ -101,6 +109,8 @@ public class Blocks {
 			// COPPER_, TIN_, ALUMINIUM_, SILVER_, IRON_, GOLD_,
 
 			COPPER_SPOOL, TIN_SPOOL, ALUMINIUM_SPOOL, SILVER_SPOOL, IRON_SPOOL, GOLD_SPOOL,
+
+			COPPER_MOTOR, TIN_MOTOR, ALUMINIUM_MOTOR, SILVER_MOTOR, IRON_MOTOR, GOLD_MOTOR,
 
 			COPPER_INGOT, TIN_INGOT, ALUMINIUM_INGOT, SILVER_INGOT, IRON_INGOT, GOLD_INGOT,
 
