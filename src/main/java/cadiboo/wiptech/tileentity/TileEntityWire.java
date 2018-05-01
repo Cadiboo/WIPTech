@@ -37,9 +37,11 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 		if (!world.isRemote && energy.getEnergyStored() > 0) {
 			if (Utils.getBlockFromPos(world, pos) instanceof BlockWire && !((BlockWire) Utils.getBlockFromPos(world, pos)).isEnamel()) {
 				getAllEntitiesWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), 3).forEach(entity -> {
-					if (entity instanceof EntityCreeper && !((EntityCreeper) entity).getPowered()) {
-						((EntityCreeper) entity).onStruckByLightning(null);
-						((EntityCreeper) entity).setFire(1);
+					if (entity instanceof EntityCreeper) {
+						if (!((EntityCreeper) entity).getPowered()) {
+							((EntityCreeper) entity).onStruckByLightning(null);
+							((EntityCreeper) entity).extinguish();
+						}
 					} else if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative() && EntitySelectors.NOT_SPECTATING.apply(entity))) {
 						entity.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy(energy.getEnergyStored(), false)));
 						return; // stop transmission logic
