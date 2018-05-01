@@ -5,6 +5,9 @@ import java.util.List;
 
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.config.Configuration;
+import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
+import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
+import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectiles;
 import cadiboo.wiptech.util.CustomEnergyStorage;
 import cadiboo.wiptech.util.DamageSource;
 import cadiboo.wiptech.util.Utils;
@@ -42,6 +45,10 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 							((EntityCreeper) entity).onStruckByLightning(null);
 							((EntityCreeper) entity).extinguish();
 						}
+					} else if (entity instanceof EntityParamagneticProjectile) { // TODO remove this in 1.13
+						((EntityParamagneticProjectile) entity).setAmmoId(9); // PLASMA
+					} else if (entity instanceof EntityParamagneticProjectile113) {
+						((EntityParamagneticProjectile113) entity).setType(ParamagneticProjectiles.PLASMA);
 					} else if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative() && EntitySelectors.NOT_SPECTATING.apply(entity))) {
 						entity.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy(energy.getEnergyStored(), false)));
 						return; // stop transmission logic
