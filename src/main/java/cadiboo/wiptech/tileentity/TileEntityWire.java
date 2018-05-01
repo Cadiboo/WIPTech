@@ -1,11 +1,15 @@
 package cadiboo.wiptech.tileentity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.config.Configuration;
 import cadiboo.wiptech.util.CustomEnergyStorage;
+import cadiboo.wiptech.util.DamageSource;
 import cadiboo.wiptech.util.Utils;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -31,6 +35,18 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 	@Override
 	public void update() {
 		if (!world.isRemote && energy.getEnergyStored() > 0) {
+			if (Utils.getBlockFromPos(world, pos) instanceof BlockWire && !((BlockWire) Utils.getBlockFromPos(world, pos)).isEnamel()) {
+				getAllEntitiesWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), 3).forEach(entity -> {
+					if (entity instanceof EntityCreeper && !((EntityCreeper) entity).getPowered()) {
+						((EntityCreeper) entity).onStruckByLightning(null);
+						((EntityCreeper) entity).setFire(1);
+					} else if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative() && EntitySelectors.NOT_SPECTATING.apply(entity))) {
+						entity.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy(energy.getEnergyStored(), false)));
+						return; // stop transmission logic
+					}
+				});
+			}
+
 			for (int i = 0; i < EnumFacing.VALUES.length; i++) {
 				if (lastRecieved != null)
 					transmitEnergy(EnumFacing.VALUES[(lastRecieved.getIndex() + i + 1) % EnumFacing.VALUES.length]);
@@ -75,6 +91,10 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 
 	}
 
+	public List<Entity> getAllEntitiesWithinRangeAt(double x, double y, double z, double range) {
+		return this.getWorld().getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(x - range / 2, y - range / 2, z - range / 2, x + range / 2, y + range / 2, z + range / 2));
+	}
+
 	public ArrayList<EntityPlayer> getAllPlayersWithinRangeAt(double x, double y, double z, double range) {
 		ArrayList<EntityPlayer> list = new ArrayList<EntityPlayer>();
 		for (int j2 = 0; j2 < this.getWorld().playerEntities.size(); ++j2) {
@@ -97,8 +117,6 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 
 	@Override
 	public IEnergyStorage getEnergy(EnumFacing side) {
-		// if (side != null)
-		// this.lastRecieved = side;
 		return this.energy;
 	}
 
