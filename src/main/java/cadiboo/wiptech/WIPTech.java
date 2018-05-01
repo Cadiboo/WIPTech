@@ -34,35 +34,23 @@ public class WIPTech {
 	// HALF DONE STOP ARROW-LIKE BOUNCE OFF - Partly done, they now either go
 	// through the mob or teleport into the ground a block below it... //DONE maybe
 	// reenable it
-	// TODO find out ...I forgot what I was writing
-	// TODO Find out if dammage is set to Projectiles correctly
-	// TODO STOP SPELLING DAMAGE WITH TWO Ms
-	// TODO does /giving myself a Plasma still throw an error?
-	// DONE Implement my Modular capability
 	// TODO Maybe implement a custom renderer for it? so that you can see what
 	// augments you have on it
 	// HALF DONE Def make it display the modules/augments in the ItemStack's Tooltip
 	// HALF DONE make Plasma Cannon!!!
 	// TODO and drill
-	// DOING get some sleep
 	// TODO redo knockback
-	// HALF DONE redo Projectile spawning
 	// HALF DONE capabilities
 	// TODO make EntityRailgun rideable
 	// TODO redo itemStack proj consumption coilgun
-	// TODO RIGHT CLICK ANVIL
-	// TODO PLACE BLOCKS
-	// TODO STOP GUI
 	// TODO Overheat
-	// DOING capacitors
-	// TODO FE
-	// DOING ^
-	// TODO Knockback
-	// TODO damage nerf
+	// TODO capacitors
+	// TODO damage buff
 	// TODO check Capabilities modules NBT
-	// DONE WHy are projectiles bouncing off bosses? IDK but they aren't anymore
-	// DONE copy how ender gateways are rendered - used Dragon Death layer rendering
-	// TODO WHY ISNT ENERGY SYNCED!!!
+
+	// TODO make electrocution graphics
+	// TODO plasma tools
+	// TODO taser
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
