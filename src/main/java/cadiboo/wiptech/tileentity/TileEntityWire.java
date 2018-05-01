@@ -81,12 +81,12 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 		IEnergyStorage storage = tileEntity.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
 		if (storage == null)
 			return;
-		if (Utils.getBlockFromPos(world, pos.offset(side)) instanceof BlockWire) {
+		if (isConnectedToWire(side)) {
 			CustomEnergyStorage wireStorage = (CustomEnergyStorage) storage;
 			if (wireStorage.getEnergyStored() < energy.getEnergyStored()) {
 				energy.extractEnergy(wireStorage.receiveEnergy(energy.extractEnergy(energy.getEnergyStored() / connectedSides.size(), true), false, side.getOpposite()), false);
 			}
-		} else if (storage.canReceive() /* && !storage.canExtract() */) // not a wire from my mod (or a generator) (probably a machine)
+		} else if (storage.canReceive() /* && !storage.canExtract() */) // not a wire from my mod or a generator from any mod (probably a machine)
 			energy.extractEnergy(storage.receiveEnergy(energy.extractEnergy(energy.getEnergyStored() / connectedSides.size(), true), false), false);
 
 	}
@@ -113,6 +113,10 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 
 	public boolean isConnectedTo(EnumFacing face) {
 		return (world.getTileEntity(pos.offset(face)) != null && world.getTileEntity(pos.offset(face)).getCapability(CapabilityEnergy.ENERGY, face.getOpposite()) != null);
+	}
+
+	public boolean isConnectedToWire(EnumFacing face) {
+		return (isConnectedTo(face) && Utils.getBlockFromPos(world, pos.offset(face)) instanceof BlockWire);
 	}
 
 	@Override

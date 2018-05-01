@@ -58,7 +58,8 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 			if (isEnamel) {
 				this.bindTexture(ENAMEL_TEXTURE);
 				DOWN_MODEL_ENAMEL.render(ONE_SIXTEENTH);
-				GlStateManager.translate(SEVEN_SIXTEENTHS, 0, 0);
+				if (!tileEntity.isConnectedToWire(side))
+					GlStateManager.translate(SEVEN_SIXTEENTHS, 0, 0);
 				this.bindTexture(texLoc);
 			}
 			DOWN_MODEL_WIRE.render(ONE_SIXTEENTH);
