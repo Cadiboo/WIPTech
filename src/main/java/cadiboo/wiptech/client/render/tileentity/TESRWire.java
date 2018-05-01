@@ -45,6 +45,8 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 		final ResourceLocation texLoc = new ResourceLocation(Reference.ID, "textures/items/" + ((BlockWire) tileEntity.getBlockType()).getMetal().getName() + "_wire.png");
 		final boolean isEnamel = ((BlockWire) tileEntity.getBlockType()).isEnamel();
 
+		GlStateManager.depthMask(true);
+
 		sides: for (int i = 0; i < EnumFacing.VALUES.length; i++) {
 			final EnumFacing side = EnumFacing.VALUES[i];
 			if (!tileEntity.isConnectedTo(side))
