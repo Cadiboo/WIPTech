@@ -44,6 +44,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 		}
 		final ResourceLocation texLoc = new ResourceLocation(Reference.ID, "textures/items/" + ((BlockWire) tileEntity.getBlockType()).getMetal().getName() + "_wire.png");
 		final boolean isEnamel = ((BlockWire) tileEntity.getBlockType()).isEnamel();
+		this.bindTexture(texLoc);
 
 		GlStateManager.depthMask(true);
 
