@@ -37,6 +37,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -149,30 +150,28 @@ public class EventSubscriber {
 		tessellator.draw();
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onTooltipEvent(final ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
 
+		if (stack.getItem() instanceof ItemRail) {
+			setTooltip(event, WIPTech.proxy.localize("efficiency") + ": " + ((ItemRail) stack.getItem()).getMetal().getConductivityPercentage() + "%");
+		}
+
 		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockWire) {
-			event.getToolTip().add(WIPTech.proxy.localize("conductivity") + ": " + ((BlockWire) Block.getBlockFromItem(stack.getItem())).getMetal().getConductivityPercentage() + "%");
+			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((BlockWire) Block.getBlockFromItem(stack.getItem())).getMetal().getConductivityPercentage() + "%");
 		}
 
 		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockSpool) {
-			event.getToolTip().add(WIPTech.proxy.localize("conductivity") + ": " + ((BlockSpool) Block.getBlockFromItem(stack.getItem())).getMetal().getConductivityPercentage() + "%");
-		}
-
-		if (stack.getItem() instanceof ItemRail) {
-			event.getToolTip().add(WIPTech.proxy.localize("efficiency") + ": " + ((ItemRail) stack.getItem()).getMetal().getConductivityPercentage() + "%");
+			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((BlockSpool) Block.getBlockFromItem(stack.getItem())).getMetal().getConductivityPercentage() + "%");
 		}
 
 		if (stack.getItem() instanceof ItemCoil) {
-			event.getToolTip().add(WIPTech.proxy.localize("efficiency") + ": " + ((ItemCoil) stack.getItem()).getMetal().getConductivityPercentage() + "%");
-			// event.getToolTip().add(WIPTech.proxy.localize("lang.efficiency.name: %s",
-			// ((ItemRail) stack.getItem()).getMetal().getConductivityPercentage()) + "%");
+			setTooltip(event, WIPTech.proxy.localize("efficiency") + ": " + ((ItemCoil) stack.getItem()).getMetal().getConductivityPercentage() + "%");
 		}
 
 		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockMotor) {
-			event.getToolTip().add(WIPTech.proxy.localize("conductivity") + ": " + ((BlockMotor) Block.getBlockFromItem(stack.getItem())).getMetal().getConductivityPercentage() + "%");
+			setTooltip(event, WIPTech.proxy.localize("efficiency") + ": " + ((BlockMotor) Block.getBlockFromItem(stack.getItem())).getMetal().getConductivityPercentage() + "%");
 		}
 
 		// || Block.getBlockFromItem(stack.getItem()) instanceof BlockSpool ||
@@ -182,14 +181,25 @@ public class EventSubscriber {
 		// Block.getBlockFromItem(stack.getItem()) instanceof ItemRail) {
 
 		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockWire) {
-			event.getToolTip().add(WIPTech.proxy.localize("wire.tooltip", new Object[0]));
+			setTooltip(event, WIPTech.proxy.localize("wire.tooltip", new Object[0]));
 		}
 
 		if (stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase(Reference.ID)) {
 			String itemTooltip = WIPTech.proxy.localize(stack.getUnlocalizedName() + ".tooltip", new Object[0]);
 			if (!itemTooltip.equalsIgnoreCase(stack.getUnlocalizedName() + ".tooltip"))
-				event.getToolTip().add(itemTooltip);
+				setTooltip(event, itemTooltip);
 		}
+
+	}
+
+	private static void setTooltip(final ItemTooltipEvent event, final String tooltip) {
+		for (int i = 0; i < event.getToolTip().size(); i++) {
+			if (StringUtils.stripControlCodes(event.getToolTip().get(i)).equals(event.getItemStack().getItem().getRegistryName().toString())) {
+				event.getToolTip().add(i, tooltip);
+				return;
+			}
+		}
+		event.getToolTip().add(tooltip);
 	}
 
 }
