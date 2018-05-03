@@ -62,27 +62,30 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 			GlStateManager.pushMatrix();
-			// GlStateManager.translate(x, y, z);
-			// GlStateManager.translate(0, 10, 0);
 
 			double dX;
 			double dY;
 			double dZ;
-			double scale = 16;
-			int NumberOfBranches = 1;
-			int NumberOfPossibleSubBranches = 2;
+			final int NumberOfBranches = 1;
+			final int NumberOfPossibleSubBranches = 2;
 
 			GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-			// GlStateManager.rotate(getWorld().getWorldTime(), 0, 0, 1);
-			GlStateManager.rotate(180, 1, 0, 0);
-			GlStateManager.translate(-3.5, -8 * scale, -4);
+			// GlStateManager.rotate(180, 0, 0, 1);
+			// GlStateManager.rotate(180, 1, 0, 0);
 
-			List<Entity> entities = tileEntity.getAllEntitiesWithinRangeAt(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), 3);
+			List<Entity> entities = tileEntity.getAllEntitiesWithinRangeAt(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), 113);
 			for (int i = 0; i < entities.size(); i++) {
+				dX = entities.get(i).posX - tileEntity.getPos().getX();
+				dY = entities.get(i).posY - tileEntity.getPos().getY();
+				dZ = entities.get(i).posZ - tileEntity.getPos().getZ();
+				GlStateManager.rotate((float) dZ, 0, 0, 1);
+				final double scale = 0.0625 * (dX + dY + dZ);
+				final double scale16 = scale / 16;
+				GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
 				for (int shells = 0; shells < 5; ++shells) {
 					Random random1 = new Random(getWorld().getTotalWorldTime());
 					// random1 = new Random();
-					// random1 = new Random(2);
+					random1 = new Random(2);
 					for (int branches = 0; branches < NumberOfBranches; branches++) {
 						for (int possibleSubBranches = 0; possibleSubBranches < NumberOfPossibleSubBranches + 1; ++possibleSubBranches) {
 							int position = 7;
@@ -103,12 +106,10 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 								double bottomTranslateX = topTranslateX;
 								double bottomTranslateZ = topTranslateZ;
 
-								// WIPTech.info(random1.nextInt(11) - 5);
-
 								if (possibleSubBranches == 0) { // Main branch
-									// topTranslateX += random1.nextInt(11) - 5;
-									// topTranslateZ += random1.nextInt(11) - 5;
-								} else {
+									topTranslateX += random1.nextInt(11) - 5;
+									topTranslateZ += random1.nextInt(11) - 5;
+								} else {// Sub branch
 									topTranslateX += random1.nextInt(31) - 15;
 									topTranslateZ += random1.nextInt(31) - 15;
 								}
@@ -130,9 +131,6 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 								bottomWidth *= (scale / 16);
 
 								for (int side = 0; side < 5; ++side) {
-									// double topOffsetX = x + 0.5D - topWidth;
-									// double topOffsetZ = z + 0.5D - topWidth;
-
 									double topOffsetX = topWidth;
 									double topOffsetZ = topWidth;
 
@@ -143,9 +141,6 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 									if (side == 2 || side == 3) {
 										topOffsetZ += topWidth * 2.0D;
 									}
-
-									// double bottomOffsetX = x + 0.5D - bottomWidth;
-									// double bottomOffsetZ = z + 0.5D - bottomWidth;
 
 									double bottomOffsetX = bottomWidth;
 									double bottomOffsetZ = bottomWidth;
@@ -158,20 +153,8 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 										bottomOffsetZ += bottomWidth * 2.0D;
 									}
 
-									// topOffsetX /= scale;
-									// topOffsetZ = 0;
-									// bottomOffsetX = 0;
-									// bottomOffsetZ = 0;
-
-									// topTranslateX = -scale;
-									// topTranslateZ = -scale;
-									// bottomTranslateX = -scale;
-									// bottomTranslateZ = -scale;
-
-									bufferbuilder.pos(bottomOffsetX + topTranslateX * (scale / 16), yPos * scale, bottomOffsetZ + topTranslateZ * (scale / 16)).color(0.45F, 0.45F, 0.5F, 0.3F)
-											.endVertex();
-									bufferbuilder.pos(topOffsetX + bottomTranslateX * (scale / 16), (yPos + 1) * scale, topOffsetZ + bottomTranslateZ * (scale / 16)).color(0.45F, 0.45F, 0.5F, 0.3F)
-											.endVertex();
+									bufferbuilder.pos(bottomOffsetX + topTranslateX * scale16, yPos * scale, bottomOffsetZ + topTranslateZ * scale16).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
+									bufferbuilder.pos(topOffsetX + bottomTranslateX * scale16, (yPos + 1) * scale, topOffsetZ + bottomTranslateZ * scale16).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
 								}
 
 								tessellator.draw();
@@ -179,6 +162,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 							}
 						}
 					}
+
 				}
 			}
 

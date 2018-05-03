@@ -146,7 +146,7 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return super.getRenderBoundingBox().grow(0);
+		return super.getRenderBoundingBox().grow(0111);
 	}
 
 	public boolean dumpEnergy() {
