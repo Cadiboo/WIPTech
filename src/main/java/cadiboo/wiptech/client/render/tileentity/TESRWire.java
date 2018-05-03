@@ -83,6 +83,14 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 				dY = entities.get(i).posY - tileEntity.getPos().getY();
 				dZ = entities.get(i).posZ - tileEntity.getPos().getZ();
 
+				// GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw -
+				// entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
+				// GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch -
+				// entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
+
+				GlStateManager.rotate((float) dY - 90.0F, 0.0F, 1.0F, 0.0F);
+				GlStateManager.rotate((float) -dZ, 0.0F, 0.0F, 1.0F);
+
 				final double scale = 0.0625 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2) + Math.pow(dZ, 2));
 				final double scale16 = scale / 16;
 				GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
