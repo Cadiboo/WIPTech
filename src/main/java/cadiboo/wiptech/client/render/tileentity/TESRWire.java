@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
@@ -43,7 +44,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 	private static final ModelEnamel	EAST_MODEL_ENAMEL	= new ModelEnamel();
 
 	@Override
-	public void render(TileEntityWire tileEntity, double x, double y, double z, float partialTick, int destroyStage, float alpha) {
+	public void render(TileEntityWire tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		if (!(tileEntity.getBlockType() instanceof BlockWire)) {
 			WIPTech.logger.error("WIRE RENDERING ERROR! BLOCK IS NOT WIRE");
 			return;
@@ -61,7 +62,6 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 			GlStateManager.disableLighting();
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-			GlStateManager.pushMatrix();
 
 			double dX;
 			double dY;
@@ -69,17 +69,21 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 			final int NumberOfBranches = 1;
 			final int NumberOfPossibleSubBranches = 2;
 
-			GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
 			// GlStateManager.rotate(180, 0, 0, 1);
 			// GlStateManager.rotate(180, 1, 0, 0);
 
 			List<Entity> entities = tileEntity.getAllEntitiesWithinRangeAt(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), 113);
 			for (int i = 0; i < entities.size(); i++) {
+				if (entities.get(i) instanceof EntityPlayer)
+					continue;
+				GlStateManager.pushMatrix();
+				GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+				GlStateManager.rotate(180, 0, 0, 1);
 				dX = entities.get(i).posX - tileEntity.getPos().getX();
 				dY = entities.get(i).posY - tileEntity.getPos().getY();
 				dZ = entities.get(i).posZ - tileEntity.getPos().getZ();
-				GlStateManager.rotate((float) dZ, 0, 0, 1);
-				final double scale = 0.0625 * (dX + dY + dZ);
+
+				final double scale = 0.0625 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2) + Math.pow(dZ, 2));
 				final double scale16 = scale / 16;
 				GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
 				for (int shells = 0; shells < 5; ++shells) {
@@ -164,9 +168,9 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 					}
 
 				}
+				GlStateManager.popMatrix();
 			}
 
-			GlStateManager.popMatrix();
 			GlStateManager.disableBlend();
 			GlStateManager.enableLighting();
 			GlStateManager.enableTexture2D();
