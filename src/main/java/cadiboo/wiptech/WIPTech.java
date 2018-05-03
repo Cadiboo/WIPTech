@@ -75,8 +75,10 @@ public class WIPTech {
 		// finished.
 	}
 
-	public static void info(Object msg) {
-		logger.info(msg);
+	public static void info(Object... msgs) {
+		for (Object msg : msgs) {
+			logger.info(msg);
+		}
 	}
 
 	public static void error(Object msg) {

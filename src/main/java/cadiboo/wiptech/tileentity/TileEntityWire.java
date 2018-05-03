@@ -12,6 +12,7 @@ import cadiboo.wiptech.util.CustomEnergyStorage;
 import cadiboo.wiptech.util.DamageSource;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -35,22 +36,32 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 
 	private EnumFacing lastRecieved;
 
+	public int electrocutionTime;
+
 	@Override
 	public void update() {
+		// electrocutionTime--;
 		if (!world.isRemote && energy.getEnergyStored() > 0) {
 			if (Utils.getBlockFromPos(world, pos) instanceof BlockWire && !((BlockWire) Utils.getBlockFromPos(world, pos)).isEnamel()) {
 				getAllEntitiesWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), 3).forEach(entity -> {
 					if (entity instanceof EntityCreeper) {
 						if (!((EntityCreeper) entity).getPowered()) {
+							this.electrocutionTime = 7;
+							syncToClients();
 							((EntityCreeper) entity).onStruckByLightning(null);
 							((EntityCreeper) entity).extinguish();
 						}
 					} else if (entity instanceof EntityParamagneticProjectile) { // TODO remove this in 1.13
 						((EntityParamagneticProjectile) entity).setAmmoId(9); // PLASMA
+						this.electrocutionTime = 7;
+						syncToClients();
 					} else if (entity instanceof EntityParamagneticProjectile113) {
 						((EntityParamagneticProjectile113) entity).setType(ParamagneticProjectiles.PLASMA);
-					} else if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative() && EntitySelectors.NOT_SPECTATING.apply(entity))) {
-						entity.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy(energy.getEnergyStored(), false)));
+						this.electrocutionTime = 7;
+						syncToClients();
+					} else if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative() && EntitySelectors.NOT_SPECTATING.apply(entity)) && entity instanceof EntityLivingBase) {
+						entity.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy((int) ((EntityLivingBase) entity).getHealth() * 1000, false)));
+						this.electrocutionTime = 7;
 						return; // stop transmission logic
 					}
 				});
@@ -135,7 +146,7 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return super.getRenderBoundingBox();// .grow(0.5D);
+		return super.getRenderBoundingBox().grow(0);
 	}
 
 	public boolean dumpEnergy() {
@@ -159,6 +170,8 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 		if (type != NBTType.DROP)
 			if (lastRecieved != null)
 				nbt.setInteger("lastRecieved", lastRecieved.getIndex());
+		if (electrocutionTime > 0)
+			nbt.setInteger("electrocutionTime", electrocutionTime);
 	}
 
 	@Override
@@ -166,6 +179,13 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 		super.readNBT(nbt, type);
 		if (nbt.hasKey("lastRecieved"))
 			this.lastRecieved = EnumFacing.VALUES[nbt.getInteger("lastRecieved")];
+		if (nbt.hasKey("electrocutionTime"))
+			this.electrocutionTime = Integer.valueOf(nbt.getInteger("electrocutionTime"));
+	}
+
+	@Override
+	public double getMaxRenderDistanceSquared() {
+		return 16384;
 	}
 
 }
