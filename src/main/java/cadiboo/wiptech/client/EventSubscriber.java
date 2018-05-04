@@ -79,6 +79,7 @@ public class EventSubscriber {
 			}
 		}
 
+		// 1.13
 		// for (int i = 0; i < Items.ITEMS.length; i++) {
 		// ModelLoader.setCustomModelResourceLocation(Items.ITEMS[i], 0, new
 		// ModelResourceLocation(Items.ITEMS[i].getRegistryName(), "inventory"));
