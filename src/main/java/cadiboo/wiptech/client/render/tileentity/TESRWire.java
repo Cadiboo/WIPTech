@@ -135,7 +135,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 				// Math.pow(dZ, 2));
 				final double scale = 0.5;// 0.125 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2) + Math.pow(dZ, 2));
 				final double scale16 = scale / 16;
-				GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
+				// GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
 				for (int shells = 0; shells < 5; ++shells) {
 					Random random1 = new Random(getWorld().getTotalWorldTime());
 					// random1 = new Random();
