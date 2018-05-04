@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
@@ -74,31 +73,75 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 
 			List<Entity> entities = tileEntity.getAllEntitiesWithinRangeAt(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), 113);
 			for (int i = 0; i < entities.size(); i++) {
-				if (entities.get(i) instanceof EntityPlayer)
-					continue;
+				// if (entities.get(i) instanceof EntityPlayer)
+				// continue;
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-				GlStateManager.rotate(180, 0, 0, 1);
-				dX = entities.get(i).posX - tileEntity.getPos().getX();
-				dY = entities.get(i).posY - tileEntity.getPos().getY();
-				dZ = entities.get(i).posZ - tileEntity.getPos().getZ();
+				// GlStateManager.rotate(180, 0, 0, 1);
+				dX = entities.get(i).posX - tileEntity.getPos().getX() - 0.5;
+				dY = entities.get(i).posY - tileEntity.getPos().getY() - 0.5;
+				dZ = entities.get(i).posZ - tileEntity.getPos().getZ() - 0.5;
+
+				double aa = dX;
+				double bb = dZ;
+				double cc = Math.sqrt(aa * aa + bb * bb);
+
+				double angle = 180F / Math.PI * Math.acos((bb * bb - (-cc * cc) - aa * aa) / (2 * bb * cc));
+				// WIPTech.info(aa, bb, cc, angle);
+				// WIPTech.info("_", 0 - dX, 0 - dY, 0 - dZ);
+
+				GlStateManager.rotate(90F + (float) angle * (aa < 0 ? -1 : 1), 0, 1, 0);
+
+				aa = dY;
+				bb = dX;
+				cc = Math.sqrt(aa * aa + bb * bb);
+
+				angle = 180F / Math.PI * Math.acos((bb * bb - (-cc * cc) - aa * aa) / (2 * bb * cc));
+
+				// GlStateManager.rotate(70F + (float) angle * (aa < 0 ? -1 : 1), 0, 0, 1);
+				// WIPTech.info(aa, bb, cc, angle);
+
+				aa = dY;
+				bb = dZ;
+				cc = Math.sqrt(aa * aa + bb * bb);
+
+				angle = 180F / Math.PI * Math.acos((bb * bb - (-cc * cc) - aa * aa) / (2 * bb * cc));
+
+				GlStateManager.rotate(270F + (float) angle * (aa < 0 ? 1 : -1), 1, 0, 0);
+
+				// WIPTech.info(aa, bb, cc, angle);
+
+				// GlStateManager.rotate(-90, 0, 0, 1);
+				// GlStateManager.rotate((float) rotx * -90F, 1, 0, 0);
+				// GlStateManager.rotate((float) rotz * 360F, 0, 0, 1);
 
 				// GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw -
 				// entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
 				// GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch -
 				// entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
 
-				GlStateManager.rotate((float) dY - 90.0F, 0.0F, 1.0F, 0.0F);
-				GlStateManager.rotate((float) -dZ, 0.0F, 0.0F, 1.0F);
+				// GlStateManager.rotate((float) dY - 90.0F, 0.0F, 1.0F, 0.0F);
+				// GlStateManager.rotate((float) -dZ, 0.0F, 0.0F, 1.0F);
 
-				final double scale = 0.0625 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2) + Math.pow(dZ, 2));
+				// WIPTech.info("_", dX, dY, dZ, Math.atan2(dX, dZ), Math.atan2(dX, dY),
+				// Math.atan2(dY, dZ));
+
+				// GlStateManager.rotate(90, 0, 1, 0);
+				// GlStateManager.rotate(-90, 0, 0, 1);
+				// GlStateManager.rotate(0, 0, 0, 1);
+				// GlStateManager.rotate((float) Math.atan2(dX, dZ), 1, 0, 0);
+
+				// final double scale = 0.0625 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2) +
+				// Math.pow(dZ, 2));
+				final double scale = 0.5;// 0.125 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2) + Math.pow(dZ, 2));
 				final double scale16 = scale / 16;
 				GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
 				for (int shells = 0; shells < 5; ++shells) {
 					Random random1 = new Random(getWorld().getTotalWorldTime());
 					// random1 = new Random();
-					random1 = new Random(2);
 					for (int branches = 0; branches < NumberOfBranches; branches++) {
+						// random1 = new Random(getWorld().getTotalWorldTime() + branches);
+						random1 = new Random(2);
 						for (int possibleSubBranches = 0; possibleSubBranches < NumberOfPossibleSubBranches + 1; ++possibleSubBranches) {
 							int position = 7;
 							int decendingHeight = 0;
