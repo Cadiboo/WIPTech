@@ -98,43 +98,42 @@ public class EventSubscriber {
 
 	@SubscribeEvent(priority = EventPriority.NORMAL)
 	public static void onRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
-
 		if (!(event.getType() == RenderGameOverlayEvent.ElementType.ALL) || Minecraft.getMinecraft().currentScreen != null)
 			return;
+
 		Minecraft mc = Minecraft.getMinecraft();
 		RayTraceResult posHit = mc.objectMouseOver;
-		if (posHit != null && posHit.getBlockPos() != null) {
-			Block blockHit = mc.world.getBlockState(posHit.getBlockPos()).getBlock();
-			TileEntity tileHit = mc.world.getTileEntity(posHit.getBlockPos());
+		if (posHit == null || posHit.getBlockPos() == null)
+			return;
 
-			// WIPTech.logger.info(posHit);
-			// WIPTech.logger.info(posHit.getBlockPos());
+		Block blockHit = mc.world.getBlockState(posHit.getBlockPos()).getBlock();
+		TileEntity tileHit = mc.world.getTileEntity(posHit.getBlockPos());
+		// WIPTech.logger.info(posHit);
+		// WIPTech.logger.info(posHit.getBlockPos());
+		if (blockHit instanceof BlockPeripheralBlock)
+			tileHit = mc.world.getTileEntity(((BlockPeripheralBlock) blockHit).getTileEntityPos(mc.world, posHit.getBlockPos()));
+		if (tileHit == null)
+			return;
 
-			if (blockHit instanceof BlockPeripheralBlock)
-				tileHit = mc.world.getTileEntity(((BlockPeripheralBlock) blockHit).getTileEntityPos(mc.world, posHit.getBlockPos()));
+		IEnergyStorage energy = tileHit.getCapability(CapabilityEnergy.ENERGY, null);
+		if (energy == null)
+			return;
 
-			if (tileHit != null) {
-				IEnergyStorage energy = tileHit.getCapability(CapabilityEnergy.ENERGY, null);
-				if (energy != null) {
-					double power = (double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored();
-					int scaled_height = (int) Math.round((1 - power) * 52D);
-					ScaledResolution Scaled = new ScaledResolution(Minecraft.getMinecraft());
-					int Width = Scaled.getScaledWidth() - 10;
-					int Height = Scaled.getScaledHeight() - 54;
+		double power = (double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored();
+		int scaled_height = (int) Math.round((1 - power) * 52D);
+		ScaledResolution Scaled = new ScaledResolution(Minecraft.getMinecraft());
+		int Width = Scaled.getScaledWidth() - 10;
+		int Height = Scaled.getScaledHeight() - 54;
 
-					Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.ID, "textures/gui/turbine.png"));
+		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.ID, "textures/gui/turbine.png"));
 
-					drawNonStandardTexturedRect(Width, Height, 83, 16, 10, 54, 256, 256);
-					drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 176, 0, 8, 52 - scaled_height, 256, 256);
-					int percent = (int) Math.round(power * 100);
-					mc.fontRenderer.drawStringWithShadow(percent + "%", Width - 7 - String.valueOf(percent).length() * 6, Height + 35, 0xFFFFFF);
-					String outOf = energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
-					mc.fontRenderer.drawStringWithShadow(outOf, Width - 1 - outOf.length() * 6, Height + 45, 0xFFFFFF);
+		drawNonStandardTexturedRect(Width, Height, 83, 16, 10, 54, 256, 256);
+		drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 176, 0, 8, 52 - scaled_height, 256, 256);
+		int percent = (int) Math.round(power * 100);
+		mc.fontRenderer.drawStringWithShadow(percent + "%", Width - 7 - String.valueOf(percent).length() * 6, Height + 35, 0xFFFFFF);
+		String outOf = energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
+		mc.fontRenderer.drawStringWithShadow(outOf, Width - 1 - outOf.length() * 6, Height + 45, 0xFFFFFF);
 
-				}
-			}
-
-		}
 	}
 
 	protected static void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
