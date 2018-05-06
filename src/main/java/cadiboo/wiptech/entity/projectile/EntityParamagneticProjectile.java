@@ -24,19 +24,17 @@ import net.minecraft.world.World;
 
 public class EntityParamagneticProjectile extends EntityProjectileBase {
 
-	private static final DataParameter<Integer> AMMO_ID = EntityDataManager
-			.<Integer>createKey(EntityParamagneticProjectile.class, DataSerializers.VARINT);
-	private static final DataParameter<Float> TEMPERATURE = EntityDataManager
-			.<Float>createKey(EntityParamagneticProjectile.class, DataSerializers.FLOAT);
+	private static final DataParameter<Integer>	AMMO_ID		= EntityDataManager.<Integer>createKey(EntityParamagneticProjectile.class, DataSerializers.VARINT);
+	private static final DataParameter<Float>	TEMPERATURE	= EntityDataManager.<Float>createKey(EntityParamagneticProjectile.class, DataSerializers.FLOAT);
 
-	public static final int overheatFireTime = 5;
-	public static final int overheatTemperature = 50;
-	public static final int meltTemperature = 100;
-	public static final int freezeTemperature = -25;
-	public static final int ingiteTemperature = 500;
-	public static final int vaporiseTemperature = 5000;
-	public static final int plasmaKillTemperature = 350;
-	public static final int plasmaAirLifespan = 120;
+	public static final int	overheatFireTime		= 5;
+	public static final int	overheatTemperature		= 50;
+	public static final int	meltTemperature			= 100;
+	public static final int	freezeTemperature		= -25;
+	public static final int	ingiteTemperature		= 500;
+	public static final int	vaporiseTemperature		= 5000;
+	public static final int	plasmaKillTemperature	= 350;
+	public static final int	plasmaAirLifespan		= 120;
 
 	@Override
 	public int getAirLifespan() {
@@ -153,18 +151,12 @@ public class EntityParamagneticProjectile extends EntityProjectileBase {
 
 		if (!this.world.isRemote) {
 			if (this.canIgnite()) {
-				if ((iblockstate.getBlock() == Blocks.AIR) && ((world.getBlockState(blockpos.down()).getBlock()
-						.isFlammable(world, blockpos.down(), EnumFacing.UP))
-						|| (world.getBlockState(blockpos.up()).getBlock().isFlammable(world, blockpos.up(),
-								EnumFacing.DOWN))
-						|| (world.getBlockState(blockpos.north()).getBlock().isFlammable(world, blockpos.north(),
-								EnumFacing.SOUTH))
-						|| (world.getBlockState(blockpos.east()).getBlock().isFlammable(world, blockpos.east(),
-								EnumFacing.WEST))
-						|| (world.getBlockState(blockpos.south()).getBlock().isFlammable(world, blockpos.south(),
-								EnumFacing.NORTH))
-						|| (world.getBlockState(blockpos.west()).getBlock().isFlammable(world, blockpos.west(),
-								EnumFacing.EAST))))
+				if ((iblockstate.getBlock() == Blocks.AIR) && ((world.getBlockState(blockpos.down()).getBlock().isFlammable(world, blockpos.down(), EnumFacing.UP))
+						|| (world.getBlockState(blockpos.up()).getBlock().isFlammable(world, blockpos.up(), EnumFacing.DOWN))
+						|| (world.getBlockState(blockpos.north()).getBlock().isFlammable(world, blockpos.north(), EnumFacing.SOUTH))
+						|| (world.getBlockState(blockpos.east()).getBlock().isFlammable(world, blockpos.east(), EnumFacing.WEST))
+						|| (world.getBlockState(blockpos.south()).getBlock().isFlammable(world, blockpos.south(), EnumFacing.NORTH))
+						|| (world.getBlockState(blockpos.west()).getBlock().isFlammable(world, blockpos.west(), EnumFacing.EAST))))
 					this.world.setBlockState(blockpos, Blocks.FIRE.getDefaultState(), 2);
 				if (iblockstate.getBlock() == Blocks.WATER)
 					this.world.setBlockToAir(blockpos);
@@ -227,8 +219,7 @@ public class EntityParamagneticProjectile extends EntityProjectileBase {
 		this.motionX = ((float) (raytraceResultIn.hitVec.x - this.posX));
 		this.motionY = ((float) (raytraceResultIn.hitVec.y - this.posY));
 		this.motionZ = ((float) (raytraceResultIn.hitVec.z - this.posZ));
-		float f2 = MathHelper
-				.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+		float f2 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 		this.posX -= this.motionX / f2 * 0.05000000074505806D;
 		this.posY -= this.motionY / f2 * 0.05000000074505806D;
 		this.posZ -= this.motionZ / f2 * 0.05000000074505806D;
@@ -243,27 +234,23 @@ public class EntityParamagneticProjectile extends EntityProjectileBase {
 		boolean shootingEntityNull = this.shootingEntity == null;
 
 		switch (this.getAmmoType(this.getAmmoId())) {
-		case 0: // Big rod - MountedRailgun
-			damagesource = shootingEntityNull
-					? cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this)
-					: cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this.shootingEntity);
-			break;
-		default:
-		case 1: // Medium rod - Handheld Railgun
-			damagesource = shootingEntityNull
-					? cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this)
-					: cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this.shootingEntity);
-			break;
-		case 2: // Small rod - Coilgun
-			damagesource = shootingEntityNull
-					? cadiboo.wiptech.util.DamageSource.causeCoilgunProjectileDamage(this, this)
-					: cadiboo.wiptech.util.DamageSource.causeCoilgunProjectileDamage(this, this.shootingEntity);
-			break;
-		case 3: // Nano rod - Plasma Cannon
-			damagesource = shootingEntityNull
-					? cadiboo.wiptech.util.DamageSource.causePlasmaProjectileDamage(this, this)
-					: cadiboo.wiptech.util.DamageSource.causePlasmaProjectileDamage(this, this.shootingEntity);
-			break;
+			case 0: // Big rod - MountedRailgun
+				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this)
+						: cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this.shootingEntity);
+				break;
+			default:
+			case 1: // Medium rod - Handheld Railgun
+				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this)
+						: cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage(this, this.shootingEntity);
+				break;
+			case 2: // Small rod - Coilgun
+				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causeCoilgunProjectileDamage(this, this)
+						: cadiboo.wiptech.util.DamageSource.causeCoilgunProjectileDamage(this, this.shootingEntity);
+				break;
+			case 3: // Nano rod - Plasma Cannon
+				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causePlasmaProjectileDamage(this, this)
+						: cadiboo.wiptech.util.DamageSource.causePlasmaProjectileDamage(this, this.shootingEntity);
+				break;
 		}
 
 		if (this.isOverheated())
@@ -280,15 +267,13 @@ public class EntityParamagneticProjectile extends EntityProjectileBase {
 					float f1 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 
 					if (f1 > 0.0F) {
-						entitylivingbase.addVelocity(this.motionX * this.knockbackStrength * 0.6000000238418579D / f1,
-								0.1D, this.motionZ * this.knockbackStrength * 0.6000000238418579D / f1);
+						entitylivingbase.addVelocity(this.motionX * this.knockbackStrength * 0.6000000238418579D / f1, 0.1D, this.motionZ * this.knockbackStrength * 0.6000000238418579D / f1);
 					}
 				}
 
 				if (this.shootingEntity instanceof EntityLivingBase) {
 					EnchantmentHelper.applyThornEnchantments(entitylivingbase, this.shootingEntity);
-					EnchantmentHelper.applyArthropodEnchantments((EntityLivingBase) this.shootingEntity,
-							entitylivingbase);
+					EnchantmentHelper.applyArthropodEnchantments((EntityLivingBase) this.shootingEntity, entitylivingbase);
 				}
 
 				/*
@@ -305,19 +290,17 @@ public class EntityParamagneticProjectile extends EntityProjectileBase {
 			}
 
 			switch (getAmmoType(getAmmoId())) {
-			default:
-			case 0:
-			case 1:
-				this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-				break;
-			case 2:
-				this.playSound(SoundEvents.ENTITY_SHULKER_BULLET_HIT, 1.0F,
-						1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-				break;
-			case 3:
-				this.playSound(SoundEvents.ENTITY_PLAYER_HURT_ON_FIRE, 1.0F,
-						1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
-				break;
+				default:
+				case 0:
+				case 1:
+					this.playSound(SoundEvents.ENTITY_SLIME_SQUISH, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+					break;
+				case 2:
+					this.playSound(SoundEvents.ENTITY_SHULKER_BULLET_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+					break;
+				case 3:
+					this.playSound(SoundEvents.ENTITY_PLAYER_HURT_ON_FIRE, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+					break;
 			}
 
 			if (this.isPlasma()) {
@@ -333,8 +316,7 @@ public class EntityParamagneticProjectile extends EntityProjectileBase {
 			// WHY DO THIS EVER????
 			// TODO Maybe remove this completely
 
-			if (!this.world.isRemote && this.motionX * this.motionX + this.motionY * this.motionY
-					+ this.motionZ * this.motionZ < 0.0010000000474974513D) {
+			if (!this.world.isRemote && this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ < 0.0010000000474974513D) {
 				if (this.pickupStatus == EntityProjectileBase.PickupStatus.ALLOWED) {
 					this.entityDropItem(this.getAmmoStack(), 0.1F);
 				}
@@ -404,61 +386,61 @@ public class EntityParamagneticProjectile extends EntityProjectileBase {
 		float velocity = 0;
 		int metaData = stack.getMetadata();
 		switch (getAmmoType(metaData)) {
-		case 0: // mounted Railgun
-			switch (getAmmoLevel(metaData)) {
+			case 0: // mounted Railgun
+				switch (getAmmoLevel(metaData)) {
 
-			// TODO make these higher
+					// TODO make these higher
+					default:
+					case 0: // iron
+						velocity = 3.5F;
+						break;
+					case 1: // osmium
+						velocity = 3F;
+						break;
+					case 2: // tungsten
+						velocity = 3.25F;
+						break;
+				}
+
+				break;
 			default:
-			case 0: // iron
-				velocity = 3.5F;
-				break;
-			case 1: // osmium
-				velocity = 3F;
-				break;
-			case 2: // tungsten
-				velocity = 3.25F;
-				break;
-			}
+			case 1: // handheld Railgun
+				switch (getAmmoLevel(metaData)) {
 
-			break;
-		default:
-		case 1: // handheld Railgun
-			switch (getAmmoLevel(metaData)) {
+					default:
+					case 0: // iron
+						velocity = 3.5F;
+						break;
+					case 1: // osmium
+						velocity = 3F;
+						break;
+					case 2: // tungsten
+						velocity = 3.25F;
+						break;
+				}
 
-			default:
-			case 0: // iron
-				velocity = 3.5F;
 				break;
-			case 1: // osmium
-				velocity = 3F;
-				break;
-			case 2: // tungsten
-				velocity = 3.25F;
-				break;
-			}
+			case 2: // Coilgun / gausscannon
+				switch (getAmmoLevel(metaData)) {
 
-			break;
-		case 2: // Coilgun / gausscannon
-			switch (getAmmoLevel(metaData)) {
+					// TODO change these
 
-			// TODO change these
+					default:
+					case 0: // iron
+						velocity = 3.5F;
+						break;
+					case 1: // osmium
+						velocity = 3F;
+						break;
+					case 2: // tungsten
+						velocity = 3.25F;
+						break;
+				}
 
-			default:
-			case 0: // iron
-				velocity = 3.5F;
 				break;
-			case 1: // osmium
-				velocity = 3F;
-				break;
-			case 2: // tungsten
-				velocity = 3.25F;
-				break;
-			}
-
-			break;
-		case 3: // plasma
-			velocity = 7.5F; // some fucking crazy amount because of how light it is //yenah 20 is way over
-								// the top
+			case 3: // plasma
+				velocity = 7.5F; // some fucking crazy amount because of how light it is //yenah 20 is way over
+									// the top
 
 		}
 		// WIPTech.logger.info("Velocity for meta '"+metaData+"' with Type
@@ -471,57 +453,57 @@ public class EntityParamagneticProjectile extends EntityProjectileBase {
 		float damage = 0;
 		int metaData = stack.getMetadata();
 		switch (getAmmoType(metaData)) {
-		case 0: // mounted Railgun
-			switch (getAmmoLevel(metaData)) {
+			case 0: // mounted Railgun
+				switch (getAmmoLevel(metaData)) {
 
+					default:
+					case 0: // iron
+						damage = 20F;
+						break;
+					case 1: // osmium
+						damage = 32F;
+						break;
+					case 2: // tungsten
+						damage = 40F;
+						break;
+				}
+
+				break;
 			default:
-			case 0: // iron
-				damage = 20F;
-				break;
-			case 1: // osmium
-				damage = 32F;
-				break;
-			case 2: // tungsten
-				damage = 40F;
-				break;
-			}
+			case 1: // handheld Railgun
+				switch (getAmmoLevel(metaData)) {
 
-			break;
-		default:
-		case 1: // handheld Railgun
-			switch (getAmmoLevel(metaData)) {
+					default:
+					case 0: // iron
+						damage = 7.5F;
+						break;
+					case 1: // osmium
+						damage = 12F;
+						break;
+					case 2: // tungsten
+						damage = 15F;
+						break;
+				}
 
-			default:
-			case 0: // iron
-				damage = 7.5F;
 				break;
-			case 1: // osmium
-				damage = 12F;
-				break;
-			case 2: // tungsten
-				damage = 15F;
-				break;
-			}
+			case 2: // Coilgun / gausscannon
+				switch (getAmmoLevel(metaData)) {
 
-			break;
-		case 2: // Coilgun / gausscannon
-			switch (getAmmoLevel(metaData)) {
+					default:
+					case 0: // iron
+						damage = 2F;
+						break;
+					case 1: // osmium
+						damage = 3.2F;
+						break;
+					case 2: // tungsten
+						damage = 4F;
+						break;
+				}
 
-			default:
-			case 0: // iron
-				damage = 2F;
 				break;
-			case 1: // osmium
-				damage = 3.2F;
-				break;
-			case 2: // tungsten
-				damage = 4F;
-				break;
-			}
-
-			break;
-		case 3: // plasma
-			damage = 0.5F;
+			case 3: // plasma
+				damage = 0.5F;
 
 		}
 		// WIPTech.logger.info("Damage for meta '"+metaData+"' with Type
@@ -534,59 +516,59 @@ public class EntityParamagneticProjectile extends EntityProjectileBase {
 		float knockback = 0;
 		int metaData = stack.getMetadata();
 		switch (getAmmoType(metaData)) {
-		case 0: // mounted Railgun
-			switch (getAmmoLevel(metaData)) {
+			case 0: // mounted Railgun
+				switch (getAmmoLevel(metaData)) {
 
+					default:
+					case 0: // iron
+						knockback = 2F;
+						break;
+					case 1: // osmium
+						knockback = 3F;
+						break;
+					case 2: // tungsten
+						knockback = 5F;
+						break;
+				}
+
+				break;
 			default:
-			case 0: // iron
-				knockback = 2F;
-				break;
-			case 1: // osmium
-				knockback = 3F;
-				break;
-			case 2: // tungsten
-				knockback = 5F;
-				break;
-			}
+			case 1: // handheld Railgun
+				switch (getAmmoLevel(metaData)) {
 
-			break;
-		default:
-		case 1: // handheld Railgun
-			switch (getAmmoLevel(metaData)) {
+					default:
+					case 0: // iron
+						knockback = 1F;
+						break;
+					case 1: // osmium
+						knockback = 1.5F;
+						break;
+					case 2: // tungsten
+						knockback = 2.5F;
+						break;
+				}
 
-			default:
-			case 0: // iron
-				knockback = 1F;
 				break;
-			case 1: // osmium
-				knockback = 1.5F;
-				break;
-			case 2: // tungsten
-				knockback = 2.5F;
-				break;
-			}
+			case 2: // Coilgun / gausscannon
+				switch (getAmmoLevel(metaData)) {
 
-			break;
-		case 2: // Coilgun / gausscannon
-			switch (getAmmoLevel(metaData)) {
+					// TODO change these
 
-			// TODO change these
+					default:
+					case 0: // iron
+						knockback = 0.1F;
+						break;
+					case 1: // osmium
+						knockback = 0.15F;
+						break;
+					case 2: // tungsten
+						knockback = 0.25F;
+						break;
+				}
 
-			default:
-			case 0: // iron
-				knockback = 0.1F;
 				break;
-			case 1: // osmium
-				knockback = 0.15F;
-				break;
-			case 2: // tungsten
-				knockback = 0.25F;
-				break;
-			}
-
-			break;
-		case 3: // plasma
-			knockback = 0F;
+			case 3: // plasma
+				knockback = 0F;
 
 		}
 		// WIPTech.logger.info("Knockback for meta '"+metaData+"' with Type

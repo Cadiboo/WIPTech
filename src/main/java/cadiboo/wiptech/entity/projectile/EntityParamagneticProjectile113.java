@@ -534,6 +534,7 @@ public class EntityParamagneticProjectile113 extends EntityArrow {
 			if (this.isPlasma())
 				this.setDead();
 		}
+		this.onUpdate();
 	}
 
 	public boolean isPlasma() {
