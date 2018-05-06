@@ -9,12 +9,15 @@ import cadiboo.wiptech.client.model.ModelEnamel;
 import cadiboo.wiptech.client.model.ModelWire;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.Reference;
+import cadiboo.wiptech.util.Utils;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 
@@ -73,41 +76,159 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 
 			List<Entity> entities = tileEntity.getAllEntitiesWithinRangeAt(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), 113);
 			for (int i = 0; i < entities.size(); i++) {
-				// if (entities.get(i) instanceof EntityPlayer)
-				// continue;
+				if (entities.get(i) instanceof EntityPlayer)
+					// continue;
+					;
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
 				// GlStateManager.rotate(180, 0, 0, 1);
-				dX = entities.get(i).posX - tileEntity.getPos().getX() - 0.5;
-				dY = entities.get(i).posY - tileEntity.getPos().getY() - 0.5;
-				dZ = entities.get(i).posZ - tileEntity.getPos().getZ() - 0.5;
 
-				double aa = dX;
-				double bb = dZ;
-				double cc = Math.sqrt(aa * aa + bb * bb);
+				double flyingMultiplier = 1.825;
+				double yFlying = 1.02;
+				double yAdd = 0.0784000015258789;
+				double jump = 0;
 
-				double angle = 180F / Math.PI * Math.acos((bb * bb - (-cc * cc) - aa * aa) / (2 * bb * cc));
-				// WIPTech.info(aa, bb, cc, angle);
-				// WIPTech.info("_", 0 - dX, 0 - dY, 0 - dZ);
+				if (entities.get(i) instanceof EntityLiving) {
 
-				GlStateManager.rotate(90F + (float) angle * (aa < 0 ? -1 : 1), 0, 1, 0);
+				}
 
-				aa = dY;
-				bb = dX;
-				cc = Math.sqrt(aa * aa + bb * bb);
+				if (entities.get(i) instanceof EntityPlayer) {
+					if (((EntityPlayer) entities.get(i)).capabilities.isFlying) {
+						flyingMultiplier = 1.1;
+						yFlying = 1.67;
+						yAdd = 0;
+					}
+				}
 
-				angle = 180F / Math.PI * Math.acos((bb * bb - (-cc * cc) - aa * aa) / (2 * bb * cc));
+				double yGround = entities.get(i).motionY + yAdd == 0 && entities.get(i).prevPosY > entities.get(i).posY ? entities.get(i).posY - entities.get(i).prevPosY : 0;
+				double xFall = 1;
+				if (flyingMultiplier == 1.825) {
+					if (entities.get(i).motionX != 0) {
+						if (entities.get(i).motionY + yAdd != 0) {
+							xFall = 0.6;
+						} else if (yGround != 0) {
+							xFall = 0.6;
+						}
+					} else {
+						xFall = 0.6;
+					}
+				}
 
-				// GlStateManager.rotate(70F + (float) angle * (aa < 0 ? -1 : 1), 0, 0, 1);
-				// WIPTech.info(aa, bb, cc, angle);
+				double zFall = 1;
+				if (flyingMultiplier == 1.825) {
+					if (entities.get(i).motionZ != 0) {
+						if (entities.get(i).motionY + yAdd != 0) {
+							zFall = 0.6;
+						} else if (yGround != 0) {
+							zFall = 0.6;
+						}
+					} else {
+						zFall = 0.6;
+					}
+				}
 
-				aa = dY;
-				bb = dZ;
-				cc = Math.sqrt(aa * aa + bb * bb);
+				// double xFall = (entities.get(i).motionX != 0 && flyingMultiplier == 1.825 &&
+				// !entities.get(i).onGround && entities.get(i).motionY + yAdd != 0 || yGround
+				// != 0
+				// || entities.get(i).motionY + yAdd > 0 && flyingMultiplier == 1.825 ? 0.6 :
+				// 1);
+				// WIPTech.info(((EntityPlayer) entities.get(i)).jumpMovementFactor > 0);
 
-				angle = 180F / Math.PI * Math.acos((bb * bb - (-cc * cc) - aa * aa) / (2 * bb * cc));
+				// flyingMultiplier == 1.825 && entities.get(i).motionY + yAdd != 0 ||
+				// ((flyingMultiplier == 1.825 && entities.get(i).motionY + yAdd > 0)) ||
+				// yGround != 0
 
-				GlStateManager.rotate(270F + (float) angle * (aa < 0 ? 1 : -1), 1, 0, 0);
+				dX = entities.get(i).posX - (entities.get(i).prevPosX - entities.get(i).posX) * partialTicks - (entities.get(i).motionX * xFall) * flyingMultiplier - tileEntity.getPos().getX() - 0.5;
+
+				dY = entities.get(i).posY - yGround - (entities.get(i).prevPosY - entities.get(i).posY) * partialTicks - (entities.get(i).motionY + yAdd) * yFlying - tileEntity.getPos().getY() - 0.5;
+				dZ = entities.get(i).posZ - (entities.get(i).prevPosZ - entities.get(i).posZ) * partialTicks - (entities.get(i).motionZ * zFall) * flyingMultiplier - tileEntity.getPos().getZ() - 0.5;
+				dY += entities.get(i).getEyeHeight();
+
+				float fX = (float) dX;
+				float fY = (float) dY;
+				float fZ = (float) dZ;
+
+				double zAngle = Math.atan2(0 - dY, 0 - dX);
+				zAngle = zAngle * (180 / Math.PI);
+				// The following if statement is optional and converts our angle from being
+				// -180 to +180 degrees to 0-360 degrees. It is completely optional
+				if (zAngle < 0) {
+					zAngle = 360 - (-zAngle);
+				}
+				// GlStateManager.rotate(90 + (float) zAngle + 180, 0, 0, 1);
+
+				double xAngle = Math.atan2(0 - dY, 0 - dZ);
+				xAngle = xAngle * (180 / Math.PI);
+				if (xAngle < 0) {
+					xAngle = 360 - (-xAngle);
+				}
+				// GlStateManager.rotate((float) -xAngle + 90, 1, 0, 0);
+
+				double yAngle = Math.atan2(0 - dX, 0 - dZ);
+				yAngle = yAngle * (180 / Math.PI);
+				if (yAngle < 0) {
+					yAngle = 360 - (-yAngle);
+				}
+				GlStateManager.rotate((float) yAngle + 90, 0, 1, 0);
+				GlStateManager.rotate(90, 0, 0, 1);
+				WIPTech.info("xyz", xAngle, yAngle, zAngle);
+
+				// GlStateManager.rotate((float) Math.atan(Math.sqrt(dX * dX + dY * dY) / dZ),
+				// 1, 0, 0);
+
+				// GLU.gluLookAt(0, 0, 0, (float) xAngle, (float) yAngle, (float) zAngle, 0, 0,
+				// 0);
+				// GLU.gluLookAt((float) x, (float) y, (float) z, 0, 0, 0, 0, 0, 0);
+				// GlStateManager.scale(100, 100, 100);
+				// GLU.gluLookAt(0, 0, 0, fX, fY, fZ, 0, -1, 0);
+				// GLU.gluLookAt(0, 0, 0, 0, fY, fZ, 1, 0, 0);
+
+				// GlStateManager.rotate((float) zAngle, 0, 0, 0);
+
+				// new Matrix4d(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30,
+				// m31, m32, m33)
+
+				// double aa = dX;
+				// double bb = dZ;
+				// double cc = Math.sqrt(aa * aa + bb * bb);
+				//
+				// double angle = 180F / Math.PI * Math.acos((bb * bb - (-cc * cc) - aa * aa) /
+				// (2 * bb * cc));
+				// // WIPTech.info(aa, bb, cc, angle);
+				// // WIPTech.info("_", 0 - dX, 0 - dY, 0 - dZ);
+				//
+				// if (angle < 0) {
+				// angle = 360 - (-angle);
+				// }
+				//
+				// // GlStateManager.rotate(90F + (float) angle * (aa < 0 ? -1 : 1), 0, 1, 0);
+				//
+				// aa = dY;
+				// bb = dX;
+				// cc = Math.sqrt(aa * aa + bb * bb);
+				//
+				// angle = 180F / Math.PI * Math.acos((bb * bb - (-cc * cc) - aa * aa) / (2 * bb
+				// * cc));
+				//
+				// if (angle < 0) {
+				// angle = 360 - (-angle);
+				// }
+				//
+				// // GlStateManager.rotate(70F + (float) angle * (aa < 0 ? -1 : 1), 0, 0, 1);
+				// // WIPTech.info(aa, bb, cc, angle);
+				//
+				// aa = dY;
+				// bb = dZ;
+				// cc = Math.sqrt(aa * aa + bb * bb);
+				//
+				// if (angle < 0) {
+				// angle = 360 - (-angle);
+				// }
+				//
+				// angle = 180F / Math.PI * Math.acos((bb * bb - (-cc * cc) - aa * aa) / (2 * bb
+				// * cc));
+
+				// GlStateManager.rotate(270F + (float) angle * (aa < 0 ? 1 : -1), 1, 0, 0);
 
 				// WIPTech.info(aa, bb, cc, angle);
 
@@ -133,10 +254,18 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 
 				// final double scale = 0.0625 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2) +
 				// Math.pow(dZ, 2));
-				final double scale = 0.5;// 0.125 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2) + Math.pow(dZ, 2));
+				// final double scale = 0.5;// 0.125 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY,
+				// 2) + Math.pow(dZ, 2));
+				final double scale = 0.125 * Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+				// GlStateManager.translate(0, -(Math.sqrt(dX * dX + dZ * dZ) + 0.5) / 2, 0);
+				// Utils.drawCuboid(0, 1, 0, 1, 0.01, (Math.sqrt(dX * dX + dZ * dZ) + 0.5) / 2,
+				// 0.01, 1);
+				GlStateManager.translate(0, -Math.sqrt(dX * dX + dZ * dZ) / 2, 0);
+				Utils.drawCuboid(0, 1, 0, 1, 0.01, Math.sqrt(dX * dX + dZ * dZ) / 2, 0.01, 1);
+				// Utils.drawCuboid(0, 1, 0, 1, 1, 5, 1, 1);
 				final double scale16 = scale / 16;
 				// GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
-				for (int shells = 0; shells < 5; ++shells) {
+				for (int shells = 0; shells < 0; ++shells) {
 					Random random1 = new Random(getWorld().getTotalWorldTime());
 					// random1 = new Random();
 					for (int branches = 0; branches < NumberOfBranches; branches++) {
@@ -249,4 +378,40 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 			GlStateManager.popMatrix();
 		}
 	}
+
+	// private static Matrix4d createMat4(final Vector3d pos, final Vector3d lookat)
+	// {
+	// Vector3d vz = lookat. - pos;
+	// vz.normalize();
+	// Vector3d vx = Vector3::cross(Vector3( 0, 1, 0 ), vz);
+	// vx.normalize();
+	// Vector3 vy = Vector3::cross(vz, vx);
+	//
+	// Matrix4 rotation ( vx.x, vy.x, vz.x, 0,
+	// vx.y, vy.y, vz.y, 0,
+	// vx.z, vy.z, vz.z, 0,
+	// 0, 0, 0, 1);
+	// return rotation;
+	// }
+
+	// public void zoomOn(double x, double y, double z, Vecteur direction) {
+	// Transform3D viewTrans = new Transform3D();
+	// if (direction == null) {
+	// return;
+	// }
+	// if (direction.norme() == 0) {
+	// return;
+	// }
+	// // point the view at the center of the object
+	// Point3d center = new Point3d(x + this.translate.x, y + this.translate.y, z +
+	// this.translate.z);
+	// Point3d eyePos = new Point3d(x + this.translate.x + direction.getX(), y +
+	// this.translate.y
+	// + direction.getY(), z + this.translate.z + direction.getZ());
+	// viewTrans.setIdentity();
+	// viewTrans.lookAt(eyePos, center, new Vector3d(0, 0, 1));
+	// // set the view transform
+	// viewTrans.invert();
+	// InterfaceMap3D.tgvu.setTransform(viewTrans);
+	// }
 }
