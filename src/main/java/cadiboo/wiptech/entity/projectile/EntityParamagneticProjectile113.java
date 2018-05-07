@@ -204,12 +204,10 @@ public class EntityParamagneticProjectile113 extends EntityArrow {
 
 		if (!this.world.isRemote) {
 			if (this.canIgnite()) {
-				if ((iblockstate.getBlock() == Blocks.AIR) && ((world.getBlockState(blockpos.down()).getBlock().isFlammable(world, blockpos.down(), EnumFacing.UP))
-						|| (world.getBlockState(blockpos.up()).getBlock().isFlammable(world, blockpos.up(), EnumFacing.DOWN))
-						|| (world.getBlockState(blockpos.north()).getBlock().isFlammable(world, blockpos.north(), EnumFacing.SOUTH))
-						|| (world.getBlockState(blockpos.east()).getBlock().isFlammable(world, blockpos.east(), EnumFacing.WEST))
-						|| (world.getBlockState(blockpos.south()).getBlock().isFlammable(world, blockpos.south(), EnumFacing.NORTH))
-						|| (world.getBlockState(blockpos.west()).getBlock().isFlammable(world, blockpos.west(), EnumFacing.EAST))))
+				if ((iblockstate.getBlock() == Blocks.AIR)
+						&& ((world.getBlockState(blockpos.down()).getBlock().isFlammable(world, blockpos.down(), EnumFacing.UP)) || (world.getBlockState(blockpos.up()).getBlock().isFlammable(world, blockpos.up(), EnumFacing.DOWN))
+								|| (world.getBlockState(blockpos.north()).getBlock().isFlammable(world, blockpos.north(), EnumFacing.SOUTH)) || (world.getBlockState(blockpos.east()).getBlock().isFlammable(world, blockpos.east(), EnumFacing.WEST))
+								|| (world.getBlockState(blockpos.south()).getBlock().isFlammable(world, blockpos.south(), EnumFacing.NORTH)) || (world.getBlockState(blockpos.west()).getBlock().isFlammable(world, blockpos.west(), EnumFacing.EAST))))
 					this.world.setBlockState(blockpos, Blocks.FIRE.getDefaultState(), 2);
 				if (iblockstate.getBlock() == Blocks.WATER)
 					this.world.setBlockToAir(blockpos);
@@ -246,8 +244,7 @@ public class EntityParamagneticProjectile113 extends EntityArrow {
 		if (this.isInWater()) {
 			for (int i = 0; i < 4; ++i) {
 				float f3 = 0.25F;
-				this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX,
-						this.motionY, this.motionZ);
+				this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
 			}
 
 			f1 = 0.6F;
@@ -303,8 +300,8 @@ public class EntityParamagneticProjectile113 extends EntityArrow {
 	}
 
 	private boolean canIgnite() {
-		// TODO Auto-generated method stub
-		return false;
+		// TODO Maybe make other thing able to ignite? probs nah
+		return this.isPlasma();
 	}
 
 	@Override
@@ -468,21 +465,17 @@ public class EntityParamagneticProjectile113 extends EntityArrow {
 
 		switch (this.getType().getSize()) {
 			case LARGE:
-				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage113(this, this)
-						: cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage113(this, this.shootingEntity);
+				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage113(this, this) : cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage113(this, this.shootingEntity);
 				break;
 			default:
 			case MEDIUM:
-				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage113(this, this)
-						: cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage113(this, this.shootingEntity);
+				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage113(this, this) : cadiboo.wiptech.util.DamageSource.causeRailgunProjectileDamage113(this, this.shootingEntity);
 				break;
 			case SMALL:
-				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causeCoilgunProjectileDamage113(this, this)
-						: cadiboo.wiptech.util.DamageSource.causeCoilgunProjectileDamage113(this, this.shootingEntity);
+				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causeCoilgunProjectileDamage113(this, this) : cadiboo.wiptech.util.DamageSource.causeCoilgunProjectileDamage113(this, this.shootingEntity);
 				break;
 			case NANO:
-				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causePlasmaProjectileDamage113(this, this)
-						: cadiboo.wiptech.util.DamageSource.causePlasmaProjectileDamage113(this, this.shootingEntity);
+				damagesource = shootingEntityNull ? cadiboo.wiptech.util.DamageSource.causePlasmaProjectileDamage113(this, this) : cadiboo.wiptech.util.DamageSource.causePlasmaProjectileDamage113(this, this.shootingEntity);
 				break;
 		}
 
