@@ -8,15 +8,15 @@ import net.minecraft.util.ResourceLocation;
 
 public class TESRTurbine extends TileEntitySpecialRenderer<TileEntityTurbine> {
 
-	private static final ModelTurbine MODEL = new ModelTurbine();
-	private static final ResourceLocation IRON_TEXTURE = new ResourceLocation("minecraft",
-			"textures/blocks/iron_block.png");
+	private static final ModelTurbine		MODEL			= new ModelTurbine();
+	private static final ResourceLocation	IRON_TEXTURE	= new ResourceLocation("minecraft", "textures/blocks/iron_block.png");
 
 	@Override
-	public void render(TileEntityTurbine tileEntity, double x, double y, double z, float partialTick, int destroyStage,
-			float alpha) {
+	public void render(TileEntityTurbine tileEntity, double x, double y, double z, float partialTick, int destroyStage, float alpha) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
+		GlStateManager.depthMask(true);
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 
 		// GlStateManager.enableLight((int) (getWorld().getTotalWorldTime()%8));
 		// RenderHelper.disableStandardItemLighting();

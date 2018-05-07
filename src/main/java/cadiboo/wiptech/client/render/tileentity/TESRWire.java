@@ -52,7 +52,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 		final boolean isEnamel = ((BlockWire) tileEntity.getBlockType()).isEnamel();
 		this.bindTexture(texLoc);
 
-		GlStateManager.depthMask(false);
+		GlStateManager.depthMask(true);
 
 		if (tileEntity.electrocutionTime > 0) {
 			Tessellator tessellator = Tessellator.getInstance();
@@ -98,8 +98,8 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 							decendingHeight = position - 2;
 						}
 
-						double topTranslateX = translateXArray[position] - tempX;
-						double topTranslateZ = translateZArray[position] - tempZ;
+						double topTranslateX = translateXArray[position];
+						double topTranslateZ = translateZArray[position];
 
 						for (int yPos = position; yPos >= decendingHeight; --yPos) {
 							double bottomTranslateX = topTranslateX;
