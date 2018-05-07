@@ -40,7 +40,7 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 
 	@Override
 	public void update() {
-		electrocutionTime--;
+		// electrocutionTime--;
 		if (!world.isRemote && energy.getEnergyStored() > 0) {
 			if (Utils.getBlockFromPos(world, pos) instanceof BlockWire && !((BlockWire) Utils.getBlockFromPos(world, pos)).isEnamel()) {
 				getAllEntitiesWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), 3).forEach(entity -> {

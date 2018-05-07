@@ -26,6 +26,8 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 
 	private static final ResourceLocation ENAMEL_TEXTURE = new ResourceLocation("minecraft", "textures/blocks/concrete_brown.png");
 
+	private static final int[] RANDOMS = new int[] { 2, 3, 4, 5, 6, 11, 16, 17, 19, 20, 21, 23, 25, 29, 40, 41, 42 };
+
 	private static final float	ONE_SIXTEENTH		= 0.0625F;
 	private static final float	SEVEN_SIXTEENTHS	= 0.4375F;
 
@@ -118,109 +120,114 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 				double yAngle = Math.atan2(0 - dX, 0 - dZ);
 				yAngle = yAngle * (180 / Math.PI);
 				yAngle = yAngle < 0 ? 360 - (-yAngle) : yAngle;
-				GlStateManager.rotate((float) yAngle + 90, 0, 1, 0);
-				GlStateManager.rotate(180, 1, 0, 0);
+				// GlStateManager.rotate((float) yAngle + 90, 0, 1, 0);
+				// GlStateManager.rotate(180, 1, 0, 0);
 
 				double _Angle = Math.atan2(dY, Math.sqrt(dX * dX + dZ * dZ));
 				_Angle = _Angle * (180 / Math.PI);
 				_Angle = _Angle < 0 ? 360 - (-_Angle) : _Angle;
-				GlStateManager.rotate(90 - (float) _Angle, 0, 0, 1);
+				// GlStateManager.rotate(90 - (float) _Angle, 0, 0, 1);
 
-				final double scale = 0.125 * Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+				// final double scale = 0.125 * Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+				final double scale = 16;
 				final double scale16 = scale / 16;
 
-				GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
+				// GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
 
-				final int[] randos = new int[] { 2, 3, 4, 5, 6, 11, 16, 17, 19, 20, 21, 23, 25, 29, 40, 41, 42 };
-
-				Random random = new Random(randos[(int) (getWorld().getTotalWorldTime() % randos.length)]);
+				Random random = new Random(RANDOMS[(int) (getWorld().getTotalWorldTime() % RANDOMS.length)]);
 
 				final int NumberOfBranches = 1;
-				final int NumberOfPossibleSubBranches = 0;
+				final int NumberOfPossibleSubBranches = 2;
 
-				for (int shells = 0; shells < 5; ++shells) {
-					Random random1 = new Random(getWorld().getTotalWorldTime());
-					// random1 = new Random();
-					for (int branches = 0; branches < NumberOfBranches; branches++) {
-						// random1 = new Random(getWorld().getTotalWorldTime() + branches);
-						random1 = new Random(2);
-						random1 = random;
-						for (int possibleSubBranches = 0; possibleSubBranches < NumberOfPossibleSubBranches + 1; ++possibleSubBranches) {
-							int position = 7;
-							int decendingHeight = 0;
+				double[] adouble = new double[8];
+				double[] adouble1 = new double[8];
+				double d0 = 0.0D;
+				double d1 = 0.0D;
 
-							if (possibleSubBranches > 0) {
-								position = 7 - possibleSubBranches;
+				for (int __ = 7; __ >= 0; --__) {
+					adouble[__] = d0;
+					adouble1[__] = d1;
+					d0 += random.nextInt(11) - 5;
+					d1 += random.nextInt(11) - 5;
+				}
+
+				for (int k1 = 0; k1 < 4; ++k1) {
+					Random random1 = random;
+
+					for (int j = 0; j < 3; ++j) {
+						int k = 7;
+						int l = 0;
+
+						if (j > 0) {
+							k = 7 - j;
+						}
+
+						if (j > 0) {
+							l = k - 2;
+						}
+
+						double d2 = adouble[k] - d0;
+						double d3 = adouble1[k] - d1;
+
+						for (int i1 = k; i1 >= l; --i1) {
+							double d4 = d2;
+							double d5 = d3;
+
+							if (j == 0) {
+								d2 += random1.nextInt(11) - 5;
+								d3 += random1.nextInt(11) - 5;
+							} else {
+								d2 += random1.nextInt(31) - 15;
+								d3 += random1.nextInt(31) - 15;
 							}
 
-							if (possibleSubBranches > 0) {
-								decendingHeight = position - 2;
+							bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
+							float f = 0.5F;
+							float f1 = 0.45F;
+							float f2 = 0.45F;
+							float f3 = 0.5F;
+							double d6 = 0.1D + k1 * 0.2D;
+
+							if (j == 0) {
+								d6 *= i1 * 0.1D + 1.0D;
 							}
 
-							double topTranslateX = 2;
-							double topTranslateZ = 4;
+							double d7 = 0.1D + k1 * 0.2D;
 
-							for (int yPos = position; yPos >= decendingHeight; --yPos) {
-								double bottomTranslateX = topTranslateX;
-								double bottomTranslateZ = topTranslateZ;
-
-								if (possibleSubBranches == 0) { // Main branch
-									topTranslateX += random1.nextInt(11) - 5;
-									topTranslateZ += random1.nextInt(11) - 5;
-								} else {// Sub branch
-									topTranslateX += random1.nextInt(31) - 15;
-									topTranslateZ += random1.nextInt(31) - 15;
-								}
-
-								bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
-								double topWidth = 0.1D + shells * 0.2D;
-
-								if (yPos == 0) {
-									topWidth *= yPos * 0.1D + 1.0D;
-								}
-
-								double bottomWidth = 0.1D + shells * 0.2D;
-
-								if (yPos == 0) {
-									bottomWidth *= (yPos - 1) * 0.1D + 1.0D;
-								}
-
-								topWidth *= (scale / 16);
-								bottomWidth *= (scale / 16);
-
-								for (int side = 0; side < 5; ++side) {
-									double topOffsetX = topWidth;
-									double topOffsetZ = topWidth;
-
-									if (side == 1 || side == 2) {
-										topOffsetX += topWidth * 2.0D;
-									}
-
-									if (side == 2 || side == 3) {
-										topOffsetZ += topWidth * 2.0D;
-									}
-
-									double bottomOffsetX = bottomWidth;
-									double bottomOffsetZ = bottomWidth;
-
-									if (side == 1 || side == 2) {
-										bottomOffsetX += bottomWidth * 2.0D;
-									}
-
-									if (side == 2 || side == 3) {
-										bottomOffsetZ += bottomWidth * 2.0D;
-									}
-
-									bufferbuilder.pos(bottomOffsetX + topTranslateX * scale16, yPos * scale, bottomOffsetZ + topTranslateZ * scale16).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
-									bufferbuilder.pos(topOffsetX + bottomTranslateX * scale16, (yPos + 1) * scale, topOffsetZ + bottomTranslateZ * scale16).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
-								}
-
-								tessellator.draw();
-
+							if (j == 0) {
+								d7 *= (i1 - 1) * 0.1D + 1.0D;
 							}
+
+							for (int j1 = 0; j1 < 5; ++j1) {
+								double d8 = x + 0.5D - d6;
+								double d9 = z + 0.5D - d6;
+
+								if (j1 == 1 || j1 == 2) {
+									d8 += d6 * 2.0D;
+								}
+
+								if (j1 == 2 || j1 == 3) {
+									d9 += d6 * 2.0D;
+								}
+
+								double d10 = x + 0.5D - d7;
+								double d11 = z + 0.5D - d7;
+
+								if (j1 == 1 || j1 == 2) {
+									d10 += d7 * 2.0D;
+								}
+
+								if (j1 == 2 || j1 == 3) {
+									d11 += d7 * 2.0D;
+								}
+
+								bufferbuilder.pos(d10 + d2, y + i1 * 16, d11 + d3).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
+								bufferbuilder.pos(d8 + d4, y + (i1 + 1) * 16, d9 + d5).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
+							}
+
+							tessellator.draw();
 						}
 					}
-
 				}
 				GlStateManager.popMatrix();
 			}
