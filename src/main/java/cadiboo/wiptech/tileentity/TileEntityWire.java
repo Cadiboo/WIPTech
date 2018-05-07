@@ -3,6 +3,7 @@ package cadiboo.wiptech.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.config.Configuration;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
@@ -43,28 +44,13 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 		// electrocutionTime--;
 		if (!world.isRemote && energy.getEnergyStored() > 0) {
 			if (Utils.getBlockFromPos(world, pos) instanceof BlockWire && !((BlockWire) Utils.getBlockFromPos(world, pos)).isEnamel()) {
-				getAllEntitiesWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), 3).forEach(entity -> {
-					if (entity instanceof EntityCreeper) {
-						if (!((EntityCreeper) entity).getPowered()) {
-							this.electrocutionTime = 7;
-							syncToClients();
-							((EntityCreeper) entity).onStruckByLightning(null);
-							((EntityCreeper) entity).extinguish();
-						}
-					} else if (entity instanceof EntityParamagneticProjectile) { // TODO remove this in 1.13
-						((EntityParamagneticProjectile) entity).setAmmoId(9); // PLASMA
-						this.electrocutionTime = 7;
-						syncToClients();
-					} else if (entity instanceof EntityParamagneticProjectile113) {
-						((EntityParamagneticProjectile113) entity).setType(ParamagneticProjectiles.PLASMA);
-						this.electrocutionTime = 7;
-						syncToClients();
-					} else if (!(entity instanceof EntityPlayer && ((EntityPlayer) entity).isCreative() && EntitySelectors.NOT_SPECTATING.apply(entity)) && entity instanceof EntityLivingBase) {
-						entity.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy((int) ((EntityLivingBase) entity).getHealth() * 1000, false)));
-						this.electrocutionTime = 7;
-						return; // stop transmission logic
-					}
+
+				this.getElectrocutableEntities().forEach(entity -> {
+					this.electrocuteEntity(entity);
 				});
+
+				if (energy.getEnergyStored() < 10) // electrocution drained energy
+					return;
 			}
 
 			for (int i = 0; i < EnumFacing.VALUES.length; i++) {
@@ -83,6 +69,47 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 				});
 		}
 		this.energy.setCapacity(Math.round(Configuration.energy.BaseWireStorage * ((BlockWire) this.getBlockType()).getMetal().getConductivityFraction()));
+	}
+
+	private void electrocuteEntity(Entity entity) {
+		if (entity instanceof EntityCreeper) {
+			if (!((EntityCreeper) entity).getPowered()) {
+				this.electrocutionTime = 7;
+				syncToClients();
+				((EntityCreeper) entity).onStruckByLightning(null);
+				((EntityCreeper) entity).extinguish();
+			}
+		} else if (entity instanceof EntityParamagneticProjectile) { // TODO remove this in 1.13
+			((EntityParamagneticProjectile) entity).setAmmoId(9); // PLASMA
+			this.electrocutionTime = 7;
+			syncToClients();
+		} else if (entity instanceof EntityParamagneticProjectile113) {
+			((EntityParamagneticProjectile113) entity).setType(ParamagneticProjectiles.PLASMA);
+			this.electrocutionTime = 7;
+			syncToClients();
+		} else if (entity instanceof EntityLivingBase) {
+			WIPTech.info(((EntityLivingBase) entity).getHealth());
+			entity.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy(Math.round(((EntityLivingBase) entity).getHealth()) * 1000, false)));
+			this.electrocutionTime = 7;
+		}
+	}
+
+	public List<Entity> getElectrocutableEntities() {
+		ArrayList<Entity> electrocutable = new ArrayList<Entity>();
+
+		List<Entity> entities = getAllEntitiesWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), 3);
+		for (int i = 0; i < entities.size(); i++) {
+			if (!(entities.get(i) instanceof EntityParamagneticProjectile) && !(entities.get(i) instanceof EntityParamagneticProjectile113) && !(entities.get(i) instanceof EntityCreeper)) {
+				if (!EntitySelectors.NOT_SPECTATING.apply(entities.get(i)))
+					continue;
+				if (!entities.get(i).canBeCollidedWith())
+					continue;
+				if (entities.get(i) instanceof EntityPlayer && ((EntityPlayer) entities.get(i)).isCreative())
+					continue;
+			}
+			electrocutable.add(entities.get(i));
+		}
+		return electrocutable;
 	}
 
 	public void transmitEnergy(EnumFacing side) {
@@ -186,6 +213,11 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 	@Override
 	public double getMaxRenderDistanceSquared() {
 		return 16384;
+	}
+
+	public void electrocuteBreaker(EntityPlayer player) {
+		this.electrocutionTime = 7;
+		player.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy(energy.getEnergyStored(), false)));
 	}
 
 }

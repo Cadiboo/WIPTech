@@ -2,7 +2,6 @@ package cadiboo.wiptech.block;
 
 import cadiboo.wiptech.handler.EnumHandler.ConductiveMetals;
 import cadiboo.wiptech.tileentity.TileEntityWire;
-import cadiboo.wiptech.util.DamageSource;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,7 +11,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 public class BlockWire extends BlockTileEntity<TileEntityWire> {
 
@@ -73,9 +71,9 @@ public class BlockWire extends BlockTileEntity<TileEntityWire> {
 	public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
 		TileEntity tile = worldIn.getTileEntity(pos);
 		if (tile != null && tile instanceof TileEntityWire)
-			if (!((TileEntityWire) tile).dumpEnergy()) // couldnt dump energy into nearby storages
-				player.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * ((TileEntityWire) worldIn.getTileEntity(pos)).getCapability(CapabilityEnergy.ENERGY, null)
-						.extractEnergy(((TileEntityWire) worldIn.getTileEntity(pos)).getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored(), false)));
+			if (!((TileEntityWire) tile).dumpEnergy()) { // couldnt dump energy into nearby storages
+				((TileEntityWire) tile).electrocuteBreaker(player);
+			}
 		super.onBlockHarvested(worldIn, pos, state, player);
 	}
 
