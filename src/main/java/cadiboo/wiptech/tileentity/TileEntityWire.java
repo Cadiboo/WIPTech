@@ -97,7 +97,7 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 	public List<Entity> getElectrocutableEntities() {
 		ArrayList<Entity> electrocutable = new ArrayList<Entity>();
 
-		List<Entity> entities = getAllEntitiesWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), Math.round((3 * energy.getEnergyStored()) / 1000));
+		List<Entity> entities = getAllEntitiesWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), 3);
 		for (int i = 0; i < entities.size(); i++) {
 			if (!(entities.get(i) instanceof EntityParamagneticProjectile) && !(entities.get(i) instanceof EntityParamagneticProjectile113) && !(entities.get(i) instanceof EntityCreeper)) {
 				if (!EntitySelectors.NOT_SPECTATING.apply(entities.get(i)))
