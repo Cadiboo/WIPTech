@@ -41,7 +41,7 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 
 	@Override
 	public void update() {
-		// electrocutionTime--;
+		electrocutionTime--;
 		if (!world.isRemote && energy.getEnergyStored() > 0) {
 			if (Utils.getBlockFromPos(world, pos) instanceof BlockWire && !((BlockWire) Utils.getBlockFromPos(world, pos)).isEnamel()) {
 
@@ -74,7 +74,7 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 	private void electrocuteEntity(Entity entity) {
 		if (entity instanceof EntityCreeper) {
 			if (!((EntityCreeper) entity).getPowered()) {
-				this.electrocutionTime = 7;
+				this.electrocutionTime = 10;
 				syncToClients();
 				((EntityCreeper) entity).onStruckByLightning(null);
 				((EntityCreeper) entity).extinguish();
@@ -90,14 +90,14 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 		} else if (entity instanceof EntityLivingBase) {
 			WIPTech.info(((EntityLivingBase) entity).getHealth());
 			entity.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy(Math.round(((EntityLivingBase) entity).getHealth()) * 1000, false)));
-			this.electrocutionTime = 7;
+			this.electrocutionTime = 5;
 		}
 	}
 
 	public List<Entity> getElectrocutableEntities() {
 		ArrayList<Entity> electrocutable = new ArrayList<Entity>();
 
-		List<Entity> entities = getAllEntitiesWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), 3);
+		List<Entity> entities = getAllEntitiesWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), Math.round((3 * energy.getEnergyStored()) / 1000));
 		for (int i = 0; i < entities.size(); i++) {
 			if (!(entities.get(i) instanceof EntityParamagneticProjectile) && !(entities.get(i) instanceof EntityParamagneticProjectile113) && !(entities.get(i) instanceof EntityCreeper)) {
 				if (!EntitySelectors.NOT_SPECTATING.apply(entities.get(i)))
@@ -107,6 +107,10 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 				if (entities.get(i) instanceof EntityPlayer && ((EntityPlayer) entities.get(i)).isCreative())
 					continue;
 			}
+			// if (entities.get(i) instanceof EntityCreeper && ((EntityCreeper)
+			// entities.get(i)).getPowered())
+			// continue;
+
 			electrocutable.add(entities.get(i));
 		}
 		return electrocutable;
