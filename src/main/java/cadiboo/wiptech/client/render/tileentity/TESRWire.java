@@ -3,8 +3,6 @@ package cadiboo.wiptech.client.render.tileentity;
 import java.util.List;
 import java.util.Random;
 
-import javax.vecmath.Vector3d;
-
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.client.model.ModelEnamel;
@@ -65,13 +63,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 
-			double dX;
-			double dY;
-			double dZ;
-			final int NumberOfBranches = 10;
-			final int NumberOfPossibleSubBranches = 5;
-
-			List<Entity> entities = tileEntity.getAllEntitiesWithinRangeAt(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), 113);
+			List<Entity> entities = tileEntity.getAllEntitiesWithinRangeAt(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ(), 3);
 			for (int i = 0; i < entities.size(); i++) {
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
@@ -115,65 +107,44 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 					}
 				}
 
-				dX = entities.get(i).posX - (entities.get(i).prevPosX - entities.get(i).posX) * partialTicks - (entities.get(i).motionX * xFall) * flyingMultiplier - tileEntity.getPos().getX() - 0.5;
-				dY = entities.get(i).posY - yGround - (entities.get(i).prevPosY - entities.get(i).posY) * partialTicks - (entities.get(i).motionY + yAdd) * yFlying - tileEntity.getPos().getY() - 0.5;
-				dZ = entities.get(i).posZ - (entities.get(i).prevPosZ - entities.get(i).posZ) * partialTicks - (entities.get(i).motionZ * zFall) * flyingMultiplier - tileEntity.getPos().getZ() - 0.5;
+				double dX = entities.get(i).posX - (entities.get(i).prevPosX - entities.get(i).posX) * partialTicks - (entities.get(i).motionX * xFall) * flyingMultiplier - tileEntity.getPos().getX()
+						- 0.5;
+				double dY = entities.get(i).posY - yGround - (entities.get(i).prevPosY - entities.get(i).posY) * partialTicks - (entities.get(i).motionY + yAdd) * yFlying - tileEntity.getPos().getY()
+						- 0.5;
+				double dZ = entities.get(i).posZ - (entities.get(i).prevPosZ - entities.get(i).posZ) * partialTicks - (entities.get(i).motionZ * zFall) * flyingMultiplier - tileEntity.getPos().getZ()
+						- 0.5;
 				dY += entities.get(i).getEyeHeight();
-
-				float fX = (float) dX;
-				float fY = (float) dY;
-				float fZ = (float) dZ;
 
 				double yAngle = Math.atan2(0 - dX, 0 - dZ);
 				yAngle = yAngle * (180 / Math.PI);
 				yAngle = yAngle < 0 ? 360 - (-yAngle) : yAngle;
 				GlStateManager.rotate((float) yAngle + 90, 0, 1, 0);
 				GlStateManager.rotate(180, 1, 0, 0);
-				// GlStateManager.rotate(90, 0, 0, 1);
-
-				double zAngle = Math.atan2(0 - dY, 0 - dX);
-				zAngle = zAngle * (180 / Math.PI);
-				zAngle = zAngle < 0 ? 360 - (-zAngle) : zAngle;
-				// GlStateManager.rotate((float) zAngle + 270, 0, 0, 1);
-
-				double xAngle = Math.atan2(0 - dZ, 0 - dY);
-				xAngle = xAngle * (180 / Math.PI);
-				xAngle = xAngle < 0 ? 360 - (-xAngle) : xAngle;
-				// GlStateManager.rotate((float) xAngle, 1, 0, 0);
-
-				Vector3d vec = new Vector3d(dX, dY, dZ);
 
 				double _Angle = Math.atan2(dY, Math.sqrt(dX * dX + dZ * dZ));
 				_Angle = _Angle * (180 / Math.PI);
 				_Angle = _Angle < 0 ? 360 - (-_Angle) : _Angle;
-
 				GlStateManager.rotate(90 - (float) _Angle, 0, 0, 1);
 
-				// Math.cos(z / 2) = Math.cos(x/2) * Math.cos(y/2) − sin(x/2) * sin(b/2);
-
-				// final double scale = 0.0625 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2) +
-				// Math.pow(dZ, 2));
-				// final double scale = 0.5;// 0.125 * Math.sqrt(Math.pow(dX, 2) + Math.pow(dY,
-				// 2) + Math.pow(dZ, 2));
 				final double scale = 0.125 * Math.sqrt(dX * dX + dY * dY + dZ * dZ);
-				// GlStateManager.translate(0, -(Math.sqrt(dX * dX + dZ * dZ) + 0.5) / 2, 0);
-				// Utils.drawCuboid(0, 1, 0, 1, 0.01, (Math.sqrt(dX * dX + dZ * dZ) + 0.5) / 2,
-				// 0.01, 1);
-
-				// GlStateManager.translate(0, -Math.sqrt(dX * dX + dY * dY + dZ * dZ) / 2, 0);
-				// Utils.drawCuboid(0, 1, 0, 1, 0.1, Math.sqrt(dX * dX + dY * dY + dZ * dZ) / 2,
-				// 0.1, 1);
-
-				// Utils.drawCuboid(0, 1, 0, 1, 1, 5, 1, 1);
 				final double scale16 = scale / 16;
+
 				GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
+
+				final int[] randos = new int[] { 2, 3, 4, 5, 6, 11, 16, 17, 19, 20, 21, 23, 25, 29, 40, 41, 42 };
+
+				Random random = new Random(randos[(int) (getWorld().getTotalWorldTime() % randos.length)]);
+
+				final int NumberOfBranches = 1;
+				final int NumberOfPossibleSubBranches = 0;
+
 				for (int shells = 0; shells < 5; ++shells) {
 					Random random1 = new Random(getWorld().getTotalWorldTime());
 					// random1 = new Random();
 					for (int branches = 0; branches < NumberOfBranches; branches++) {
 						// random1 = new Random(getWorld().getTotalWorldTime() + branches);
-						// 2, 3, 4, 5, 6, 11, 16, 17, 19, 20, 21, 23, 25, 29, 40, 41, 42
 						random1 = new Random(2);
+						random1 = random;
 						for (int possibleSubBranches = 0; possibleSubBranches < NumberOfPossibleSubBranches + 1; ++possibleSubBranches) {
 							int position = 7;
 							int decendingHeight = 0;
@@ -273,48 +244,12 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 			if (isEnamel) {
 				this.bindTexture(ENAMEL_TEXTURE);
 				DOWN_MODEL_ENAMEL.render(ONE_SIXTEENTH);
-				if (!tileEntity.isConnectedToWire(side))
-					GlStateManager.translate(SEVEN_SIXTEENTHS, 0, 0);
 				this.bindTexture(texLoc);
 			}
+			if (!tileEntity.isConnectedToWire(side))
+				GlStateManager.translate(SEVEN_SIXTEENTHS, 0, 0);
 			DOWN_MODEL_WIRE.render(ONE_SIXTEENTH);
 			GlStateManager.popMatrix();
 		}
 	}
-
-	// private static Matrix4d createMat4(final Vector3d pos, final Vector3d lookat)
-	// {
-	// Vector3d vz = lookat. - pos;
-	// vz.normalize();
-	// Vector3d vx = Vector3::cross(Vector3( 0, 1, 0 ), vz);
-	// vx.normalize();
-	// Vector3 vy = Vector3::cross(vz, vx);
-	//
-	// Matrix4 rotation ( vx.x, vy.x, vz.x, 0,
-	// vx.y, vy.y, vz.y, 0,
-	// vx.z, vy.z, vz.z, 0,
-	// 0, 0, 0, 1);
-	// return rotation;
-	// }
-
-	// public void zoomOn(double x, double y, double z, Vecteur direction) {
-	// Transform3D viewTrans = new Transform3D();
-	// if (direction == null) {
-	// return;
-	// }
-	// if (direction.norme() == 0) {
-	// return;
-	// }
-	// // point the view at the center of the object
-	// Point3d center = new Point3d(x + this.translate.x, y + this.translate.y, z +
-	// this.translate.z);
-	// Point3d eyePos = new Point3d(x + this.translate.x + direction.getX(), y +
-	// this.translate.y
-	// + direction.getY(), z + this.translate.z + direction.getZ());
-	// viewTrans.setIdentity();
-	// viewTrans.lookAt(eyePos, center, new Vector3d(0, 0, 1));
-	// // set the view transform
-	// viewTrans.invert();
-	// InterfaceMap3D.tgvu.setTransform(viewTrans);
-	// }
 }
