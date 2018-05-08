@@ -34,7 +34,7 @@ public class WIPTech {
 	// HALF DONE STOP ARROW-LIKE BOUNCE OFF - Partly done, they now either go
 	// through the mob or teleport into the ground a block below it... //DONE maybe
 	// reenable it
-	// TODO Maybe implement a custom renderer for it? so that you can see what
+	// TODO Maybe implement a custom renderer for modules? so that you can see what
 	// augments you have on it
 	// HALF DONE Def make it display the modules/augments in the ItemStack's Tooltip
 	// HALF DONE make Plasma Cannon!!!
@@ -48,7 +48,6 @@ public class WIPTech {
 	// TODO damage buff
 	// TODO check Capabilities modules NBT
 
-	// TODO make electrocution graphics
 	// TODO plasma tools
 	// TODO taser
 
