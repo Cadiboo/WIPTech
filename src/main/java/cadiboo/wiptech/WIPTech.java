@@ -50,6 +50,7 @@ public class WIPTech {
 
 	// TODO plasma tools
 	// TODO taser
+	// TODO Tasers, Mounted railguns, Tesla Cannons & Electric Lighters
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
