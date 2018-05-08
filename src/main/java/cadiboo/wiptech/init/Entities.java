@@ -1,5 +1,6 @@
 package cadiboo.wiptech.init;
 
+import cadiboo.wiptech.entity.projectile.EntityMissile;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
@@ -97,6 +98,13 @@ public class Entities {
 			.name("railgun")
 			.tracker(128, 5, false)
 			.build();
+	
+	public static final EntityEntry MISSILE = EntityEntryBuilder.create()
+			.entity(EntityMissile.class)
+			.id(new ResourceLocation(Reference.ID, "missile"), ID++)
+			.name("missile")
+			.tracker(128, 5, false)
+			.build();
 
 	public static final EntityEntry[] ENTITIES = {
 			//@formatter:on
@@ -106,6 +114,8 @@ public class Entities {
 
 			OSMIUM_SMALL, OSMIUM_MEDIUM, OSMIUM_LARGE,
 
-			TUNGSTEN_SMALL, TUNGSTEN_MEDIUM, TUNGSTEN_LARGE, };
+			TUNGSTEN_SMALL, TUNGSTEN_MEDIUM, TUNGSTEN_LARGE,
+
+			MISSILE };
 
 }
