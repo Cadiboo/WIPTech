@@ -26,7 +26,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 
 	private static final ResourceLocation ENAMEL_TEXTURE = new ResourceLocation("minecraft", "textures/blocks/concrete_brown.png");
 
-	private static final int[] RANDOMS = new int[] { 2, 3, 4, 5, 6, 11, 16, 17, 19, 20, 21, 23, 25, 29, 40, 41, 42 };
+	private static final int[] RANDOMS = new int[] { 5, 6, 9, 11, 12, 14, 15, 20, 24, 25, 27, 29, 31, 37, 39, 46, 50, 51, 55, 56, 59, 61, 67, 72, 73, 74, 77, 78, 79, 83, 85, 89 };
 
 	private static final float	ONE_SIXTEENTH		= 0.0625F;
 	private static final float	SEVEN_SIXTEENTHS	= 0.4375F;
@@ -61,7 +61,6 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 			Tessellator tessellator = Tessellator.getInstance();
 			BufferBuilder bufferbuilder = tessellator.getBuffer();
 
-			final int number = (int) getWorld().getTotalWorldTime();
 			final int NumberOfBranches = 1;
 			final int NumberOfPossibleSubBranches = 2;
 
@@ -130,6 +129,8 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 
 				GlStateManager.translate(-3.5 * scale / 16, -8 * scale, -4 * scale / 16);
 
+				final int number = RANDOMS[(int) ((getWorld().getTotalWorldTime() * scale) % RANDOMS.length)];
+
 				double[] translateXArray = new double[8];
 				double[] translateZArray = new double[8];
 				double tempX = 0.0D;
@@ -143,7 +144,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 					tempZ += random.nextInt(11) - 5;
 				}
 
-				for (int shells = 0; shells < 5; ++shells) {
+				for (int shells = 0; shells < 4; ++shells) {
 					Random random1 = new Random(number);
 					// random1 = new Random();
 					for (int branches = 0; branches < NumberOfBranches; branches++) {

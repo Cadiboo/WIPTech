@@ -3,7 +3,6 @@ package cadiboo.wiptech.tileentity;
 import java.util.ArrayList;
 import java.util.List;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.config.Configuration;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
@@ -67,6 +66,8 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 				playersInRange.forEach(player -> {
 					this.syncToClient(player);
 				});
+			else if (this.electrocutionTime > 0)
+				syncToClients();
 		}
 		this.energy.setCapacity(Math.round(Configuration.energy.BaseWireStorage * ((BlockWire) this.getBlockType()).getMetal().getConductivityFraction()));
 	}
@@ -75,20 +76,26 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 		if (entity instanceof EntityCreeper) {
 			if (!((EntityCreeper) entity).getPowered()) {
 				this.electrocutionTime = 10;
-				syncToClients();
 				((EntityCreeper) entity).onStruckByLightning(null);
 				((EntityCreeper) entity).extinguish();
 			}
 		} else if (entity instanceof EntityParamagneticProjectile) { // TODO remove this in 1.13
-			((EntityParamagneticProjectile) entity).setAmmoId(9); // PLASMA
-			this.electrocutionTime = 7;
-			syncToClients();
+			if (((EntityParamagneticProjectile) entity).isPlasma())
+				this.electrocutionTime = 7;
+			else if (energy.extractEnergy(1000, true) == 1000) {
+				((EntityParamagneticProjectile) entity).setAmmoId(9); // PLASMA
+				energy.extractEnergy(1000, false);
+				this.electrocutionTime = 7;
+			}
 		} else if (entity instanceof EntityParamagneticProjectile113) {
-			((EntityParamagneticProjectile113) entity).setType(ParamagneticProjectiles.PLASMA);
-			this.electrocutionTime = 7;
-			syncToClients();
+			if (((EntityParamagneticProjectile113) entity).isPlasma())
+				this.electrocutionTime = 7;
+			else if (energy.extractEnergy(1000, true) == 1000) {
+				((EntityParamagneticProjectile113) entity).setType(ParamagneticProjectiles.PLASMA);
+				energy.extractEnergy(1000, false);
+				this.electrocutionTime = 7;
+			}
 		} else if (entity instanceof EntityLivingBase) {
-			WIPTech.info(((EntityLivingBase) entity).getHealth());
 			entity.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy(Math.round(((EntityLivingBase) entity).getHealth()) * 1000, false)));
 			this.electrocutionTime = 5;
 		}
