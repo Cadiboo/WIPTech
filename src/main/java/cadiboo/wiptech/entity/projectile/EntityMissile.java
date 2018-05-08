@@ -257,7 +257,7 @@ public class EntityMissile extends EntityArrow {
 	}
 
 	private void onHitEntity(Entity entity) {
-		if (!this.world.isRemote) {
+		if (!this.world.isRemote && this.ticksExisted > 10) {
 			world.createExplosion(this, entity.posX, entity.posY, entity.posZ, 8, true);
 			this.setDead();
 		}
