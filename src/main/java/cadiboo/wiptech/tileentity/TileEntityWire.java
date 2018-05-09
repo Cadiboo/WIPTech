@@ -223,7 +223,12 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 
 	@Override
 	public double getMaxRenderDistanceSquared() {
-		return 16384;
+		return 4096;
+	}
+
+	@Override
+	protected double getMaxSyncDistanceSquared() {
+		return getMaxRenderDistanceSquared();
 	}
 
 	public void electrocuteBreaker(EntityPlayer player) {

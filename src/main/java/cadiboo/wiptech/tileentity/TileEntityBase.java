@@ -207,7 +207,7 @@ public abstract class TileEntityBase extends TileEntity {
 		}
 	}
 
-	private double getMaxSyncDistanceSquared() {
+	protected double getMaxSyncDistanceSquared() {
 		return 64;
 	}
 
