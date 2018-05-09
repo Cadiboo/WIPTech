@@ -4,8 +4,6 @@ import java.util.List;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.IWeaponModular;
-import cadiboo.wiptech.capability.WeaponModular;
-import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
 import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
@@ -51,8 +49,7 @@ public class ItemPlasmagun extends ItemBase {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack itemStackIn, World worldIn, EntityLivingBase entityLiving,
-			int timeLeft) {
+	public void onPlayerStoppedUsing(ItemStack itemStackIn, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
 		if (entityLiving instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entityLiving;
 
@@ -62,14 +59,13 @@ public class ItemPlasmagun extends ItemBase {
 			IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
 
 			if (modules != null) {
-				modules.incrementShotsTaken();
-				modules.resetBurstShotsTaken();
+				// modules.incrementShotsTaken();
+				// modules.resetBurstShotsTaken();
 				Circuits circuit = modules.getCircuit();
 				if (circuit != null) {
 					if (circuit != Circuits.MANUAL)
 						return;
-					handleShoot(itemStackIn, worldIn, (EntityPlayer) entityLiving, modules,
-							(CustomEnergyStorage) itemStackIn.getCapability(CapabilityEnergy.ENERGY, null));
+					handleShoot(itemStackIn, worldIn, (EntityPlayer) entityLiving, modules, (CustomEnergyStorage) itemStackIn.getCapability(CapabilityEnergy.ENERGY, null));
 				}
 
 			}
@@ -81,57 +77,57 @@ public class ItemPlasmagun extends ItemBase {
 		if (entityLiving instanceof EntityPlayer) {
 			IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
 
-			if (modules != null) {
-				modules.incrementShotsTaken();
-				Circuits circuit = modules.getCircuit();
-				if (circuit != null) {
-					switch (circuit) {
-					case AUTO:
-						if (Math.floor(modules.getShotsTaken() % WeaponModular.shootChance) != 0)
-							return;
-						break;
-					case BURST3:
-						if (modules.getBurstShotsTaken() < 3
-								&& Math.floor(modules.getShotsTaken() % WeaponModular.burstShootChance) != 0) {
-							modules.incrementBurstShotsTaken();
-						} else {
-							return;
-						}
-						break;
-					case BURST5:
-						if (modules.getBurstShotsTaken() < 5
-								&& Math.floor(modules.getShotsTaken() % WeaponModular.burstShootChance) != 0) {
-							modules.incrementBurstShotsTaken();
-						} else {
-							return;
-						}
-						break;
-					case BURST10:
-						if (modules.getBurstShotsTaken() < 10
-								&& Math.floor(modules.getShotsTaken() % WeaponModular.burstShootChance) != 0) {
-							modules.incrementBurstShotsTaken();
-						} else {
-							return;
-						}
-						break;
-					case OVERCLOCKED:
-						for (int i = 0; i < WeaponModular.circuitOverclockedRepeats; i++) {
-							handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(),
-									(EntityPlayer) entityLiving, modules,
-									(CustomEnergyStorage) itemStackIn.getCapability(CapabilityEnergy.ENERGY, null));
-						}
-						return;
-
-					default:
-						return;
-
-					}
-					handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(),
-							(EntityPlayer) entityLiving, modules,
-							(CustomEnergyStorage) itemStackIn.getCapability(CapabilityEnergy.ENERGY, null));
-				}
-
-			}
+			// if (modules != null) {
+			// modules.incrementShotsTaken();
+			// Circuits circuit = modules.getCircuit();
+			// if (circuit != null) {
+			// switch (circuit) {
+			// case AUTO:
+			// if (Math.floor(modules.getShotsTaken() % WeaponModular.shootChance) != 0)
+			// return;
+			// break;
+			// case BURST3:
+			// if (modules.getBurstShotsTaken() < 3 && Math.floor(modules.getShotsTaken() %
+			// WeaponModular.burstShootChance) != 0) {
+			// modules.incrementBurstShotsTaken();
+			// } else {
+			// return;
+			// }
+			// break;
+			// case BURST5:
+			// if (modules.getBurstShotsTaken() < 5 && Math.floor(modules.getShotsTaken() %
+			// WeaponModular.burstShootChance) != 0) {
+			// modules.incrementBurstShotsTaken();
+			// } else {
+			// return;
+			// }
+			// break;
+			// case BURST10:
+			// if (modules.getBurstShotsTaken() < 10 && Math.floor(modules.getShotsTaken() %
+			// WeaponModular.burstShootChance) != 0) {
+			// modules.incrementBurstShotsTaken();
+			// } else {
+			// return;
+			// }
+			// break;
+			// case OVERCLOCKED:
+			// for (int i = 0; i < WeaponModular.circuitOverclockedRepeats; i++) {
+			// handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(),
+			// (EntityPlayer) entityLiving, modules, (CustomEnergyStorage)
+			// itemStackIn.getCapability(CapabilityEnergy.ENERGY, null));
+			// }
+			// return;
+			//
+			// default:
+			// return;
+			//
+			// }
+			// handleShoot(itemStackIn, ((EntityPlayer) entityLiving).getEntityWorld(),
+			// (EntityPlayer) entityLiving, modules, (CustomEnergyStorage)
+			// itemStackIn.getCapability(CapabilityEnergy.ENERGY, null));
+			// }
+			//
+			// }
 		}
 	}
 
@@ -140,61 +136,64 @@ public class ItemPlasmagun extends ItemBase {
 		IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
 
 		if (modules != null) {
-			modules.cool();
+			// modules.cool();
 		}
 		super.onUpdate(itemStackIn, worldIn, entityIn, itemSlot, isSelected);
 	}
 
-	private void handleShoot(ItemStack itemStackIn, World worldIn, EntityPlayer player, IWeaponModular modules,
-			CustomEnergyStorage energy) {
+	private void handleShoot(ItemStack itemStackIn, World worldIn, EntityPlayer player, IWeaponModular modules, CustomEnergyStorage energy) {
 
 		boolean flag = player.capabilities.isCreativeMode;
 
-		if (energy.getEnergyStored() < WeaponModular.energyCost)
-			return;
-
-		if (modules.getCircuit() == null)
-			return;
-		if (modules.getCoil() == null) {
-			modules.setTemperature(modules.getOverheatTemperature() + 20);
-			return;
-		}
+		// if (energy.getEnergyStored() < WeaponModular.energyCost)
+		// return;
+		//
+		// if (modules.getCircuit() == null)
+		// return;
+		// if (modules.getCoil() == null) {
+		// modules.setTemperature(modules.getOverheatTemperature() + 20);
+		// return;
+		// }
 		if (modules.getRail() == null)
 			return;
 
 		float velocity = 0;
 
 		if (!worldIn.isRemote) {
-			if (modules.getLastShootTime() > 0) {
+			// if (modules.getLastShootTime() > 0) {
+			//
+			// // WIPTech.logger.info("temperature: "+this.temperature+", lastShootTime:
+			// // "+this.lastShootTime+", getTotalWorldTime:
+			// "+worldIn.getTotalWorldTime()+",
+			// // shootTimeAdd: "+shootTimeAdd);
+			// if (modules.getLastShootTime() > worldIn.getTotalWorldTime() -
+			// WeaponModular.overheatTimer)
+			//
+			// modules.setLastShootTime(worldIn.getTotalWorldTime());
+			// }
+			// modules.setLastShootTime(worldIn.getTotalWorldTime());
+			//
+			// EntityParamagneticProjectile projectile = ((ItemParamagneticProjectile)
+			// PLASMA_STACK.getItem()).createProjectile(worldIn, PLASMA_STACK, player,
+			// true);
+			// velocity = EntityParamagneticProjectile.getProjectileVelocity(PLASMA_STACK) *
+			// modules.getCoil().getEfficiencyFraction();
+			// projectile.setDamage(projectile.getDamage() *
+			// modules.getRail().getEfficiencyFraction());
+			// projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F,
+			// velocity, 0.1F);
+			// projectile.setTemperature(1185F);
+			//
+			// if (modules.isOverheated()) {
+			// projectile.setTemperature(projectile.getTemperature() + 25F);
+			// }
 
-				// WIPTech.logger.info("temperature: "+this.temperature+", lastShootTime:
-				// "+this.lastShootTime+", getTotalWorldTime: "+worldIn.getTotalWorldTime()+",
-				// shootTimeAdd: "+shootTimeAdd);
-				if (modules.getLastShootTime() > worldIn.getTotalWorldTime() - WeaponModular.overheatTimer)
-
-					modules.setLastShootTime(worldIn.getTotalWorldTime());
-			}
-			modules.setLastShootTime(worldIn.getTotalWorldTime());
-
-			EntityParamagneticProjectile projectile = ((ItemParamagneticProjectile) PLASMA_STACK.getItem())
-					.createProjectile(worldIn, PLASMA_STACK, player, true);
-			velocity = EntityParamagneticProjectile.getProjectileVelocity(PLASMA_STACK)
-					* modules.getCoil().getEfficiencyFraction();
-			projectile.setDamage(projectile.getDamage() * modules.getRail().getEfficiencyFraction());
-			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
-			projectile.setTemperature(1185F);
-
-			if (modules.isOverheated()) {
-				projectile.setTemperature(projectile.getTemperature() + 25F);
-			}
-
-			worldIn.spawnEntity(projectile);
+			// worldIn.spawnEntity(projectile);
 		}
 
-		energy.extractEnergy(WeaponModular.energyCost, false);
+		// energy.extractEnergy(WeaponModular.energyCost, false);
 
-		worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT,
-				SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+		worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
 	}
 
@@ -207,7 +206,7 @@ public class ItemPlasmagun extends ItemBase {
 			IWeaponModular modules = itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
 
 			if (modules != null) {
-				modules.resetBurstShotsTaken();
+				// modules.resetBurstShotsTaken();
 			}
 		}
 		playerIn.setActiveHand(handIn);

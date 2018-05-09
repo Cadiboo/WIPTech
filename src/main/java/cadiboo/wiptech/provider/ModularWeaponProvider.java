@@ -29,9 +29,9 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializable<NBTTagCompound> {
 
-	public static final int WEAPON_ENERGY_CAPACITY = 10000;
-	private final WeaponModular weaponModules;
-	private final CustomEnergyStorage energy;
+	public static final int				WEAPON_ENERGY_CAPACITY	= 10000;
+	private final WeaponModular			weaponModules;
+	private final CustomEnergyStorage	energy;
 
 	public ModularWeaponProvider() {
 		this.weaponModules = new WeaponModular();
@@ -40,13 +40,7 @@ public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializa
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == Capabilities.MODULAR_WEAPON_CAPABILITY) {
-			return true;
-		}
-		if (capability == CapabilityEnergy.ENERGY) {
-			return true;
-		}
-		return false;
+		return getCapability(capability, facing) != null;
 	}
 
 	@Override

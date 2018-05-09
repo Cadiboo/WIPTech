@@ -20,6 +20,7 @@ import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectiles;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.item.ItemCoil;
+import cadiboo.wiptech.item.ItemGun;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
@@ -39,6 +40,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -73,8 +75,7 @@ public class EventSubscriber {
 				ModelLoader.setCustomModelResourceLocation(Items.ITEMS[i], 0, new ModelResourceLocation(Items.ITEMS[i].getRegistryName(), "inventory"));
 			} else if (Items.ITEMS[i] instanceof ItemParamagneticProjectile) {
 				for (int j = 0; j < ParamagneticProjectiles.values().length - 1; j++) {
-					ModelLoader.setCustomModelResourceLocation(Items.ITEMS[i], ParamagneticProjectiles.values()[j].getID(),
-							new ModelResourceLocation(Reference.ID + ":rods/" + ParamagneticProjectiles.values()[j].getName()));
+					ModelLoader.setCustomModelResourceLocation(Items.ITEMS[i], ParamagneticProjectiles.values()[j].getID(), new ModelResourceLocation(Reference.ID + ":rods/" + ParamagneticProjectiles.values()[j].getName()));
 				}
 			}
 		}
@@ -198,6 +199,23 @@ public class EventSubscriber {
 			}
 		}
 		event.getToolTip().add(tooltip);
+	}
+
+	@SubscribeEvent
+	public static void FOVUpdate(FOVUpdateEvent event) {
+		if (event.getEntity().isHandActive() && event.getEntity().getActiveItemStack().getItem() instanceof ItemGun) {
+			int i = event.getEntity().getItemInUseMaxCount();
+			float f1 = i / 10.0F;
+
+			if (f1 > 1.0F) {
+				f1 = 1.0F;
+			} else {
+				f1 = f1 * f1;
+			}
+
+			event.setNewfov(event.getFov() * 1.0F - f1 * 0.15F);
+
+		}
 	}
 
 }

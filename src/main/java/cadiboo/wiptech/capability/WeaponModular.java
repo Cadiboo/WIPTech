@@ -13,31 +13,12 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCompound> {
 
-	private Circuits circuit;
-	private Coils coil;
-	private Scopes scope;
-	private Rails rail;
-	private int overheatTemperature;
-	private int burstShotsTaken;
-	private int shotsTaken;
-	private boolean overheat;
-	private long lastShootTime;
-	private int temperature;
-
-	public static final int overheatTimer = 5;
-	public static final int burstShotsAllowed = 5;
-	public static final float shootChance = 1.5F; // 0 = never; 1 = always; 2 = half the time; 3 = 1/3rd the time
-	public static final float burstShootChance = 2F;
-	public static final int circuitOverclockedRepeats = 1;
-	public static final int energyCost = 100;
+	private Circuits	circuit;
+	private Coils		coil;
+	private Scopes		scope;
+	private Rails		rail;
 
 	public WeaponModular() {
-		this.overheatTemperature = 100;
-		this.burstShotsTaken = 0;
-		this.shotsTaken = 0;
-		this.overheat = false;
-		this.lastShootTime = 0;
-		this.temperature = 25;
 	}
 
 	@Override
@@ -54,72 +35,6 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 			modules.add("rail: " + this.rail);
 
 		return modules;
-	}
-
-	@Override
-	public int getBurstShotsTaken() {
-		return this.burstShotsTaken;
-	}
-
-	@Override
-	public void resetBurstShotsTaken() {
-		this.burstShotsTaken = 0;
-	}
-
-	@Override
-	public int getShotsTaken() {
-		return this.shotsTaken;
-	}
-
-	@Override
-	public boolean isOverheated() {
-		return getTemperature() > getOverheatTemperature();
-	}
-
-	@Override
-	public int getTemperature() {
-		return this.temperature;
-	}
-
-	@Override
-	public void setTemperature(int temperature) {
-		this.temperature = temperature;
-	}
-
-	@Override
-	public int getOverheatTemperature() {
-		return this.overheatTemperature;
-	}
-
-	@Override
-	public long getLastShootTime() {
-		return this.lastShootTime;
-	}
-
-	@Override
-	public void setLastShootTime(long time) {
-		this.lastShootTime = time;
-	}
-
-	@Override
-	public void incrementBurstShotsTaken() {
-		this.burstShotsTaken++;
-	}
-
-	@Override
-	public void incrementShotsTaken() {
-		this.shotsTaken++;
-	}
-
-	@Override
-	public void heat() {
-		this.temperature++;
-	}
-
-	@Override
-	public void cool() {
-		if (this.getTemperature() > 0F)
-			this.temperature--;
 	}
 
 	@Override

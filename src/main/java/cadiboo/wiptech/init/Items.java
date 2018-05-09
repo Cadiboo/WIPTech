@@ -14,7 +14,6 @@ import cadiboo.wiptech.item.ItemCoilgun;
 import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemGallium;
 import cadiboo.wiptech.item.ItemGalliumIngot;
-import cadiboo.wiptech.item.ItemGun;
 import cadiboo.wiptech.item.ItemHammer;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.item.ItemParamagneticProjectile113;
@@ -22,6 +21,7 @@ import cadiboo.wiptech.item.ItemPlasmaTool;
 import cadiboo.wiptech.item.ItemPlasmagun;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.item.ItemRailgun;
+import cadiboo.wiptech.item.ItemRailgun113;
 import cadiboo.wiptech.item.ItemSilicon;
 import cadiboo.wiptech.item.ItemSiliconWafer;
 import cadiboo.wiptech.item.ItemTaser;
@@ -144,6 +144,8 @@ public class Items {
 	public static final ItemBase	SILICA			= new ItemBase("silica");
 	public static final ItemBase	TITANIA			= new ItemBase("titania");
 
+	public static final ItemRailgun113 RAILGUN113 = new ItemRailgun113("railgun113");
+
 	// semi
 
 	public static final ItemParamagneticProjectile113	IRON_SMALL		= new ItemParamagneticProjectile113("iron_small", ParamagneticProjectiles.IRON_SMALL);
@@ -157,8 +159,6 @@ public class Items {
 	public static final ItemParamagneticProjectile113	IRON_LARGE		= new ItemParamagneticProjectile113("iron_large", ParamagneticProjectiles.IRON_LARGE);
 	public static final ItemParamagneticProjectile113	OSMIUM_LARGE	= new ItemParamagneticProjectile113("osmium_large", ParamagneticProjectiles.OSMIUM_LARGE);
 	public static final ItemParamagneticProjectile113	TUNGSTEN_LARGE	= new ItemParamagneticProjectile113("tungsten_large", ParamagneticProjectiles.TUNGSTEN_LARGE);
-
-	public static final ItemGun GUN = new ItemGun("gun");
 
 	// 1.12
 
@@ -215,6 +215,8 @@ public class Items {
 
 			COPPER_BOOTS, TIN_BOOTS, ALUMINIUM_BOOTS, SILVER_BOOTS, TUNGSTEN_BOOTS, OSMIUM_BOOTS, TITANIUM_BOOTS,
 
+			RAILGUN113,
+
 			//
 
 			IRON_SMALL, OSMIUM_SMALL, TUNGSTEN_SMALL,
@@ -222,8 +224,6 @@ public class Items {
 			IRON_MEDIUM, OSMIUM_MEDIUM, TUNGSTEN_MEDIUM,
 
 			IRON_LARGE, OSMIUM_LARGE, TUNGSTEN_LARGE,
-
-			GUN,
 
 			//
 
