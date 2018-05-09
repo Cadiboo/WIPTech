@@ -80,7 +80,7 @@ public class EntityParamagneticProjectile113 extends EntityArrow {
 	}
 
 	public EntityParamagneticProjectile113(World worldIn, EntityLivingBase shooter) {
-		this(worldIn, shooter.posX, shooter.posY + shooter.getEyeHeight() - 0.20000000149011612D, shooter.posZ);
+		this(worldIn, shooter.posX, shooter.posY + shooter.getEyeHeight() - 0.20000000149011612D * 2, shooter.posZ);
 		this.shootingEntity = shooter;
 
 		if (shooter instanceof EntityPlayer) {
@@ -593,5 +593,14 @@ public class EntityParamagneticProjectile113 extends EntityArrow {
 
 		}
 		return entity;
+	}
+
+	@Override
+	public void setKnockbackStrength(int knockbackStrengthIn) {
+		setKnockbackStrength((double) knockbackStrengthIn);
+	}
+
+	public void setKnockbackStrength(double knockback) {
+		this.knockbackStrength = knockback;
 	}
 }

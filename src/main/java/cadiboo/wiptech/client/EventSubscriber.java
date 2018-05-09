@@ -7,6 +7,7 @@ import cadiboo.wiptech.block.BlockMotor;
 import cadiboo.wiptech.block.BlockPeripheralBlock;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.capability.IWeaponModular;
 import cadiboo.wiptech.client.render.entity.Render2D;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectile113;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectileFactory;
@@ -17,7 +18,9 @@ import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
 import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectiles;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Scopes;
 import cadiboo.wiptech.init.Blocks;
+import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemGun;
@@ -183,6 +186,14 @@ public class EventSubscriber {
 			setTooltip(event, WIPTech.proxy.localize("wire.tooltip", new Object[0]));
 		}
 
+		if (stack.getItem() instanceof ItemGun) {
+			IWeaponModular modules = stack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
+			if (modules != null)
+				modules.getModuleList().forEach((module) -> {
+					setTooltip(event, module.toString());
+				});
+		}
+
 		if (stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase(Reference.ID)) {
 			String itemTooltip = WIPTech.proxy.localize(stack.getUnlocalizedName() + ".tooltip", new Object[0]);
 			if (!itemTooltip.equalsIgnoreCase(stack.getUnlocalizedName() + ".tooltip"))
@@ -203,18 +214,18 @@ public class EventSubscriber {
 
 	@SubscribeEvent
 	public static void FOVUpdate(FOVUpdateEvent event) {
-		if (event.getEntity().isHandActive() && event.getEntity().getActiveItemStack().getItem() instanceof ItemGun) {
+		// Go in AbstractClientPlayer for FOV bow
+		if (event.getEntity().isSneaking() && event.getEntity().isHandActive() && event.getEntity().getActiveItemStack().getItem() instanceof ItemGun
+				&& event.getEntity().getActiveItemStack().getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).getScope() == Scopes.ZOOM) {
 			int i = event.getEntity().getItemInUseMaxCount();
-			float f1 = i / 10.0F;
 
-			if (f1 > 1.0F) {
-				f1 = 1.0F;
-			} else {
-				f1 = f1 * f1;
-			}
+			float f1 = i == 0 ? 0 : (i > 2 ? i / 5.0F : 0);
+			f1 = f1 > 2.25f ? 2.25f : f1;
 
-			event.setNewfov(event.getFov() * 1.0F - f1 * 0.15F);
+			event.setNewfov(event.getFov() * 1.0F - f1 * f1 * 0.15F);
 
+			// } else if (event.getEntity().getActiveItemStack().getItem() instanceof
+			// ItemGun) {
 		}
 	}
 

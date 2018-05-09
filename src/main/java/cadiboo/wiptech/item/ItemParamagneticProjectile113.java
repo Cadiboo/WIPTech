@@ -21,10 +21,6 @@ public class ItemParamagneticProjectile113 extends ItemBase {
 		return projectile;
 	}
 
-	public float getVelocity() {
-		return this.type.getVelocity();
-	}
-
 	public ParamagneticProjectiles getType() {
 		return this.type;
 	}

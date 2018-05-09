@@ -62,6 +62,8 @@ public abstract class ItemGun extends ItemBase {
 		}
 	}
 
+	protected abstract void handleShoot(ItemStack stack, EntityLivingBase entity);
+
 	abstract protected boolean isAmmo(ItemStack stack);
 	// {
 	// return stack.getItem() instanceof ItemParamagneticProjectile113;

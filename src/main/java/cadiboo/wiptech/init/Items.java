@@ -20,7 +20,6 @@ import cadiboo.wiptech.item.ItemParamagneticProjectile113;
 import cadiboo.wiptech.item.ItemPlasmaTool;
 import cadiboo.wiptech.item.ItemPlasmagun;
 import cadiboo.wiptech.item.ItemRail;
-import cadiboo.wiptech.item.ItemRailgun;
 import cadiboo.wiptech.item.ItemRailgun113;
 import cadiboo.wiptech.item.ItemSilicon;
 import cadiboo.wiptech.item.ItemSiliconWafer;
@@ -144,7 +143,7 @@ public class Items {
 	public static final ItemBase	SILICA			= new ItemBase("silica");
 	public static final ItemBase	TITANIA			= new ItemBase("titania");
 
-	public static final ItemRailgun113 RAILGUN113 = new ItemRailgun113("railgun113");
+	public static final ItemRailgun113 RAILGUN = new ItemRailgun113("railgun");
 
 	// semi
 
@@ -169,9 +168,9 @@ public class Items {
 	public static final ItemSiliconWafer			SILICON_WAFER			= new ItemSiliconWafer("silicon_wafer");
 	public static final ItemFlamethrower			FLAMETHROWER			= new ItemFlamethrower("flamethrower");
 	public static final ItemHammer					HAMMER					= new ItemHammer("hammer");
-	public static final ItemRailgun					RAILGUN					= new ItemRailgun("railgun");
-	public static final ItemCoilgun					COILGUN					= new ItemCoilgun("coilgun");
-	public static final ItemPlasmagun				PLASMA_GUN				= new ItemPlasmagun("plasmagun");
+	// public static final ItemRailgun RAILGUN = new ItemRailgun("railgun");
+	public static final ItemCoilgun		COILGUN		= new ItemCoilgun("coilgun");
+	public static final ItemPlasmagun	PLASMA_GUN	= new ItemPlasmagun("plasmagun");
 
 	public static final ItemCapacitor CAPACITOR = new ItemCapacitor("capacitor");
 
@@ -215,7 +214,7 @@ public class Items {
 
 			COPPER_BOOTS, TIN_BOOTS, ALUMINIUM_BOOTS, SILVER_BOOTS, TUNGSTEN_BOOTS, OSMIUM_BOOTS, TITANIUM_BOOTS,
 
-			RAILGUN113,
+			RAILGUN,
 
 			//
 
@@ -233,7 +232,7 @@ public class Items {
 
 			GALLIUM, GALLIUM_INGOT, GALLIUM_WAFER, ALUMINA, IRON_OXIDE, SILICA, SILICON, SILICON_WAFER, TITANIA,
 
-			FLAMETHROWER, RAILGUN, COILGUN, PLASMA_GUN,
+			FLAMETHROWER, COILGUN, PLASMA_GUN,
 
 			CAPACITOR,
 

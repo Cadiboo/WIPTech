@@ -252,8 +252,8 @@ public class EnumHandler {
 			 * Nickel Aluminum Bronze 7%
 			 */
 
-			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4,
-					"copper", 100, TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
+			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4, "copper", 100, TextFormatting.RED), SILVER(5,
+					"silver", 105, TextFormatting.WHITE);
 
 			private int				ID;
 			private String			name;
@@ -291,22 +291,37 @@ public class EnumHandler {
 		}
 
 		public static enum Circuits implements IStringSerializable, IWeaponModule {
-			MANUAL(0, "manual", TextFormatting.WHITE), BURST3(1, "burst3", TextFormatting.RED), BURST5(2, "burst5", TextFormatting.RED), BURST10(3, "burst10", TextFormatting.RED), AUTO(4, "auto",
-					TextFormatting.DARK_RED), OVERCLOCKED(5, "overclocked", TextFormatting.AQUA);
+			MANUAL(0, "manual", TextFormatting.WHITE, 1),
+
+			BURST3(1, "burst3", TextFormatting.RED, 3),
+
+			BURST5(2, "burst5", TextFormatting.RED, 5),
+
+			BURST10(3, "burst10", TextFormatting.RED, 10),
+
+			AUTO(4, "auto", TextFormatting.DARK_RED, 1),
+
+			OVERCLOCKED(5, "overclocked", TextFormatting.AQUA, 1);
 
 			private int				ID;
 			private String			name;
 			private TextFormatting	chatColor;
+			private int				burstShots;
 
-			private Circuits(int ID, String name, TextFormatting chatColorIn) {
+			private Circuits(int ID, String name, TextFormatting chatColorIn, int burstShots) {
 				this.ID = ID;
 				this.name = name;
 				this.chatColor = chatColorIn;
+				this.burstShots = burstShots;
 			}
 
 			@Override
 			public String getName() {
 				return this.name;
+			}
+
+			public int getBurstShots() {
+				return burstShots;
 			}
 
 			@Override
@@ -357,8 +372,8 @@ public class EnumHandler {
 			 * Nickel Aluminum Bronze 7%
 			 */
 
-			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4,
-					"copper", 100, TextFormatting.RED), SILVER(5, "silver", 105, TextFormatting.WHITE);
+			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4, "copper", 100, TextFormatting.RED), SILVER(5,
+					"silver", 105, TextFormatting.WHITE);
 
 			private int				ID;
 			private String			name;
@@ -435,35 +450,35 @@ public class EnumHandler {
 	}
 
 	public static enum ParamagneticProjectiles implements IStringSerializable {
-		IRON_LARGE(0, "iron_large", ParamagneticProjectileSizes.LARGE, 1, 1, 1, TextFormatting.WHITE),
+		IRON_LARGE(0, "iron_large", ParamagneticProjectileSizes.LARGE, 20, 5, 2, TextFormatting.WHITE),
 
-		OSMIUM_LARGE(1, "osmium_large", ParamagneticProjectileSizes.LARGE, 1, 1, 1, TextFormatting.DARK_BLUE),
+		OSMIUM_LARGE(1, "osmium_large", ParamagneticProjectileSizes.LARGE, 30, 4, 3, TextFormatting.DARK_BLUE),
 
-		TUNGSTEN_LARGE(2, "tungsten_large", ParamagneticProjectileSizes.LARGE, 1, 1, 1, TextFormatting.GRAY),
+		TUNGSTEN_LARGE(2, "tungsten_large", ParamagneticProjectileSizes.LARGE, 40, 4.5, 5, TextFormatting.GRAY),
 
-		IRON_MEDIUM(3, "iron_medium", ParamagneticProjectileSizes.MEDIUM, 1, 1, 1, TextFormatting.WHITE),
+		IRON_MEDIUM(3, "iron_medium", ParamagneticProjectileSizes.MEDIUM, 7.5, 4, 1, TextFormatting.WHITE),
 
-		OSMIUM_MEDIUM(4, "osmium_medium", ParamagneticProjectileSizes.MEDIUM, 1, 1, 1, TextFormatting.DARK_BLUE),
+		OSMIUM_MEDIUM(4, "osmium_medium", ParamagneticProjectileSizes.MEDIUM, 12, 3.5, 1.5, TextFormatting.DARK_BLUE),
 
-		TUNGSTEN_MEDIUM(5, "tungsten_medium", ParamagneticProjectileSizes.MEDIUM, 1, 1, 1, TextFormatting.GRAY),
+		TUNGSTEN_MEDIUM(5, "tungsten_medium", ParamagneticProjectileSizes.MEDIUM, 15, 3.75, 2.5, TextFormatting.GRAY),
 
-		IRON_SMALL(6, "iron_small", ParamagneticProjectileSizes.SMALL, 1, 1, 1, TextFormatting.WHITE),
+		IRON_SMALL(6, "iron_small", ParamagneticProjectileSizes.SMALL, 2, 3, 0.1, TextFormatting.WHITE),
 
-		OSMIUM_SMALL(7, "osmium_small", ParamagneticProjectileSizes.SMALL, 1, 1, 1, TextFormatting.DARK_BLUE),
+		OSMIUM_SMALL(7, "osmium_small", ParamagneticProjectileSizes.SMALL, 3.25, 2.5, 0.15, TextFormatting.DARK_BLUE),
 
-		TUNGSTEN_SMALL(8, "tungsten_small", ParamagneticProjectileSizes.SMALL, 1, 1, 1, TextFormatting.GRAY),
+		TUNGSTEN_SMALL(8, "tungsten_small", ParamagneticProjectileSizes.SMALL, 4, 3.5, 0.25, TextFormatting.GRAY),
 
-		PLASMA(9, "plasma", ParamagneticProjectileSizes.NANO, 1, 1, 1, TextFormatting.GOLD);
+		PLASMA(9, "plasma", ParamagneticProjectileSizes.NANO, 0.5, 7.5, 0, TextFormatting.GOLD);
 
 		private int							ID;
 		private String						name;
 		private ParamagneticProjectileSizes	size;
-		private float						damage;
-		private float						velocity;
-		private float						knockback;
+		private double						damage;
+		private double						velocity;
+		private double						knockback;
 		private TextFormatting				chatColor;
 
-		private ParamagneticProjectiles(int ID, String name, ParamagneticProjectileSizes size, float damage, float velocity, float knockback, TextFormatting chatColorIn) {
+		private ParamagneticProjectiles(int ID, String name, ParamagneticProjectileSizes size, double damage, double velocity, double knockback, TextFormatting chatColorIn) {
 			this.ID = ID;
 			this.name = name;
 			this.size = size;
@@ -486,15 +501,15 @@ public class EnumHandler {
 			return ParamagneticProjectiles.values()[i];
 		}
 
-		public float getVelocity() {
+		public double getVelocity() {
 			return this.velocity;
 		}
 
-		public float getDamage() {
+		public double getDamage() {
 			return this.damage;
 		}
 
-		public float getKnockback() {
+		public double getKnockback() {
 			return this.knockback;
 		}
 
