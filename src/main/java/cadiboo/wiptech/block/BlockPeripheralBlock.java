@@ -1,5 +1,6 @@
 package cadiboo.wiptech.block;
 
+import cadiboo.wiptech.tileentity.TileEntityPeripheral;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockFaceShape;
@@ -15,7 +16,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockPeripheralBlock extends BlockBase {
+public class BlockPeripheralBlock extends BlockTileEntity<TileEntityPeripheral> {
 
 	private static final AxisAlignedBB	TURBINE_BB			= new AxisAlignedBB(0, 0, 0, 1, 6, 1);
 	private static final AxisAlignedBB	ASSEMBLY_TABLE_BB	= new AxisAlignedBB(-1, 0, -1, 2, 2, 2);
@@ -102,6 +103,11 @@ public class BlockPeripheralBlock extends BlockBase {
 		else if (isAssemblyTable(worldIn, pos2))
 			return ASSEMBLY_TABLE_BB.offset(pos2);
 		return super.getSelectedBoundingBox(state, worldIn, pos);
+	}
+
+	@Override
+	public TileEntityPeripheral createTileEntity(World world, IBlockState state) {
+		return new TileEntityPeripheral();
 	}
 
 }

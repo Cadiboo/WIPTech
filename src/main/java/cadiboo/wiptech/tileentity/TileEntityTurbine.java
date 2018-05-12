@@ -57,7 +57,8 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 				}
 			}
 
-			pushEnergy(this.world, this.pos, this.energy, EnumFacing.DOWN, EnumFacing.NORTH, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.EAST);
+			for (int i = 0; i < 6; i++)
+				pushEnergy(this.world, this.pos.up(i), this.energy, EnumFacing.VALUES);
 		}
 		this.updateBase();
 		syncToClients();
