@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -17,7 +16,6 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -406,93 +404,30 @@ public class Utils {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(-0.5F, -0.5F, -0.5F);
 
+		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
+		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
+
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 
-		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
-		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
+		for (EnumFacing enumfacing : EnumFacing.values()) {
+			renderQuadsColor(bufferbuilder, model.getQuads((IBlockState) null, enumfacing, 0L), color, stack);
+		}
 
-		// for (EnumFacing enumfacing : EnumFacing.values()) {
-		// List<BakedQuad> quads = model.getQuads((IBlockState) null, enumfacing, 0L);
-		// boolean flag = color == -1 && !stack.isEmpty();
-		// int i = 0;
-		//
-		// for (int j = quads.size(); i < j; ++i) {
-		// BakedQuad bakedquad = quads.get(i);
-		// int k = color;
-		//
-		// try {
-		// if (flag && bakedquad.hasTintIndex()) {
-		//
-		// Field field =
-		// Minecraft.getMinecraft().getRenderItem().getClass().getDeclaredField("itemColors");
-		// field.setAccessible(true); // Force to access the field
-		// // Set value
-		// // field.set(yourClassInstance, "Something");
-		// // Get value
-		// Object value =
-		// field.get(Minecraft.getMinecraft().getRenderItem().getClass());
-		//
-		// k = ((ItemColors) value).colorMultiplier(stack, bakedquad.getTintIndex());
-		//
-		// if (EntityRenderer.anaglyphEnable) {
-		// k = TextureUtil.anaglyphColor(k);
-		// }
-		//
-		// k = k | -16777216;
-		// }
-		//
-		// net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder,
-		// bakedquad, k);
-		//
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-		// }
-
+		renderQuadsColor(bufferbuilder, model.getQuads((IBlockState) null, (EnumFacing) null, 0L), color, stack);
 		tessellator.draw();
+
 		GlStateManager.popMatrix();
 	}
 
-	private static void renderQuadColor(ItemStack stack, IBakedModel model, int color, BufferBuilder bufferbuilder) {
-		List<BakedQuad> quads = model.getQuads((IBlockState) null, null, 0L);
-		boolean flag = color == -1 && !stack.isEmpty();
-		int i = 0;
+	private static void renderQuadsColor(BufferBuilder bufferbuilder, List<BakedQuad> quads, int color, ItemStack stack) {
 
+		int i = 0;
 		for (int j = quads.size(); i < j; ++i) {
 			BakedQuad bakedquad = quads.get(i);
-			int k = color;
-
-			try {
-				if (flag && bakedquad.hasTintIndex()) {
-
-					// Field field =
-					// Minecraft.getMinecraft().getRenderItem().getClass().getDeclaredField("itemColors");
-					// field.setAccessible(true); // Force to access the field
-					// // Set value
-					// // field.set(yourClassInstance, "Something");
-					// // Get value
-					// Object value =
-					// field.get(Minecraft.getMinecraft().getRenderItem().getClass());
-					//
-					// k = ((ItemColors) value).colorMultiplier(stack, bakedquad.getTintIndex());
-
-					if (EntityRenderer.anaglyphEnable) {
-						k = TextureUtil.anaglyphColor(k);
-					}
-
-					k = k | -16777216;
-				}
-
-				net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, bakedquad, k);
-
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			// color = color |
+			net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, bakedquad, color);
 		}
 	}
 
