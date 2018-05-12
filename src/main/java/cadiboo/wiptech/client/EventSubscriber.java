@@ -11,6 +11,7 @@ import cadiboo.wiptech.capability.IWeaponModular;
 import cadiboo.wiptech.client.render.entity.Render2D;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectile113;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectileFactory;
+import cadiboo.wiptech.client.render.tileentity.TESRAssemblyTable;
 import cadiboo.wiptech.client.render.tileentity.TESRCrusher;
 import cadiboo.wiptech.client.render.tileentity.TESRTurbine;
 import cadiboo.wiptech.client.render.tileentity.TESRWire;
@@ -26,6 +27,7 @@ import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemGun;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.item.ItemRail;
+import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import cadiboo.wiptech.tileentity.TileEntityWire;
@@ -93,6 +95,7 @@ public class EventSubscriber {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrusher.class, new TESRCrusher());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbine.class, new TESRTurbine());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWire.class, new TESRWire());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAssemblyTable.class, new TESRAssemblyTable());
 		WIPTech.logger.info("Registered TileEntity Renders");
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityParamagneticProjectile113.class, renderManager -> new RenderEntityParamagneticProjectile113(renderManager));

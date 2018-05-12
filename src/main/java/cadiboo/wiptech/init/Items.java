@@ -145,6 +145,8 @@ public class Items {
 
 	public static final ItemRailgun113 RAILGUN = new ItemRailgun113("railgun");
 
+	public static final ItemBase GUN_BODY = new ItemBase("gun_body");
+
 	// semi
 
 	public static final ItemParamagneticProjectile113	IRON_SMALL		= new ItemParamagneticProjectile113("iron_small", ParamagneticProjectiles.IRON_SMALL);
@@ -214,7 +216,7 @@ public class Items {
 
 			COPPER_BOOTS, TIN_BOOTS, ALUMINIUM_BOOTS, SILVER_BOOTS, TUNGSTEN_BOOTS, OSMIUM_BOOTS, TITANIUM_BOOTS,
 
-			RAILGUN,
+			RAILGUN, GUN_BODY,
 
 			//
 

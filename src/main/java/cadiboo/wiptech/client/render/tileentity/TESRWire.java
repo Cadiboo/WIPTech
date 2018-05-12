@@ -46,21 +46,22 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 	private static final ModelEnamel	EAST_MODEL_ENAMEL	= new ModelEnamel();
 
 	@Override
-	public void render(TileEntityWire tileEntity, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
-		if (!(tileEntity.getBlockType() instanceof BlockWire)) {
+	public void render(TileEntityWire te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+
+		if (!(te.getBlockType() instanceof BlockWire)) {
 			WIPTech.logger.error("WIRE RENDERING ERROR! BLOCK IS NOT WIRE");
 			return;
 		}
-		final boolean isEnamel = ((BlockWire) tileEntity.getBlockType()).isEnamel();
+		final boolean isEnamel = ((BlockWire) te.getBlockType()).isEnamel();
 
-		if (!isEnamel && tileEntity.electrocutionTime > 0) {
-			List<Entity> entities = tileEntity.getElectrocutableEntities();
+		if (!isEnamel && te.electrocutionTime > 0) {
+			List<Entity> entities = te.getElectrocutableEntities();
 			for (int i = 0; i < entities.size(); i++) {
 				GlStateManager.pushMatrix();
 				GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
 
 				Position entityPos = Utils.getEntityRenderPos(entities.get(i), partialTicks);
-				entityPos.add(-tileEntity.getPos().getX() - 0.5, -tileEntity.getPos().getY() - 0.5, -tileEntity.getPos().getZ() - 0.5);
+				entityPos.add(-te.getPos().getX() - 0.5, -te.getPos().getY() - 0.5, -te.getPos().getZ() - 0.5);
 				entityPos.y += entities.get(i).getEyeHeight() / 2;
 
 				double yAngle = Math.atan2(-entityPos.getX(), -entityPos.getZ());
@@ -77,7 +78,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 
 				final double scale = 0.125 * Math.sqrt(Math.pow(entityPos.getX(), 2) + Math.pow(entityPos.getY(), 2) + Math.pow(entityPos.getZ(), 2));
 
-				final int number = RANDOMS[(int) ((getWorld().getTotalWorldTime() + tileEntity.getPos().getX() + tileEntity.getPos().getY() + tileEntity.getPos().getZ()) % RANDOMS.length)];
+				final int number = RANDOMS[(int) ((getWorld().getTotalWorldTime() + te.getPos().getX() + te.getPos().getY() + te.getPos().getZ()) % RANDOMS.length)];
 
 				GlStateManager.translate(0, -8 * scale, 0);
 				Utils.drawLightning(number, BRANCHES, SUB_BRANCHES, scale);
@@ -87,12 +88,12 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 
 		GlStateManager.depthMask(true);
 
-		final ResourceLocation texLoc = new ResourceLocation(Reference.ID, "textures/items/" + ((BlockWire) tileEntity.getBlockType()).getMetal().getName() + "_wire.png");
+		final ResourceLocation texLoc = new ResourceLocation(Reference.ID, "textures/items/" + ((BlockWire) te.getBlockType()).getMetal().getName() + "_wire.png");
 		this.bindTexture(texLoc);
 
 		sides: for (int i = 0; i < EnumFacing.VALUES.length; i++) {
 			final EnumFacing side = EnumFacing.VALUES[i];
-			if (!tileEntity.isConnectedTo(side))
+			if (!te.isConnectedTo(side))
 				continue sides;
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
@@ -102,9 +103,9 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 				this.bindTexture(ENAMEL_TEXTURE);
 				DOWN_MODEL_ENAMEL.render(ONE_SIXTEENTH);
 				this.bindTexture(texLoc);
-				if (!tileEntity.isConnectedToWire(side))
+				if (!te.isConnectedToWire(side))
 					GlStateManager.translate(SEVEN_SIXTEENTHS, 0, 0);
-			} else if (!tileEntity.isConnectedToWire(side)) {
+			} else if (!te.isConnectedToWire(side)) {
 				GlStateManager.translate(SEVEN_SIXTEENTHS, 0, 0);
 				DOWN_MODEL_WIRE.render(ONE_SIXTEENTH);
 				GlStateManager.translate(-SEVEN_SIXTEENTHS, 0, 0);

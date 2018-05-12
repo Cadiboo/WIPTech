@@ -3,25 +3,27 @@ package cadiboo.wiptech.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import cadiboo.wiptech.container.ContainerTurbine;
+import cadiboo.wiptech.container.ContainerAssemblyTable;
 import cadiboo.wiptech.init.Blocks;
-import cadiboo.wiptech.tileentity.TileEntityTurbine;
+import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.energy.CapabilityEnergy;
 
-public class GuiTurbine extends GuiContainer {
-	TileEntityTurbine						tileEntity;
+public class GuiAssemblyTable extends GuiContainer {
+	TileEntityAssemblyTable					te;
 	private static final ResourceLocation	BG_TEXTURE	= new ResourceLocation("wiptech", "textures/gui/turbine.png");
+	private static final ResourceLocation	PLASMA_GUN	= new ResourceLocation("wiptech", "textures/gui/turbine.png");
+	private static final ResourceLocation	RAIL_GUN	= new ResourceLocation("wiptech", "textures/gui/turbine.png");
+	private static final ResourceLocation	COIL_GUN	= new ResourceLocation("wiptech", "textures/gui/turbine.png");
 	private InventoryPlayer					playerInv;
 
-	public GuiTurbine(ContainerTurbine container, InventoryPlayer playerInv, TileEntityTurbine tileTurbine) {
+	public GuiAssemblyTable(ContainerAssemblyTable container, InventoryPlayer playerInv, TileEntityAssemblyTable te) {
 		super(container);
-		this.tileEntity = tileTurbine;
+		this.te = te;
 		this.playerInv = playerInv;
 	}
 
@@ -35,33 +37,27 @@ public class GuiTurbine extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(BG_TEXTURE);
+		this.mc.getTextureManager().bindTexture(new ResourceLocation("minecraft", "textures/gui/container/crafting_table.png"));
 		int x = (this.width - this.xSize) / 2;
 		int y = (this.height - this.ySize) / 2;
 
 		// y + (int) Math.round(52D * (getEnergyPercentage() / 100D))
 
 		drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
-		drawTexturedModalRect(x + 84, y + 17 + 52 - (int) Math.round(52D * (getEnergyPercentage() / 100D)), this.xSize, 0, 10, (int) Math.round(52D * (getEnergyPercentage() / 100D)));
-	}
-
-	protected double getEnergyPercentage() {
-		return ((double) this.tileEntity.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored() / (double) this.tileEntity.getCapability(CapabilityEnergy.ENERGY, null).getMaxEnergyStored() * 100D);
-	}
-
-	protected int getEnergyPercentageInt() {
-		return (int) Math.round(getEnergyPercentage());
+		// drawTexturedModalRect(x + 84, y + 17 + 52 - (int) Math.round(52D *
+		// (getEnergyPercentage() / 100D)), this.xSize, 0, 10, (int) Math.round(52D *
+		// (getEnergyPercentage() / 100D)));
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		String name = I18n.format(Blocks.TURBINE.getUnlocalizedName() + ".name");
+		String name = I18n.format(Blocks.ASSEMBLY_TABLE.getUnlocalizedName() + ".name");
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		this.fontRenderer.drawString(this.playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 94, 4210752);
 
 		List<String> hoveringText = new ArrayList();
 		if (Utils.isInRect(this.guiLeft + 83, this.guiTop + 16, 10, 54, mouseX, mouseY)) {
-			hoveringText.add("Energy: " + getEnergyPercentageInt() + "%");
+			// hoveringText.add("Energy: " + getEnergyPercentageInt() + "%");
 		}
 		if (!hoveringText.isEmpty()) {
 			drawHoveringText(hoveringText, mouseX - this.guiLeft, mouseY - this.guiTop, this.fontRenderer);

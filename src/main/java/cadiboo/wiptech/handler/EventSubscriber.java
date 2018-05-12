@@ -5,9 +5,11 @@ import cadiboo.wiptech.block.BlockItem;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Entities;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.tileentity.TileEntityCapacitorBank;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
+import cadiboo.wiptech.tileentity.TileEntityPeripheral;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.Reference;
@@ -48,6 +50,8 @@ public class EventSubscriber {
 		GameRegistry.registerTileEntity(TileEntityTurbine.class, Reference.ID + "TileEntityTurbine");
 		GameRegistry.registerTileEntity(TileEntityCapacitorBank.class, Reference.ID + "TileEntityCapacitorBank");
 		GameRegistry.registerTileEntity(TileEntityWire.class, Reference.ID + "TileEntityWire");
+		GameRegistry.registerTileEntity(TileEntityAssemblyTable.class, Reference.ID + "TileEntityAssemblyTable");
+		GameRegistry.registerTileEntity(TileEntityPeripheral.class, Reference.ID + "TileEntityPeripheral");
 		WIPTech.logger.info("Registered TileEntities");
 	}
 
@@ -85,11 +89,10 @@ public class EventSubscriber {
 
 		// should be put on more than one line
 		// event stack is placeable ||(other hand stack is placeable && event stack=air)
-		if (isBlockItem(event.getItemStack().getItem())
-				|| (isBlockItem(event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem()) && event.getItemStack().isEmpty())) {
+		if (isBlockItem(event.getItemStack().getItem()) || (isBlockItem(event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem()) && event.getItemStack().isEmpty())) {
 			if (Blocks.COPPER_INGOT.canPlaceBlockAt(event.getWorld(), event.getPos().up())) {
-				event.getWorld().setBlockState(event.getPos().up(), BlockItem.getBlockToPlace(event.getItemStack().getItem()).getStateForPlacement(event.getWorld(), event.getPos().up(),
-						event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z, event.getItemStack().getMetadata(), event.getEntityPlayer()), 2);
+				event.getWorld().setBlockState(event.getPos().up(), BlockItem.getBlockToPlace(event.getItemStack().getItem()).getStateForPlacement(event.getWorld(), event.getPos().up(), event.getFace(), (float) event.getHitVec().x,
+						(float) event.getHitVec().y, (float) event.getHitVec().z, event.getItemStack().getMetadata(), event.getEntityPlayer()), 2);
 				if (!event.getEntityPlayer().isCreative())
 					event.getItemStack().shrink(1);
 				event.setCanceled(true);

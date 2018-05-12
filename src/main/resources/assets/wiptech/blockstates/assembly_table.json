@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "normal": [
+            {"model": "wiptech:assembly_table"}
+        ],
+        "inventory": { "model": "wiptech:assembly_table" }
+    }
+}

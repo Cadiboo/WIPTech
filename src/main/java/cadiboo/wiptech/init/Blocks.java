@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.google.common.collect.Sets;
 
+import cadiboo.wiptech.block.BlockAssemblyTable;
 import cadiboo.wiptech.block.BlockBase;
 import cadiboo.wiptech.block.BlockCapacitorBank;
 import cadiboo.wiptech.block.BlockCoiler;
@@ -88,6 +89,8 @@ public class Blocks {
 	public static final BlockWire	IRON_ENAMEL			= new BlockWire("iron_enamel", Material.IRON, ConductiveMetals.IRON, true);
 	public static final BlockWire	GOLD_ENAMEL			= new BlockWire("gold_enamel", Material.IRON, ConductiveMetals.GOLD, true);
 
+	public static final BlockAssemblyTable ASSEMBLY_TABLE = new BlockAssemblyTable("assembly_table", Material.IRON);
+
 	// 1.12
 	public static final BlockCrusher	CRUSHER	= new BlockCrusher("crusher", Material.IRON);
 	public static final BlockCoiler		COILER	= new BlockCoiler("coiler", Material.IRON);
@@ -122,9 +125,11 @@ public class Blocks {
 
 			CRUSHER, COILER,
 
+			ASSEMBLY_TABLE,
+
 			STRONG_PISTON, STRONG_PISTON_STICKY, STRONG_PISTON_HEAD,
 
-			TURBINE, PERIPHERAL, /* CAPACITOR_BANK, */ };
+			TURBINE, PERIPHERAL, CAPACITOR_BANK, };
 
 	public static final Set<Block> HIDDEN_BLOCKS = Sets.newHashSet(STRONG_PISTON_HEAD, PERIPHERAL);
 

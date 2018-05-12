@@ -9,12 +9,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockPeripheralBlock extends BlockBase {
+
+	private static final AxisAlignedBB	TURBINE_BB			= new AxisAlignedBB(0, 0, 0, 1, 6, 1);
+	private static final AxisAlignedBB	ASSEMBLY_TABLE_BB	= new AxisAlignedBB(-1, 0, -1, 2, 2, 2);
 
 	public BlockPeripheralBlock(String name, Material materialIn) {
 		super(name, materialIn);
@@ -31,22 +35,27 @@ public class BlockPeripheralBlock extends BlockBase {
 			if (isTurbine(worldIn, pos.down(i)))
 				return worldIn.getBlockState(pos.down(i)).getBlock().onBlockActivated(worldIn, pos.down(i), state, playerIn, hand, facing, hitX, hitY, hitZ);
 		}
+		for (int x = -1; x < 2; x++)
+			for (int z = -1; z < 2; z++)
+				for (int y = 0; y < 2; y++)
+					if (isAssemblyTable(worldIn, pos.down(y).south(z).east(x)))
+						return worldIn.getBlockState(pos.down(y).south(z).east(x)).getBlock().onBlockActivated(worldIn, pos.down(y).south(z).east(x), state, playerIn, hand, facing, hitX, hitY, hitZ);
 		return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
 	}
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		for (int i = 1; i <= 5; i++) {
-			if (isTurbine(worldIn, pos.down(i))) {
-				worldIn.getBlockState(pos.down(i)).getBlock().breakBlock(worldIn, pos.down(i), worldIn.getBlockState(pos.down(i)));
-				return;
-			}
-		}
+		worldIn.getBlockState(this.getTileEntityPos(worldIn, pos)).getBlock().breakBlock(worldIn, this.getTileEntityPos(worldIn, pos), worldIn.getBlockState(this.getTileEntityPos(worldIn, pos)));
+		return;
 		// super.breakBlock(worldIn, pos, state);
 	}
 
 	public static boolean isTurbine(World worldIn, BlockPos pos) {
 		return worldIn.getBlockState(pos).getBlock() instanceof BlockTurbine;
+	}
+
+	public static boolean isAssemblyTable(World worldIn, BlockPos pos) {
+		return worldIn.getBlockState(pos).getBlock() instanceof BlockAssemblyTable;
 	}
 
 	public static boolean isPeripheral(World worldIn, BlockPos pos) {
@@ -68,7 +77,13 @@ public class BlockPeripheralBlock extends BlockBase {
 			if (isTurbine(worldIn, pos.down(i)))
 				return pos.down(i);
 		}
-		return null;
+		for (int x = -1; x < 2; x++)
+			for (int z = -1; z < 2; z++)
+				for (int y = 0; y < 2; y++)
+					if (isAssemblyTable(worldIn, pos.down(y).south(z).east(x)))
+						return pos.down(y).south(z).east(x);
+
+		return new BlockPos(-1, -1, -1);
 	}
 
 	@Override
@@ -77,6 +92,16 @@ public class BlockPeripheralBlock extends BlockBase {
 		if (blockPos != null)
 			return Utils.getBlockFromPos(world, blockPos).getPickBlock(state, target, world, blockPos, player);
 		return super.getPickBlock(state, target, world, pos, player);
+	}
+
+	@Override
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+		BlockPos pos2 = getTileEntityPos(worldIn, pos);
+		if (isTurbine(worldIn, pos2))
+			return TURBINE_BB.offset(pos2);
+		else if (isAssemblyTable(worldIn, pos2))
+			return ASSEMBLY_TABLE_BB.offset(pos2);
+		return super.getSelectedBoundingBox(state, worldIn, pos);
 	}
 
 }

@@ -3,6 +3,7 @@ package cadiboo.wiptech.tileentity;
 import cadiboo.wiptech.capability.ItemEnergyItemHandler;
 import cadiboo.wiptech.config.Configuration;
 import cadiboo.wiptech.util.CustomEnergyStorage;
+import cadiboo.wiptech.util.Utils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -21,8 +22,6 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 	protected boolean				cachedCanProduce	= false;
 	protected ItemEnergyItemHandler	leftSlot;
 	protected ItemEnergyItemHandler	rightSlot;
-
-	private static final AxisAlignedBB RENDER_AABB = new AxisAlignedBB(-1, 0, -1, 2, 6, 2);
 
 	public TileEntityTurbine() {
 		leftSlot = new ItemEnergyItemHandler(1);
@@ -135,7 +134,7 @@ public class TileEntityTurbine extends TileEntityBase implements ITickable {
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return RENDER_AABB.offset(pos);
+		return this.getBlockType().getSelectedBoundingBox(Utils.getStateFromPos(this.getWorld(), this.getPos()), this.getWorld(), this.getPos()).grow(2);
 	}
 
 }

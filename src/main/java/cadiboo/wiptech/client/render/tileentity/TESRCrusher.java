@@ -12,16 +12,11 @@ import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
-import net.minecraftforge.client.ForgeHooksClient;
 
 public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 
@@ -31,14 +26,6 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 
 	private boolean isItemBlock(ItemStack stack) {
 		return stack.getItem() instanceof ItemBlock;
-	}
-
-	private void renderStack(ItemStack stack, World world) {
-		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
-		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
-
-		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
 	}
 
 	@Override
@@ -131,20 +118,20 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 			if (stackCrusherBit.getItem() == Items.HAMMER) {
 				GlStateManager.translate(0.0D, 0.5D, 0.0D);
 				GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
-				renderStack(stackCrusherBit, te.getWorld());
+				Utils.renderStack(stackCrusherBit, te.getWorld());
 			} else {
 				double itemScale = 0.25D;
 				double renderScale = 0.375D;
 				double scale = 1.4925D;
 
 				GlStateManager.scale(scale, scale, scale);
-				renderStack(CRUSHER_BIT_HOLDER, te.getWorld());
+				Utils.renderStack(CRUSHER_BIT_HOLDER, te.getWorld());
 				scale *= 2.65D;
 
 				GlStateManager.translate(0.0D, -0.73D, 0.0D);
 				GlStateManager.scale(scale, scale, scale);
 
-				renderStack(stackCrusherBit, te.getWorld());
+				Utils.renderStack(stackCrusherBit, te.getWorld());
 			}
 			GlStateManager.popMatrix();
 		}
@@ -181,7 +168,7 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 			} else {
 				GlStateManager.translate(0.0D, 0.0D, 0.0D);
 			}
-			renderStack(stack, te.getWorld());
+			Utils.renderStack(stack, te.getWorld());
 			GlStateManager.popMatrix();
 		}
 

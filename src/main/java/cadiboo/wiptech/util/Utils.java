@@ -13,7 +13,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,8 +23,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public class Utils {
+
+	public static float getEnergyFraction(IEnergyStorage storage) {
+		if (storage == null)
+			return 0;
+
+		return storage.getEnergyStored() / storage.getMaxEnergyStored();
+	}
+
+	public static int getEnergyPercentage(IEnergyStorage storage) {
+		return Math.round(getEnergyFraction(storage) * 100f);
+	}
 
 	public static Block getBlockFromPos(World worldIn, BlockPos pos) {
 		return worldIn.getBlockState(pos).getBlock();
@@ -362,6 +377,26 @@ public class Utils {
 		GlStateManager.rotate(facing == EnumFacing.DOWN ? 0 : facing == EnumFacing.UP ? 180F : facing == EnumFacing.NORTH || facing == EnumFacing.EAST ? 90F : -90F, facing.getAxis() == EnumFacing.Axis.Z ? 1 : 0, 0,
 				facing.getAxis() == EnumFacing.Axis.Z ? 0 : 1);
 		GlStateManager.rotate(-90, 0, 0, 1);
+	}
+
+	public static boolean isInRect(int x, int y, int xSize, int ySize, int mouseX, int mouseY) {
+		return (mouseX >= x) && (mouseX <= x + xSize) && (mouseY >= y) && (mouseY <= y + ySize);
+	}
+
+	public static void renderStack(ItemStack stack, World world) {
+		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
+		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
+
+		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
+	}
+
+	public static void renderStackWithoutTransforms(ItemStack stack, World world) {
+		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
+		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
+
+		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
 	}
 
 }

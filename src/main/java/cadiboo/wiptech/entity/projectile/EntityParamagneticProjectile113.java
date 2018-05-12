@@ -19,6 +19,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
@@ -50,7 +51,7 @@ public class EntityParamagneticProjectile113 extends EntityArrow {
 		@Override
 		public boolean apply(@Nullable Entity targetEntity) {
 			if (targetEntity.hurtResistantTime > 0) {
-				targetEntity.hurtResistantTime = 0;
+				targetEntity.hurtResistantTime = targetEntity instanceof EntityDragon ? targetEntity.hurtResistantTime : 0;
 				return false;
 			}
 			if (targetEntity instanceof EntityEnderman) {
@@ -247,7 +248,7 @@ public class EntityParamagneticProjectile113 extends EntityArrow {
 				this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * 0.25D, this.posY - this.motionY * 0.25D, this.posZ - this.motionZ * 0.25D, this.motionX, this.motionY, this.motionZ);
 			}
 
-			f1 = 0.6F;
+			f1 = 0.9F;
 		}
 
 		if (this.isWet()) {

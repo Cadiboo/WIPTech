@@ -5,6 +5,7 @@ import cadiboo.wiptech.handler.GuiHandler;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import cadiboo.wiptech.util.CustomEnergyStorage;
+import cadiboo.wiptech.util.Utils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -87,5 +89,11 @@ public class BlockTurbine extends BlockTileEntity<TileEntityTurbine> {
 			player.openGui(WIPTech.instance, GuiHandler.TURBINE, worldIn, pos.getX(), pos.getY(), pos.getZ());
 		}
 		return true;
+	}
+
+	@Override
+	public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos) {
+		return Utils.getBlockFromPos(worldIn, pos.up()) instanceof BlockPeripheralBlock ? ((BlockPeripheralBlock) Utils.getBlockFromPos(worldIn, pos.up())).getSelectedBoundingBox(state, worldIn, pos.up())
+				: super.getSelectedBoundingBox(state, worldIn, pos);
 	}
 }
