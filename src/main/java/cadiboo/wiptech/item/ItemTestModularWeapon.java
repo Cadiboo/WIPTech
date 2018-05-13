@@ -60,7 +60,7 @@ public class ItemTestModularWeapon extends ItemBase {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack item, NBTTagCompound nbt) {
 		if (item.getItem() == Items.TEST_MODULAR_WEAPON) {
-			return new ModularWeaponProvider();
+			return new ModularWeaponProvider(item);
 		}
 		return null;
 	}
@@ -73,8 +73,7 @@ public class ItemTestModularWeapon extends ItemBase {
 
 		if (!worldIn.isRemote) {
 
-			EntityParamagneticProjectile projectile = ((ItemParamagneticProjectile) PROJECTILE_STACK.getItem())
-					.createProjectile(worldIn, PROJECTILE_STACK, player, false);
+			EntityParamagneticProjectile projectile = ((ItemParamagneticProjectile) PROJECTILE_STACK.getItem()).createProjectile(worldIn, PROJECTILE_STACK, player, false);
 			velocity = EntityParamagneticProjectile.getProjectileVelocity(PROJECTILE_STACK);
 			projectile.setDamage(projectile.getDamage());
 			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
@@ -84,8 +83,7 @@ public class ItemTestModularWeapon extends ItemBase {
 			worldIn.spawnEntity(projectile);
 		}
 
-		worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT,
-				SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+		worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 	}
 
 }

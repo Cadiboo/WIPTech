@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -16,6 +17,7 @@ import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +34,7 @@ public class Utils {
 		if (storage == null)
 			return 0;
 
-		return storage.getEnergyStored() / storage.getMaxEnergyStored();
+		return (float) storage.getEnergyStored() / (float) storage.getMaxEnergyStored();
 	}
 
 	public static int getEnergyPercentage(IEnergyStorage storage) {
@@ -406,6 +408,7 @@ public class Utils {
 
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
 		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
@@ -426,7 +429,15 @@ public class Utils {
 		int i = 0;
 		for (int j = quads.size(); i < j; ++i) {
 			BakedQuad bakedquad = quads.get(i);
-			// color = color |
+
+			if (bakedquad.hasTintIndex()) {
+				if (EntityRenderer.anaglyphEnable) {
+					color = TextureUtil.anaglyphColor(color);
+				}
+
+				color = color | -16777216;
+			}
+
 			net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, bakedquad, color);
 		}
 	}

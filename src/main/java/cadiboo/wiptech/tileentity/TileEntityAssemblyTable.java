@@ -6,15 +6,20 @@ import cadiboo.wiptech.util.Utils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityAssemblyTable extends TileEntityBase {
+public class TileEntityAssemblyTable extends TileEntityBase implements ITickable {
 
-	private static final int[]	SLOTS			= new int[] { 0, 1, 2, 3, 4, 5 };
-	private static final int[]	SLOTS_BOTTOM	= new int[] { 6 };
-	private static final int	ENERGY_CAPACITY	= 10000;
+	private static final int[]	SLOTS				= new int[] { 0, 1, 2, 3, 4, 5 };
+	private static final int[]	SLOTS_BOTTOM		= new int[] { 6 };
+	private static final int	ENERGY_CAPACITY		= 10000;
+	private static final int	ASSEMBLY_COST_TICK	= 100;
+
+	private int assemblyTime = 0;
 
 	private ItemStackHandler inventory = new ItemStackHandler(SLOTS.length + SLOTS_BOTTOM.length) {
 		@Override
@@ -103,14 +108,41 @@ public class TileEntityAssemblyTable extends TileEntityBase {
 	}
 
 	public Item getAssembleItem() {
-		switch (EnumFacing.NORTH.getIndex()) {
+		if (true) {
 		}
 		return Items.RAILGUN;
 	}
 
 	@Override
+	public IEnergyStorage getEnergy(EnumFacing side) {
+		return energy;
+	}
+
+	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		return this.getBlockType().getSelectedBoundingBox(Utils.getStateFromPos(this.getWorld(), this.getPos()), this.getWorld(), this.getPos()).grow(2);
+	}
+
+	@Override
+	public void update() {
+		this.syncToClients();
+		// if (assemblyTime > 0 && energy.extractEnergy(ASSEMBLY_COST_TICK, true) ==
+		// ASSEMBLY_COST_TICK) {
+		// --assemblyTime;
+		// energy.extractEnergy(ASSEMBLY_COST_TICK, false);
+		// }
+		if (world.isRemote) {
+			this.handleSync();
+		}
+	}
+
+	public int getAssemblyTime() {
+		return assemblyTime;
+	}
+
+	@Override
+	public boolean handleSync() {
+		return super.handleSync();
 	}
 
 }

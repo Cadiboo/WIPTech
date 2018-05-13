@@ -221,7 +221,7 @@ public class ItemPlasmagun extends ItemBase {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack item, NBTTagCompound nbt) {
 		if (item.getItem() == Items.PLASMA_GUN) {
-			return new ModularWeaponProvider();
+			return new ModularWeaponProvider(item);
 		}
 		return null;
 	}

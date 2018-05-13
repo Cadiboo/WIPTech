@@ -108,4 +108,8 @@ public class CustomEnergyStorage extends EnergyStorage {
 	public int receiveEnergy(int receiveEnergy, boolean simulate, EnumFacing side) {
 		return this.receiveEnergy(receiveEnergy, simulate);
 	}
+
+	public void setEnergy(int energy) {
+		this.energy = energy;
+	}
 }

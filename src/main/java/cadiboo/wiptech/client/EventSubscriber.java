@@ -7,7 +7,6 @@ import cadiboo.wiptech.block.BlockMotor;
 import cadiboo.wiptech.block.BlockPeripheralBlock;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
-import cadiboo.wiptech.capability.IWeaponModular;
 import cadiboo.wiptech.client.render.entity.Render2D;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectile113;
 import cadiboo.wiptech.client.render.entity.RenderEntityParamagneticProjectileFactory;
@@ -39,6 +38,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -115,31 +115,48 @@ public class EventSubscriber {
 
 		Block blockHit = mc.world.getBlockState(posHit.getBlockPos()).getBlock();
 		TileEntity tileHit = mc.world.getTileEntity(posHit.getBlockPos());
-		// WIPTech.logger.info(posHit);
-		// WIPTech.logger.info(posHit.getBlockPos());
 		if (blockHit instanceof BlockPeripheralBlock)
 			tileHit = mc.world.getTileEntity(((BlockPeripheralBlock) blockHit).getTileEntityPos(mc.world, posHit.getBlockPos()));
-		if (tileHit == null)
-			return;
+		if (tileHit != null) {
 
-		IEnergyStorage energy = tileHit.getCapability(CapabilityEnergy.ENERGY, null);
-		if (energy == null)
-			return;
+			IEnergyStorage energy = tileHit.getCapability(CapabilityEnergy.ENERGY, null);
+			if (energy != null) {
 
-		double power = (double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored();
-		int scaled_height = (int) Math.round((1 - power) * 52D);
-		ScaledResolution Scaled = new ScaledResolution(Minecraft.getMinecraft());
-		int Width = Scaled.getScaledWidth() - 10;
-		int Height = Scaled.getScaledHeight() - 54;
+				double power = (double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored();
+				int scaled_height = (int) Math.round((1 - power) * 52D);
+				ScaledResolution Scaled = new ScaledResolution(Minecraft.getMinecraft());
+				int Width = Scaled.getScaledWidth() - 10;
+				int Height = Scaled.getScaledHeight() - 54;
 
-		Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.ID, "textures/gui/turbine.png"));
+				Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.ID, "textures/gui/turbine.png"));
 
-		drawNonStandardTexturedRect(Width, Height, 83, 16, 10, 54, 256, 256);
-		drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 176, 0, 8, 52 - scaled_height, 256, 256);
-		int percent = (int) Math.round(power * 100);
-		mc.fontRenderer.drawStringWithShadow(percent + "%", Width - 7 - String.valueOf(percent).length() * 6, Height + 35, 0xFFFFFF);
-		String outOf = energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
-		mc.fontRenderer.drawStringWithShadow(outOf, Width - 1 - outOf.length() * 6, Height + 45, 0xFFFFFF);
+				drawNonStandardTexturedRect(Width, Height, 83, 16, 10, 54, 256, 256);
+				drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 176, 0, 8, 52 - scaled_height, 256, 256);
+				int percent = (int) Math.round(power * 100);
+				mc.fontRenderer.drawStringWithShadow(percent + "%", Width - 7 - String.valueOf(percent).length() * 6, Height + 35, 0xFFFFFF);
+				String outOf = energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
+				mc.fontRenderer.drawStringWithShadow(outOf, Width - 1 - outOf.length() * 6, Height + 45, 0xFFFFFF);
+			}
+		}
+
+		IEnergyStorage energy = mc.player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getCapability(CapabilityEnergy.ENERGY, null);
+		if (energy != null) {
+
+			double power = (double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored();
+			int scaled_height = (int) Math.round((1 - power) * 52D);
+			ScaledResolution Scaled = new ScaledResolution(Minecraft.getMinecraft());
+			int Width = 0;
+			int Height = Scaled.getScaledHeight() - 54;
+
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(Reference.ID, "textures/gui/turbine.png"));
+
+			drawNonStandardTexturedRect(Width, Height, 83, 16, 10, 54, 256, 256);
+			drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 176, 0, 8, 52 - scaled_height, 256, 256);
+			int percent = (int) Math.round(power * 100);
+			mc.fontRenderer.drawStringWithShadow(percent + "%", Width + 12, Height + 35, 0xFFFFFF);
+			String outOf = energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
+			mc.fontRenderer.drawStringWithShadow(outOf, Width + 12, Height + 45, 0xFFFFFF);
+		}
 	}
 
 	protected static void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
@@ -189,18 +206,20 @@ public class EventSubscriber {
 			setTooltip(event, WIPTech.proxy.localize("wire.tooltip", new Object[0]));
 		}
 
-		if (stack.getItem() instanceof ItemGun) {
-			IWeaponModular modules = stack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
-			if (modules != null)
-				modules.getModuleList().forEach((module) -> {
-					setTooltip(event, module.toString());
-				});
-		}
-
 		if (stack.getItem().getRegistryName().getResourceDomain().equalsIgnoreCase(Reference.ID)) {
 			String itemTooltip = WIPTech.proxy.localize(stack.getUnlocalizedName() + ".tooltip", new Object[0]);
 			if (!itemTooltip.equalsIgnoreCase(stack.getUnlocalizedName() + ".tooltip"))
 				setTooltip(event, itemTooltip);
+		}
+
+		if (stack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null) != null) {
+			stack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).getModuleList().forEach((module) -> {
+				setTooltip(event, module.toString());
+			});
+		}
+
+		if (stack.getCapability(CapabilityEnergy.ENERGY, null) != null && stack.getItem().getRegistryName().getResourceDomain().equals(Reference.ID)) {
+			setTooltip(event, WIPTech.proxy.localize("energy", new Object[0]) + ": " + stack.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored() + "/" + stack.getCapability(CapabilityEnergy.ENERGY, null).getMaxEnergyStored());
 		}
 
 	}
@@ -220,12 +239,14 @@ public class EventSubscriber {
 		// Go in AbstractClientPlayer for FOV bow
 		if (event.getEntity().isSneaking() && event.getEntity().isHandActive() && event.getEntity().getActiveItemStack().getItem() instanceof ItemGun
 				&& event.getEntity().getActiveItemStack().getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).getScope() == Scopes.ZOOM) {
-			int i = event.getEntity().getItemInUseMaxCount();
+			// int i = event.getEntity().getItemInUseMaxCount();
+			//
+			// float f1 = i == 0 ? 0 : (i > 2 ? i / 5.0F : 0);
+			// f1 = f1 > 2.25f ? 2.25f : f1;
+			//
+			// event.setNewfov(event.getFov() * 1.0F - f1 * f1 * 0.15F);
 
-			float f1 = i == 0 ? 0 : (i > 2 ? i / 5.0F : 0);
-			f1 = f1 > 2.25f ? 2.25f : f1;
-
-			event.setNewfov(event.getFov() * 1.0F - f1 * f1 * 0.15F);
+			event.setNewfov(0.25f);
 
 			// } else if (event.getEntity().getActiveItemStack().getItem() instanceof
 			// ItemGun) {

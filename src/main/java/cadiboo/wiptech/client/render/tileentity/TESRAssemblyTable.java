@@ -6,6 +6,7 @@ import cadiboo.wiptech.util.Utils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssemblyTable> {
@@ -15,6 +16,9 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 
 		GlStateManager.depthMask(true);
 		GlStateManager.disableLighting();
+		GlStateManager.enableCull();
+		GlStateManager.enableRescaleNormal();
+
 		// main
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5, y + 1.44, z + 0.5);
@@ -22,21 +26,14 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 		Utils.renderStackWithoutTransforms(new ItemStack(te.getBlockType()), te.getWorld());
 		GlStateManager.popMatrix();
 
-		// capacitor1
+		// capacitors
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5 + 1);
 		Utils.renderStackWithoutTransforms(new ItemStack(Blocks.CAPACITOR_BANK), te.getWorld());
-		GlStateManager.popMatrix();
-
-		// capacitor2
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5 - 1);
+		GlStateManager.translate(0, 0, -2);
 		Utils.renderStackWithoutTransforms(new ItemStack(Blocks.CAPACITOR_BANK), te.getWorld());
-		GlStateManager.popMatrix();
-
 		// motor
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
+		GlStateManager.translate(0, 0, 1);
 		Utils.renderStackWithoutTransforms(new ItemStack(Blocks.SILVER_MOTOR), te.getWorld());
 		GlStateManager.popMatrix();
 
@@ -47,19 +44,29 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 			GlStateManager.popMatrix();
 		}
 
-		// holo
+		// hologram
 		GlStateManager.pushMatrix();
-		GlStateManager.depthMask(false);
 		GlStateManager.translate(x + 0.5, y + 2.5, z + 0.5);
-		GlStateManager.enableBlend();
+
+		ItemStack stack = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN).getStackInSlot(0);
+		boolean holo = stack.isEmpty();
 		GlStateManager.rotate(getWorld().getWorldTime() + partialTicks, 0, 1, 0);
-		GlStateManager.scale(4, 4, 4);
-		GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
-		// http://www.color-hex.com/color-palette/5951
-		// GlStateManager.color(0, 247, 253);
-		Utils.renderStack(new ItemStack(te.getAssembleItem()), te.getWorld());
-		GlStateManager.disableBlend();
+
+		if (holo) {
+			GlStateManager.scale(2, 2, 2);
+			GlStateManager.translate(0, 0.25, 0);
+			GlStateManager.enableBlend();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
+			// http://www.color-hex.com/color-palette/5951
+
+			Utils.renderStackWithColor(new ItemStack(te.getAssembleItem()), te.getWorld(), te.getAssemblyTime() > 0 ? (int) System.currentTimeMillis() : 999999999);
+
+			GlStateManager.disableBlend();
+
+		} else {
+			GlStateManager.scale(4, 4, 4);
+			Utils.renderStack(stack, te.getWorld());
+		}
 		GlStateManager.popMatrix();
-		GlStateManager.depthMask(true);
 	}
 }

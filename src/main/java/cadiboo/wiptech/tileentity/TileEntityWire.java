@@ -58,16 +58,8 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 				else
 					transmitEnergy(EnumFacing.VALUES[i]);
 			}
-			ArrayList<EntityPlayer> playersInRange = getAllPlayersWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), 6);
 
-			if (getWorld().getWorldTime() % 200 == 0)
-				syncToClients();
-			else if (playersInRange.size() > 0)
-				playersInRange.forEach(player -> {
-					this.syncToClient(player);
-				});
-			else if (this.electrocutionTime > 0)
-				syncToClients();
+			handleSync();
 		}
 		this.energy.setCapacity(Math.round(Configuration.energy.BaseWireStorage * ((BlockWire) this.getBlockType()).getMetal().getConductivityFraction()));
 	}
@@ -149,26 +141,6 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 
 	}
 
-	public List<Entity> getAllEntitiesWithinRangeAt(double x, double y, double z, double range) {
-		return this.getWorld().getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(x - range / 2, y - range / 2, z - range / 2, x + range / 2, y + range / 2, z + range / 2));
-	}
-
-	public ArrayList<EntityPlayer> getAllPlayersWithinRangeAt(double x, double y, double z, double range) {
-		ArrayList<EntityPlayer> list = new ArrayList<EntityPlayer>();
-		for (int j2 = 0; j2 < this.getWorld().playerEntities.size(); ++j2) {
-			EntityPlayer entityplayer = this.getWorld().playerEntities.get(j2);
-
-			if (EntitySelectors.NOT_SPECTATING.apply(entityplayer)) {
-				double d0 = entityplayer.getDistanceSq(x, y, z);
-
-				if (range < 0.0D || d0 < range * range) {
-					list.add(entityplayer);
-				}
-			}
-		}
-		return list;
-	}
-
 	public boolean isConnectedTo(EnumFacing face) {
 		return (world.getTileEntity(pos.offset(face)) != null && world.getTileEntity(pos.offset(face)).getCapability(CapabilityEnergy.ENERGY, face.getOpposite()) != null);
 	}
@@ -234,6 +206,15 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 	public void electrocuteBreaker(EntityPlayer player) {
 		this.electrocutionTime = 7;
 		player.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy(energy.getEnergyStored(), false)));
+	}
+
+	@Override
+	public boolean handleSync() {
+		if (!super.handleSync() && this.electrocutionTime > 0) {
+			syncToClients();
+			return true;
+		}
+		return false;
 	}
 
 }

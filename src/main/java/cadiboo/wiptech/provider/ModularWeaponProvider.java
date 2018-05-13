@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import cadiboo.wiptech.capability.WeaponModular;
 import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.util.CustomEnergyStorage;
+import cadiboo.wiptech.util.ItemEnergyStorage;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -29,13 +30,24 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializable<NBTTagCompound> {
 
-	public static final int				WEAPON_ENERGY_CAPACITY	= 10000;
-	private final WeaponModular			weaponModules;
-	private final CustomEnergyStorage	energy;
+	public static final int			WEAPON_ENERGY_CAPACITY	= 10000;
+	private final WeaponModular		weaponModules;
+	private final ItemEnergyStorage	energy;
 
-	public ModularWeaponProvider() {
+	public ModularWeaponProvider(ItemStack stack) {
 		this.weaponModules = new WeaponModular();
-		this.energy = new CustomEnergyStorage(WEAPON_ENERGY_CAPACITY);
+		this.energy = new ItemEnergyStorage(stack, WEAPON_ENERGY_CAPACITY) {
+
+			@Override
+			public boolean canReceive() {
+				return true;
+			}
+
+			@Override
+			public boolean canExtract() {
+				return true;
+			}
+		};
 	}
 
 	@Override
@@ -49,7 +61,7 @@ public class ModularWeaponProvider implements ICapabilityProvider, INBTSerializa
 			return (T) this.weaponModules;
 		}
 		if (capability == CapabilityEnergy.ENERGY) {
-			return (T) this.energy;
+			return CapabilityEnergy.ENERGY.cast(this.energy);
 		}
 		return null;
 	}

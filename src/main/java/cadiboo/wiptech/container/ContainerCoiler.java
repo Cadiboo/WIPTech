@@ -1,10 +1,7 @@
 package cadiboo.wiptech.container;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
-import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.init.Recipes;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,30 +10,26 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerCoiler extends Container {
-	public ContainerCoiler(InventoryPlayer playerInv, final TileEntityCoiler coiler)
-	{
-		IItemHandler inventory = (IItemHandler)coiler.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
-		for (int  i = 0; i < 10; i++) {
+	public ContainerCoiler(InventoryPlayer playerInv, final TileEntityCoiler coiler) {
+		IItemHandler inventory = coiler.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH);
+		for (int i = 0; i < 10; i++) {
 			if ((i & 0x1) == 0) {
-				addSlotToContainer(new SlotItemHandler(inventory, i, 19 + 30 * i / 2, 17)
-				{
+				addSlotToContainer(new SlotItemHandler(inventory, i, 19 + 30 * i / 2, 17) {
 					@Override
-					public void onSlotChanged()
-					{
+					public void onSlotChanged() {
 						coiler.markDirty();
 					}
 
-					public boolean isItemValid(@Nonnull ItemStack stack)
-					{
+					@Override
+					public boolean isItemValid(@Nonnull ItemStack stack) {
 						boolean returnResult = false;
 
-						ItemStack slot0Stack = ((IItemHandler)coiler.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(0);
+						ItemStack slot0Stack = coiler.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH).getStackInSlot(0);
 
 						for (ItemStack result : Recipes.getCoilResult(0)) {
 							if ((!returnResult) && (result != null) && (result.getItem() == stack.getItem())) {
@@ -47,19 +40,17 @@ public class ContainerCoiler extends Container {
 					}
 				});
 			} else {
-				addSlotToContainer(new SlotItemHandler(inventory, i, 19 + 30 * ((i - 1) / 2), 53) 
-				{
+				addSlotToContainer(new SlotItemHandler(inventory, i, 19 + 30 * ((i - 1) / 2), 53) {
 					@Override
-					public void onSlotChanged()
-					{
+					public void onSlotChanged() {
 						coiler.markDirty();
 					}
-					
-					public boolean isItemValid(@Nonnull ItemStack stack)
-					{
+
+					@Override
+					public boolean isItemValid(@Nonnull ItemStack stack) {
 						boolean returnResult = false;
 
-						ItemStack slot0Stack = ((IItemHandler)coiler.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH)).getStackInSlot(0);
+						ItemStack slot0Stack = coiler.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.NORTH).getStackInSlot(0);
 
 						for (ItemStack result : Recipes.getCoilResult(1)) {
 							if ((!returnResult) && (result != null) && (result.getItem() == stack.getItem())) {
@@ -81,28 +72,25 @@ public class ContainerCoiler extends Container {
 		}
 	}
 
-	public boolean canInteractWith(EntityPlayer player)
-	{
+	@Override
+	public boolean canInteractWith(EntityPlayer player) {
 		return true;
 	}
 
-	public ItemStack transferStackInSlot(EntityPlayer player, int index)
-	{
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
 		ItemStack itemstack = ItemStack.EMPTY;
-		Slot slot = (Slot)this.inventorySlots.get(index);
-		if ((slot != null) && (slot.getHasStack()))
-		{
+		Slot slot = this.inventorySlots.get(index);
+		if ((slot != null) && (slot.getHasStack())) {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
 			int containerSlots = this.inventorySlots.size() - player.inventory.mainInventory.size();
-			if (index < containerSlots)
-			{
+			if (index < containerSlots) {
 				if (!mergeItemStack(itemstack1, containerSlots, this.inventorySlots.size(), true)) {
 					return ItemStack.EMPTY;
 				}
-			}
-			else if (!mergeItemStack(itemstack1, 0, containerSlots, false)) {
+			} else if (!mergeItemStack(itemstack1, 0, containerSlots, false)) {
 				return ItemStack.EMPTY;
 			}
 			if (itemstack1.getCount() == 0) {

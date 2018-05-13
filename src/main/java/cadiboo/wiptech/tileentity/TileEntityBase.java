@@ -10,13 +10,16 @@ import cadiboo.wiptech.handler.network.PacketHandler;
 import cadiboo.wiptech.handler.network.PacketSyncTileEntity;
 import cadiboo.wiptech.util.CustomEnergyStorage;
 import cadiboo.wiptech.util.Reference;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
@@ -31,6 +34,8 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 public abstract class TileEntityBase extends TileEntity {
+
+	public final int instaSyncRange = 6;
 
 	@Override
 	public final void readFromNBT(NBTTagCompound compound) {
@@ -260,6 +265,40 @@ public abstract class TileEntityBase extends TileEntity {
 
 	public enum NBTType {
 		SAVE, DROP, SYNC
+	}
+
+	public List<Entity> getAllEntitiesWithinRangeAt(double x, double y, double z, double range) {
+		return this.getWorld().getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(x - range / 2, y - range / 2, z - range / 2, x + range / 2, y + range / 2, z + range / 2));
+	}
+
+	public ArrayList<EntityPlayer> getAllPlayersWithinRangeAt(double x, double y, double z, double range) {
+		ArrayList<EntityPlayer> list = new ArrayList<EntityPlayer>();
+		for (int j2 = 0; j2 < this.getWorld().playerEntities.size(); ++j2) {
+			EntityPlayer entityplayer = this.getWorld().playerEntities.get(j2);
+
+			if (EntitySelectors.NOT_SPECTATING.apply(entityplayer)) {
+				double d0 = entityplayer.getDistanceSq(x, y, z);
+
+				if (range < 0.0D || d0 < range * range) {
+					list.add(entityplayer);
+				}
+			}
+		}
+		return list;
+	}
+
+	public boolean handleSync() {
+		if (getWorld().getWorldTime() % 200 == 0) { // sync every 10 seconds
+			syncToClients();
+			return true;
+		}
+		ArrayList<EntityPlayer> playersInRange = getAllPlayersWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), instaSyncRange);
+		if (playersInRange.size() > 0) { // sync to players who might need the data
+			for (int i = 0; i < playersInRange.size(); i++)
+				this.syncToClient(playersInRange.get(i));
+			return true;
+		}
+		return false;
 	}
 
 }

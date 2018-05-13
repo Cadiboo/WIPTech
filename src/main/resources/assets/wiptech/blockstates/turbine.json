@@ -3,6 +3,6 @@
         "normal": [
             {"model": "wiptech:turbine_bottom"}
         ],
-        "inventory": { "model": "wiptech:turbine_bottom" }
+        "inventory": { "model": "wiptech:turbine" }
     }
 }

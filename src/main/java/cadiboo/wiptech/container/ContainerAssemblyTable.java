@@ -13,10 +13,42 @@ import net.minecraftforge.items.SlotItemHandler;
 public class ContainerAssemblyTable extends Container {
 
 	public ContainerAssemblyTable(InventoryPlayer playerInv, final TileEntityAssemblyTable te) {
+		// addSlotToContainer(new SlotItemHandler(inventory, i, 30 + 18 * i, 17 + 18 *
+		// j));
+
 		IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		for (int i = 0; i < inventory.getSlots(); i++)
-			for (int j = 0; j < inventory.getSlots(); j++)
-				addSlotToContainer(new SlotItemHandler(inventory, i, 30 + 18 * i, 17 + 18 * j));
+		for (int i = 0; i < 6; i++) {
+			addSlotToContainer(new SlotItemHandler(inventory, i, 54 + (i % 2) * 18, /* 54 + 18 * i / 2 */17 + 9 * ((i & 0x1) == 0 ? i : i - 1)) {
+
+				// @Override
+				// public boolean isItemValid(@Nonnull ItemStack stack) {
+				// return true;
+				// }
+
+				// @Override
+				// public void onSlotChanged()
+				// {
+				// coiler.markDirty();
+				// }
+				//
+				// public boolean isItemValid(@Nonnull ItemStack stack)
+				// {
+				// boolean returnResult = false;
+				//
+				// ItemStack slot0Stack =
+				// ((IItemHandler)coiler.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,
+				// EnumFacing.NORTH)).getStackInSlot(0);
+				//
+				// for (ItemStack result : Recipes.getCoilResult(0)) {
+				// if ((!returnResult) && (result != null) && (result.getItem() ==
+				// stack.getItem())) {
+				// returnResult = true;
+				// }
+				// }
+				// return returnResult;
+				// }
+			});
+		}
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {

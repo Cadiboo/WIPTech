@@ -15,10 +15,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiAssemblyTable extends GuiContainer {
 	TileEntityAssemblyTable					te;
-	private static final ResourceLocation	BG_TEXTURE	= new ResourceLocation("wiptech", "textures/gui/turbine.png");
-	private static final ResourceLocation	PLASMA_GUN	= new ResourceLocation("wiptech", "textures/gui/turbine.png");
-	private static final ResourceLocation	RAIL_GUN	= new ResourceLocation("wiptech", "textures/gui/turbine.png");
-	private static final ResourceLocation	COIL_GUN	= new ResourceLocation("wiptech", "textures/gui/turbine.png");
+	private static final ResourceLocation	BG_TEXTURE	= new ResourceLocation("wiptech", "textures/gui/assembly_table.png");
 	private InventoryPlayer					playerInv;
 
 	public GuiAssemblyTable(ContainerAssemblyTable container, InventoryPlayer playerInv, TileEntityAssemblyTable te) {
@@ -37,16 +34,14 @@ public class GuiAssemblyTable extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(new ResourceLocation("minecraft", "textures/gui/container/crafting_table.png"));
+		this.mc.getTextureManager().bindTexture(BG_TEXTURE);
 		int x = (this.width - this.xSize) / 2;
 		int y = (this.height - this.ySize) / 2;
 
 		// y + (int) Math.round(52D * (getEnergyPercentage() / 100D))
 
 		drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
-		// drawTexturedModalRect(x + 84, y + 17 + 52 - (int) Math.round(52D *
-		// (getEnergyPercentage() / 100D)), this.xSize, 0, 10, (int) Math.round(52D *
-		// (getEnergyPercentage() / 100D)));
+		drawTexturedModalRect(this.guiLeft + 159, y + 17 + 52 - (int) Math.round(52D * Utils.getEnergyFraction(te.getEnergy(null))), this.xSize, 0, 10, (int) Math.round(52D * Utils.getEnergyFraction(te.getEnergy(null))));
 	}
 
 	@Override
@@ -56,8 +51,8 @@ public class GuiAssemblyTable extends GuiContainer {
 		this.fontRenderer.drawString(this.playerInv.getDisplayName().getUnformattedText(), 8, this.ySize - 94, 4210752);
 
 		List<String> hoveringText = new ArrayList();
-		if (Utils.isInRect(this.guiLeft + 83, this.guiTop + 16, 10, 54, mouseX, mouseY)) {
-			// hoveringText.add("Energy: " + getEnergyPercentageInt() + "%");
+		if (Utils.isInRect(this.guiLeft + 159, this.guiTop + 16, 10, 54, mouseX, mouseY)) {
+			hoveringText.add("Energy: " + Utils.getEnergyPercentage(te.getEnergy(null)) + "%");
 		}
 		if (!hoveringText.isEmpty()) {
 			drawHoveringText(hoveringText, mouseX - this.guiLeft, mouseY - this.guiTop, this.fontRenderer);

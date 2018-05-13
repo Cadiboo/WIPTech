@@ -2,6 +2,7 @@ package cadiboo.wiptech.item;
 
 import javax.annotation.Nonnull;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.IWeaponModular;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
 import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectileSizes;
@@ -11,6 +12,7 @@ import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Rails;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Scopes;
 import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -18,6 +20,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -52,13 +55,19 @@ public class ItemRailgun113 extends ItemGun {
 
 		boolean useAmmo = !player.capabilities.isCreativeMode;
 
+		// WIPTech.info(energy, energy.getEnergyStored(),
+		// !entity.getEntityWorld().isRemote);
+
 		if (energy.extractEnergy(SHOOT_ENERGY, true) != SHOOT_ENERGY && useAmmo)
 			return;
 
 		ItemStack ammo = this.findAmmo(player);
 
-		if (ammo.isEmpty() && !useAmmo)
-			ammo = new ItemStack(this.getDefaultAmmo());
+		if (ammo.isEmpty())
+			if (!useAmmo)
+				ammo = new ItemStack(this.getDefaultAmmo());
+			else
+				return;
 
 		float velocity = (float) ((ItemParamagneticProjectile113) ammo.getItem()).getType().getVelocity();
 
@@ -79,12 +88,18 @@ public class ItemRailgun113 extends ItemGun {
 			entity.getEntityWorld().spawnEntity(projectile);
 		}
 
+		entity.motionX += MathHelper.sin(player.rotationYaw * 0.017453292F) * MathHelper.cos(player.rotationPitch * 0.017453292F) * modules.getRail().getEfficiencyFraction() / 25;
+		entity.motionY += MathHelper.sin(player.rotationPitch * 0.017453292F) * modules.getRail().getEfficiencyFraction() / 25;
+		entity.motionZ += -MathHelper.cos(player.rotationYaw * 0.017453292F) * MathHelper.cos(player.rotationPitch * 0.017453292F) * modules.getRail().getEfficiencyFraction() / 25;
+
 		entity.getEntityWorld().playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
 		if (useAmmo) {
 			ammo.shrink(1);
 			energy.extractEnergy(SHOOT_ENERGY, false);
 		}
+
+		shotsTaken++;
 
 	}
 
@@ -132,7 +147,8 @@ public class ItemRailgun113 extends ItemGun {
 	}
 
 	private void handleBurst(Circuits circuit, ItemStack stack, EntityLivingBase entity) {
-		if (burstShotsTaken < circuit.getBurstShots() && shotsTaken % BURST_TIMER == 0) {
+		if ((burstShotsTaken < circuit.getBurstShots()) && Utils.randomBetween(0, 100) < 70 && !entity.getEntityWorld().isRemote) {
+			WIPTech.info(shotsTaken);
 			burstShotsTaken++;
 			handleShoot(stack, entity);
 		}
