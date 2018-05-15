@@ -29,11 +29,12 @@ public class ItemRailgun113 extends ItemGun {
 
 	private static final int	BURST_TIMER		= 2;
 	private static final int	SHOOT_ENERGY	= 1000;
+	private static final int	ENERGY_CAPACITY	= 10000;
 	private int					shotsTaken;
 	private int					burstShotsTaken;
 
 	public ItemRailgun113(String name) {
-		super(name);
+		super(name, ENERGY_CAPACITY);
 		shotsTaken = 0;
 		burstShotsTaken = 0;
 	}

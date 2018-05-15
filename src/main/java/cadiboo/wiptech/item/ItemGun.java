@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.provider.ModularWeaponProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,26 +24,29 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public abstract class ItemGun extends ItemBase {
+public abstract class ItemGun extends ItemEnergy {
 
 	protected int reloadTimeRemaining;
 
-	public ItemGun(String name) {
-		super(name);
-		this.maxStackSize = 1;
+	public ItemGun(String name, int capacity) {
+		super(name, capacity);
 		this.setMaxDamage(100);
 	}
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack item, NBTTagCompound nbt) {
-		ICapabilityProvider modules = new ModularWeaponProvider(item) {
+
+		return new ICapabilityProvider() {
+			@Override
+			public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+				return capability == CapabilityEnergy.ENERGY;
+			}
+
 			@Nullable
 			@Override
 			public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-				int maxTransfer = Math.round(ModularWeaponProvider.WEAPON_ENERGY_CAPACITY / 50.0F);
 
-				return capability == CapabilityEnergy.ENERGY ? CapabilityEnergy.ENERGY.cast(new EnergyStorage(ModularWeaponProvider.WEAPON_ENERGY_CAPACITY, ModularWeaponProvider.WEAPON_ENERGY_CAPACITY, ModularWeaponProvider.WEAPON_ENERGY_CAPACITY,
-						item.getTagCompound() != null ? item.getTagCompound().getInteger("Energy") : 0) {
+				return capability == CapabilityEnergy.ENERGY ? CapabilityEnergy.ENERGY.cast(new EnergyStorage(getMaxEnergy(), getMaxTransfer(), getMaxTransfer(), item.getTagCompound() != null ? item.getTagCompound().getInteger("Energy") : 0) {
 					@Override
 					public int receiveEnergy(int maxReceive, boolean simulate) {
 						int i = super.receiveEnergy(maxReceive, simulate);
@@ -64,11 +66,14 @@ public abstract class ItemGun extends ItemBase {
 						nbt.setInteger("Energy", energy);
 						item.setTagCompound(nbt);
 					}
-				}) : super.getCapability(capability, facing);
+				}) : null;
 			}
 		};
 
-		return modules;
+		// ICapabilityProvider provider = new ICapabilityProvider
+		// return super.initCapabilities(item, nbt);
+		// ICapabilityProvider modules = new ModularWeaponProvider113(item, this);
+		// return modules;
 	}
 
 	@Override
@@ -100,10 +105,7 @@ public abstract class ItemGun extends ItemBase {
 
 	protected abstract void handleShoot(ItemStack stack, EntityLivingBase entity);
 
-	abstract protected boolean isAmmo(ItemStack stack);
-	// {
-	// return stack.getItem() instanceof ItemParamagneticProjectile113;
-	// }
+	protected abstract boolean isAmmo(ItemStack stack);
 
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
@@ -166,6 +168,14 @@ public abstract class ItemGun extends ItemBase {
 			}
 		}
 		return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+	}
+
+	@Override
+	public NBTTagCompound getNBTShareTag(ItemStack stack) {
+		NBTTagCompound nbt = super.getNBTShareTag(stack);
+		if (stack.getCapability(CapabilityEnergy.ENERGY, null) != null)
+			nbt.setInteger("Energy", stack.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored());
+		return nbt;
 	}
 
 }
