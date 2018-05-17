@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.IWeaponModular;
+import cadiboo.wiptech.capability.WeaponModular;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
 import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectileSizes;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
@@ -12,16 +13,19 @@ import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Rails;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Scopes;
 import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.provider.ModularWeaponProvider;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
@@ -34,7 +38,7 @@ public class ItemRailgun113 extends ItemGun {
 	private int					burstShotsTaken;
 
 	public ItemRailgun113(String name) {
-		super(name, ENERGY_CAPACITY);
+		super(name);
 		shotsTaken = 0;
 		burstShotsTaken = 0;
 	}
@@ -130,12 +134,13 @@ public class ItemRailgun113 extends ItemGun {
 	}
 
 	private boolean checkModules(IWeaponModular modules) {
+		if (modules == null)
+			// return false;
+			modules = new WeaponModular();
 		modules.setCircuit(Circuits.AUTO);
 		modules.setCoil(Coils.SILVER);
 		modules.setRail(Rails.SILVER);
 		modules.setScope(Scopes.ZOOM);
-		if (modules == null)
-			return false;
 		if (modules.getCircuit() == null)
 			return false;
 		if (modules.getCoil() == null)
@@ -179,6 +184,17 @@ public class ItemRailgun113 extends ItemGun {
 	@Override
 	protected boolean isAmmo(ItemStack stack) {
 		return stack.getItem() instanceof ItemParamagneticProjectile113 && ((ItemParamagneticProjectile113) stack.getItem()).getType().getSize() == ParamagneticProjectileSizes.MEDIUM;
+	}
+
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack item, NBTTagCompound nbt) {
+		return new ModularWeaponProvider(item);
+	}
+
+	@Override
+	public boolean canShoot() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

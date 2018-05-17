@@ -20,9 +20,9 @@ import cadiboo.wiptech.item.ItemParamagneticProjectile113;
 import cadiboo.wiptech.item.ItemPlasmaTool;
 import cadiboo.wiptech.item.ItemPlasmagun;
 import cadiboo.wiptech.item.ItemRail;
-import cadiboo.wiptech.item.ItemRailgun113;
 import cadiboo.wiptech.item.ItemSilicon;
 import cadiboo.wiptech.item.ItemSiliconWafer;
+import cadiboo.wiptech.item.ItemStandaloneGun;
 import cadiboo.wiptech.item.ItemTaser;
 import cadiboo.wiptech.item.ItemTestLauncher;
 import cadiboo.wiptech.item.ItemTestModularWeapon;
@@ -143,7 +143,10 @@ public class Items {
 	public static final ItemBase	SILICA			= new ItemBase("silica");
 	public static final ItemBase	TITANIA			= new ItemBase("titania");
 
-	public static final ItemRailgun113 RAILGUN = new ItemRailgun113("railgun");
+	// public static final ItemRailgun113 RAILGUN = new ItemRailgun113("railgun");
+	// public static final ItemTestEnergyGun TEST_ENERGY_GUN = new
+	// ItemTestEnergyGun("test_energy_gun");
+	public static final ItemStandaloneGun STANDALONE_GUN = new ItemStandaloneGun("standalone_gun");
 
 	public static final ItemBase GUN_BODY = new ItemBase("gun_body");
 
@@ -216,7 +219,13 @@ public class Items {
 
 			COPPER_BOOTS, TIN_BOOTS, ALUMINIUM_BOOTS, SILVER_BOOTS, TUNGSTEN_BOOTS, OSMIUM_BOOTS, TITANIUM_BOOTS,
 
-			RAILGUN, GUN_BODY,
+			// RAILGUN,
+
+			// TEST_ENERGY_GUN,
+
+			STANDALONE_GUN,
+
+			GUN_BODY,
 
 			//
 

@@ -25,8 +25,7 @@ public class Capabilities {
 	public static class CapabilityWeaponModular implements IStorage<IWeaponModular> {
 
 		@Override
-		public NBTTagCompound writeNBT(Capability<IWeaponModular> capability, IWeaponModular instance,
-				EnumFacing side) {
+		public NBTTagCompound writeNBT(Capability<IWeaponModular> capability, IWeaponModular instance, EnumFacing side) {
 			NBTTagCompound nbt = new NBTTagCompound();
 			// WIPTech.logger.info(instance.getCircuit());
 			// WIPTech.logger.info(instance.getCoil());
@@ -44,9 +43,10 @@ public class Capabilities {
 		}
 
 		@Override
-		public void readNBT(Capability<IWeaponModular> capability, IWeaponModular instance, EnumFacing side,
-				NBTBase nbtBase) {
+		public void readNBT(Capability<IWeaponModular> capability, IWeaponModular instance, EnumFacing side, NBTBase nbtBase) {
 			NBTTagCompound nbt = (NBTTagCompound) nbtBase;
+			if (nbt == null)
+				return;
 			if (nbt.hasKey("circuit"))
 				instance.setCircuit(Circuits.byID(nbt.getInteger("circuit")));
 			if (nbt.hasKey("coil"))

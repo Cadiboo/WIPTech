@@ -46,8 +46,10 @@ public class Configuration {
 		public int	CrusherUsage;
 		@Comment("How many " + Reference.ENERGY_UNIT + "the Coiler uses each tick it is active")
 		public int	CoilerUsage;
-		@Comment("The Storage Capacity of each Wire multiplied by its conductive power")
+		@Comment("The Storage Capacity of each Wire, multiplied by its conductive power")
 		public int	BaseWireStorage;
+		@Comment("The Storage Capacity of a Capacitor, multiplied by its conductive power")
+		public int	BaseCapacitorStorage;
 	}
 
 	@Mod.EventBusSubscriber(modid = Reference.ID)

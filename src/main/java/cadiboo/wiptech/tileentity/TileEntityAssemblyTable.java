@@ -110,7 +110,8 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 	public Item getAssembleItem() {
 		if (true) {
 		}
-		return Items.RAILGUN;
+		return Items.STANDALONE_GUN;
+		// return Items.RAILGUN;
 	}
 
 	@Override

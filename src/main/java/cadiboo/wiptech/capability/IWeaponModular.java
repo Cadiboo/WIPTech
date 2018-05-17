@@ -2,6 +2,7 @@ package cadiboo.wiptech.capability;
 
 import java.util.List;
 
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Capacitors;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Rails;
@@ -28,5 +29,9 @@ public interface IWeaponModular {
 	Scopes getScope();
 
 	List getModuleList();
+
+	WeaponModular setCapacitor(Capacitors capacitor);
+
+	Capacitors getCapacitor();
 
 }

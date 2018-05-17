@@ -108,6 +108,7 @@ public class EventSubscriber {
 	public static void onRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
 		if (!(event.getType() == RenderGameOverlayEvent.ElementType.ALL) || Minecraft.getMinecraft().currentScreen != null)
 			return;
+
 		Minecraft mc = Minecraft.getMinecraft();
 		RayTraceResult posHit = mc.objectMouseOver;
 		if (posHit == null || posHit.getBlockPos() == null)

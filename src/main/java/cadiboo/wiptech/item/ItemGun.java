@@ -4,9 +4,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.capability.WeaponModular;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Capacitors;
+import cadiboo.wiptech.init.Capabilities;
+import cadiboo.wiptech.util.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,56 +29,57 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public abstract class ItemGun extends ItemEnergy {
+public abstract class ItemGun extends ItemBase {
 
-	protected int reloadTimeRemaining;
-
-	public ItemGun(String name, int capacity) {
-		super(name, capacity);
+	public ItemGun(String name) {
+		super(name);
+		this.setMaxStackSize(1);
 		this.setMaxDamage(100);
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack item, NBTTagCompound nbt) {
-
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
 		return new ICapabilityProvider() {
 			@Override
 			public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-				return capability == CapabilityEnergy.ENERGY;
+				return capability == CapabilityEnergy.ENERGY || capability == Capabilities.MODULAR_WEAPON_CAPABILITY;
 			}
 
 			@Nullable
 			@Override
 			public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+				if (capability == CapabilityEnergy.ENERGY) {
+					int capacity = stack.getTagCompound() != null && stack.getTagCompound().hasKey("capacitor") ? Capacitors.byID(stack.getTagCompound().getInteger("capacitor")).getStorage() : 0;
+					return CapabilityEnergy.ENERGY.cast(new EnergyStorage(capacity, capacity, capacity, stack.getTagCompound() != null ? stack.getTagCompound().getInteger("Energy") : 0) {
 
-				return capability == CapabilityEnergy.ENERGY ? CapabilityEnergy.ENERGY.cast(new EnergyStorage(getMaxEnergy(), getMaxTransfer(), getMaxTransfer(), item.getTagCompound() != null ? item.getTagCompound().getInteger("Energy") : 0) {
-					@Override
-					public int receiveEnergy(int maxReceive, boolean simulate) {
-						int i = super.receiveEnergy(maxReceive, simulate);
-						setEnergy(energy);
-						return i;
-					}
+						@Override
+						public int receiveEnergy(int maxReceive, boolean simulate) {
+							int i = super.receiveEnergy(maxReceive, simulate);
+							setEnergy(energy);
+							return i;
+						}
 
-					@Override
-					public int extractEnergy(int maxExtract, boolean simulate) {
-						int i = super.extractEnergy(maxExtract, simulate);
-						setEnergy(energy);
-						return i;
-					}
+						@Override
+						public int extractEnergy(int maxExtract, boolean simulate) {
+							int i = super.extractEnergy(maxExtract, simulate);
+							setEnergy(energy);
+							return i;
+						}
 
-					private void setEnergy(int energy) {
-						NBTTagCompound nbt = item.getTagCompound() != null ? item.getTagCompound() : new NBTTagCompound();
-						nbt.setInteger("Energy", energy);
-						item.setTagCompound(nbt);
-					}
-				}) : null;
+						private void setEnergy(int energy) {
+							NBTTagCompound nbt = stack.getTagCompound() != null ? stack.getTagCompound() : new NBTTagCompound();
+							nbt.setInteger("Energy", energy);
+							stack.setItemDamage(100 - Utils.getEnergyPercentage(energy, this.capacity));
+							stack.setTagCompound(nbt);
+						}
+
+					});
+				} else if (capability == Capabilities.MODULAR_WEAPON_CAPABILITY) {
+					return Capabilities.MODULAR_WEAPON_CAPABILITY.cast(new WeaponModular(nbt));
+				}
+				return null;
 			}
 		};
-
-		// ICapabilityProvider provider = new ICapabilityProvider
-		// return super.initCapabilities(item, nbt);
-		// ICapabilityProvider modules = new ModularWeaponProvider113(item, this);
-		// return modules;
 	}
 
 	@Override
@@ -109,9 +115,12 @@ public abstract class ItemGun extends ItemEnergy {
 
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (reloadTimeRemaining > 0)
-			reloadTimeRemaining--;
-		stack.setItemDamage(reloadTimeRemaining);
+		if (!worldIn.isRemote) {
+			if (worldIn.getTotalWorldTime() % 10 == 0 && entityIn instanceof EntityPlayerMP)
+				if (itemSlot < 9)
+					((EntityPlayer) entityIn).inventoryContainer.detectAndSendChanges(); // currently doesnt work if your holding it in your offHand, TODO use reflection
+																							// to do stuff with detectAndSendChanges > this.listeners
+		}
 		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 	}
 
@@ -126,6 +135,7 @@ public abstract class ItemGun extends ItemEnergy {
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
 		this.handleStoppedUsing(stack, worldIn, entityLiving, timeLeft);
+		super.onPlayerStoppedUsing(stack, worldIn, entityLiving, timeLeft);
 	}
 
 	protected abstract void handleStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft);
@@ -136,21 +146,21 @@ public abstract class ItemGun extends ItemEnergy {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
-		if (reloadTimeRemaining > 0)
-			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemstack);
 
 		boolean hasAmmo = !this.findAmmo(playerIn).isEmpty();
 
-		if (!playerIn.isCreative() && !hasAmmo)
+		if (!playerIn.isCreative() && !hasAmmo && !canShoot())
 			return new ActionResult(EnumActionResult.FAIL, itemstack);
 
 		playerIn.setActiveHand(handIn);
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
 	}
 
+	public abstract boolean canShoot();
+
 	@Nonnull
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public final EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		if (player.getHeldItem(hand).getCount() == 1) {
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile != null && tile.hasCapability(CapabilityEnergy.ENERGY, facing)) {
@@ -171,11 +181,20 @@ public abstract class ItemGun extends ItemEnergy {
 	}
 
 	@Override
-	public NBTTagCompound getNBTShareTag(ItemStack stack) {
-		NBTTagCompound nbt = super.getNBTShareTag(stack);
-		if (stack.getCapability(CapabilityEnergy.ENERGY, null) != null)
-			nbt.setInteger("Energy", stack.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored());
-		return nbt;
+	public boolean showDurabilityBar(ItemStack stack) {
+		return true;
+	}
+
+	@Override
+	public double getDurabilityForDisplay(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return super.getDurabilityForDisplay(stack);
+	}
+
+	@Override
+	public int getRGBDurabilityForDisplay(ItemStack stack) {
+		// TODO Auto-generated method stub
+		return super.getRGBDurabilityForDisplay(stack);
 	}
 
 }

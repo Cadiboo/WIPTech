@@ -33,12 +33,19 @@ public class Utils {
 	public static float getEnergyFraction(IEnergyStorage storage) {
 		if (storage == null)
 			return 0;
+		return getEnergyFraction(storage.getEnergyStored(), storage.getMaxEnergyStored());
+	}
 
-		return (float) storage.getEnergyStored() / (float) storage.getMaxEnergyStored();
+	public static float getEnergyFraction(int energy, int max) {
+		return (float) energy / (float) max;
 	}
 
 	public static int getEnergyPercentage(IEnergyStorage storage) {
 		return Math.round(getEnergyFraction(storage) * 100f);
+	}
+
+	public static int getEnergyPercentage(int energy, int max) {
+		return Math.round(getEnergyFraction(energy, max) * 100f);
 	}
 
 	public static Block getBlockFromPos(World worldIn, BlockPos pos) {

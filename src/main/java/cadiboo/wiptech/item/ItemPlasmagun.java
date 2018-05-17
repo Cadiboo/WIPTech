@@ -26,6 +26,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public class ItemPlasmagun extends ItemBase {
 
@@ -237,7 +238,7 @@ public class ItemPlasmagun extends ItemBase {
 
 		WIPTech.logger.info(modules.getModuleList());
 
-		CustomEnergyStorage energy = (CustomEnergyStorage) itemStackIn.getCapability(CapabilityEnergy.ENERGY, null);
+		IEnergyStorage energy = itemStackIn.getCapability(CapabilityEnergy.ENERGY, null);
 		if (energy != null) {
 			WIPTech.logger.info(energy);
 			// energy.setEnergyStored(5);

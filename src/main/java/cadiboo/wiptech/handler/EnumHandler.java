@@ -1,5 +1,6 @@
 package cadiboo.wiptech.handler;
 
+import cadiboo.wiptech.config.Configuration;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.text.TextFormatting;
 
@@ -242,6 +243,48 @@ public class EnumHandler {
 
 	public static final class WeaponModules {
 
+		public static enum Capacitors implements IStringSerializable, IWeaponModule {
+
+			// @formatter:off
+			TIN			(0, "tin",		15,	TextFormatting.WHITE),
+			IRON			(1, "iron",		17,	TextFormatting.GRAY),
+			ALUMINIUM	(2, "aluminium",	61,	TextFormatting.GRAY),
+			GOLD			(3, "gold",		70,	TextFormatting.GOLD),
+			COPPER		(4, "copper",	100,	TextFormatting.RED),
+			SILVER		(5, "silver",	105,	TextFormatting.WHITE);
+			// @formatter:on
+
+			private int				ID;
+			private String			name;
+			private TextFormatting	chatColor;
+			private int				storage;
+
+			private Capacitors(int ID, String name, int storage, TextFormatting chatColorIn) {
+				this.ID = ID;
+				this.name = name;
+				this.storage = storage;
+				this.chatColor = chatColorIn;
+			}
+
+			@Override
+			public String getName() {
+				return this.name;
+			}
+
+			@Override
+			public int getID() {
+				return ID;
+			}
+
+			public static Capacitors byID(int i) {
+				return Capacitors.values()[i];
+			}
+
+			public int getStorage() {
+				return this.storage * Configuration.energy.BaseCapacitorStorage;
+			}
+		}
+
 		public static enum Rails implements IStringSerializable, IWeaponModule {
 
 			/*
@@ -252,8 +295,14 @@ public class EnumHandler {
 			 * Nickel Aluminum Bronze 7%
 			 */
 
-			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4, "copper", 100, TextFormatting.RED), SILVER(5,
-					"silver", 105, TextFormatting.WHITE);
+			// @formatter:off
+			TIN			(0, "tin",		15,	TextFormatting.WHITE),
+			IRON			(1, "iron",		17,	TextFormatting.GRAY),
+			ALUMINIUM	(2, "aluminium",	61,	TextFormatting.GRAY),
+			GOLD			(3, "gold",		70,	TextFormatting.GOLD),
+			COPPER		(4, "copper",	100,	TextFormatting.RED),
+			SILVER		(5, "silver",	105,	TextFormatting.WHITE);
+			// @formatter:on
 
 			private int				ID;
 			private String			name;

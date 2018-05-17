@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cadiboo.wiptech.handler.EnumHandler;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Capacitors;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
 import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Rails;
@@ -17,8 +18,15 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 	private Coils		coil;
 	private Scopes		scope;
 	private Rails		rail;
+	private Capacitors	capacitor;
 
 	public WeaponModular() {
+		this.circuit = Circuits.MANUAL;
+		this.capacitor = Capacitors.TIN;
+	}
+
+	public WeaponModular(NBTTagCompound nbt) {
+		deserializeNBT(nbt);
 	}
 
 	@Override
@@ -33,13 +41,15 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 			modules.add("scope: " + this.scope);
 		if (this.rail != null)
 			modules.add("rail: " + this.rail);
+		if (this.capacitor != null)
+			modules.add("capacitor: " + this.capacitor);
 
 		return modules;
 	}
 
 	@Override
 	public int getModules() {
-		return getModuleList().size(); // TODO make this its own function and therefore less processor intensive
+		return getModuleList().size();
 	}
 
 	@Override
@@ -98,11 +108,15 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 			nbt.setInteger("scope", this.scope.getID());
 		if (this.rail != null)
 			nbt.setInteger("rail", this.rail.getID());
+		if (this.capacitor != null)
+			nbt.setInteger("capacitor", this.capacitor.getID());
 		return nbt;
 	}
 
 	@Override
 	public void deserializeNBT(NBTTagCompound nbt) {
+		if (nbt == null)
+			return;
 		if (nbt.hasKey("circuit"))
 			this.circuit = Circuits.byID(nbt.getInteger("circuit"));
 		if (nbt.hasKey("coil"))
@@ -111,6 +125,19 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 			this.scope = Scopes.byID(nbt.getInteger("scope"));
 		if (nbt.hasKey("rail"))
 			this.rail = Rails.byID(nbt.getInteger("rail"));
+		if (nbt.hasKey("capacitor"))
+			this.capacitor = Capacitors.byID(nbt.getInteger("capacitor"));
+	}
+
+	@Override
+	public WeaponModular setCapacitor(Capacitors capacitor) {
+		this.capacitor = capacitor;
+		return this;
+	}
+
+	@Override
+	public Capacitors getCapacitor() {
+		return capacitor;
 	}
 
 }
