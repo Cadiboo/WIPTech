@@ -99,7 +99,6 @@ public class RenderEntityParamagneticProjectile<T extends EntityParamagneticProj
 		} else {
 			TextureAtlasSprite sprite = Utils.getSpriteFromItemStack(ammoStack);
 
-			// TextureAtlasSprite sprite = bakedquad.getSprite();
 			if (sprite != null) {
 
 				float minU = sprite.getMinU();
