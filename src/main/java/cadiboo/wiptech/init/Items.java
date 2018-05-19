@@ -10,7 +10,7 @@ import cadiboo.wiptech.item.ItemArmor;
 import cadiboo.wiptech.item.ItemBase;
 import cadiboo.wiptech.item.ItemCapacitor;
 import cadiboo.wiptech.item.ItemCoil;
-import cadiboo.wiptech.item.ItemCoilgun;
+import cadiboo.wiptech.item.ItemCoilgun113;
 import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemGallium;
 import cadiboo.wiptech.item.ItemGalliumIngot;
@@ -18,8 +18,9 @@ import cadiboo.wiptech.item.ItemHammer;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.item.ItemParamagneticProjectile113;
 import cadiboo.wiptech.item.ItemPlasmaTool;
-import cadiboo.wiptech.item.ItemPlasmagun;
+import cadiboo.wiptech.item.ItemPlasmagun113;
 import cadiboo.wiptech.item.ItemRail;
+import cadiboo.wiptech.item.ItemRailgun113;
 import cadiboo.wiptech.item.ItemSilicon;
 import cadiboo.wiptech.item.ItemSiliconWafer;
 import cadiboo.wiptech.item.ItemStandaloneGun;
@@ -143,10 +144,12 @@ public class Items {
 	public static final ItemBase	SILICA			= new ItemBase("silica");
 	public static final ItemBase	TITANIA			= new ItemBase("titania");
 
-	// public static final ItemRailgun113 RAILGUN = new ItemRailgun113("railgun");
+	public static final ItemRailgun113 RAILGUN = new ItemRailgun113("railgun");
 	// public static final ItemTestEnergyGun TEST_ENERGY_GUN = new
 	// ItemTestEnergyGun("test_energy_gun");
-	public static final ItemStandaloneGun STANDALONE_GUN = new ItemStandaloneGun("standalone_gun");
+	public static final ItemStandaloneGun	STANDALONE_GUN	= new ItemStandaloneGun("standalone_gun");
+	public static final ItemPlasmagun113	PLASMA_GUN		= new ItemPlasmagun113("plasmagun");
+	public static final ItemCoilgun113		COILGUN			= new ItemCoilgun113("coilgun");
 
 	public static final ItemBase GUN_BODY = new ItemBase("gun_body");
 
@@ -174,8 +177,9 @@ public class Items {
 	public static final ItemFlamethrower			FLAMETHROWER			= new ItemFlamethrower("flamethrower");
 	public static final ItemHammer					HAMMER					= new ItemHammer("hammer");
 	// public static final ItemRailgun RAILGUN = new ItemRailgun("railgun");
-	public static final ItemCoilgun		COILGUN		= new ItemCoilgun("coilgun");
-	public static final ItemPlasmagun	PLASMA_GUN	= new ItemPlasmagun("plasmagun");
+	// public static final ItemCoilgun COILGUN = new ItemCoilgun("coilgun");
+	// public static final ItemPlasmagun PLASMA_GUN = new
+	// ItemPlasmagun("plasmagun");
 
 	public static final ItemCapacitor CAPACITOR = new ItemCapacitor("capacitor");
 
@@ -219,7 +223,7 @@ public class Items {
 
 			COPPER_BOOTS, TIN_BOOTS, ALUMINIUM_BOOTS, SILVER_BOOTS, TUNGSTEN_BOOTS, OSMIUM_BOOTS, TITANIUM_BOOTS,
 
-			// RAILGUN,
+			RAILGUN,
 
 			// TEST_ENERGY_GUN,
 

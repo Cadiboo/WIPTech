@@ -23,6 +23,8 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class TileEntityWire extends TileEntityBase implements ITickable {
 
@@ -88,6 +90,13 @@ public class TileEntityWire extends TileEntityBase implements ITickable {
 				this.electrocutionTime = 7;
 			}
 		} else if (entity instanceof EntityLivingBase) {
+			IItemHandler inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			if (inventory != null)
+				for (int i = 0; i < inventory.getSlots(); i++) {
+					if (inventory.getStackInSlot(i).getCapability(CapabilityEnergy.ENERGY, null) != null) {
+						inventory.getStackInSlot(i).getCapability(CapabilityEnergy.ENERGY, null).receiveEnergy(energy.getEnergyStored(), false);
+					}
+				}
 			entity.attackEntityFrom(DamageSource.causeElectricityDamage(), (float) (0.001 * energy.extractEnergy(Math.round(((EntityLivingBase) entity).getHealth()) * 1000, false)));
 			this.electrocutionTime = 5;
 		}

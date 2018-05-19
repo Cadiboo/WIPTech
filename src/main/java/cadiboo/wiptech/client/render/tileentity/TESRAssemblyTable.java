@@ -59,7 +59,7 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
 			// http://www.color-hex.com/color-palette/5951
 
-			Utils.renderStackWithColor(new ItemStack(te.getAssembleItem()), te.getWorld(), te.getAssemblyTime() > 0 ? (int) System.currentTimeMillis() : 999999999);
+			Utils.renderItemWithColor(new ItemStack(te.getAssembleItem()), Utils.getModelFromStack(stack, te.getWorld()), te.getAssemblyTime() > 0 ? (int) System.currentTimeMillis() : 999999999);
 
 			GlStateManager.disableBlend();
 

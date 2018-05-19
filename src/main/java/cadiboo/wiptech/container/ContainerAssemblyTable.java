@@ -1,10 +1,13 @@
 package cadiboo.wiptech.container;
 
+import javax.annotation.Nonnull;
+
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -20,16 +23,18 @@ public class ContainerAssemblyTable extends Container {
 		for (int i = 0; i < 6; i++) {
 			addSlotToContainer(new SlotItemHandler(inventory, i, 54 + (i % 2) * 18, /* 54 + 18 * i / 2 */17 + 9 * ((i & 0x1) == 0 ? i : i - 1)) {
 
-				// @Override
-				// public boolean isItemValid(@Nonnull ItemStack stack) {
-				// return true;
-				// }
+				@Override
+				public boolean isItemValid(@Nonnull ItemStack stack) {
+					Item item = stack.getItem();
+					return true;// item instanceof ItemCoil || item instanceof ItemRail || item instanceof
+								// ItemCapacitor;// || item instanceof ItemScope || item instanceof ItemCircuit;
+				}
 
-				// @Override
-				// public void onSlotChanged()
-				// {
-				// coiler.markDirty();
-				// }
+				@Override
+				public void onSlotChanged() {
+					te.markDirty();
+				}
+
 				//
 				// public boolean isItemValid(@Nonnull ItemStack stack)
 				// {

@@ -26,6 +26,7 @@ public class WeaponModular implements IWeaponModular, INBTSerializable<NBTTagCom
 	}
 
 	public WeaponModular(NBTTagCompound nbt) {
+		this();
 		deserializeNBT(nbt);
 	}
 

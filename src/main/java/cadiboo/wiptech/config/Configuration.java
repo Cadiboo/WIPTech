@@ -29,15 +29,16 @@ public class Configuration {
 	}
 
 	@Comment("Energy Settings")
-	public static final Energy energy = new Energy(1, 10, 10, 100000);
+	public static final Energy energy = new Energy(1, 10, 10, 100000, 1000);
 
 	public static class Energy {
 
-		public Energy(final int TurbineProduction, final int CrusherUsage, final int CoilerUsage, final int BaseWireStorage) {
+		public Energy(final int TurbineProduction, final int CrusherUsage, final int CoilerUsage, final int BaseWireStorage, final int BaseCapacitorStorage) {
 			this.TurbineProduction = TurbineProduction;
 			this.CrusherUsage = CrusherUsage;
 			this.CoilerUsage = CoilerUsage;
 			this.BaseWireStorage = BaseWireStorage;
+			this.BaseCapacitorStorage = BaseCapacitorStorage;
 		}
 
 		@Comment("How many " + Reference.ENERGY_UNIT + "the Turbine produces each tick (multiplied by its Y height)")

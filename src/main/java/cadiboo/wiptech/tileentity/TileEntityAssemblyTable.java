@@ -1,6 +1,5 @@
 package cadiboo.wiptech.tileentity;
 
-import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.util.CustomEnergyStorage;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.item.Item;
@@ -20,6 +19,8 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 	private static final int	ASSEMBLY_COST_TICK	= 100;
 
 	private int assemblyTime = 0;
+
+	private Item assembleItem = net.minecraft.init.Items.AIR;
 
 	private ItemStackHandler inventory = new ItemStackHandler(SLOTS.length + SLOTS_BOTTOM.length) {
 		@Override
@@ -108,10 +109,11 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 	}
 
 	public Item getAssembleItem() {
-		if (true) {
-		}
-		return Items.STANDALONE_GUN;
-		// return Items.RAILGUN;
+		return this.assembleItem;
+	}
+
+	public void setAssembleItem(Item item) {
+		this.assembleItem = item;
 	}
 
 	@Override

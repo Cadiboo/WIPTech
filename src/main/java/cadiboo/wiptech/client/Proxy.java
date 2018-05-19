@@ -1,18 +1,13 @@
 package cadiboo.wiptech.client;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Rails;
 import cadiboo.wiptech.init.Blocks;
-import cadiboo.wiptech.init.Capabilities;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.util.IProxy;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.energy.CapabilityEnergy;
 
 public class Proxy implements IProxy {
 
@@ -42,11 +37,6 @@ public class Proxy implements IProxy {
 		@Override
 		public void displayAllRelevantItems(NonNullList<ItemStack> list) {
 			super.displayAllRelevantItems(list);
-
-			ItemStack plasmaGun = new ItemStack(Items.PLASMA_GUN);
-			plasmaGun.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).setCoil(Coils.GOLD).setRail(Rails.GOLD).setCircuit(Circuits.OVERCLOCKED);
-			plasmaGun.getCapability(CapabilityEnergy.ENERGY, null).receiveEnergy(Integer.MAX_VALUE, false);
-			list.add(plasmaGun);
 		}
 
 	}.setBackgroundImageName("item_search.png");

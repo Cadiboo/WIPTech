@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class ItemRailgun113 extends ItemGun {
+public class ItemCoilgun113 extends ItemGun {
 
 	private static final int	BURST_TIMER		= 2;
 	private static final int	SHOOT_ENERGY	= 1000;
@@ -30,7 +30,7 @@ public class ItemRailgun113 extends ItemGun {
 	private int					shotsTaken;
 	private int					burstShotsTaken;
 
-	public ItemRailgun113(String name) {
+	public ItemCoilgun113(String name) {
 		super(name);
 		shotsTaken = 0;
 		burstShotsTaken = 0;
@@ -86,9 +86,9 @@ public class ItemRailgun113 extends ItemGun {
 			entity.getEntityWorld().spawnEntity(projectile);
 		}
 
-		entity.motionX += MathHelper.sin(player.rotationYaw * 0.017453292F) * MathHelper.cos(player.rotationPitch * 0.017453292F) * modules.getRail().getEfficiencyFraction() / 25;
-		entity.motionY += MathHelper.sin(player.rotationPitch * 0.017453292F) * modules.getRail().getEfficiencyFraction() / 25;
-		entity.motionZ += -MathHelper.cos(player.rotationYaw * 0.017453292F) * MathHelper.cos(player.rotationPitch * 0.017453292F) * modules.getRail().getEfficiencyFraction() / 25;
+		entity.motionX += MathHelper.sin(player.rotationYaw * 0.017453292F) * MathHelper.cos(player.rotationPitch * 0.017453292F) * modules.getCoil().getEfficiencyFraction() / 25;
+		entity.motionY += MathHelper.sin(player.rotationPitch * 0.017453292F) * modules.getCoil().getEfficiencyFraction() / 25;
+		entity.motionZ += -MathHelper.cos(player.rotationYaw * 0.017453292F) * MathHelper.cos(player.rotationPitch * 0.017453292F) * modules.getCoil().getEfficiencyFraction() / 25;
 
 		entity.getEntityWorld().playSound((EntityPlayer) null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
@@ -131,7 +131,7 @@ public class ItemRailgun113 extends ItemGun {
 			return false;
 		if (modules.getCircuit() == null)
 			return false;
-		if (modules.getRail() == null)
+		if (modules.getCoil() == null)
 			return false;
 		if (modules.getCapacitor() == null)
 			return false;

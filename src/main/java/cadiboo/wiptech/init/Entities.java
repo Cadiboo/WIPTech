@@ -91,6 +91,12 @@ public class Entities {
 			.name("tungsten_large")
 			.tracker(128, 1, true)
 			.build();
+	public static final EntityEntry PLASMA = EntityEntryBuilder.create()
+			.entity(EntityParamagneticProjectile113.class)
+			.id(new ResourceLocation(Reference.ID, "plasma"), ID++)
+			.name("plasma")
+			.tracker(128, 1, true)
+			.build();
 	
 	public static final EntityEntry RAILGUN = EntityEntryBuilder.create()
 			.entity(EntityRailgun.class)
@@ -115,6 +121,8 @@ public class Entities {
 			OSMIUM_SMALL, OSMIUM_MEDIUM, OSMIUM_LARGE,
 
 			TUNGSTEN_SMALL, TUNGSTEN_MEDIUM, TUNGSTEN_LARGE,
+
+			PLASMA,
 
 			MISSILE };
 
