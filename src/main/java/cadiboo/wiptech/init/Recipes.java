@@ -3,16 +3,26 @@ package cadiboo.wiptech.init;
 import java.util.ArrayList;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Capacitors;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Rails;
+import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Scopes;
+import cadiboo.wiptech.item.ItemCapacitor;
+import cadiboo.wiptech.item.ItemRail;
+import cadiboo.wiptech.recipes.AssembleRecipe;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Recipes {
-	private static ArrayList<ArrayList>	crushRecipes	= new ArrayList();
-	private static ArrayList<ArrayList>	hammerRecipes	= new ArrayList();
-	private static ArrayList<ArrayList>	coilRecipes		= new ArrayList();
+	private static final ArrayList<ArrayList>		crushRecipes	= new ArrayList();
+	private static final ArrayList<ArrayList>		hammerRecipes	= new ArrayList();
+	private static final ArrayList<ArrayList>		coilRecipes		= new ArrayList();
+	private static final ArrayList<AssembleRecipe>	assembleRecipes	= new ArrayList<AssembleRecipe>();
 
 	private static final Block AIR = net.minecraft.init.Blocks.AIR;
 
@@ -20,6 +30,7 @@ public class Recipes {
 		addCrushRecipes();
 		addHammerRecipes();
 		addCoilRecipes();
+		addAssembleRecipes();
 		WIPTech.logger.info("Registered Processing Recipes");
 
 		GameRegistry.addSmelting(Blocks.COPPER_ORE, new ItemStack(Blocks.COPPER_INGOT, 1), 0.0F);
@@ -36,6 +47,43 @@ public class Recipes {
 		GameRegistry.addSmelting(Items.SILICA, new ItemStack(Items.SILICON, 2), 0.0F);
 		GameRegistry.addSmelting(Items.TITANIA, new ItemStack(Items.TITANIUM_INGOT, 2), 0.0F);
 		WIPTech.logger.info("Registered Item Smelting");
+	}
+
+	private static void addAssembleRecipes() {
+
+		Class[] railgun_required = { ItemRail.class, ItemCapacitor.class, Rails.class, Capacitors.class, Circuits.class };
+		Class[] railgun_optional = { Scopes.class };
+
+		assembleRecipes.add(new AssembleRecipe(Items.RAILGUN, 10, railgun_required, railgun_optional));
+
+		Class[] coilgun_required = { Coils.class, Capacitors.class, Circuits.class };
+		Class[] coilgun_optional = { Scopes.class };
+
+		assembleRecipes.add(new AssembleRecipe(Items.COILGUN, 10, coilgun_required, coilgun_optional));
+
+		Class[] plasmagun_required = { Coils.class, Rails.class, Capacitors.class, Circuits.class };
+		Class[] plasmagun_optional = { Scopes.class };
+
+		assembleRecipes.add(new AssembleRecipe(Items.PLASMA_GUN, 10, plasmagun_required, plasmagun_optional));
+
+		Class[] plasmatool_required = {};
+		Class[] plasmatool_optional = {};
+
+		assembleRecipes.add(new AssembleRecipe(Items.PLASMA_TOOL, 10, plasmatool_required, plasmatool_optional));
+
+		Class[] taser_required = {};
+		Class[] taser_optional = {};
+
+		assembleRecipes.add(new AssembleRecipe(Items.TASER, 10, taser_required, taser_optional));
+
+	}
+
+	public static AssembleRecipe getAssembleRecipeFor(Item item) {
+		for (AssembleRecipe recipe : assembleRecipes) {
+			if (recipe.getOutput() == item)
+				return recipe;
+		}
+		return null;
 	}
 
 	private static void addHammerRecipes() {
@@ -83,8 +131,7 @@ public class Recipes {
 	}
 
 	private static void addCrushRecipes() {
-		addCrushRecipe(100, new ItemStack(Blocks.BAUXITE_ORE), new ItemStack(Items.ALUMINA), new ItemStack(Items.GALLIUM),
-				new ItemStack(Items.IRON_OXIDE), new ItemStack(Items.SILICA), new ItemStack(Items.TITANIA),
+		addCrushRecipe(100, new ItemStack(Blocks.BAUXITE_ORE), new ItemStack(Items.ALUMINA), new ItemStack(Items.GALLIUM), new ItemStack(Items.IRON_OXIDE), new ItemStack(Items.SILICA), new ItemStack(Items.TITANIA),
 				new ItemStack(net.minecraft.init.Blocks.GRAVEL));
 
 		addCrushRecipe(20, new ItemStack(net.minecraft.init.Blocks.SAND), new ItemStack(Items.SILICON));

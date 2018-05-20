@@ -4,6 +4,7 @@ import cadiboo.wiptech.entity.projectile.EntityMissile;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
+import cadiboo.wiptech.entity.projectile.EntityPenetratingMissile;
 import cadiboo.wiptech.entity.ridable.EntityRailgun;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.util.ResourceLocation;
@@ -111,6 +112,12 @@ public class Entities {
 			.name("missile")
 			.tracker(128, 5, false)
 			.build();
+	public static final EntityEntry PENETRATING_MISSILE = EntityEntryBuilder.create()
+			.entity(EntityPenetratingMissile.class)
+			.id(new ResourceLocation(Reference.ID, "penetrating_missile"), ID++)
+			.name("penetrating_missile")
+			.tracker(128, 5, false)
+			.build();
 
 	public static final EntityEntry[] ENTITIES = {
 			//@formatter:on
@@ -124,6 +131,6 @@ public class Entities {
 
 			PLASMA,
 
-			MISSILE };
+			MISSILE, PENETRATING_MISSILE, };
 
 }

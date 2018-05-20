@@ -1,10 +1,13 @@
 package cadiboo.wiptech.client.render.tileentity;
 
+import java.util.Random;
+
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -50,16 +53,21 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 
 		ItemStack stack = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.DOWN).getStackInSlot(0);
 		boolean holo = stack.isEmpty();
-		GlStateManager.rotate(getWorld().getWorldTime() + partialTicks, 0, 1, 0);
+		GlStateManager.rotate(getWorld().getTotalWorldTime() + partialTicks, 0, 1, 0);
 
-		if (holo) {
+		if (holo && te.getAssembleItem() != Items.AIR) {
 			GlStateManager.scale(2, 2, 2);
 			GlStateManager.translate(0, 0.25, 0);
 			GlStateManager.enableBlend();
-			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
+			te.getWorld().setWorldTime(new Random(System.currentTimeMillis()).nextInt(24000));
+			GlStateManager.blendFunc(te.getWorld().getWorldTime() % 24000d / 12000 < 1d ? GlStateManager.SourceFactor.SRC_COLOR : GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
 			// http://www.color-hex.com/color-palette/5951
 
-			Utils.renderItemWithColor(new ItemStack(te.getAssembleItem()), Utils.getModelFromStack(stack, te.getWorld()), te.getAssemblyTime() > 0 ? (int) System.currentTimeMillis() : 999999999);
+			Utils.renderItemWithColor(new ItemStack(te.getAssembleItem()), Utils.getModelFromStack(new ItemStack(te.getAssembleItem()), te.getWorld()), te.getAssemblyTime() > 0 ? (int) System.currentTimeMillis() : 999999999);
+
+			// Utils.renderItemWithColor(new ItemStack(te.getAssembleItem()),
+			// Utils.getModelFromStack(new ItemStack(te.getAssembleItem()), te.getWorld()),
+			// (int) System.currentTimeMillis());
 
 			GlStateManager.disableBlend();
 

@@ -76,7 +76,12 @@ public class GuiAssemblyTable extends GuiContainer {
 		int y = (this.height - this.ySize) / 2;
 		drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 		drawTexturedModalRect(this.guiLeft + 159, y + 17 + 52 - (int) Math.round(52D * Utils.getEnergyFraction(te.getEnergy(null))), this.xSize, 0, 10, (int) Math.round(52D * Utils.getEnergyFraction(te.getEnergy(null))));
-		Utils.renderItemModelIntoGUIWithColor(new ItemStack(te.getAssembleItem()), guiLeft, guiTop, Utils.getModelFromStack(new ItemStack(te.getAssembleItem()), te.getWorld()), zLevel, 99999);
+		if (te.getAssembleItem() != net.minecraft.init.Items.AIR) {
+			GlStateManager.enableBlend();
+			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
+			Utils.renderItemModelIntoGUIWithColor(new ItemStack(te.getAssembleItem()), guiLeft + 130, guiTop + 35, Utils.getModelFromStack(new ItemStack(te.getAssembleItem()), te.getWorld()), zLevel + 50,
+					te.getAssemblyTime() > 0 ? (int) System.currentTimeMillis() : 999999999);
+		}
 	}
 
 	@Override

@@ -15,9 +15,6 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -33,7 +30,7 @@ public class EntityMissile extends EntityArrow {
 	public int		yTile;
 	public int		zTile;
 	public Block	inTile;
-	private int		ticksInAir;
+	public int		ticksInAir;
 	public int		inData;
 	public int		ticksInGround;
 
@@ -50,8 +47,6 @@ public class EntityMissile extends EntityArrow {
 			return targetEntity.canBeCollidedWith();
 		}
 	});
-
-	private static final DataParameter<Integer> TYPE = EntityDataManager.<Integer>createKey(EntityParamagneticProjectile113.class, DataSerializers.VARINT);
 
 	public static final AxisAlignedBB ON_BLOCK_AABB = new AxisAlignedBB(-0.05D, -0.05D, -0.05D, 0.05D, 0.05D, 0.05D);
 
@@ -123,7 +118,7 @@ public class EntityMissile extends EntityArrow {
 		}
 	}
 
-	private void updateInAir() {
+	protected void updateInAir() {
 		this.timeInGround = 0;
 		++this.ticksInAir;
 		if (this.ticksInAir > 600) {

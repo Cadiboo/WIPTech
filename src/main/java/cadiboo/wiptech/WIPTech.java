@@ -32,25 +32,28 @@ public class WIPTech {
 	public static final Logger logger = LogManager.getLogger(Reference.ID);
 
 	// HALF DONE STOP ARROW-LIKE BOUNCE OFF - Partly done, they now either go
-	// through the mob or teleport into the ground a block below it... //DONE maybe
-	// reenable it
-	// TODO Maybe implement a custom renderer for modules? so that you can see what
+	// through the mob or teleport into the ground a block below it...
+	// ^ DONE maybe reenable it
+	// TODO Maybe implement a custom itemstack renderer for modules? so that you can
+	// see what
 	// augments you have on it
-	// HALF DONE Def make it display the modules/augments in the ItemStack's Tooltip
 	// HALF DONE make Plasma Cannon!!!
 	// TODO and drill
-	// TODO redo knockback
 	// HALF DONE capabilities
 	// TODO make EntityRailgun rideable
-	// TODO redo itemStack proj consumption coilgun
-	// TODO Overheat
+	// MAYBE TODO Overheat
 	// TODO capacitors
-	// TODO damage buff
 	// TODO check Capabilities modules NBT
 
 	// TODO plasma tools
 	// TODO taser
 	// TODO Tasers, Mounted railguns, Tesla Cannons & Electric Lighters
+
+	// old todo list
+	// TODO gas tank for flamethrower
+	// TODO Laser Weapon - Placeable erases stuff, handheld starts fires
+	// TODO EMP?
+	// TODO
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

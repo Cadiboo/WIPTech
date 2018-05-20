@@ -108,6 +108,11 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 		return side == EnumFacing.DOWN ? inventoryBottom : inventoryNonBottom;
 	}
 
+	@Override
+	public IEnergyStorage getEnergy(EnumFacing side) {
+		return energy;
+	}
+
 	public Item getAssembleItem() {
 		return this.assembleItem;
 	}
@@ -117,26 +122,22 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 	}
 
 	@Override
-	public IEnergyStorage getEnergy(EnumFacing side) {
-		return energy;
-	}
-
-	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		return this.getBlockType().getSelectedBoundingBox(Utils.getStateFromPos(this.getWorld(), this.getPos()), this.getWorld(), this.getPos()).grow(2);
 	}
 
 	@Override
 	public void update() {
-		this.syncToClients();
 		// if (assemblyTime > 0 && energy.extractEnergy(ASSEMBLY_COST_TICK, true) ==
 		// ASSEMBLY_COST_TICK) {
 		// --assemblyTime;
 		// energy.extractEnergy(ASSEMBLY_COST_TICK, false);
+		// if (assemblyTime == 0) {
+		// AssembleRecipe recipe = Recipes.getAssembleRecipeFor(this.getAssembleItem());
+		//
 		// }
-		if (world.isRemote) {
-			this.handleSync();
-		}
+		// }
+		this.handleSync();
 	}
 
 	public int getAssemblyTime() {

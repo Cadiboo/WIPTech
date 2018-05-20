@@ -15,6 +15,7 @@ import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemGallium;
 import cadiboo.wiptech.item.ItemGalliumIngot;
 import cadiboo.wiptech.item.ItemHammer;
+import cadiboo.wiptech.item.ItemMissileLauncher;
 import cadiboo.wiptech.item.ItemParamagneticProjectile;
 import cadiboo.wiptech.item.ItemParamagneticProjectile113;
 import cadiboo.wiptech.item.ItemPlasmaTool;
@@ -151,6 +152,8 @@ public class Items {
 	public static final ItemPlasmagun113	PLASMA_GUN		= new ItemPlasmagun113("plasmagun");
 	public static final ItemCoilgun113		COILGUN			= new ItemCoilgun113("coilgun");
 
+	public static final ItemMissileLauncher MISSILE_LAUNCHER = new ItemMissileLauncher("missile_launcher");
+
 	public static final ItemBase GUN_BODY = new ItemBase("gun_body");
 
 	// semi
@@ -229,7 +232,7 @@ public class Items {
 
 			STANDALONE_GUN,
 
-			GUN_BODY,
+			GUN_BODY, MISSILE_LAUNCHER,
 
 			//
 
