@@ -29,9 +29,9 @@ public class ContainerAssemblyTable extends Container {
 					AssembleRecipe recipe = Recipes.getAssembleRecipeFor(te.getAssembleItem());
 					if (recipe == null)
 						return false;
-					Class[] modules = recipe.getAllModules();
+					ItemStack[] modules = recipe.getAllComponents();
 					for (int i = 0; i < modules.length; i++) {
-						if (stack.getItem().getClass().equals(modules[i]))
+						if (stack.isItemEqual(modules[i]))
 							return true;
 					}
 					return false;

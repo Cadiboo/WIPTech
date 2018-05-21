@@ -1,7 +1,5 @@
 package cadiboo.wiptech.client.render.tileentity;
 
-import java.util.Random;
-
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.util.Utils;
@@ -59,7 +57,8 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 			GlStateManager.scale(2, 2, 2);
 			GlStateManager.translate(0, 0.25, 0);
 			GlStateManager.enableBlend();
-			te.getWorld().setWorldTime(new Random(System.currentTimeMillis()).nextInt(24000));
+			// te.getWorld().setWorldTime(new
+			// Random(System.currentTimeMillis()).nextInt(24000));
 			GlStateManager.blendFunc(te.getWorld().getWorldTime() % 24000d / 12000 < 1d ? GlStateManager.SourceFactor.SRC_COLOR : GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
 			// http://www.color-hex.com/color-palette/5951
 

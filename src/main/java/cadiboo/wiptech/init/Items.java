@@ -56,13 +56,13 @@ public class Items {
 	public static final ItemCoil	IRON_COIL		= new ItemCoil("iron_coil", ConductiveMetals.IRON);
 	public static final ItemCoil	GOLD_COIL		= new ItemCoil("gold_coil", ConductiveMetals.GOLD);
 
-	public static final ItemBase	TUNGSTEN_INGOT	= new ItemBase("tungsten_ingot").setIngot().setBeaconPayment();
-	public static final ItemBase	OSMIUM_INGOT	= new ItemBase("osmium_ingot").setIngot().setBeaconPayment();
-	public static final ItemBase	TITANIUM_INGOT	= new ItemBase("titanium_ingot").setIngot().setBeaconPayment();
+	public static final ItemBase	TUNGSTEN_INGOT	= new ItemBase("tungsten_ingot").setBeaconPayment();
+	public static final ItemBase	OSMIUM_INGOT	= new ItemBase("osmium_ingot").setBeaconPayment();
+	public static final ItemBase	TITANIUM_INGOT	= new ItemBase("titanium_ingot").setBeaconPayment();
 
-	public static final ItemBase	TUNGSTEN_NUGGET	= new ItemBase("tungsten_nugget").setNugget().setBeaconPayment();
-	public static final ItemBase	OSMIUM_NUGGET	= new ItemBase("osmium_nugget").setNugget().setBeaconPayment();
-	public static final ItemBase	TITANIUM_NUGGET	= new ItemBase("titanium_nugget").setNugget().setBeaconPayment();
+	public static final ItemBase	TUNGSTEN_NUGGET	= new ItemBase("tungsten_nugget").setBeaconPayment();
+	public static final ItemBase	OSMIUM_NUGGET	= new ItemBase("osmium_nugget").setBeaconPayment();
+	public static final ItemBase	TITANIUM_NUGGET	= new ItemBase("titanium_nugget").setBeaconPayment();
 
 	public static final ItemTool	COPPER_SHOVEL		= new ItemTool("copper_shovel", ItemTool.COPPER, ItemTool.SPADE_EFFECTIVE_ON, ToolTypes.SHOVEL);
 	public static final ItemTool	TIN_SHOVEL			= new ItemTool("tin_shovel", ItemTool.TIN, ItemTool.SPADE_EFFECTIVE_ON, ToolTypes.SHOVEL);
@@ -273,7 +273,7 @@ public class Items {
 				if (!(ITEMS[i] instanceof ItemBase))
 					break;
 				ItemBase item = (ItemBase) ITEMS[i];
-				if (item.isNugget() || item.isIngot())
+				if (item.getRegistryName().getResourcePath().contains("_nugget") || item.getRegistryName().getResourcePath().contains("_ingot"))
 					IngredientItems.add(item);
 			}
 		return IngredientItems;

@@ -2,14 +2,9 @@ package cadiboo.wiptech.init;
 
 import java.util.ArrayList;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Capacitors;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Coils;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Rails;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Scopes;
-import cadiboo.wiptech.item.ItemCapacitor;
-import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.recipes.AssembleRecipe;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
@@ -19,9 +14,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Recipes {
-	private static final ArrayList<ArrayList>		crushRecipes	= new ArrayList();
-	private static final ArrayList<ArrayList>		hammerRecipes	= new ArrayList();
-	private static final ArrayList<ArrayList>		coilRecipes		= new ArrayList();
+	private static final ArrayList<ArrayList>		crushRecipes	= new ArrayList<ArrayList>();
+	private static final ArrayList<ArrayList>		hammerRecipes	= new ArrayList<ArrayList>();
+	private static final ArrayList<ArrayList>		coilRecipes		= new ArrayList<ArrayList>();
 	private static final ArrayList<AssembleRecipe>	assembleRecipes	= new ArrayList<AssembleRecipe>();
 
 	private static final Block AIR = net.minecraft.init.Blocks.AIR;
@@ -49,32 +44,40 @@ public class Recipes {
 		WIPTech.logger.info("Registered Item Smelting");
 	}
 
-	private static void addAssembleRecipes() {
+	@VisibleForTesting
+	public static void addAssembleRecipes() {
 
-		Class[] railgun_required = { ItemRail.class, ItemCapacitor.class, Rails.class, Capacitors.class, Circuits.class };
-		Class[] railgun_optional = { Scopes.class };
+		for (int i = 0; i < 1; i++) {
+			ItemStack[] railgun_required = { new ItemStack(Items.IRON_RAIL), new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.GOLD_INGOT), };
+			ItemStack[] railgun_optional = { new ItemStack(Items.GOLD_INGOT), };
 
-		assembleRecipes.add(new AssembleRecipe(Items.RAILGUN, 10, railgun_required, railgun_optional));
+			assembleRecipes.add(new AssembleRecipe(Items.RAILGUN, 10, railgun_required, railgun_optional));
+		}
 
-		Class[] coilgun_required = { Coils.class, Capacitors.class, Circuits.class };
-		Class[] coilgun_optional = { Scopes.class };
-
-		assembleRecipes.add(new AssembleRecipe(Items.COILGUN, 10, coilgun_required, coilgun_optional));
-
-		Class[] plasmagun_required = { Coils.class, Rails.class, Capacitors.class, Circuits.class };
-		Class[] plasmagun_optional = { Scopes.class };
-
-		assembleRecipes.add(new AssembleRecipe(Items.PLASMA_GUN, 10, plasmagun_required, plasmagun_optional));
-
-		Class[] plasmatool_required = {};
-		Class[] plasmatool_optional = {};
-
-		assembleRecipes.add(new AssembleRecipe(Items.PLASMA_TOOL, 10, plasmatool_required, plasmatool_optional));
-
-		Class[] taser_required = {};
-		Class[] taser_optional = {};
-
-		assembleRecipes.add(new AssembleRecipe(Items.TASER, 10, taser_required, taser_optional));
+		// Class[] coilgun_required = { Coils.class, Capacitors.class, Circuits.class };
+		// Class[] coilgun_optional = { Scopes.class };
+		//
+		// assembleRecipes.add(new AssembleRecipe(Items.COILGUN, 10, coilgun_required,
+		// coilgun_optional));
+		//
+		// Class[] plasmagun_required = { Coils.class, Rails.class, Capacitors.class,
+		// Circuits.class };
+		// Class[] plasmagun_optional = { Scopes.class };
+		//
+		// assembleRecipes.add(new AssembleRecipe(Items.PLASMA_GUN, 10,
+		// plasmagun_required, plasmagun_optional));
+		//
+		// Class[] plasmatool_required = {};
+		// Class[] plasmatool_optional = {};
+		//
+		// assembleRecipes.add(new AssembleRecipe(Items.PLASMA_TOOL, 10,
+		// plasmatool_required, plasmatool_optional));
+		//
+		// Class[] taser_required = {};
+		// Class[] taser_optional = {};
+		//
+		// assembleRecipes.add(new AssembleRecipe(Items.TASER, 10, taser_required,
+		// taser_optional));
 
 	}
 
