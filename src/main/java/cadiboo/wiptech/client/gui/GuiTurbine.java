@@ -3,8 +3,8 @@ package cadiboo.wiptech.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import cadiboo.wiptech.container.ContainerTurbine;
 import cadiboo.wiptech.init.Blocks;
+import cadiboo.wiptech.inventory.ContainerTurbine;
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainer;

@@ -1,6 +1,6 @@
 package cadiboo.wiptech.client.gui;
 
-import cadiboo.wiptech.container.ContainerTestLauncher;
+import cadiboo.wiptech.inventory.ContainerTestLauncher;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;

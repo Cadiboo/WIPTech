@@ -3,9 +3,9 @@ package cadiboo.wiptech.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import cadiboo.wiptech.container.ContainerAssemblyTable;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.inventory.ContainerAssemblyTable;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.client.Minecraft;

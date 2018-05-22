@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.container.ContainerCrusher;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
+import cadiboo.wiptech.inventory.ContainerCrusher;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
