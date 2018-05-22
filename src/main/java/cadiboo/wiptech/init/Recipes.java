@@ -12,12 +12,9 @@ import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Scopes;
 import cadiboo.wiptech.recipes.AssembleRecipe;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
-import cadiboo.wiptech.util.Reference;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Recipes {
@@ -54,27 +51,36 @@ public class Recipes {
 	@VisibleForTesting
 	public static void addAssembleRecipes() {
 
-		for (int rail = 0; rail < Rails.values().length; rail++)
-			for (int capacitor = 0; capacitor < Capacitors.values().length; capacitor++)
-				for (int circuit = 0; circuit < Circuits.values().length; circuit++)
-					for (int scope = 0; scope < Scopes.values().length; scope++) {
-						ItemStack[] railgun_required = {
+		// for (int rail = 0; rail < Rails.values().length; rail++)
+		// for (int capacitor = 0; capacitor < Capacitors.values().length; capacitor++)
+		// for (int circuit = 0; circuit < Circuits.values().length; circuit++)
+		// for (int scope = 0; scope < Scopes.values().length; scope++) {
+		// ItemStack[] railgun_required = {
+		//
+		// new ItemStack(getItem(Rails.byID(rail).getName(), "_rail")),
+		//
+		// new ItemStack(getItem(Capacitors.byID(capacitor).getName(), "_capacitor")),
+		//
+		// new ItemStack(getItem(Circuits.byID(circuit).getName(), "_circuit")),
+		//
+		// };
+		// ItemStack[] railgun_optional = { new
+		// ItemStack(getItem(Scopes.byID(scope).getName(), "_scope")), };
+		//
+		// AssembleRecipe recipe = new AssembleRecipe(Items.RAILGUN, 10,
+		// railgun_required, railgun_optional);
+		// assembleRecipes.add(recipe);
+		//
+		// // if (Reference.DEBUG_ENABLED)
+		// // WIPTech.info("[" + rail + capacitor + circuit + scope + "] Added Assemble
+		// // Recipe: " + recipe);
+		// }
 
-								new ItemStack(getItem(Rails.byID(rail).getName(), "_rail")),
+		Class[] railgun_required = { Rails.class, Capacitors.class, Circuits.class };
+		Class[] railgun_optional = { Scopes.class, };
 
-								new ItemStack(getItem(Capacitors.byID(capacitor).getName(), "_capacitor")),
-
-								new ItemStack(getItem(Circuits.byID(circuit).getName(), "_circuit")),
-
-						};
-						ItemStack[] railgun_optional = { new ItemStack(getItem(Scopes.byID(scope).getName(), "_scope")), };
-
-						AssembleRecipe recipe = new AssembleRecipe(Items.RAILGUN, 10, railgun_required, railgun_optional);
-						assembleRecipes.add(recipe);
-
-						if (Reference.DEBUG_ENABLED)
-							WIPTech.info("[" + rail + capacitor + circuit + scope + "] Added Assemble Recipe: " + recipe);
-					}
+		AssembleRecipe recipe = new AssembleRecipe(Items.RAILGUN, 10, railgun_required, railgun_optional);
+		assembleRecipes.add(recipe);
 
 		// Class[] coilgun_required = { Coils.class, Capacitors.class, Circuits.class };
 		// Class[] coilgun_optional = { Scopes.class };
@@ -101,10 +107,6 @@ public class Recipes {
 		// assembleRecipes.add(new AssembleRecipe(Items.TASER, 10, taser_required,
 		// taser_optional));
 
-	}
-
-	private static Item getItem(String prefix, String suffix) {
-		return ForgeRegistries.ITEMS.getValue(new ResourceLocation(Reference.ID, prefix + suffix));
 	}
 
 	public static AssembleRecipe getAssembleRecipeFor(Item item) {

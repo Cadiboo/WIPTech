@@ -1,20 +1,19 @@
 package cadiboo.wiptech.recipes;
 
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 
 public class AssembleRecipe {
 
-	private Item		output;
-	private int			time;
-	private ItemStack[]	required;
-	private ItemStack[]	optional;
+	private Item	output;
+	private int		time;
+	private Class[]	required;
+	private Class[]	optional;
 
-	public AssembleRecipe(Item output, int time, ItemStack[] railgun_required, ItemStack[] railgun_optional) {
+	public AssembleRecipe(Item output, int time, Class[] required, Class[] optional) {
 		this.output = output;
 		this.time = time;
-		this.required = railgun_required;
-		this.optional = railgun_optional;
+		this.required = required;
+		this.optional = optional;
 	}
 
 	public Item getOutput() {
@@ -25,16 +24,16 @@ public class AssembleRecipe {
 		return time;
 	}
 
-	public ItemStack[] getRequiredComponents() {
+	public Class[] getRequiredComponents() {
 		return required;
 	}
 
-	public ItemStack[] getOptionalComponents() {
+	public Class[] getOptionalComponents() {
 		return optional;
 	}
 
-	public ItemStack[] getAllComponents() {
-		ItemStack[] result = new ItemStack[required.length + optional.length];
+	public Class[] getAllComponents() {
+		Class[] result = new Class[required.length + optional.length];
 		for (int i = 0; i < required.length; i++)
 			result[i] = required[i];
 		for (int i = required.length; i < required.length + optional.length; i++)

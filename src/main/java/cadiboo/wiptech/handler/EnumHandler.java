@@ -96,19 +96,15 @@ public class EnumHandler {
 
 	public static enum Ores implements IStringSerializable {
 
+		// @formatter:off
 		COPPER(0, "copper"),
-
 		TIN(1, "tin"),
-
 		ALUMINIUM(2, "aluminium"),
-
 		SILVER(3, "silver"),
-
 		OSMIUM(4, "osmium"),
-
 		TUNGSTEN(5, "tungsten"),
-
 		BAUXITE(6, "bauxite");
+		// @formatter:on
 
 		private int		ID;
 		private String	name;
@@ -135,17 +131,14 @@ public class EnumHandler {
 
 	public static enum IngredientBlocks implements IStringSerializable {
 
+		// @formatter:off
 		COPPER(0, "copper"),
-
 		TIN(1, "tin"),
-
 		ALUMINIUM(2, "aluminium"),
-
 		SILVER(3, "silver"),
-
 		GOLD(4, "osmium"),
-
 		IRON(5, "tungsten");
+		// @formatter:on
 
 		private int		ID;
 		private String	name;
@@ -187,25 +180,15 @@ public class EnumHandler {
 		// 11 Steel (Stainless included) 3-15%
 		// 12 Lead (Pure) 7%
 		// 13 Nickel Aluminum Bronze 7%
-		//
-		// TIN (0, "tin", 15, TextFormatting.WHITE),
-		// IRON (1, "iron", 17, TextFormatting.GRAY),
-		// ALUMINIUM (2, "aluminium", 61, TextFormatting.GRAY),
-		// GOLD (3, "gold", 70, TextFormatting.GOLD),
-		// COPPER (4, "copper", 100, TextFormatting.RED),
-		// SILVER (5, "silver", 105, TextFormatting.WHITE);
 
-		TIN(0, "tin", 15, TextFormatting.WHITE),
-
-		IRON(1, "iron", 17, TextFormatting.GRAY),
-
-		ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY),
-
-		GOLD(3, "gold", 70, TextFormatting.GOLD),
-
-		COPPER(4, "copper", 100, TextFormatting.RED),
-
-		SILVER(5, "silver", 105, TextFormatting.WHITE);
+		// @formatter:off
+		TIN			(0, "tin",		15,	TextFormatting.WHITE),
+		IRON			(1, "iron",		17,	TextFormatting.GRAY),
+		ALUMINIUM	(2, "aluminium",	61,	TextFormatting.GRAY),
+		GOLD			(3, "gold",		70,	TextFormatting.GOLD),
+		COPPER		(4, "copper",	100,	TextFormatting.RED),
+		SILVER		(5, "silver",	105,	TextFormatting.WHITE);
+		// @formatter:on
 
 		private int				ID;
 		private String			name;
