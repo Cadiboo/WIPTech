@@ -1,4 +1,4 @@
-package cadiboo.wiptech.container;
+package cadiboo.wiptech.inventory;
 
 import cadiboo.wiptech.provider.TestLauncherProvider;
 import net.minecraft.entity.player.EntityPlayer;

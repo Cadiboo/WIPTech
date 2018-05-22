@@ -1,4 +1,4 @@
-package cadiboo.wiptech.container;
+package cadiboo.wiptech.inventory;
 
 import javax.annotation.Nonnull;
 
@@ -29,9 +29,9 @@ public class ContainerAssemblyTable extends Container {
 					AssembleRecipe recipe = Recipes.getAssembleRecipeFor(te.getAssembleItem());
 					if (recipe == null)
 						return false;
-					ItemStack[] modules = recipe.getAllComponents();
+					Class[] modules = recipe.getAllComponents();
 					for (int i = 0; i < modules.length; i++) {
-						if (stack.isItemEqual(modules[i]))
+						if (stack.getItem().getRegistryName().getResourcePath().contains(modules.getClass().getName().toLowerCase().substring(0, modules.getClass().getName().toLowerCase().length() - 1)))
 							return true;
 					}
 					return false;

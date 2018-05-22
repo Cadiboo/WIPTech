@@ -1,4 +1,4 @@
-package cadiboo.wiptech.container;
+package cadiboo.wiptech.inventory;
 
 import javax.annotation.Nonnull;
 

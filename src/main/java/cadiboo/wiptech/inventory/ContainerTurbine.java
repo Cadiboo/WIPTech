@@ -1,4 +1,4 @@
-package cadiboo.wiptech.container;
+package cadiboo.wiptech.inventory;
 
 import cadiboo.wiptech.tileentity.TileEntityTurbine;
 import net.minecraft.entity.player.EntityPlayer;
