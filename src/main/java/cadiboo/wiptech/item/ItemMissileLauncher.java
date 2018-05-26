@@ -2,8 +2,8 @@ package cadiboo.wiptech.item;
 
 import javax.annotation.Nonnull;
 
+import cadiboo.wiptech.entity.projectile.EntityMissile;
 import cadiboo.wiptech.entity.projectile.EntityParamagneticProjectile113;
-import cadiboo.wiptech.entity.projectile.EntityPenetratingMissile;
 import cadiboo.wiptech.handler.EnumHandler.ParamagneticProjectileSizes;
 import cadiboo.wiptech.init.Items;
 import net.minecraft.entity.EntityLivingBase;
@@ -37,13 +37,14 @@ public class ItemMissileLauncher extends ItemGun {
 			else
 				return;
 
-		float velocity = (float) ((ItemParamagneticProjectile113) ammo.getItem()).getType().getVelocity();
+		float velocity = 3;// (float) ((ItemParamagneticProjectile113)
+							// ammo.getItem()).getType().getVelocity();
 
 		if (velocity < 0.1D)
 			return;
 
 		if (!entity.getEntityWorld().isRemote) {
-			EntityPenetratingMissile projectile = new EntityPenetratingMissile(player.getEntityWorld(), player);
+			EntityMissile projectile = new EntityMissile(player.getEntityWorld(), player);
 			projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.0F);
 
 			if (player.isCreative()) {

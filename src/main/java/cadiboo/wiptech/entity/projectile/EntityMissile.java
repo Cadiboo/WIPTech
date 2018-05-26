@@ -34,7 +34,7 @@ public class EntityMissile extends EntityArrow {
 	public int		inData;
 	public int		ticksInGround;
 
-	private static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, new Predicate<Entity>() {
+	protected static final Predicate<Entity> ARROW_TARGETS = Predicates.and(EntitySelectors.NOT_SPECTATING, EntitySelectors.IS_ALIVE, new Predicate<Entity>() {
 		@Override
 		public boolean apply(@Nullable Entity targetEntity) {
 			if (targetEntity.hurtResistantTime > 0) {
@@ -150,6 +150,7 @@ public class EntityMissile extends EntityArrow {
 
 		if (raytraceresult != null && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
 			this.onHit(raytraceresult);
+			// this.onUpdate();
 		}
 
 		BlockPos blockpos = this.getPosition();
@@ -232,7 +233,7 @@ public class EntityMissile extends EntityArrow {
 		++this.timeInGround;
 	}
 
-	private void onHitBlock(RayTraceResult raytraceResultIn) {
+	protected void onHitBlock(RayTraceResult raytraceResultIn) {
 
 		BlockPos blockpos = raytraceResultIn.getBlockPos();
 		this.xTile = blockpos.getX();
@@ -251,7 +252,7 @@ public class EntityMissile extends EntityArrow {
 		return ItemStack.EMPTY;
 	}
 
-	private void onHitEntity(Entity entity) {
+	protected void onHitEntity(Entity entity) {
 		if (!this.world.isRemote && this.ticksExisted > 10) {
 			world.createExplosion(this, entity.posX, entity.posY, entity.posZ, 8, true);
 			this.setDead();

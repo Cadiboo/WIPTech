@@ -51,7 +51,6 @@ public class EntityPenetratingMissile extends EntityMissile {
 			AxisAlignedBB aabb = state.getCollisionBoundingBox(this.world, blockpos);
 			if (aabb != Block.NULL_AABB && aabb.grow(0.1F).offset(blockpos).contains(new Vec3d(this.posX, this.posY, this.posZ))) {
 				this.inGround = true;
-				this.timeTillExplode = 100;
 			}
 		}
 
@@ -65,12 +64,14 @@ public class EntityPenetratingMissile extends EntityMissile {
 		}
 	}
 
-	private void onHitBlock(RayTraceResult raytraceResultIn) {
+	@Override
+	protected void onHitBlock(RayTraceResult raytraceResultIn) {
 
-		if (this.timeTillExplode > 0) {
-			timeTillExplode--;
-			return;
-		}
+		// if (!this.inGround)
+		// return;
+		// if (this.timeInGround > 0) {
+		// return;
+		// }
 
 		BlockPos blockpos = raytraceResultIn.getBlockPos();
 		this.xTile = blockpos.getX();
@@ -78,10 +79,11 @@ public class EntityPenetratingMissile extends EntityMissile {
 		this.zTile = blockpos.getZ();
 		IBlockState iblockstate = this.world.getBlockState(blockpos);
 
-		if (!this.world.isRemote) {
-			world.createExplosion(this, blockpos.getX(), blockpos.getY(), blockpos.getZ(), 8, true);
-			this.setDead();
-		}
+		// if (!this.world.isRemote) {
+		// world.createExplosion(this, blockpos.getX(), blockpos.getY(),
+		// blockpos.getZ(), 8, true);
+		// this.setDead();
+		// }
 	}
 
 	@Override
@@ -89,18 +91,18 @@ public class EntityPenetratingMissile extends EntityMissile {
 		Block block = state.getBlock();
 		int meta = block.getMetaFromState(state);
 		if ((block == this.inTile && meta == this.inData) || this.getEntityWorld().collidesWithAnyBlock(ON_BLOCK_AABB.offset(this.getPositionVector()))) {
-			++this.ticksInGround;
+			++this.timeInGround;
 
-			if (this.ticksInGround >= 100) {
+			if (this.timeInGround >= 10) {
 				world.createExplosion(this, this.posX, this.posY, this.posZ, 8, true);
 				this.setDead();
 			}
 		} else {
 			this.inGround = false;
-			this.motionX *= this.rand.nextFloat() * 0.2F;
-			this.motionY *= this.rand.nextFloat() * 0.2F;
-			this.motionZ *= this.rand.nextFloat() * 0.2F;
-			this.ticksInGround = 0;
+			// this.motionX *= this.rand.nextFloat() * 0.2F;
+			// this.motionY *= this.rand.nextFloat() * 0.2F;
+			// this.motionZ *= this.rand.nextFloat() * 0.2F;
+			// this.timeInGround = 0;
 			this.ticksInAir = 0;
 		}
 
@@ -112,7 +114,8 @@ public class EntityPenetratingMissile extends EntityMissile {
 		return ItemStack.EMPTY;
 	}
 
-	private void onHitEntity(Entity entity) {
+	@Override
+	protected void onHitEntity(Entity entity) {
 		if (!this.world.isRemote && this.ticksExisted > 10) {
 			entity.attackEntityFrom(DamageSource.GENERIC, 10);
 		}
