@@ -5,23 +5,21 @@ import java.util.ArrayList;
 import com.google.common.annotations.VisibleForTesting;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Capacitors;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Circuits;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Rails;
-import cadiboo.wiptech.handler.EnumHandler.WeaponModules.Scopes;
-import cadiboo.wiptech.recipes.AssembleRecipe;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Recipes {
-	private static final ArrayList<ArrayList>		crushRecipes	= new ArrayList<ArrayList>();
-	private static final ArrayList<ArrayList>		hammerRecipes	= new ArrayList<ArrayList>();
-	private static final ArrayList<ArrayList>		coilRecipes		= new ArrayList<ArrayList>();
-	private static final ArrayList<AssembleRecipe>	assembleRecipes	= new ArrayList<AssembleRecipe>();
+	private static final ArrayList<ArrayList>			crushRecipes	= new ArrayList<ArrayList>();
+	private static final ArrayList<ArrayList>			hammerRecipes	= new ArrayList<ArrayList>();
+	private static final ArrayList<ArrayList>			coilRecipes		= new ArrayList<ArrayList>();
+	private static final ArrayList<ShapelessRecipes>	assembleRecipes	= new ArrayList<ShapelessRecipes>();
 
 	private static final Block AIR = net.minecraft.init.Blocks.AIR;
 
@@ -76,11 +74,17 @@ public class Recipes {
 		// // Recipe: " + recipe);
 		// }
 
-		Class[] railgun_required = { Rails.class, Capacitors.class, Circuits.class };
-		Class[] railgun_optional = { Scopes.class, };
+		// Class[] railgun_required = { ItemRail.class, ItemCapacitor.class,
+		// ItemCircuit.class };
+		// Class[] railgun_optional = { ItemScope.class, };
+		Class[] railgun_required = {};
+		Class[] railgun_optional = {};
 
-		AssembleRecipe recipe = new AssembleRecipe(Items.RAILGUN, 10, railgun_required, railgun_optional);
+		NonNullList<Ingredient> ingredients = NonNullList.create();
+		ingredients.add(CraftingHelper.getIngredient(Items.ALUMINIUM_RAIL));
+		ShapelessRecipes recipe = new ShapelessRecipes("wiptech:assembling", new ItemStack(Items.RAILGUN), ingredients);
 		assembleRecipes.add(recipe);
+		// WIPTech.info("WHY DID I JUST BREAK EVERYTHING :/");
 
 		// Class[] coilgun_required = { Coils.class, Capacitors.class, Circuits.class };
 		// Class[] coilgun_optional = { Scopes.class };
@@ -109,9 +113,9 @@ public class Recipes {
 
 	}
 
-	public static AssembleRecipe getAssembleRecipeFor(Item item) {
-		for (AssembleRecipe recipe : assembleRecipes) {
-			if (recipe.getOutput() == item)
+	public static ShapelessRecipes getAssembleRecipeFor(ItemStack stack) {
+		for (ShapelessRecipes recipe : assembleRecipes) {
+			if (recipe.getRecipeOutput().isItemEqual(stack))
 				return recipe;
 		}
 		return null;

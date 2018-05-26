@@ -2,7 +2,6 @@ package cadiboo.wiptech.tileentity;
 
 import cadiboo.wiptech.util.CustomEnergyStorage;
 import cadiboo.wiptech.util.Utils;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -13,14 +12,14 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityAssemblyTable extends TileEntityBase implements ITickable {
 
-	private static final int[]	SLOTS				= new int[] { 0, 1, 2, 3, 4, 5 };
-	private static final int[]	SLOTS_BOTTOM		= new int[] { 6 };
+	private static final int[]	SLOTS				= new int[] { 1, 2, 3, 4, 5, 6 };
+	private static final int[]	SLOTS_BOTTOM		= new int[] { 0 };
 	private static final int	ENERGY_CAPACITY		= 10000;
 	private static final int	ASSEMBLY_COST_TICK	= 100;
 
 	private int assemblyTime = 0;
 
-	private Item assembleItem = net.minecraft.init.Items.AIR;
+	private ItemStack assembleItem = ItemStack.EMPTY;
 
 	private ItemStackHandler inventory = new ItemStackHandler(SLOTS.length + SLOTS_BOTTOM.length) {
 		@Override
@@ -28,16 +27,17 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 			if (!TileEntityAssemblyTable.this.world.isRemote) {
 				TileEntityAssemblyTable.this.syncToClients();
 			}
+			markDirty();
 		}
 
 		@Override
 		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if (stack.isEmpty())
-				return ItemStack.EMPTY;
-
-			validateSlotIndex(slot);
-			if (slot <= 5 /* && !recpies.ispartofrecipe */)
-				return stack;
+			// if (stack.isEmpty())
+			// return ItemStack.EMPTY;
+			//
+			// validateSlotIndex(slot);
+			// if (slot <= 5 /* && !recpies.ispartofrecipe */)
+			// return stack;
 			return super.insertItem(slot, stack, simulate);
 		};
 	};
@@ -45,14 +45,37 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 	private ItemStackHandler inventoryNonBottom = new ItemStackHandler(SLOTS.length) {
 		@Override
 		public ItemStack getStackInSlot(int slot) {
-			validateSlotIndex(slot);
-			return inventory.getStackInSlot(slot);
+			validateSlotIndex(slot + SLOTS_BOTTOM.length);
+			return inventory.getStackInSlot(slot + SLOTS_BOTTOM.length);
 		}
 
 		@Override
 		public int getSlotLimit(int slot) {
-			return inventory.getSlotLimit(slot);
+			return inventory.getSlotLimit(slot + SLOTS_BOTTOM.length);
 		};
+
+		@Override
+		public void setStackInSlot(int slot, ItemStack stack) {
+			inventory.setStackInSlot(slot + SLOTS_BOTTOM.length, stack);
+		};
+
+		@Override
+		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+			return inventory.insertItem(slot + SLOTS_BOTTOM.length, stack, simulate);
+		};
+
+		@Override
+		public ItemStack extractItem(int slot, int amount, boolean simulate) {
+			return inventory.extractItem(slot + SLOTS_BOTTOM.length, amount, simulate);
+		};
+	};
+
+	private ItemStackHandler inventoryBottom = new ItemStackHandler(SLOTS_BOTTOM.length) {
+		@Override
+		public ItemStack getStackInSlot(int slot) {
+			validateSlotIndex(slot);
+			return inventory.getStackInSlot(slot);
+		}
 
 		@Override
 		public void setStackInSlot(int slot, ItemStack stack) {
@@ -67,29 +90,6 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 		@Override
 		public ItemStack extractItem(int slot, int amount, boolean simulate) {
 			return inventory.extractItem(slot, amount, simulate);
-		};
-	};
-
-	private ItemStackHandler inventoryBottom = new ItemStackHandler(SLOTS_BOTTOM.length) {
-		@Override
-		public ItemStack getStackInSlot(int slot) {
-			validateSlotIndex(slot);
-			return inventory.getStackInSlot(slot + SLOTS.length);
-		}
-
-		@Override
-		public void setStackInSlot(int slot, ItemStack stack) {
-			inventory.setStackInSlot(slot + SLOTS.length, stack);
-		};
-
-		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			return inventory.insertItem(slot + SLOTS.length, stack, simulate);
-		};
-
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			return inventory.extractItem(slot + SLOTS.length, amount, simulate);
 		};
 
 	};
@@ -113,12 +113,12 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 		return energy;
 	}
 
-	public Item getAssembleItem() {
+	public ItemStack getAssembleItem() {
 		return this.assembleItem;
 	}
 
-	public void setAssembleItem(Item item) {
-		this.assembleItem = item;
+	public void setAssembleItem(ItemStack stack) {
+		this.assembleItem = stack;
 	}
 
 	@Override

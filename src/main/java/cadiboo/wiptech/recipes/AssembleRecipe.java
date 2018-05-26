@@ -1,44 +1,138 @@
 package cadiboo.wiptech.recipes;
 
-import net.minecraft.item.Item;
+import java.util.List;
 
-public class AssembleRecipe {
+import com.google.common.collect.Lists;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
-	private Item	output;
-	private int		time;
-	private Class[]	required;
-	private Class[]	optional;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.util.JsonUtils;
+import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 
-	public AssembleRecipe(Item output, int time, Class[] required, Class[] optional) {
-		this.output = output;
-		this.time = time;
-		this.required = required;
-		this.optional = optional;
+public class AssembleRecipe extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+	private final ItemStack					recipeOutput;
+	public final NonNullList<Ingredient>	recipeItems;
+	private final String					group;
+	private final boolean					isSimple;
+
+	public AssembleRecipe(String group, ItemStack output, NonNullList<Ingredient> ingredients) {
+		this.group = group;
+		this.recipeOutput = output;
+		this.recipeItems = ingredients;
+		boolean simple = true;
+		for (Ingredient i : ingredients)
+			simple &= i.isSimple();
+		this.isSimple = simple;
 	}
 
-	public Item getOutput() {
-		return output;
+	@Override
+	public String getGroup() {
+		return this.group;
 	}
 
-	public int getTime() {
-		return time;
+	@Override
+	public ItemStack getRecipeOutput() {
+		return this.recipeOutput;
 	}
 
-	public Class[] getRequiredComponents() {
-		return required;
+	@Override
+	public NonNullList<Ingredient> getIngredients() {
+		return this.recipeItems;
 	}
 
-	public Class[] getOptionalComponents() {
-		return optional;
+	@Override
+	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
+		NonNullList<ItemStack> nonnulllist = NonNullList.<ItemStack>withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+
+		for (int i = 0; i < nonnulllist.size(); ++i) {
+			ItemStack itemstack = inv.getStackInSlot(i);
+
+			nonnulllist.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
+		}
+
+		return nonnulllist;
 	}
 
-	public Class[] getAllComponents() {
-		Class[] result = new Class[required.length + optional.length];
-		for (int i = 0; i < required.length; i++)
-			result[i] = required[i];
-		for (int i = required.length; i < required.length + optional.length; i++)
-			result[i] = optional[i - required.length];
-		return result;
+	/**
+	 * Used to check if a recipe matches current crafting inventory
+	 */
+	@Override
+	public boolean matches(InventoryCrafting inv, World worldIn) {
+		int ingredientCount = 0;
+		net.minecraft.client.util.RecipeItemHelper recipeItemHelper = new net.minecraft.client.util.RecipeItemHelper();
+		List<ItemStack> inputs = Lists.newArrayList();
+
+		for (int i = 0; i < inv.getHeight(); ++i) {
+			for (int j = 0; j < inv.getWidth(); ++j) {
+				ItemStack itemstack = inv.getStackInRowAndColumn(j, i);
+
+				if (!itemstack.isEmpty()) {
+					++ingredientCount;
+					if (this.isSimple)
+						recipeItemHelper.accountStack(itemstack, 1);
+					else
+						inputs.add(itemstack);
+				}
+			}
+		}
+
+		if (ingredientCount != this.recipeItems.size())
+			return false;
+
+		if (this.isSimple)
+			return recipeItemHelper.canCraft(this, null);
+
+		return net.minecraftforge.common.util.RecipeMatcher.findMatches(inputs, this.recipeItems) != null;
 	}
 
+	/**
+	 * Returns an Item that is the result of this recipe
+	 */
+	@Override
+	public ItemStack getCraftingResult(InventoryCrafting inv) {
+		return this.recipeOutput.copy();
+	}
+
+	public static AssembleRecipe deserialize(JsonObject json) {
+		String s = JsonUtils.getString(json, "group", "");
+		NonNullList<Ingredient> nonnulllist = deserializeIngredients(JsonUtils.getJsonArray(json, "ingredients"));
+
+		if (nonnulllist.isEmpty()) {
+			throw new JsonParseException("No ingredients for shapeless recipe");
+		} else if (nonnulllist.size() > 9) {
+			throw new JsonParseException("Too many ingredients for shapeless recipe");
+		} else {
+			ItemStack itemstack = ShapedRecipes.deserializeItem(JsonUtils.getJsonObject(json, "result"), true);
+			return new AssembleRecipe(s, itemstack, nonnulllist);
+		}
+	}
+
+	private static NonNullList<Ingredient> deserializeIngredients(JsonArray array) {
+		NonNullList<Ingredient> nonnulllist = NonNullList.<Ingredient>create();
+
+		for (int i = 0; i < array.size(); ++i) {
+			Ingredient ingredient = ShapedRecipes.deserializeIngredient(array.get(i));
+
+			if (ingredient != Ingredient.EMPTY) {
+				nonnulllist.add(ingredient);
+			}
+		}
+
+		return nonnulllist;
+	}
+
+	/**
+	 * Used to determine if this recipe can fit in a grid of the given width/height
+	 */
+	@Override
+	public boolean canFit(int width, int height) {
+		return width * height >= this.recipeItems.size();
+	}
 }
