@@ -6,7 +6,6 @@ import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.Recipes;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -15,52 +14,64 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraft.network.play.server.SPacketSetSlot;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 public class ContainerAssemblyTable extends Container {
 
-	/** The crafting matrix inventory. */
-	public InventoryCrafting	craftMatrix	= new InventoryCrafting(this, 2, 3);
-	public InventoryCraftResult	craftResult	= new InventoryCraftResult();
-	private final EntityPlayer	player;
+	private final EntityPlayer				player;
+	private final TileEntityAssemblyTable	te;
+
+	public InventoryCrafting	craftMatrix;
+	public InventoryCraftResult	craftResult;
 
 	/**
 	 * Callback for when the crafting matrix is changed.
 	 */
 	@Override
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
+		this.windowId++;
+		// te.setAssembleItem(new ItemStack(Blocks.CRAFTING_TABLE));
 		// this.slotChangedCraftingGrid(this.player.world, this.player,
 		// this.craftMatrix, this.craftResult);
+		// InventoryCraftResult dummyResult = new InventoryCraftResult();
+		this.slotChangedCraftingGrid(this.player.world, this.player, this.craftMatrix, this.craftResult);
+		this.windowId--;
+		// if (dummyResult.getStackInSlot(0).isItemEqual(te.getAssembleItem()))
+		// te.setAssembleItem(new ItemStack(Items.DRAGON_BREATH));
+		//
+		// WIPTech.info(te.getAssembleItem(), dummyResult.getStackInSlot(0),
+		// dummyResult.getStackInSlot(0).isItemEqual(te.getAssembleItem()));
 
-		// protected void slotChangedCraftingGrid(World p_192389_1_, EntityPlayer
-		// p_192389_2_, InventoryCrafting p_192389_3_, InventoryCraftResult p_192389_4_)
-		// {
-		World worldIn = this.player.world;
-		EntityPlayer playerIn = this.player;
-		InventoryCrafting matrix = this.craftMatrix;
-		InventoryCraftResult result = this.craftResult;
-		if (!worldIn.isRemote) {
-			EntityPlayerMP entityplayermp = (EntityPlayerMP) playerIn;
-			ItemStack itemstack = ItemStack.EMPTY;
-			IRecipe irecipe = CraftingManager.findMatchingRecipe(matrix, worldIn);
-
-			if (irecipe != null && (irecipe.isDynamic() || !worldIn.getGameRules().getBoolean("doLimitedCrafting") || entityplayermp.getRecipeBook().isUnlocked(irecipe))) {
-				result.setRecipeUsed(irecipe);
-				itemstack = irecipe.getCraftingResult(matrix);
-			}
-
-			result.setInventorySlotContents(0, itemstack);
-			entityplayermp.connection.sendPacket(new SPacketSetSlot(this.windowId + 1, 0, itemstack));
-		}
+		// // protected void slotChangedCraftingGrid(World p_192389_1_, EntityPlayer
+		// // p_192389_2_, InventoryCrafting p_192389_3_, InventoryCraftResult
+		// p_192389_4_)
+		// // {
+		// if (true)
+		// return;
+		// World worldIn = this.player.world;
+		// EntityPlayer playerIn = this.player;
+		// InventoryCrafting matrix = this.craftMatrix;
+		// InventoryCraftResult result = this.craftResult;
+		// if (!worldIn.isRemote) {
+		// EntityPlayerMP entityplayermp = (EntityPlayerMP) playerIn;
+		// ItemStack itemstack = ItemStack.EMPTY;
+		// IRecipe irecipe = CraftingManager.findMatchingRecipe(matrix, worldIn);
+		//
+		// if (irecipe != null && (irecipe.isDynamic() ||
+		// !worldIn.getGameRules().getBoolean("doLimitedCrafting") ||
+		// entityplayermp.getRecipeBook().isUnlocked(irecipe))) {
+		// result.setRecipeUsed(irecipe);
+		// itemstack = irecipe.getCraftingResult(matrix);
 		// }
+		//
+		// result.setInventorySlotContents(0, itemstack);
+		// entityplayermp.connection.sendPacket(new SPacketSetSlot(this.windowId + 1, 0,
+		// itemstack));
+		// }
+		// // }
 
 	}
 
@@ -74,12 +85,41 @@ public class ContainerAssemblyTable extends Container {
 		return slotIn.inventory != this.craftResult && super.canMergeSlot(stack, slotIn);
 	}
 
-	public ContainerAssemblyTable(InventoryPlayer playerInv, final TileEntityAssemblyTable te) {
+	public ContainerAssemblyTable(InventoryPlayer playerInv, final TileEntityAssemblyTable teIn) {
 		this.player = playerInv.player;
+		this.te = teIn;
+
+		WIPTech.dump(te.getInventory(EnumFacing.UP));
+
+		craftMatrix = new InventorySavedCrafting(te.getInventory(EnumFacing.UP), this, Math.min(2, te.getInventory(EnumFacing.UP).getSlots()), Math.round(te.getInventory(EnumFacing.UP).getSlots() / 2)) {
+			@Override
+			public void clear() {
+				super.clear();
+				this.saveInventory();
+			}
+
+			@Override
+			public void setInventorySlotContents(int index, ItemStack stack) {
+				super.setInventorySlotContents(index, stack);
+				this.saveInventory();
+			}
+		};
+		craftResult = new InventorySavedCraftResult(te.getInventory(EnumFacing.DOWN)) {
+			@Override
+			public void clear() {
+				super.clear();
+				this.saveInventory();
+			}
+
+			@Override
+			public void setInventorySlotContents(int index, ItemStack stack) {
+				super.setInventorySlotContents(index, stack);
+				this.saveInventory();
+			}
+		};
 
 		for (int w = 0; w < craftMatrix.getWidth(); ++w) {
 			for (int h = 0; h < craftMatrix.getHeight(); ++h) {
-				WIPTech.info(w, h, w + h * 2, "_");
 				this.addSlotToContainer(new Slot(this.craftMatrix, w + h * 2, 54 + w * 18, 17 + h * 18) {
 					@Override
 					public boolean isItemValid(ItemStack stack) {
@@ -93,8 +133,8 @@ public class ContainerAssemblyTable extends Container {
 									return true;
 							}
 							return false;
-						}
-						return super.isItemValid(stack);
+						} else
+							return super.isItemValid(stack);
 					}
 
 					@Override
@@ -107,7 +147,6 @@ public class ContainerAssemblyTable extends Container {
 			}
 		}
 
-		WIPTech.info("slot 0");
 		this.addSlotToContainer(new SlotCrafting(playerInv.player, this.craftMatrix, this.craftResult, 0, 130, 35) {
 			@Override
 			public boolean isItemValid(@Nonnull ItemStack stack) {
@@ -121,7 +160,6 @@ public class ContainerAssemblyTable extends Container {
 			}
 		});
 
-		IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		// player inventory
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -165,5 +203,12 @@ public class ContainerAssemblyTable extends Container {
 			slot.onTake(player, itemstack1);
 		}
 		return itemstack;
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer playerIn) {
+		super.onContainerClosed(playerIn);
+		craftMatrix.closeInventory(playerIn);
+		craftResult.closeInventory(playerIn);
 	}
 }

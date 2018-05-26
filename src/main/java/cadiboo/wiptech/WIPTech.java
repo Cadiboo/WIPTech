@@ -1,5 +1,7 @@
 package cadiboo.wiptech;
 
+import java.lang.reflect.Field;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -84,8 +86,41 @@ public class WIPTech {
 		}
 	}
 
-	public static void error(Object msg) {
-		logger.error(msg);
+	public static void error(Object... msgs) {
+		for (Object msg : msgs) {
+			logger.error(msg);
+		}
 	}
+
+	public static void dump(Object... objs) {
+		for (Object obj : objs) {
+			Field[] fields = obj.getClass().getDeclaredFields();
+			info("Dump of " + obj + ":");
+			for (int i = 0; i < fields.length; i++) {
+				try {
+					fields[i].setAccessible(true);
+					info(fields[i].getName() + " - " + fields[i].get(obj));
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					// e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	// public static void dumpRecursive(Object obj) {
+	// Field[] fields = obj.getClass().getDeclaredFields();
+	// info("Dump of " + obj + ":");
+	// for (int i = 0; i < fields.length; i++) {
+	// try {
+	// fields[i].setAccessible(true);
+	// if(fields[i].getDeclaringClass()!=Object)//EH?
+	// info(fields[i].getName() + " - " + fields[i].get(obj));
+	// } catch (IllegalArgumentException | IllegalAccessException e) {
+	// // TODO Auto-generated catch block
+	// // e.printStackTrace();
+	// }
+	// }
+	// }
 
 }

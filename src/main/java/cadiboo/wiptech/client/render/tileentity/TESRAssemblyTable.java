@@ -5,9 +5,11 @@ import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssemblyTable> {
 
@@ -39,10 +41,16 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 		Utils.renderStackWithoutTransforms(new ItemStack(Blocks.SILVER_MOTOR), te.getWorld());
 		GlStateManager.popMatrix();
 
-		for (int i = 0; i < te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP).getSlots(); i++) {
+		IItemHandler inv = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
+
+		for (int i = 0; i < inv.getSlots(); i++) {
 			GlStateManager.pushMatrix();
-			GlStateManager.translate(x + 0.5, y + 2.5, z + 0.5);
-			Utils.renderStack(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getStackInSlot(i), te.getWorld());
+			GlStateManager.translate(x + 0.5, y + 2, z + 0.5);
+			GlStateManager.rotate(360 / (inv.getSlots() - 1) * i, 0, 1, 0);
+			GlStateManager.translate(1, 0, 0);
+			if (!(inv.getStackInSlot(i).getItem() instanceof ItemBlock))
+				GlStateManager.rotate(90, 1, 0, 0);
+			Utils.renderStack(inv.getStackInSlot(i), te.getWorld());
 			GlStateManager.popMatrix();
 		}
 

@@ -480,4 +480,21 @@ public class Utils {
 		mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 	}
 
+	public static boolean isVowel(char ch) {
+		switch (ch) {
+			case 'a':
+			case 'e':
+			case 'i':
+			case 'o':
+			case 'u':
+				return true;
+			default:
+				return false;
+		}
+	}
+
+	public static boolean isConsonant(char ch) {
+		return !isVowel(ch);
+	}
+
 }

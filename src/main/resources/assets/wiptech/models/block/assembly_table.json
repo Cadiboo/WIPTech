@@ -4,7 +4,7 @@
 	"textures": {
 		"iron": "blocks/iron_block",
 		"anvil": "blocks/anvil_base",
-		"particle": "#iron"
+		"particle": "blocks/iron_block"
 	},
 	"elements": [
 		{

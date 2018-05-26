@@ -3,6 +3,7 @@ package cadiboo.wiptech.client.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
 import cadiboo.wiptech.inventory.ContainerAssemblyTable;
@@ -58,7 +59,7 @@ public class GuiAssemblyTable extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		te.setAssembleItem(ASSEMBLEABLE_ITEMS[button.id]);
-		System.out.println("Button " + button.id + " was Clicked!");
+		WIPTech.info("Now assembling a" + (Utils.isVowel(te.getAssembleItem().getDisplayName().charAt(0)) ? "n" : "") + " " + te.getAssembleItem().getDisplayName());
 	}
 
 	@Override
