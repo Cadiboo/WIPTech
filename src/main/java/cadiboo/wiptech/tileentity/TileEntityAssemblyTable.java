@@ -1,11 +1,12 @@
 package cadiboo.wiptech.tileentity;
 
-import cadiboo.wiptech.util.CustomEnergyStorage;
+import cadiboo.wiptech.inventory.WrappedItemStackHandler;
 import cadiboo.wiptech.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -42,59 +43,11 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 		};
 	};
 
-	private ItemStackHandler inventoryNonBottom = new ItemStackHandler(SLOTS.length) {
-		@Override
-		public ItemStack getStackInSlot(int slot) {
-			validateSlotIndex(slot);
-			return inventory.getStackInSlot(slot + SLOTS_BOTTOM.length);
-		}
+	private ItemStackHandler inventoryNonBottom = new WrappedItemStackHandler(SLOTS.length, inventory, SLOTS.length);
 
-		@Override
-		public int getSlotLimit(int slot) {
-			return inventory.getSlotLimit(slot + SLOTS_BOTTOM.length);
-		};
+	private ItemStackHandler inventoryBottom = new WrappedItemStackHandler(SLOTS_BOTTOM.length, inventory, 0);
 
-		@Override
-		public void setStackInSlot(int slot, ItemStack stack) {
-			inventory.setStackInSlot(slot + SLOTS_BOTTOM.length, stack);
-		};
-
-		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			return inventory.insertItem(slot + SLOTS_BOTTOM.length, stack, simulate);
-		};
-
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			return inventory.extractItem(slot + SLOTS_BOTTOM.length, amount, simulate);
-		};
-	};
-
-	private ItemStackHandler inventoryBottom = new ItemStackHandler(SLOTS_BOTTOM.length) {
-		@Override
-		public ItemStack getStackInSlot(int slot) {
-			validateSlotIndex(slot);
-			return inventory.getStackInSlot(slot);
-		}
-
-		@Override
-		public void setStackInSlot(int slot, ItemStack stack) {
-			inventory.setStackInSlot(slot, stack);
-		};
-
-		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			return inventory.insertItem(slot, stack, simulate);
-		};
-
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			return inventory.extractItem(slot, amount, simulate);
-		};
-
-	};
-
-	private CustomEnergyStorage energy = new CustomEnergyStorage(ENERGY_CAPACITY) {
+	private EnergyStorage energy = new EnergyStorage(ENERGY_CAPACITY) {
 		@Override
 		public boolean canExtract() {
 			return false;

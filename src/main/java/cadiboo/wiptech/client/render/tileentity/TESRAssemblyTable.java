@@ -46,7 +46,7 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 		for (int i = 0; i < inv.getSlots(); i++) {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate(x + 0.5, y + 2, z + 0.5);
-			GlStateManager.rotate(360 / (inv.getSlots() - 1) * i, 0, 1, 0);
+			GlStateManager.rotate(360 / (inv.getSlots()) * i, 0, 1, 0);
 			GlStateManager.translate(1, 0, 0);
 			if (!(inv.getStackInSlot(i).getItem() instanceof ItemBlock))
 				GlStateManager.rotate(90, 1, 0, 0);

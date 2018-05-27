@@ -1,7 +1,10 @@
 package cadiboo.wiptech.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import javax.annotation.Nullable;
 
 import org.lwjgl.opengl.GL11;
 
@@ -22,10 +25,12 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class Utils {
@@ -60,6 +65,7 @@ public class Utils {
 		return new Random().nextInt(max - min + 1) + min;
 	}
 
+	@Nullable
 	public static TextureAtlasSprite getSpriteFromItemStack(ItemStack stack) {
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelMesher().getItemModel(stack);
 		if (model == null)
@@ -386,6 +392,52 @@ public class Utils {
 		GlStateManager.rotate(facing == EnumFacing.DOWN ? 0 : facing == EnumFacing.UP ? 180F : facing == EnumFacing.NORTH || facing == EnumFacing.EAST ? 90F : -90F, facing.getAxis() == EnumFacing.Axis.Z ? 1 : 0, 0,
 				facing.getAxis() == EnumFacing.Axis.Z ? 0 : 1);
 		GlStateManager.rotate(-90, 0, 0, 1);
+	}
+
+	public static void transmitEnergyFrom(TileEntity te, EnumFacing... sides) {
+		IEnergyStorage energy = te.getCapability(CapabilityEnergy.ENERGY, null);
+		if (energy == null)
+			return;
+		ArrayList<EnumFacing> connectedSides = new ArrayList<EnumFacing>();
+		for (EnumFacing face : EnumFacing.VALUES)
+			if (getEnergyFromPos(te.getWorld(), te.getPos().offset(face)) != null)
+				connectedSides.add(face);
+
+		for (EnumFacing side : sides) {
+			if (!connectedSides.contains(side))
+				continue;
+			TileEntity otherTe = te.getWorld().getTileEntity(te.getPos().offset(side));
+			if (otherTe == null)
+				continue;
+			IEnergyStorage otherEnergy = otherTe.getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+			if (otherEnergy == null)
+				continue;
+
+			if (otherEnergy.canReceive())
+				energy.extractEnergy(otherEnergy.receiveEnergy(energy.extractEnergy(energy.getEnergyStored() / connectedSides.size(), true), false), false);
+
+			// if (isConnectedToWire(side)) {
+			// CustomEnergyStorage wireStorage = (CustomEnergyStorage) storage;
+			// if (wireStorage.getEnergyStored() < energy.getEnergyStored()) {
+			// energy.extractEnergy(wireStorage.receiveEnergy(energy.extractEnergy(energy.getEnergyStored()
+			// / connectedSides.size(), true), false, side.getOpposite()), false);
+			// }
+			// }
+		}
+
+	}
+
+	@Nullable
+	public static IEnergyStorage getEnergyFromPos(World world, BlockPos pos) {
+		return getEnergyFromPos(world, pos, null);
+	}
+
+	@Nullable
+	public static IEnergyStorage getEnergyFromPos(World world, BlockPos pos, EnumFacing facing) {
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile == null)
+			return null;
+		return tile.getCapability(CapabilityEnergy.ENERGY, facing);
 	}
 
 	public static boolean isInRect(int x, int y, int xSize, int ySize, int mouseX, int mouseY) {

@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import cadiboo.wiptech.handler.network.PacketHandler;
 import cadiboo.wiptech.handler.network.PacketSyncTileEntity;
-import cadiboo.wiptech.util.CustomEnergyStorage;
 import cadiboo.wiptech.util.Reference;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -142,8 +141,6 @@ public abstract class TileEntityBase extends TileEntity {
 	public void readNBT(NBTTagCompound nbt, NBTType type) {
 		NBTTagCompound caps = nbt.getCompoundTag(Reference.ID);
 		if (type != NBTType.DROP) {
-			// WIPTech.logger.info("nbt= " + nbt);
-			// WIPTech.logger.info(caps);
 			this.readCapabilities(caps, null);
 		} else if (this.getEnergy(null) != null) {
 			this.getEnergy(null).receiveEnergy(caps.getInteger("Energy"), false);
@@ -165,15 +162,10 @@ public abstract class TileEntityBase extends TileEntity {
 			CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.readNBT(tank, side, nbt.getCompoundTag("FluidTank"));
 		}
 		IEnergyStorage energy = getEnergy(side);
-		// WIPTech.logger.info("energy: " + energy);
-		// WIPTech.logger.info("NBT has Int Energy: " + nbt.hasKey("Energy"));
-		// WIPTech.logger.info("NBT Int Energy: " + nbt.getInteger("Energy"));
-		// WIPTech.logger.info("nbt: " + nbt);
-		if (energy != null && energy instanceof IEnergyStorage && nbt.hasKey("Energy")) {
-			// WIPTech.logger.info(nbt.getInteger("Energy"));
-			// energy.extractEnergy(Integer.MAX_VALUE, false);
-			((CustomEnergyStorage) energy).setEnergyStored(nbt.getInteger("Energy"));
-			// WIPTech.logger.info("energy: " + energy);
+		if (energy != null && nbt.hasKey("Energy")) {
+			// I wish there was a better way...
+			energy.extractEnergy(Integer.MAX_VALUE, false);
+			energy.receiveEnergy(nbt.getInteger("Energy"), false);
 		}
 	}
 

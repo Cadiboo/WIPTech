@@ -48,7 +48,7 @@ public class InventorySavedCraftResult extends InventoryCraftResult {
 	 */
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
-		ItemStack ret = stack;
+		ItemStack ret = stack.copy();
 		this.clear();
 		stackResult.set(0, this.stack);
 		return ret;
