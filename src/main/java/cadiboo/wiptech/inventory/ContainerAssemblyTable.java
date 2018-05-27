@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
@@ -28,29 +29,20 @@ public class ContainerAssemblyTable extends Container {
 	/**
 	 * Callback for when the crafting matrix is changed.
 	 */
+
 	@Override
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
 
 		// WIPTech.error(this.craftResult.getStackInSlot(0));
 		// WIPTech.dump(this.craftResult.getStackInSlot(0));
 
-		// this.windowId++;
-		// te.setAssembleItem(new ItemStack(Blocks.CRAFTING_TABLE));
+		InventoryCraftResult dummyResult = new InventoryCraftResult();
 		// this.slotChangedCraftingGrid(this.player.world, this.player,
 		// this.craftMatrix, this.craftResult);
-		// InventoryCraftResult dummyResult = new InventoryCraftResult();
-		this.slotChangedCraftingGrid(this.player.world, this.player, this.craftMatrix, this.craftResult);
-		// this.windowId--;
+		this.slotChangedCraftingGrid(this.player.world, this.player, this.craftMatrix, dummyResult);
 
-		// craftResult.saveInventory();
-		// craftResult.loadInventory();
-		// craftMatrix.saveInventory();
-		// craftMatrix.loadInventory();
-		// craftResult.saveInventory();
-		// craftResult.loadInventory();
-		// craftMatrix.saveInventory();
-		// craftMatrix.loadInventory();
-		//
+		WIPTech.info(dummyResult);
+
 		// WIPTech.error("cr:", this.craftResult.getStackInSlot(0));
 		// WIPTech.error("cm:", this.craftMatrix.getStackInSlot(0));
 		// WIPTech.dump(this.craftResult.getStackInSlot(0));
