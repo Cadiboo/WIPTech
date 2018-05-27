@@ -480,6 +480,13 @@ public class Utils {
 		mc.getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
 	}
 
+	public static boolean isEqual(Object obj, Object... checks) {
+		for (Object check : checks)
+			if (obj.equals(check))
+				return true;
+		return false;
+	}
+
 	public static boolean isVowel(char ch) {
 		switch (ch) {
 			case 'a':

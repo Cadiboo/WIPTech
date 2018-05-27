@@ -1,6 +1,5 @@
 package cadiboo.wiptech.block;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.handler.EnumHandler.BlockItems;
 import cadiboo.wiptech.init.Blocks;
 import cadiboo.wiptech.init.Items;
@@ -76,7 +75,6 @@ public class BlockItem extends BlockBase {
 
 	@Override
 	public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
-		WIPTech.logger.info(Utils.getBlockFromPos(worldIn, pos.down()) instanceof BlockAnvil);
 		return Utils.getBlockFromPos(worldIn, pos.down()) instanceof BlockAnvil;
 	}
 
@@ -96,8 +94,7 @@ public class BlockItem extends BlockBase {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta,
-			EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return this.getDefaultState().withProperty(FACING, Utils.getStateFromPos(worldIn, pos.down()).getValue(FACING));
 	}
 

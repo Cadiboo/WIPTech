@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -29,6 +30,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @Mod.EventBusSubscriber(modid = Reference.ID)
@@ -72,35 +74,60 @@ public class EventSubscriber {
 
 	}
 
-	private static boolean isBlockItem(Item item) {
-		return Block.getBlockFromItem(item) instanceof BlockItem || item == Items.IRON_INGOT || item == Items.GOLD_INGOT || item == Items.IRON_NUGGET || item == Items.GOLD_NUGGET;
+	private static Block getBlockItem(Item item) {
+		return ForgeRegistries.BLOCKS.getValue(new ResourceLocation(Reference.ID, item.getRegistryName().getResourcePath()));
+		// TODO make an API for this
+	}
+
+	private static boolean isFromCompatibleMod(String resourceDomain) {
+		return Utils.isEqual(resourceDomain, "minecraft", Reference.ID);
 	}
 
 	@SubscribeEvent(receiveCanceled = true, priority = EventPriority.HIGHEST)
 	public static EnumActionResult BlockRightClickEvent(final PlayerInteractEvent.RightClickBlock event) {
+		// is anvil & face=up
 		if (!(Utils.getBlockFromPos(event.getWorld(), event.getPos()) instanceof BlockAnvil) || event.getFace() != EnumFacing.UP)
 			return EnumActionResult.PASS;
+		// make stack to check the other hand's stack if this stack is empty
+		ItemStack stack = event.getItemStack();
+		ItemStack otherStack = event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]);
+		if (stack.isEmpty() && !otherStack.isEmpty()) {
+			stack = otherStack;
+			otherStack = event.getItemStack();
+		}
 
-		if (Utils.getBlockFromPos(event.getWorld(), event.getPos().up()) instanceof BlockItem
-				&& (isBlockItem(event.getItemStack().getItem()) || isBlockItem(event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem()))) {
+		// stop other hand from activating it
+		if (Utils.getBlockFromPos(event.getWorld(), event.getPos().up()) instanceof BlockItem && (getBlockItem(stack.getItem()) != null || getBlockItem(otherStack.getItem()) != null)) {
 			event.setCanceled(true);
 			return EnumActionResult.FAIL;
 		}
+		// TODO api?
+		if (!isFromCompatibleMod(event.getItemStack().getItem().getRegistryName().getResourceDomain()))
+			return EnumActionResult.PASS;
+		// TODO API!
 
-		// should be put on more than one line
-		// event stack is placeable ||(other hand stack is placeable && event stack=air)
-		if (isBlockItem(event.getItemStack().getItem()) || (isBlockItem(event.getEntityPlayer().getHeldItem(EnumHand.values()[event.getHand().ordinal() ^ 1]).getItem()) && event.getItemStack().isEmpty())) {
-			if (Blocks.COPPER_INGOT.canPlaceBlockAt(event.getWorld(), event.getPos().up())) {
-				event.getWorld().setBlockState(event.getPos().up(), BlockItem.getBlockToPlace(event.getItemStack().getItem()).getStateForPlacement(event.getWorld(), event.getPos().up(), event.getFace(), (float) event.getHitVec().x,
-						(float) event.getHitVec().y, (float) event.getHitVec().z, event.getItemStack().getMetadata(), event.getEntityPlayer()), 2);
-				if (!event.getEntityPlayer().isCreative())
-					event.getItemStack().shrink(1);
-				event.setCanceled(true);
-				return EnumActionResult.FAIL;
-			}
-		}
+		// not tungsten/osmium/titanium
+		if (event.getItemStack().getItem().getRegistryName().getResourceDomain().equals(Reference.ID) && !(Block.getBlockFromItem(stack.getItem()) instanceof BlockItem))
+			return EnumActionResult.PASS;
 
-		return EnumActionResult.PASS;
+		// get the block
+		Block block = getBlockItem(stack.getItem());
+
+		// make sure the block is placeable
+		if (block == null)
+			return EnumActionResult.PASS;
+		// make sure the block can be placed at the location
+		if (!(Utils.getBlockFromPos(event.getWorld(), event.getPos()) instanceof BlockAnvil) || !Utils.getBlockFromPos(event.getWorld(), event.getPos().up()).isReplaceable(event.getWorld(), event.getPos().up()))
+			return EnumActionResult.PASS;
+		// place the block
+		event.getWorld().setBlockState(event.getPos().up(),
+				block.getStateForPlacement(event.getWorld(), event.getPos().up(), event.getFace(), (float) event.getHitVec().x, (float) event.getHitVec().y, (float) event.getHitVec().z, event.getItemStack().getMetadata(), event.getEntityPlayer()),
+				2);
+		if (!event.getEntityPlayer().isCreative())
+			event.getItemStack().shrink(1);
+		event.setCanceled(true);
+		return EnumActionResult.FAIL;
+
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -121,35 +148,15 @@ public class EventSubscriber {
 			return;
 		if (!(Utils.getBlockFromPos(event.getWorld(), event.getPos().down()) instanceof BlockAnvil))
 			return;
+		// make sure they can hammer it
 		if (event.getHarvester().getHeldItem(EnumHand.values()[event.getHarvester().getActiveHand().ordinal()]).getItem() != Items.HAMMER)
 			return;
-
-		// TODO un-jerry-rig this and make it not hard coded
-		if (event.getState().getBlock() == Blocks.COPPER_INGOT)
-			event.getDrops().set(0, new ItemStack(Items.COPPER_RAIL));
-		else if (event.getState().getBlock() == Blocks.COPPER_NUGGET)
-			event.getDrops().set(0, new ItemStack(Blocks.COPPER_WIRE));
-		else if (event.getState().getBlock() == Blocks.TIN_INGOT)
-			event.getDrops().set(0, new ItemStack(Items.TIN_RAIL));
-		else if (event.getState().getBlock() == Blocks.TIN_NUGGET)
-			event.getDrops().set(0, new ItemStack(Blocks.TIN_WIRE));
-		else if (event.getState().getBlock() == Blocks.ALUMINIUM_INGOT)
-			event.getDrops().set(0, new ItemStack(Items.ALUMINIUM_RAIL));
-		else if (event.getState().getBlock() == Blocks.ALUMINIUM_NUGGET)
-			event.getDrops().set(0, new ItemStack(Blocks.ALUMINIUM_WIRE));
-		else if (event.getState().getBlock() == Blocks.SILVER_INGOT)
-			event.getDrops().set(0, new ItemStack(Items.SILVER_RAIL));
-		else if (event.getState().getBlock() == Blocks.SILVER_NUGGET)
-			event.getDrops().set(0, new ItemStack(Blocks.SILVER_WIRE));
-		else if (event.getState().getBlock() == Blocks.IRON_INGOT)
-			event.getDrops().set(0, new ItemStack(Items.IRON_RAIL));
-		else if (event.getState().getBlock() == Blocks.IRON_NUGGET)
-			event.getDrops().set(0, new ItemStack(Blocks.IRON_WIRE));
-		else if (event.getState().getBlock() == Blocks.GOLD_INGOT)
-			event.getDrops().set(0, new ItemStack(Items.GOLD_RAIL));
-		else if (event.getState().getBlock() == Blocks.GOLD_NUGGET)
-			event.getDrops().set(0, new ItemStack(Blocks.GOLD_WIRE));
-
+		// get the name
+		String[] res = event.getState().getBlock().getRegistryName().getResourcePath().split("_");
+		if (res.length < 2)
+			return;
+		// set the drops
+		event.getDrops().set(0, new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(Reference.ID, res[0] + (res[1].equals("ingot") ? "_rail" : "_wire")))));
 	}
 
 }
