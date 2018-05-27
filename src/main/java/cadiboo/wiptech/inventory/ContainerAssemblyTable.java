@@ -32,6 +32,9 @@ public class ContainerAssemblyTable extends Container {
 	 */
 	@Override
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
+
+		WIPTech.dump(this.craftResult);
+
 		this.windowId++;
 		// te.setAssembleItem(new ItemStack(Blocks.CRAFTING_TABLE));
 		// this.slotChangedCraftingGrid(this.player.world, this.player,
@@ -39,6 +42,8 @@ public class ContainerAssemblyTable extends Container {
 		// InventoryCraftResult dummyResult = new InventoryCraftResult();
 		this.slotChangedCraftingGrid(this.player.world, this.player, this.craftMatrix, this.craftResult);
 		this.windowId--;
+
+		WIPTech.dump(this.craftResult);
 		// if (dummyResult.getStackInSlot(0).isItemEqual(te.getAssembleItem()))
 		// te.setAssembleItem(new ItemStack(Items.DRAGON_BREATH));
 		//
