@@ -23,9 +23,9 @@ A Technology based mod that adds many real life (and some theoretically possible
 ## Setting up a Workspace/Compiling from Source
 I'll include how to do this and put the necessary files here soon
 # UNTIL I DO THIS
-just set up workspace with the correct version of forge (currently forge-1.12.2-14.23.3.2655) and replace the default /src/ folder with the mods src folder from [here](https://github.com/Cadiboo/WIPTech/tree/master/)
+Just set up workspace with the correct version of forge (currently forge-1.12.2-14.23.3.2655) and replace the default /src/ folder with the WIPTech src folder from [here](https://github.com/Cadiboo/WIPTech/tree/master/)
 
-I Promise I'll actually do this soon
+I promise I'll actually write a comprehensive guide on this soon!
 
 ## Issue reporting
 Please include the following:
@@ -33,9 +33,12 @@ Please include the following:
 * Minecraft version
 * Mod version
 * Forge version
-* Other Mods and their versions 
+* Other Mods and their versions
 * Screenshots if possible
+* Minecraft Log if possible
 ### For crashes:
 * How to reprocude the crash
 * Minecraft Log
 * FML log
+## How to find your log/crash-report files
+[This link](https://minecraft.gamepedia.com/.minecraft) is a very comprehensive guide
