@@ -11,13 +11,13 @@ import net.minecraftforge.items.IItemHandler;
 
 public class InventorySavedCrafting extends InventoryCrafting {
 
-	protected final NonNullList<ItemStack>	stacks;
+	protected final NonNullList<ItemStack>	stackList;
 	protected final Container				eventHandler;
 	protected final IItemHandler			inventory;
 
 	public InventorySavedCrafting(IItemHandler inventory, Container eventHandlerIn, int width, int height) {
 		super(eventHandlerIn, width, height);
-		this.stacks = NonNullList.<ItemStack>withSize(width * height, ItemStack.EMPTY);
+		this.stackList = NonNullList.<ItemStack>withSize(width * height, ItemStack.EMPTY);
 		this.eventHandler = eventHandlerIn;
 		this.inventory = inventory;
 		this.loadInventory();
@@ -28,12 +28,12 @@ public class InventorySavedCrafting extends InventoryCrafting {
 	 */
 	@Override
 	public int getSizeInventory() {
-		return this.stacks.size();
+		return this.stackList.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		for (ItemStack itemstack : this.stacks) {
+		for (ItemStack itemstack : this.stackList) {
 			if (!itemstack.isEmpty()) {
 				return false;
 			}
@@ -47,7 +47,7 @@ public class InventorySavedCrafting extends InventoryCrafting {
 	 */
 	@Override
 	public ItemStack getStackInSlot(int index) {
-		return index >= this.getSizeInventory() ? ItemStack.EMPTY : (ItemStack) this.stacks.get(index);
+		return index >= this.getSizeInventory() ? ItemStack.EMPTY : (ItemStack) this.stackList.get(index);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class InventorySavedCrafting extends InventoryCrafting {
 	 */
 	@Override
 	public ItemStack removeStackFromSlot(int index) {
-		return ItemStackHelper.getAndRemove(this.stacks, index);
+		return ItemStackHelper.getAndRemove(this.stackList, index);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class InventorySavedCrafting extends InventoryCrafting {
 	 */
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
-		ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+		ItemStack itemstack = ItemStackHelper.getAndSplit(this.stackList, index, count);
 
 		if (!itemstack.isEmpty()) {
 			this.eventHandler.onCraftMatrixChanged(this);
@@ -79,18 +79,18 @@ public class InventorySavedCrafting extends InventoryCrafting {
 	 */
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
-		this.stacks.set(index, stack);
+		this.stackList.set(index, stack);
 		this.eventHandler.onCraftMatrixChanged(this);
 	}
 
 	@Override
 	public void clear() {
-		this.stacks.clear();
+		this.stackList.clear();
 	}
 
 	@Override
 	public void fillStackedContents(RecipeItemHelper helper) {
-		for (ItemStack itemstack : this.stacks) {
+		for (ItemStack itemstack : this.stackList) {
 			helper.accountStack(itemstack);
 		}
 	}
@@ -107,14 +107,14 @@ public class InventorySavedCrafting extends InventoryCrafting {
 
 	public void loadInventory() {
 		for (int i = 0; i < getWidth() * getHeight(); i++) {
-			stacks.set(i, inventory.getStackInSlot(i).copy());
+			stackList.set(i, inventory.getStackInSlot(i).copy());
 		}
 	}
 
 	public void saveInventory() {
 		for (int i = 0; i < getWidth() * getHeight(); i++) {
 			inventory.extractItem(i, Integer.MAX_VALUE, false);
-			inventory.insertItem(i, stacks.get(i), false);
+			inventory.insertItem(i, stackList.get(i), false);
 		}
 	}
 

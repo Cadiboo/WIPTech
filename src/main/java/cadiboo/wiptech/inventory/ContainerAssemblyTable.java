@@ -31,22 +31,29 @@ public class ContainerAssemblyTable extends Container {
 	@Override
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
 
-		WIPTech.error(this.craftResult.getStackInSlot(0));
-		WIPTech.dump(this.craftResult.getStackInSlot(0));
+		// WIPTech.error(this.craftResult.getStackInSlot(0));
+		// WIPTech.dump(this.craftResult.getStackInSlot(0));
 
-		this.windowId++;
+		// this.windowId++;
 		// te.setAssembleItem(new ItemStack(Blocks.CRAFTING_TABLE));
 		// this.slotChangedCraftingGrid(this.player.world, this.player,
 		// this.craftMatrix, this.craftResult);
 		// InventoryCraftResult dummyResult = new InventoryCraftResult();
 		this.slotChangedCraftingGrid(this.player.world, this.player, this.craftMatrix, this.craftResult);
-		this.windowId--;
+		// this.windowId--;
 
-		craftResult.saveInventory();
-		craftResult.loadInventory();
-
-		WIPTech.error(this.craftResult.getStackInSlot(0));
-		WIPTech.dump(this.craftResult.getStackInSlot(0));
+		// craftResult.saveInventory();
+		// craftResult.loadInventory();
+		// craftMatrix.saveInventory();
+		// craftMatrix.loadInventory();
+		// craftResult.saveInventory();
+		// craftResult.loadInventory();
+		// craftMatrix.saveInventory();
+		// craftMatrix.loadInventory();
+		//
+		// WIPTech.error("cr:", this.craftResult.getStackInSlot(0));
+		// WIPTech.error("cm:", this.craftMatrix.getStackInSlot(0));
+		// WIPTech.dump(this.craftResult.getStackInSlot(0));
 		// if (dummyResult.getStackInSlot(0).isItemEqual(te.getAssembleItem()))
 		// te.setAssembleItem(new ItemStack(Items.DRAGON_BREATH));
 		//
@@ -126,8 +133,22 @@ public class ContainerAssemblyTable extends Container {
 			}
 		};
 
+		this.addSlotToContainer(new SlotCrafting(playerInv.player, this.craftMatrix, this.craftResult, 0, 130, 35) {
+			@Override
+			public boolean isItemValid(@Nonnull ItemStack stack) {
+				return te.getAssembleItem().isItemEqual(stack);
+			}
+
+			@Override
+			public void onSlotChanged() {
+				super.onSlotChanged();
+				te.markDirty();
+			}
+		});
+
 		for (int w = 0; w < craftMatrix.getWidth(); ++w) {
 			for (int h = 0; h < craftMatrix.getHeight(); ++h) {
+				WIPTech.info("___", this.getSlot(0), craftResult.getStackInSlot(0), craftMatrix.getStackInSlot(0));
 				this.addSlotToContainer(new Slot(this.craftMatrix, w + h * 2, 54 + w * 18, 17 + h * 18) {
 					@Override
 					public boolean isItemValid(ItemStack stack) {
@@ -154,19 +175,6 @@ public class ContainerAssemblyTable extends Container {
 				});
 			}
 		}
-
-		this.addSlotToContainer(new SlotCrafting(playerInv.player, this.craftMatrix, this.craftResult, 0, 130, 35) {
-			@Override
-			public boolean isItemValid(@Nonnull ItemStack stack) {
-				return te.getAssembleItem().isItemEqual(stack);
-			}
-
-			@Override
-			public void onSlotChanged() {
-				super.onSlotChanged();
-				te.markDirty();
-			}
-		});
 
 		// player inventory
 		for (int i = 0; i < 3; i++) {

@@ -3,13 +3,15 @@ package cadiboo.wiptech.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.IItemHandler;
 
 public class InventorySavedCraftResult extends InventoryCraftResult {
 
 	/** A list of one item containing the result of the crafting formula */
-	protected ItemStack				stack	= ItemStack.EMPTY;
-	protected final IItemHandler	inventory;
+	protected ItemStack					stack		= ItemStack.EMPTY;
+	protected NonNullList<ItemStack>	stackResult	= NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
+	protected final IItemHandler		inventory;
 
 	InventorySavedCraftResult(IItemHandler inventory) {
 		super();
@@ -37,6 +39,7 @@ public class InventorySavedCraftResult extends InventoryCraftResult {
 	@Override
 	public ItemStack decrStackSize(int index, int count) {
 		stack.shrink(count);
+		stackResult.set(0, this.stack);
 		return stack;
 	}
 
@@ -47,6 +50,7 @@ public class InventorySavedCraftResult extends InventoryCraftResult {
 	public ItemStack removeStackFromSlot(int index) {
 		ItemStack ret = stack;
 		this.clear();
+		stackResult.set(0, this.stack);
 		return ret;
 	}
 
@@ -57,6 +61,7 @@ public class InventorySavedCraftResult extends InventoryCraftResult {
 	@Override
 	public void setInventorySlotContents(int index, ItemStack stack) {
 		this.stack = stack;
+		stackResult.set(0, this.stack);
 	}
 
 	/**
@@ -71,6 +76,7 @@ public class InventorySavedCraftResult extends InventoryCraftResult {
 	@Override
 	public void clear() {
 		stack = ItemStack.EMPTY;
+		stackResult.set(0, this.stack);
 	}
 
 	@Override
@@ -85,11 +91,13 @@ public class InventorySavedCraftResult extends InventoryCraftResult {
 
 	public void loadInventory() {
 		stack = inventory.getStackInSlot(0);
+		stackResult.set(0, this.stack);
 	}
 
 	public void saveInventory() {
 		inventory.extractItem(0, Integer.MAX_VALUE, false);
 		inventory.insertItem(0, stack, false);
+		stackResult.set(0, this.stack);
 	}
 
 }
