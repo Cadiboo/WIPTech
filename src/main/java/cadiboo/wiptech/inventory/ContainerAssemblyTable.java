@@ -9,8 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
@@ -24,8 +22,8 @@ public class ContainerAssemblyTable extends Container {
 	private final EntityPlayer				player;
 	private final TileEntityAssemblyTable	te;
 
-	public InventoryCrafting	craftMatrix;
-	public InventoryCraftResult	craftResult;
+	public InventorySavedCrafting		craftMatrix;
+	public InventorySavedCraftResult	craftResult;
 
 	/**
 	 * Callback for when the crafting matrix is changed.
@@ -33,7 +31,8 @@ public class ContainerAssemblyTable extends Container {
 	@Override
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
 
-		WIPTech.dump(this.craftResult);
+		WIPTech.error(this.craftResult.getStackInSlot(0));
+		WIPTech.dump(this.craftResult.getStackInSlot(0));
 
 		this.windowId++;
 		// te.setAssembleItem(new ItemStack(Blocks.CRAFTING_TABLE));
@@ -43,7 +42,11 @@ public class ContainerAssemblyTable extends Container {
 		this.slotChangedCraftingGrid(this.player.world, this.player, this.craftMatrix, this.craftResult);
 		this.windowId--;
 
-		WIPTech.dump(this.craftResult);
+		craftResult.saveInventory();
+		craftResult.loadInventory();
+
+		WIPTech.error(this.craftResult.getStackInSlot(0));
+		WIPTech.dump(this.craftResult.getStackInSlot(0));
 		// if (dummyResult.getStackInSlot(0).isItemEqual(te.getAssembleItem()))
 		// te.setAssembleItem(new ItemStack(Items.DRAGON_BREATH));
 		//
