@@ -162,25 +162,26 @@ public abstract class ItemGun extends ItemBase {
 
 	@Override
 	public void onUpdate(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
+		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 		if (!worldIn.isRemote)
 			if (worldIn.getTotalWorldTime() % 10 == 0 && entityIn instanceof EntityPlayerMP)
 				((EntityPlayer) entityIn).inventoryContainer.detectAndSendChanges();
-
-		super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected);
 	}
 
 	@Override
 	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count) {
-		this.handleUsingTick(stack, player, count);
 		super.onUsingTick(stack, player, count);
+		if (!this.canShoot(stack))
+			player.stopActiveHand();
+		this.handleUsingTick(stack, player, count);
 	}
 
 	protected abstract void handleUsingTick(ItemStack stack, EntityLivingBase player, int count);
 
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
-		this.handleStoppedUsing(stack, worldIn, entityLiving, timeLeft);
 		super.onPlayerStoppedUsing(stack, worldIn, entityLiving, timeLeft);
+		this.handleStoppedUsing(stack, worldIn, entityLiving, timeLeft);
 	}
 
 	protected abstract void handleStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft);
