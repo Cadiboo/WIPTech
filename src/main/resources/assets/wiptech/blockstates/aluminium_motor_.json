@@ -1,8 +1,0 @@
-{
-    "variants": {
-        "normal": [
-            {"model": "wiptech:aluminium_motor"}
-        ],
-        "inventory": { "model": "wiptech:aluminium_motor" }
-    }
-}

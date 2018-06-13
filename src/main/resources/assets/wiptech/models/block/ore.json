@@ -3,7 +3,7 @@
 	"textures": {
 		"stone": "minecraft:blocks/stone",
 		"particle": "minecraft:blocks/stone",
-		"ore": "witpech:blocks/copper_ore"
+		"ore": "wiptech:blocks/copper_ore"
 	},
 	"elements": [
 		{

@@ -1,6 +1,0 @@
-{
-	"parent": "wiptech:block/motor",
-	"textures": {
-		"wire": "wiptech:blocks/aluminium_enamel_repeating"
-	}
-}
