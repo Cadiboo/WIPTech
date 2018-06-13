@@ -13,7 +13,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityAssemblyTable extends TileEntityBase implements ITickable {
 
-	private static final int[]	SLOTS				= new int[] { 1, 2, 3, 4, 5, 6 };
+	public static final int[]	SLOTS				= new int[] { 1, 2, 3, 4, 5, 6 };
 	private static final int[]	SLOTS_BOTTOM		= new int[] { 0 };
 	private static final int	ENERGY_CAPACITY		= 10000;
 	private static final int	ASSEMBLY_COST_TICK	= 100;
@@ -43,7 +43,7 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 		};
 	};
 
-	private ItemStackHandler inventoryNonBottom = new WrappedItemStackHandler(SLOTS.length, inventory, SLOTS.length);
+	private ItemStackHandler inventoryNonBottom = new WrappedItemStackHandler(SLOTS.length, inventory, SLOTS_BOTTOM.length);
 
 	private ItemStackHandler inventoryBottom = new WrappedItemStackHandler(SLOTS_BOTTOM.length, inventory, 0);
 

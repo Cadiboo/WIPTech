@@ -7,6 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -17,17 +18,29 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 public class AssembleRecipe extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
+
 	private final ItemStack					recipeOutput;
-	public final NonNullList<Ingredient>	recipeItems;
+	public final NonNullList<Ingredient>	requiredRecipeItems;
+	public final NonNullList<Ingredient>	optionalRecipeItems;
+	public final NonNullList<Ingredient>	allRecipeItems;
 	private final String					group;
 	private final boolean					isSimple;
 
-	public AssembleRecipe(String group, ItemStack output, NonNullList<Ingredient> ingredients) {
+	public AssembleRecipe(String group, ItemStack output, NonNullList<Ingredient> requiredIngredients, NonNullList<Ingredient> optionalIngredients) {
 		this.group = group;
 		this.recipeOutput = output;
-		this.recipeItems = ingredients;
+		this.requiredRecipeItems = requiredIngredients;
+		this.optionalRecipeItems = optionalIngredients;
+
+		NonNullList<Ingredient> allIngredients = requiredIngredients;
+		allIngredients.addAll(optionalIngredients);
+
+		this.allRecipeItems = allIngredients;
+
 		boolean simple = true;
-		for (Ingredient i : ingredients)
+		for (Ingredient i : requiredIngredients)
+			simple &= i.isSimple();
+		for (Ingredient i : optionalIngredients)
 			simple &= i.isSimple();
 		this.isSimple = simple;
 	}
@@ -44,7 +57,15 @@ public class AssembleRecipe extends net.minecraftforge.registries.IForgeRegistry
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		return this.recipeItems;
+		return this.allRecipeItems;
+	}
+
+	public NonNullList<Ingredient> getRequiredIngredients() {
+		return this.requiredRecipeItems;
+	}
+
+	public NonNullList<Ingredient> getOptionalIngredients() {
+		return this.optionalRecipeItems;
 	}
 
 	@Override
@@ -83,13 +104,13 @@ public class AssembleRecipe extends net.minecraftforge.registries.IForgeRegistry
 			}
 		}
 
-		if (ingredientCount != this.recipeItems.size())
+		if (ingredientCount < this.requiredRecipeItems.size())
 			return false;
 
 		if (this.isSimple)
 			return recipeItemHelper.canCraft(this, null);
 
-		return net.minecraftforge.common.util.RecipeMatcher.findMatches(inputs, this.recipeItems) != null;
+		return net.minecraftforge.common.util.RecipeMatcher.findMatches(inputs, this.allRecipeItems) != null;
 	}
 
 	/**
@@ -101,16 +122,17 @@ public class AssembleRecipe extends net.minecraftforge.registries.IForgeRegistry
 	}
 
 	public static AssembleRecipe deserialize(JsonObject json) {
-		String s = JsonUtils.getString(json, "group", "");
-		NonNullList<Ingredient> nonnulllist = deserializeIngredients(JsonUtils.getJsonArray(json, "ingredients"));
+		String group = JsonUtils.getString(json, "group", "");
+		NonNullList<Ingredient> required = deserializeIngredients(JsonUtils.getJsonArray(json, "required_ingredients"));
+		NonNullList<Ingredient> optional = deserializeIngredients(JsonUtils.getJsonArray(json, "optional_ingredients"));
 
-		if (nonnulllist.isEmpty()) {
-			throw new JsonParseException("No ingredients for shapeless recipe");
-		} else if (nonnulllist.size() > 9) {
-			throw new JsonParseException("Too many ingredients for shapeless recipe");
+		if (required.isEmpty() && optional.isEmpty()) {
+			throw new JsonParseException("No ingredients for assemble recipe");
+		} else if (required.size() > TileEntityAssemblyTable.SLOTS.length) {
+			throw new JsonParseException("Too many ingredients for assemble recipe");
 		} else {
 			ItemStack itemstack = ShapedRecipes.deserializeItem(JsonUtils.getJsonObject(json, "result"), true);
-			return new AssembleRecipe(s, itemstack, nonnulllist);
+			return new AssembleRecipe(group, itemstack, required, optional);
 		}
 	}
 
@@ -133,6 +155,6 @@ public class AssembleRecipe extends net.minecraftforge.registries.IForgeRegistry
 	 */
 	@Override
 	public boolean canFit(int width, int height) {
-		return width * height >= this.recipeItems.size();
+		return width * height >= this.requiredRecipeItems.size();
 	}
 }

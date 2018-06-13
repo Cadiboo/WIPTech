@@ -23,8 +23,9 @@ public class BlockBase extends Block {
 	// Beacon Base
 	private Block beaconBase;
 
-	public Block setBeaconBase() {
-		return beaconBase = this;
+	public BlockBase setBeaconBase() {
+		beaconBase = this;
+		return this;
 	}
 
 	@Override
@@ -33,11 +34,12 @@ public class BlockBase extends Block {
 	}
 
 	// Tile Entity
-	private Block isTileEntity;
+	private BlockBase isTileEntity;
 
-	public Block setTileEntity() {
+	public BlockBase setTileEntity() {
 		this.setHardness(4.0F);
-		return isTileEntity = this;
+		isTileEntity = this;
+		return this;
 	}
 
 	public boolean isTileEntity() {
@@ -45,10 +47,11 @@ public class BlockBase extends Block {
 	}
 
 	// Non-Solid Block
-	private Block nonSolidBlock;
+	private BlockBase nonSolidBlock;
 
-	public Block setNonSolidBlock() {
-		return nonSolidBlock = this;
+	public BlockBase setNonSolidBlock() {
+		nonSolidBlock = this;
+		return this;
 	}
 
 	public boolean isNonSolidBlock() {
@@ -56,10 +59,11 @@ public class BlockBase extends Block {
 	}
 
 	// Hidden Block (Not displayed in creative tab)
-	private Block hiddenBlock;
+	private BlockBase hiddenBlock;
 
-	public Block setHiddenBlock() {
-		return hiddenBlock = this;
+	public BlockBase setHiddenBlock() {
+		hiddenBlock = this;
+		return this;
 	}
 
 	public boolean isHiddenBlock() {
@@ -71,12 +75,13 @@ public class BlockBase extends Block {
 	}
 
 	// Circuit Material (non-solid, breaks easily)
-	private Block circuitMaterial;
+	private BlockBase circuitMaterial;
 
-	public Block setCircuitMaterial() {
+	public BlockBase setCircuitMaterial() {
 		setNonSolidBlock();
 		setHardness(0.1F);
-		return circuitMaterial = this;
+		circuitMaterial = this;
+		return this;
 	}
 
 	public boolean isCircuitMaterial() {
@@ -84,11 +89,12 @@ public class BlockBase extends Block {
 	}
 
 	// Circuit (possibly use it for electricity checks in future)
-	private Block circuit;
+	private BlockBase circuit;
 
-	public Block setCircuit() {
+	public BlockBase setCircuit() {
 		setCircuitMaterial();
-		return circuit = this;
+		circuit = this;
+		return this;
 	}
 
 	public boolean isCircuit() {
@@ -105,15 +111,22 @@ public class BlockBase extends Block {
 		return !this.isNonSolidBlock();
 	}
 
-	private Block transparentBlock;
+	private BlockBase transparentBlock;
 
-	public Block setTransparentBlock() {
+	public BlockBase setTransparentBlock() {
 		this.setNonSolidBlock();
-		return transparentBlock = this;
+		transparentBlock = this;
+		return this;
 	}
 
 	@Override
 	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return transparentBlock == this ? 0 : super.getLightOpacity(state, world, pos);
+	}
+
+	@Override
+	public BlockBase setBlockUnbreakable() {
+		super.setBlockUnbreakable();
+		return this;
 	}
 }

@@ -5,21 +5,20 @@ import java.util.ArrayList;
 import com.google.common.annotations.VisibleForTesting;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.recipes.AssembleRecipe;
 import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Recipes {
-	private static final ArrayList<ArrayList>			crushRecipes	= new ArrayList<ArrayList>();
-	private static final ArrayList<ArrayList>			hammerRecipes	= new ArrayList<ArrayList>();
-	private static final ArrayList<ArrayList>			coilRecipes		= new ArrayList<ArrayList>();
-	private static final ArrayList<ShapelessRecipes>	assembleRecipes	= new ArrayList<ShapelessRecipes>();
+	private static final ArrayList<ArrayList>		crushRecipes	= new ArrayList<ArrayList>();
+	private static final ArrayList<ArrayList>		hammerRecipes	= new ArrayList<ArrayList>();
+	private static final ArrayList<ArrayList>		coilRecipes		= new ArrayList<ArrayList>();
+	private static final ArrayList<AssembleRecipe>	assembleRecipes	= new ArrayList<AssembleRecipe>();
 
 	private static final Block AIR = net.minecraft.init.Blocks.AIR;
 
@@ -49,6 +48,15 @@ public class Recipes {
 	@VisibleForTesting
 	public static void addAssembleRecipes() {
 
+		NonNullList<Ingredient> requiredIngredients = NonNullList.<Ingredient>create();
+		requiredIngredients.add(Ingredient.fromItems(Items.ALUMINIUM_RAIL, Items.COPPER_RAIL, Items.GOLD_RAIL, Items.IRON_RAIL, Items.SILVER_RAIL, Items.TIN_RAIL));
+		requiredIngredients.add(Ingredient.fromItems(Items.ALUMINIUM_COIL, Items.COPPER_COIL, Items.GOLD_COIL, Items.IRON_COIL, Items.SILVER_COIL, Items.TIN_COIL));
+
+		NonNullList<Ingredient> optionalIngredients = NonNullList.<Ingredient>create();
+		optionalIngredients.add(Ingredient.fromItems(Items.ALUMINIUM_SWORD, Items.COPPER_SWORD, net.minecraft.init.Items.GOLDEN_SWORD, net.minecraft.init.Items.IRON_SWORD, Items.SILVER_SWORD, Items.TIN_SWORD));
+
+		AssembleRecipe recipe = new AssembleRecipe("wiptech:assembling", new ItemStack(Items.RAILGUN), requiredIngredients, optionalIngredients);
+		assembleRecipes.add(recipe);
 		// for (int rail = 0; rail < Rails.values().length; rail++)
 		// for (int capacitor = 0; capacitor < Capacitors.values().length; capacitor++)
 		// for (int circuit = 0; circuit < Circuits.values().length; circuit++)
@@ -77,13 +85,14 @@ public class Recipes {
 		// Class[] railgun_required = { ItemRail.class, ItemCapacitor.class,
 		// ItemCircuit.class };
 		// Class[] railgun_optional = { ItemScope.class, };
-		Class[] railgun_required = {};
-		Class[] railgun_optional = {};
-
-		NonNullList<Ingredient> ingredients = NonNullList.create();
-		ingredients.add(CraftingHelper.getIngredient(Items.ALUMINIUM_RAIL));
-		ShapelessRecipes recipe = new ShapelessRecipes("wiptech:assembling", new ItemStack(Items.RAILGUN), ingredients);
-		assembleRecipes.add(recipe);
+		// Class[] railgun_required = {};
+		// Class[] railgun_optional = {};
+		//
+		// NonNullList<Ingredient> ingredients = NonNullList.create();
+		// ingredients.add(CraftingHelper.getIngredient(Items.ALUMINIUM_RAIL));
+		// ShapelessRecipes recipe = new ShapelessRecipes("wiptech:assembling", new
+		// ItemStack(Items.RAILGUN), ingredients);
+		// assembleRecipes.add(recipe);
 		// WIPTech.info("WHY DID I JUST BREAK EVERYTHING :/");
 
 		// Class[] coilgun_required = { Coils.class, Capacitors.class, Circuits.class };
@@ -113,8 +122,8 @@ public class Recipes {
 
 	}
 
-	public static ShapelessRecipes getAssembleRecipeFor(ItemStack stack) {
-		for (ShapelessRecipes recipe : assembleRecipes) {
+	public static AssembleRecipe getAssembleRecipeFor(ItemStack stack) {
+		for (AssembleRecipe recipe : assembleRecipes) {
 			if (recipe.getRecipeOutput().isItemEqual(stack))
 				return recipe;
 		}

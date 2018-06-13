@@ -40,6 +40,8 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 		GlStateManager.translate(0, 0, 1);
 		Utils.renderStackWithoutTransforms(new ItemStack(Blocks.SILVER_MOTOR), te.getWorld());
 		GlStateManager.popMatrix();
+		if (true)
+			return;
 
 		IItemHandler inv = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 

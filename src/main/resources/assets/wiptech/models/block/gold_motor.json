@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/motor",
+	"textures": {
+		"wire": "wiptech:blocks/gold_enamel_repeating"
+	}
+}

@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.Recipes;
+import cadiboo.wiptech.recipes.AssembleRecipe;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -14,7 +15,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 
@@ -42,44 +42,6 @@ public class ContainerAssemblyTable extends Container {
 		this.slotChangedCraftingGrid(this.player.world, this.player, this.craftMatrix, dummyResult);
 
 		WIPTech.info(dummyResult);
-
-		// WIPTech.error("cr:", this.craftResult.getStackInSlot(0));
-		// WIPTech.error("cm:", this.craftMatrix.getStackInSlot(0));
-		// WIPTech.dump(this.craftResult.getStackInSlot(0));
-		// if (dummyResult.getStackInSlot(0).isItemEqual(te.getAssembleItem()))
-		// te.setAssembleItem(new ItemStack(Items.DRAGON_BREATH));
-		//
-		// WIPTech.info(te.getAssembleItem(), dummyResult.getStackInSlot(0),
-		// dummyResult.getStackInSlot(0).isItemEqual(te.getAssembleItem()));
-
-		// // protected void slotChangedCraftingGrid(World p_192389_1_, EntityPlayer
-		// // p_192389_2_, InventoryCrafting p_192389_3_, InventoryCraftResult
-		// p_192389_4_)
-		// // {
-		// if (true)
-		// return;
-		// World worldIn = this.player.world;
-		// EntityPlayer playerIn = this.player;
-		// InventoryCrafting matrix = this.craftMatrix;
-		// InventoryCraftResult result = this.craftResult;
-		// if (!worldIn.isRemote) {
-		// EntityPlayerMP entityplayermp = (EntityPlayerMP) playerIn;
-		// ItemStack itemstack = ItemStack.EMPTY;
-		// IRecipe irecipe = CraftingManager.findMatchingRecipe(matrix, worldIn);
-		//
-		// if (irecipe != null && (irecipe.isDynamic() ||
-		// !worldIn.getGameRules().getBoolean("doLimitedCrafting") ||
-		// entityplayermp.getRecipeBook().isUnlocked(irecipe))) {
-		// result.setRecipeUsed(irecipe);
-		// itemstack = irecipe.getCraftingResult(matrix);
-		// }
-		//
-		// result.setInventorySlotContents(0, itemstack);
-		// entityplayermp.connection.sendPacket(new SPacketSetSlot(this.windowId + 1, 0,
-		// itemstack));
-		// }
-		// // }
-
 	}
 
 	/**
@@ -96,9 +58,8 @@ public class ContainerAssemblyTable extends Container {
 		this.player = playerInv.player;
 		this.te = teIn;
 
-		WIPTech.dump(te.getInventory(EnumFacing.UP));
-
-		craftMatrix = new InventorySavedCrafting(te.getInventory(EnumFacing.UP), this, Math.min(2, te.getInventory(EnumFacing.UP).getSlots()), Math.round(te.getInventory(EnumFacing.UP).getSlots() / 2)) {
+		craftMatrix = new InventorySavedCrafting(te.getInventory(EnumFacing.UP), this, Math.min(2, te.getInventory(EnumFacing.UP).getSlots()),
+				Math.round(te.getInventory(EnumFacing.UP).getSlots() / Math.min(2, te.getInventory(EnumFacing.UP).getSlots()))) {
 			@Override
 			public void clear() {
 				super.clear();
@@ -144,8 +105,8 @@ public class ContainerAssemblyTable extends Container {
 				this.addSlotToContainer(new Slot(this.craftMatrix, w + h * 2, 54 + w * 18, 17 + h * 18) {
 					@Override
 					public boolean isItemValid(ItemStack stack) {
-						if (false) {
-							ShapelessRecipes recipe = Recipes.getAssembleRecipeFor(te.getAssembleItem());
+						if (true) {
+							AssembleRecipe recipe = Recipes.getAssembleRecipeFor(te.getAssembleItem());
 							if (recipe == null)
 								return false;
 							NonNullList<Ingredient> ingredients = recipe.getIngredients();

@@ -25,7 +25,6 @@ public class BlockPeripheralBlock extends BlockTileEntity<TileEntityPeripheral> 
 		super(name, materialIn);
 		this.setHiddenBlock();
 		this.setTransparentBlock();
-		this.setBlockUnbreakable();
 	}
 
 	@Override

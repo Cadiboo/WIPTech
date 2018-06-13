@@ -1,0 +1,34 @@
+{
+	"parent": "block/block",
+	"textures": {
+		"stone": "minecraft:blocks/stone",
+		"particle": "minecraft:blocks/stone",
+		"ore": "witpech:blocks/copper_ore"
+	},
+	"elements": [
+		{
+			"from": [0.01, 0.01, 0.01],
+			"to": [15.99, 15.99, 15.99],
+			"faces": {
+				"north": {"uv": [0, 0, 15.99, 15.99], "texture": "#stone"},
+				"east": {"uv": [0, 0, 15.99, 15.99], "texture": "#stone"},
+				"south": {"uv": [0, 0, 15.99, 15.99], "texture": "#stone"},
+				"west": {"uv": [0, 0, 15.99, 15.99], "texture": "#stone"},
+				"up": {"uv": [0, 0, 15.99, 15.99], "texture": "#stone"},
+				"down": {"uv": [0, 0, 15.99, 15.99], "texture": "#stone"}
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#ore"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#ore"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#ore"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#ore"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#ore"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#ore"}
+			}
+		}
+	]
+}

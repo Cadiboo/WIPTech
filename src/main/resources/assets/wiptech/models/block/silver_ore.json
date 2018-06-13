@@ -1,6 +1,6 @@
 {
-    "parent": "block/cube_all",
-    "textures": {
-        "all": "wiptech:blocks/silver_ore"
-    }
+	"parent": "wiptech:block/ore",
+	"textures": {
+		"ore": "wiptech:blocks/silver_ore"
+	}
 }

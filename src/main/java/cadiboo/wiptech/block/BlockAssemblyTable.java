@@ -17,7 +17,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -43,7 +42,9 @@ public class BlockAssemblyTable extends BlockTileEntity<TileEntityAssemblyTable>
 			if (itemStackIn.hasTagCompound()) {
 				int energy = itemStackIn.getTagCompound().getInteger("Energy");
 				IEnergyStorage storage = ((TileEntityAssemblyTable) te).getCapability(CapabilityEnergy.ENERGY, null);
-				storage = new EnergyStorage(storage.getMaxEnergyStored(), storage.getMaxEnergyStored(), storage.getMaxEnergyStored(), energy);
+				storage.receiveEnergy(energy, false);
+				// storage = new EnergyStorage(storage.getMaxEnergyStored(),
+				// storage.getMaxEnergyStored(), storage.getMaxEnergyStored(), energy);
 			}
 		}
 	}
