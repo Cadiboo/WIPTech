@@ -155,9 +155,9 @@ public class Blocks {
 	public static Set<Block> getTileEntities() {
 		for (int i = 0; i < BLOCKS.length; i++) {
 			if (BLOCKS[i] instanceof BlockBase && ((BlockBase) Blocks.BLOCKS[i]).isTileEntity())
-				HIDDEN_BLOCKS.add(BLOCKS[i]);
+				TILE_ENTITIES.add(BLOCKS[i]);
 		}
-		return HIDDEN_BLOCKS;
+		return TILE_ENTITIES;
 	}
 
 	public static List<Block> getBlockItems() {
