@@ -201,7 +201,7 @@ public class ItemPlasmagun extends ItemBase {
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
-		WIPTech.logger.info(itemstack.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored());
+		WIPTech.info(itemstack.getCapability(CapabilityEnergy.ENERGY, null).getEnergyStored());
 
 		if (itemstack.getItem() == Items.PLASMA_GUN) {
 			IWeaponModular modules = itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
@@ -236,13 +236,13 @@ public class ItemPlasmagun extends ItemBase {
 			tooltip.addAll(modules.getModuleList());
 		}
 
-		WIPTech.logger.info(modules.getModuleList());
+		WIPTech.info(modules.getModuleList());
 
 		IEnergyStorage energy = itemStackIn.getCapability(CapabilityEnergy.ENERGY, null);
 		if (energy != null) {
-			WIPTech.logger.info(energy);
+			WIPTech.info(energy);
 			// energy.setEnergyStored(5);
-			WIPTech.logger.info(energy.getEnergyStored());
+			WIPTech.info(energy.getEnergyStored());
 			tooltip.add(EnergyUtils.formatEnergy(energy));
 		}
 		super.addInformation(itemStackIn, worldIn, tooltip, flagIn);

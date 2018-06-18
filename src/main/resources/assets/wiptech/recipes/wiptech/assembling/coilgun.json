@@ -1,0 +1,29 @@
+{
+	"type": "wiptech:assembling",
+	"ingredients": {
+		"required": [
+			{
+				"item": "wiptech:gun_body"
+			},
+			{
+				"tag": "wiptech:capacitor"
+			},
+			{
+				"tag": "wiptech:coil"
+			},
+			{
+				"tag": "wiptech:circuit"
+			}
+		],
+		"optional": [
+			{
+				"tag": "wiptech:scope"
+			}
+		]
+	},
+	"result": {
+		"item": "wiptech:coilgun"
+	},
+	"energy": 10000,
+	"duration": 200
+}

@@ -49,7 +49,7 @@ public class TESRWire extends TileEntitySpecialRenderer<TileEntityWire> {
 	public void render(TileEntityWire te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
 		if (!(te.getBlockType() instanceof BlockWire)) {
-			WIPTech.logger.error("WIRE RENDERING ERROR! BLOCK IS NOT WIRE");
+			WIPTech.error("WIRE RENDERING ERROR! BLOCK IS NOT WIRE");
 			return;
 		}
 		final boolean isEnamel = ((BlockWire) te.getBlockType()).isEnamel();

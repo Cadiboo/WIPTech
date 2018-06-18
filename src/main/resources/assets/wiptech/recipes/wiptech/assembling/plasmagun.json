@@ -1,0 +1,32 @@
+{
+	"type": "wiptech:assembling",
+	"ingredients": {
+		"required": [
+			{
+				"item": "wiptech:gun_body"
+			},
+			{
+				"tag": "wiptech:capacitor"
+			},
+			{
+				"tag": "wiptech:rail"
+			},
+			{
+				"tag": "wiptech:coil"
+			},
+			{
+				"tag": "wiptech:circuit"
+			}
+		],
+		"optional": [
+			{
+				"tag": "wiptech:scope"
+			}
+		]
+	},
+	"result": {
+		"item": "wiptech:plasmagun"
+	},
+	"energy": 10000,
+	"duration": 200
+}

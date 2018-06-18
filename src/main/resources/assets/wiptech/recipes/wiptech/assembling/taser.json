@@ -1,0 +1,30 @@
+{
+	"type": "wiptech:assembling",
+	"ingredients": {
+		"required": [
+			{
+				"item": "wiptech:gun_body"
+			},
+			{
+				"tag": "wiptech:capacitor"
+			},
+			{
+				"tag": "wiptech:rail",
+				"count": 2
+			}
+			{
+				"tag": "wiptech:circuit"
+			}
+		],
+		"optional": [
+			{
+				"tag": "wiptech:scope"
+			}
+		]
+	},
+	"result": {
+		"item": "wiptech:taser"
+	},
+	"energy": 10000,
+	"duration": 200
+}

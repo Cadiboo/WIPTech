@@ -18,7 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class BlockAssemblyTable extends BlockTileEntity<TileEntityAssemblyTable> {
@@ -66,25 +65,29 @@ public class BlockAssemblyTable extends BlockTileEntity<TileEntityAssemblyTable>
 
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-		TileEntityAssemblyTable tile = (TileEntityAssemblyTable) worldIn.getTileEntity(pos);
-		if (tile != null) {
-			IItemHandler inven = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			for (int i = 0; i < inven.getSlots(); i++) {
-				ItemStack stack = inven.getStackInSlot(i);
-				if (!stack.isEmpty()) {
-					EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
-					worldIn.spawnEntity(item);
-				}
-			}
-			worldIn.removeTileEntity(pos);
-			for (int x = -1; x < 2; x++)
-				for (int z = -1; z < 2; z++)
-					for (int y = 0; y < 2; y++)
-						if (BlockPeripheralBlock.isPeripheral(worldIn, pos.up(y).north(z).west(x)))
-							worldIn.setBlockToAir(pos.up(y).north(z).west(x));
+		TileEntity te = worldIn.getTileEntity(pos);
+		if (te == null || !(te instanceof TileEntityAssemblyTable)) {
 			super.breakBlock(worldIn, pos, state);
-			worldIn.setBlockToAir(pos);
+			return;
 		}
+		TileEntityAssemblyTable tile = (TileEntityAssemblyTable) te;
+
+		IItemHandler inventory = tile.getInventory(null);
+		for (int i = 0; i < inventory.getSlots(); i++) {
+			ItemStack stack = inventory.getStackInSlot(i);
+			if (!stack.isEmpty()) {
+				EntityItem item = new EntityItem(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
+				worldIn.spawnEntity(item);
+			}
+		}
+		worldIn.removeTileEntity(pos);
+		for (int x = -1; x < 2; x++)
+			for (int z = -1; z < 2; z++)
+				for (int y = 0; y < 2; y++)
+					if (BlockPeripheralBlock.isPeripheral(worldIn, pos.up(y).north(z).west(x)))
+						worldIn.setBlockToAir(pos.up(y).north(z).west(x));
+		super.breakBlock(worldIn, pos, state);
+		worldIn.setBlockToAir(pos);
 	}
 
 	@Override

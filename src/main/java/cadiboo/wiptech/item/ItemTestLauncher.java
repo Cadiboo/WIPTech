@@ -24,11 +24,11 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 public class ItemTestLauncher extends ItemBase {
 
-	private boolean overheat;
-	private long lastShootTime;
-	private long secondlastShootTime;
-	private long thirdlastShootTime;
-	private long fourthlastShootTime;
+	private boolean	overheat;
+	private long	lastShootTime;
+	private long	secondlastShootTime;
+	private long	thirdlastShootTime;
+	private long	fourthlastShootTime;
 
 	public ItemTestLauncher(String name) {
 		super(name);
@@ -53,8 +53,7 @@ public class ItemTestLauncher extends ItemBase {
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack itemStackIn, World worldIn, EntityLivingBase entityLiving,
-			int timeLeft) {
+	public void onPlayerStoppedUsing(ItemStack itemStackIn, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
 		if (entityLiving instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) entityLiving;
 			ItemStack ammoStack = ItemStack.EMPTY;
@@ -71,18 +70,14 @@ public class ItemTestLauncher extends ItemBase {
 
 				IWeaponModular modules = itemStackIn.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null);
 
-				boolean flag = player.capabilities.isCreativeMode
-						|| (ammoStack.getItem() instanceof ItemParamagneticProjectile
-								&& ((ItemParamagneticProjectile) ammoStack.getItem()).isInfinite(ammoStack, itemStackIn,
-										player));
+				boolean flag = player.capabilities.isCreativeMode || (ammoStack.getItem() instanceof ItemParamagneticProjectile && ((ItemParamagneticProjectile) ammoStack.getItem()).isInfinite(ammoStack, itemStackIn, player));
 
 				this.fourthlastShootTime = this.thirdlastShootTime;
 				this.thirdlastShootTime = this.secondlastShootTime;
 				this.secondlastShootTime = this.lastShootTime;
 				this.lastShootTime = worldIn.getTotalWorldTime();
 
-				if ((this.lastShootTime - this.secondlastShootTime + this.thirdlastShootTime
-						- fourthlastShootTime) < 5) {
+				if ((this.lastShootTime - this.secondlastShootTime + this.thirdlastShootTime - fourthlastShootTime) < 5) {
 					this.overheat = true;
 				} else {
 					this.overheat = false;
@@ -90,16 +85,12 @@ public class ItemTestLauncher extends ItemBase {
 
 				if (!worldIn.isRemote) {
 
-					ItemParamagneticProjectile itemprojectile = (ItemParamagneticProjectile) (ammoStack
-							.getItem() instanceof ItemParamagneticProjectile ? ammoStack.getItem()
-									: Items.PARAMAGNETIC_PROJECILE);
-					EntityParamagneticProjectile projectile = itemprojectile.createProjectile(worldIn, ammoStack,
-							player, false);
-					velocity = (EntityParamagneticProjectile.getProjectileVelocity(ammoStack))
-							* (modules.getCoil().getEfficiencyFraction());
-					WIPTech.logger.info(velocity);
-					WIPTech.logger.info(EntityParamagneticProjectile.getProjectileVelocity(ammoStack));
-					WIPTech.logger.info(modules.getCoil().getEfficiencyFraction());
+					ItemParamagneticProjectile itemprojectile = (ItemParamagneticProjectile) (ammoStack.getItem() instanceof ItemParamagneticProjectile ? ammoStack.getItem() : Items.PARAMAGNETIC_PROJECILE);
+					EntityParamagneticProjectile projectile = itemprojectile.createProjectile(worldIn, ammoStack, player, false);
+					velocity = (EntityParamagneticProjectile.getProjectileVelocity(ammoStack)) * (modules.getCoil().getEfficiencyFraction());
+					WIPTech.info(velocity);
+					WIPTech.info(EntityParamagneticProjectile.getProjectileVelocity(ammoStack));
+					WIPTech.info(modules.getCoil().getEfficiencyFraction());
 					projectile.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.1F);
 
 					if (this.overheat) {
@@ -113,8 +104,7 @@ public class ItemTestLauncher extends ItemBase {
 					worldIn.spawnEntity(projectile);
 				}
 
-				worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT,
-						SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
+				worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
 				if (!flag) {
 					ammoStack.shrink(1);
@@ -132,7 +122,7 @@ public class ItemTestLauncher extends ItemBase {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 
 		if (itemstack.getItem() == Items.TEST_LAUNCHER) {
-			WIPTech.logger.info(itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).getModuleList());
+			WIPTech.info(itemstack.getCapability(Capabilities.MODULAR_WEAPON_CAPABILITY, null).getModuleList());
 
 			if (!worldIn.isRemote && playerIn.isSneaking()) {
 				playerIn.openGui(WIPTech.instance, GuiHandler.TEST_LAUNCHER, worldIn, 0, 0, 0);

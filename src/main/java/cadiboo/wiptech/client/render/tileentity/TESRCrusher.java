@@ -48,7 +48,7 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 					break;
 				default:
 					GlStateManager.translate(0.0F, 0.0F, 0.0F);
-					WIPTech.logger.info("Crusher Simple Rendering Offset Error!!");
+					WIPTech.info("Crusher Simple Rendering Offset Error!!");
 			}
 			GlStateManager.rotate(-90 * te.getWorld().getBlockState(te.getPos()).getValue(FACING).getOpposite().getHorizontalIndex(), 0.0F, 1F, 0.0F);
 			bindTexture(IRON_TEXTURE);
@@ -95,7 +95,7 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 					break;
 				default:
 					GlStateManager.translate(0.0F, 0.0F, 0.0F);
-					WIPTech.logger.info("Crusher Rendering Offset Error!!");
+					WIPTech.info("Crusher Rendering Offset Error!!");
 			}
 			double smalloffset = 0.01D;
 			switch (enumfacing) {
@@ -113,7 +113,7 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 					break;
 				default:
 					GlStateManager.translate(0.0F, 0.0F, 0.0F);
-					WIPTech.logger.info("Crusher Rendering Small Offset Error!!");
+					WIPTech.info("Crusher Rendering Small Offset Error!!");
 			}
 			if (stackCrusherBit.getItem() == Items.HAMMER) {
 				GlStateManager.translate(0.0D, 0.5D, 0.0D);
@@ -159,7 +159,7 @@ public class TESRCrusher extends TileEntitySpecialRenderer<TileEntityCrusher> {
 					break;
 				default:
 					GlStateManager.translate(0.0F, 0.0F, 0.0F);
-					WIPTech.logger.info("Crusher Rendering StackToCrush Offset Error!!");
+					WIPTech.info("Crusher Rendering StackToCrush Offset Error!!");
 			}
 			GlStateManager.rotate(-90 * te.getWorld().getBlockState(te.getPos()).getValue(FACING).getHorizontalIndex(), 0.0F, 1.0F, 0.0F);
 			if (isItem) {

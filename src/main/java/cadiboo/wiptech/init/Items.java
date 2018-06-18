@@ -154,7 +154,8 @@ public class Items {
 
 	public static final ItemMissileLauncher MISSILE_LAUNCHER = new ItemMissileLauncher("missile_launcher");
 
-	public static final ItemBase GUN_BODY = new ItemBase("gun_body");
+	public static final ItemBase	GUN_BODY	= new ItemBase("gun_body");
+	public static final ItemBase	TOOL_BODY	= new ItemBase("tool_body");
 
 	// semi
 
@@ -232,7 +233,9 @@ public class Items {
 
 			STANDALONE_GUN,
 
-			GUN_BODY, MISSILE_LAUNCHER,
+			GUN_BODY, TOOL_BODY,
+
+			MISSILE_LAUNCHER,
 
 			//
 

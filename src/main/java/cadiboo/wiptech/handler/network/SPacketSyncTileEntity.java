@@ -15,15 +15,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PacketSyncTileEntity implements IMessage, IMessageHandler<PacketSyncTileEntity, IMessage> {
+public class SPacketSyncTileEntity implements IMessage, IMessageHandler<SPacketSyncTileEntity, IMessage> {
 
 	private NBTTagCompound	syncTag;
 	private BlockPos		pos;
 
-	public PacketSyncTileEntity() {
+	public SPacketSyncTileEntity() {
 	}
 
-	public PacketSyncTileEntity(NBTTagCompound syncTag, BlockPos pos) {
+	public SPacketSyncTileEntity(NBTTagCompound syncTag, BlockPos pos) {
 		this.syncTag = syncTag;
 		this.pos = pos;
 	}
@@ -46,13 +46,26 @@ public class PacketSyncTileEntity implements IMessage, IMessageHandler<PacketSyn
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public IMessage onMessage(PacketSyncTileEntity message, MessageContext ctx) {
-		// WIPTech.logger.info("message: " + message);
+	public IMessage onMessage(SPacketSyncTileEntity message, MessageContext ctx) {
+		// WIPTech.info("RECIEVED SERVER->CLIENT SYNC");
+		// WIPTech.dump("message: " + message);
 		if (message.syncTag != null) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
+				if (Minecraft.getMinecraft() == null)
+					return;
+				if (Minecraft.getMinecraft().world == null)
+					return;
+				if (message.pos == null)
+					return;
+
 				TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(message.pos);
 				if (tile != null && tile instanceof TileEntityBase) {
-					// WIPTech.logger.info("syncTag = " + message.syncTag);
+					// WIPTech.info("syncTag = " + message.syncTag);
+					// WIPTech.dump(tile.writeToNBT(new NBTTagCompound()));
+					// WIPTech.dump(message.syncTag);
+					// WIPTech.info(tile.writeToNBT(new NBTTagCompound()));
+					// WIPTech.info(message.syncTag);
+					// WIPTech.info("", "");
 					((TileEntityBase) tile).readNBT(message.syncTag, TileEntityBase.NBTType.SYNC);
 					((TileEntityBase) tile).onSyncPacket();
 				}

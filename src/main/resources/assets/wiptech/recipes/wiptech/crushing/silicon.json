@@ -1,0 +1,17 @@
+{
+	"type": "wiptech:crushing",
+	"ingredient": {
+		"item": "minecraft:sand",
+		"data": 0,
+		"count": 1
+	},
+	"results": [
+		{
+			"item": "wiptech:silicon",
+			"data": 0,
+			"count": 1
+		}
+	],
+	"experience": 0.1,
+	"duration": 200
+}

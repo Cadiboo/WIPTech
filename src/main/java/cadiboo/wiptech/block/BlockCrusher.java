@@ -66,26 +66,25 @@ public class BlockCrusher extends BlockTileEntity<TileEntityCrusher> {
 				double y = pos.getY() + 0.2D;
 				double z = pos.getZ() + 0.5D;
 				switch (enumfacing) {
-				case NORTH:
-					z += 0.2D;
-					break;
-				case EAST:
-					x -= 0.2D;
-					break;
-				case SOUTH:
-					z -= 0.2D;
-					break;
-				case WEST:
-					x += 0.2D;
-					break;
-				default:
-					WIPTech.logger.info("Crusher animateCrush Error!!");
-					break;
+					case NORTH:
+						z += 0.2D;
+						break;
+					case EAST:
+						x -= 0.2D;
+						break;
+					case SOUTH:
+						z -= 0.2D;
+						break;
+					case WEST:
+						x += 0.2D;
+						break;
+					default:
+						WIPTech.info("Crusher animateCrush Error!!");
+						break;
 				}
 				int spawnParticleCount = 4;
 				for (int i = 0; i < spawnParticleCount; i++) {
-					worldIn.spawnParticle(EnumParticleTypes.ITEM_CRACK, x, y, z, Utils.randomBetween(-35, 35) / 1000.0D,
-							0.15D, Utils.randomBetween(-35, 35) / 1000.0D,
+					worldIn.spawnParticle(EnumParticleTypes.ITEM_CRACK, x, y, z, Utils.randomBetween(-35, 35) / 1000.0D, 0.15D, Utils.randomBetween(-35, 35) / 1000.0D,
 							new int[] { Item.getIdFromItem(stack.getItem()), stack.getItem().getMetadata(stack) });
 				}
 			}
@@ -102,31 +101,25 @@ public class BlockCrusher extends BlockTileEntity<TileEntityCrusher> {
 			double z = pos.getZ() + 0.5D;
 			double d4 = rand.nextDouble() * 0.6D - 0.3D;
 			if (rand.nextDouble() < 0.1D) {
-				worldIn.playSound(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D,
-						SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
+				worldIn.playSound(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 1.0F, false);
 			}
-			worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + d4, y + 0.4D + d4 / 10.0D, y + d4, 0.0D, 0.0D,
-					0.0D, new int[0]);
+			worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, x + d4, y + 0.4D + d4 / 10.0D, y + d4, 0.0D, 0.0D, 0.0D, new int[0]);
 		}
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
-			EnumFacing side, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
 		if (!world.isRemote) {
 			TileEntityCrusher tile = getTileEntity(world, pos);
 			IItemHandler itemHandler = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-			WIPTech.logger.info(itemHandler);
-			WIPTech.logger.info("player.isSneaking(): " + player.isSneaking());
+			WIPTech.info("CRUSHER: ", itemHandler);
+			WIPTech.info("CRUSHER: player.isSneaking(): " + player.isSneaking());
 			if (!player.isSneaking()) {
 				player.openGui(WIPTech.instance, GuiHandler.CRUSHER, world, pos.getX(), pos.getY(), pos.getZ());
 			} else {
 				ItemStack stack = itemHandler.getStackInSlot(0);
-				player.sendMessage(new TextComponentString((!stack.isEmpty()
-						? stack.getCount() + "x "
-								+ WIPTech.proxy.localize(new StringBuilder(String.valueOf(stack.getUnlocalizedName()))
-										.append(".name").toString(), new Object[0])
-						: "Empty") + " " + tile.getCrushTime()));
+				player.sendMessage(new TextComponentString(
+						(!stack.isEmpty() ? stack.getCount() + "x " + WIPTech.proxy.localize(new StringBuilder(String.valueOf(stack.getUnlocalizedName())).append(".name").toString(), new Object[0]) : "Empty") + " " + tile.getCrushTime()));
 			}
 		}
 		return true;
@@ -146,14 +139,11 @@ public class BlockCrusher extends BlockTileEntity<TileEntityCrusher> {
 			EnumFacing enumfacing = state.getValue(FACING);
 			if ((enumfacing == EnumFacing.NORTH) && (iblockstate.isFullBlock()) && (!iblockstate1.isFullBlock())) {
 				enumfacing = EnumFacing.SOUTH;
-			} else if ((enumfacing == EnumFacing.SOUTH) && (iblockstate1.isFullBlock())
-					&& (!iblockstate.isFullBlock())) {
+			} else if ((enumfacing == EnumFacing.SOUTH) && (iblockstate1.isFullBlock()) && (!iblockstate.isFullBlock())) {
 				enumfacing = EnumFacing.NORTH;
-			} else if ((enumfacing == EnumFacing.WEST) && (iblockstate2.isFullBlock())
-					&& (!iblockstate3.isFullBlock())) {
+			} else if ((enumfacing == EnumFacing.WEST) && (iblockstate2.isFullBlock()) && (!iblockstate3.isFullBlock())) {
 				enumfacing = EnumFacing.EAST;
-			} else if ((enumfacing == EnumFacing.EAST) && (iblockstate3.isFullBlock())
-					&& (!iblockstate2.isFullBlock())) {
+			} else if ((enumfacing == EnumFacing.EAST) && (iblockstate3.isFullBlock()) && (!iblockstate2.isFullBlock())) {
 				enumfacing = EnumFacing.WEST;
 			}
 			worldIn.setBlockState(pos, state.withProperty(FACING, enumfacing), 2);
@@ -161,14 +151,12 @@ public class BlockCrusher extends BlockTileEntity<TileEntityCrusher> {
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY,
-			float hitZ, int meta, EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer,
-			ItemStack stack) {
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
 	}
 

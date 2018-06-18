@@ -10,10 +10,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -26,22 +27,29 @@ public class ContainerAssemblyTable extends Container {
 	public InventorySavedCrafting		craftMatrix;
 	public InventorySavedCraftResult	craftResult;
 
+	public static final int	SLOT_X_OFFSET		= 54;
+	public static final int	SLOT_Y_OFFSET		= 17;
+	public static final int	SLOT_X_MULTIPLIER	= 18;
+	public static final int	SLOT_Y_MULTIPLIER	= 18;
+
 	/**
 	 * Callback for when the crafting matrix is changed.
 	 */
 
 	@Override
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
+		// TODO make a button instead
+		te.tryStartAssemble(craftMatrix, player);
+	}
 
-		// WIPTech.error(this.craftResult.getStackInSlot(0));
-		// WIPTech.dump(this.craftResult.getStackInSlot(0));
-
-		InventoryCraftResult dummyResult = new InventoryCraftResult();
-		// this.slotChangedCraftingGrid(this.player.world, this.player,
-		// this.craftMatrix, this.craftResult);
-		this.slotChangedCraftingGrid(this.player.world, this.player, this.craftMatrix, dummyResult);
-
-		WIPTech.info(dummyResult);
+	public void assemble() {
+		if (player.world.isRemote)
+			return;
+		IRecipe irecipe = CraftingManager.findMatchingRecipe(craftMatrix, player.world);
+		if (irecipe != null && irecipe instanceof AssembleRecipe) {
+			this.slotChangedCraftingGrid(player.world, player, craftMatrix, craftResult);
+			this.craftMatrix.clear();
+		}
 	}
 
 	/**
@@ -57,6 +65,8 @@ public class ContainerAssemblyTable extends Container {
 	public ContainerAssemblyTable(InventoryPlayer playerInv, final TileEntityAssemblyTable teIn) {
 		this.player = playerInv.player;
 		this.te = teIn;
+
+		Recipes.addAssembleRecipes();
 
 		craftMatrix = new InventorySavedCrafting(te.getInventory(EnumFacing.UP), this, Math.min(2, te.getInventory(EnumFacing.UP).getSlots()),
 				Math.round(te.getInventory(EnumFacing.UP).getSlots() / Math.min(2, te.getInventory(EnumFacing.UP).getSlots()))) {
@@ -102,7 +112,7 @@ public class ContainerAssemblyTable extends Container {
 		for (int w = 0; w < craftMatrix.getWidth(); ++w) {
 			for (int h = 0; h < craftMatrix.getHeight(); ++h) {
 				WIPTech.info("___", this.getSlot(0), craftResult.getStackInSlot(0), craftMatrix.getStackInSlot(0));
-				this.addSlotToContainer(new Slot(this.craftMatrix, w + h * 2, 54 + w * 18, 17 + h * 18) {
+				this.addSlotToContainer(new Slot(this.craftMatrix, w + h * 2, SLOT_X_OFFSET + w * SLOT_X_MULTIPLIER, SLOT_Y_OFFSET + h * SLOT_Y_MULTIPLIER) {
 					@Override
 					public boolean isItemValid(ItemStack stack) {
 						if (true) {

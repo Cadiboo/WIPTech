@@ -14,11 +14,6 @@ public class Proxy implements IProxy {
 	public static final ItemStack PLASMA_GUN_STACK = new ItemStack(Items.PLASMA_GUN);
 
 	@Override
-	public void logLogicalSide() {
-		WIPTech.logger.info("Logical Side: Client");
-	}
-
-	@Override
 	public String localize(String unlocalized, Object... args) {
 		return I18n.format(unlocalized, args);
 	}
@@ -54,7 +49,7 @@ public class Proxy implements IProxy {
 			Blocks.BLOCKS[i].setCreativeTab(modTab);
 		}
 
-		WIPTech.logger.info("createCreativeTab - Added all Items and Blocks to " + WIPTech.proxy.localize(new StringBuilder().append(modTab).append(".name").toString(), new Object[0]) + " Tab");
+		WIPTech.info("createCreativeTab - Added all Items and Blocks to " + WIPTech.proxy.localize(new StringBuilder().append(modTab).append(".name").toString(), new Object[0]) + " Tab");
 
 	}
 

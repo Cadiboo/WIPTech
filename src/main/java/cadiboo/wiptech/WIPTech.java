@@ -31,7 +31,7 @@ public class WIPTech {
 	@SidedProxy(serverSide = Reference.SERVER_PROXY_CLASS, clientSide = Reference.CLIENT_PROXY_CLASS)
 	public static IProxy proxy;
 
-	public static final Logger logger = LogManager.getLogger(Reference.ID);
+	private static final Logger LOGGER = LogManager.getLogger(Reference.ID);
 
 	// HALF DONE STOP ARROW-LIKE BOUNCE OFF - Partly done, they now either go
 	// through the mob or teleport into the ground a block below it...
@@ -82,13 +82,13 @@ public class WIPTech {
 
 	public static void info(Object... msgs) {
 		for (Object msg : msgs) {
-			logger.info(msg);
+			LOGGER.info(msg);
 		}
 	}
 
 	public static void error(Object... msgs) {
 		for (Object msg : msgs) {
-			logger.error(msg);
+			LOGGER.error(msg);
 		}
 	}
 

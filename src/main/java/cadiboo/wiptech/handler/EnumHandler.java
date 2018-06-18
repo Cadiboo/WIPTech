@@ -367,7 +367,11 @@ public class EnumHandler {
 		}
 
 		public static enum Scopes implements IStringSerializable, IWeaponModule {
-			ACOG(0, "acog", TextFormatting.WHITE), ZOOM(1, "zoom", TextFormatting.GRAY), LASER(2, "laser", TextFormatting.RED);
+			ACOG(0, "acog", TextFormatting.WHITE),
+
+			ZOOM(1, "zoom", TextFormatting.GRAY),
+
+			LASER(2, "laser", TextFormatting.RED);
 
 			private int				ID;
 			private String			name;
@@ -404,8 +408,17 @@ public class EnumHandler {
 			 * Nickel Aluminum Bronze 7%
 			 */
 
-			TIN(0, "tin", 15, TextFormatting.WHITE), IRON(1, "iron", 17, TextFormatting.GRAY), ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY), GOLD(3, "gold", 70, TextFormatting.GOLD), COPPER(4, "copper", 100, TextFormatting.RED), SILVER(5,
-					"silver", 105, TextFormatting.WHITE);
+			TIN(0, "tin", 15, TextFormatting.WHITE),
+
+			IRON(1, "iron", 17, TextFormatting.GRAY),
+
+			ALUMINIUM(2, "aluminium", 61, TextFormatting.GRAY),
+
+			GOLD(3, "gold", 70, TextFormatting.GOLD),
+
+			COPPER(4, "copper", 100, TextFormatting.RED),
+
+			SILVER(5, "silver", 105, TextFormatting.WHITE);
 
 			private int				ID;
 			private String			name;

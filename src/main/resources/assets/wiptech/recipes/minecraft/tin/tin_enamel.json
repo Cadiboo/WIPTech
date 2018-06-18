@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"###",
+		"#X#",
+		"###"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:tin_wire"
+		},
+		"X": {
+			"tag": "minecraft:concrete"
+		}
+	},
+	"result": {
+		"item": "wiptech:tin_enamel"
+	}
+}

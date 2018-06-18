@@ -18,10 +18,9 @@ public class PacketHandler {
 		NETWORK.registerMessage(new PacketUpdateCoiler.Handler(), PacketUpdateCoiler.class, networkIds++, Side.CLIENT);
 		NETWORK.registerMessage(new PacketRequestUpdateCoiler.Handler(), PacketRequestUpdateCoiler.class, networkIds++, Side.SERVER);
 
-		NETWORK.registerMessage(PacketSyncTileEntity.class, PacketSyncTileEntity.class, networkIds++, Side.CLIENT);
-		// NETWORK.registerMessage(ClientSyncModularHandler.class,
-		// ClientSyncModular.class, networkIds++, Side.CLIENT);
-		// NETWORK.registerMessage(CSyncModularHandler.class, CSyncModular.class,
-		// networkIds++, Side.CLIENT);
+		// Client -> Server
+		NETWORK.registerMessage(CPacketSyncTileEntity.class, CPacketSyncTileEntity.class, networkIds++, Side.SERVER);
+		// Server -> Client
+		NETWORK.registerMessage(SPacketSyncTileEntity.class, SPacketSyncTileEntity.class, networkIds++, Side.CLIENT);
 	}
 }

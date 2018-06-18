@@ -1,0 +1,10 @@
+{
+	"recipes": {
+		"assembling": "cadiboo.wiptech.recipes.AssembleRecipe$Factory",
+		"crushing": "cadiboo.wiptech.recipes.CrushRecipe$Factory"
+	},
+	"_comment": {
+		"hammering": "cadiboo.wiptech.recipes.HammerRecipe$Factory",
+		"coiling": "cadiboo.wiptech.recipes.CoilRecipe$Factory"
+	}
+}

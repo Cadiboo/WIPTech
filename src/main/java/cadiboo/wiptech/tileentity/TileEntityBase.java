@@ -6,9 +6,10 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cadiboo.wiptech.handler.network.CPacketSyncTileEntity;
 import cadiboo.wiptech.handler.network.PacketHandler;
-import cadiboo.wiptech.handler.network.PacketSyncTileEntity;
-import cadiboo.wiptech.util.Reference;
+import cadiboo.wiptech.handler.network.SPacketSyncTileEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -34,7 +35,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 public abstract class TileEntityBase extends TileEntity {
 
-	public final int instaSyncRange = 6;
+	public final int INSTA_SYNC_RANGE = 6;
 
 	@Override
 	public final void readFromNBT(NBTTagCompound compound) {
@@ -93,53 +94,19 @@ public abstract class TileEntityBase extends TileEntity {
 		return null;
 	}
 
-	// public void writeNBT(NBTTagCompound nbt, NBTType type) {
-	// if (type != NBTType.DROP) {
-	// NBTTagCompound caps = new NBTTagCompound();
-	// for (EnumFacing side : EnumFacing.values()) {
-	// NBTTagCompound capsSided = new NBTTagCompound();
-	// this.writeCapabilities(capsSided, side);
-	// if (!capsSided.hasNoTags()) {
-	// caps.setTag(side.toString().toLowerCase(Locale.ROOT), capsSided);
-	// }
-	// }
-	// NBTTagCompound capsSided = new NBTTagCompound();
-	// this.writeCapabilities(capsSided, null);
-	// caps.setTag("default", capsSided);
-	// nbt.setTag("TileBaseCapabilities", caps);
-	// } else if (this.getEnergy(null) != null) {
-	// nbt.setInteger("Energy", this.getEnergy(null).getEnergyStored());
-	// }
-	// }
-
-	// public void readNBT(NBTTagCompound nbt, NBTType type) {
-	// if (type != NBTType.DROP) {
-	// NBTTagCompound caps = nbt.getCompoundTag("TileBaseCapabilities");
-	// for (EnumFacing side : EnumFacing.values()) {
-	// String name = side.toString().toLowerCase(Locale.ROOT);
-	// if (caps.hasKey(name, Constants.NBT.TAG_COMPOUND)) {
-	// this.readCapabilities(caps.getCompoundTag(name), side);
-	// }
-	// }
-	// if (caps.hasKey("default", Constants.NBT.TAG_COMPOUND)) {
-	// this.readCapabilities(caps.getCompoundTag("default"), null);
-	// }
-	// } else if (this.getEnergy(null) != null) {
-	// this.getEnergy(null).receiveEnergy(nbt.getInteger("Energy"), false);
-	// }
-	// }
-
 	public void writeNBT(NBTTagCompound nbt, NBTType type) {
 		NBTTagCompound caps = new NBTTagCompound();
 		if (type != NBTType.DROP)
 			this.writeCapabilities(caps, null);
 		else if (this.getEnergy(null) != null)
 			caps.setInteger("Energy", this.getEnergy(null).getEnergyStored());
-		nbt.setTag(Reference.ID, caps);
+		// nbt.setTag(Reference.ID, caps);
+		nbt.merge(caps);
 	}
 
 	public void readNBT(NBTTagCompound nbt, NBTType type) {
-		NBTTagCompound caps = nbt.getCompoundTag(Reference.ID);
+		// NBTTagCompound caps = nbt.getCompoundTag(Reference.ID);
+		NBTTagCompound caps = nbt;
 		if (type != NBTType.DROP) {
 			this.readCapabilities(caps, null);
 		} else if (this.getEnergy(null) != null) {
@@ -151,8 +118,9 @@ public abstract class TileEntityBase extends TileEntity {
 		// WIPTech.logger.info("1 NBT: " + nbt);
 		IItemHandler inventory = this.getInventory(side);
 		if (inventory != null && inventory instanceof IItemHandlerModifiable && nbt.hasKey("Inventory")) {
-			for (int i = 0; i < inventory.getSlots(); i++) { // clear the inventory, otherwise empty stacks doesn't get overriden while
-																// syncing. Forge Bug?
+			// clear the inventory, otherwise empty stacks doesn't get overriden while
+			// syncing. Forge Bug?
+			for (int i = 0; i < inventory.getSlots(); i++) {
 				((IItemHandlerModifiable) inventory).setStackInSlot(i, ItemStack.EMPTY);
 			}
 			CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, side, nbt.getTag("Inventory"));
@@ -200,8 +168,15 @@ public abstract class TileEntityBase extends TileEntity {
 		this.writeNBT(syncTag, NBTType.SYNC);
 
 		if (player instanceof EntityPlayerMP && player.getDistance(pos.getX(), pos.getY(), pos.getZ()) <= this.getMaxSyncDistanceSquared()) {
-			PacketHandler.NETWORK.sendTo(new PacketSyncTileEntity(syncTag, this.pos), (EntityPlayerMP) player);
+			PacketHandler.NETWORK.sendTo(new SPacketSyncTileEntity(syncTag, this.pos), (EntityPlayerMP) player);
 		}
+	}
+
+	public void syncToServer() {
+		NBTTagCompound syncTag = new NBTTagCompound();
+		this.writeNBT(syncTag, NBTType.SYNC);
+
+		PacketHandler.NETWORK.sendToServer(new CPacketSyncTileEntity(syncTag, this.pos, Minecraft.getMinecraft().world.provider.getDimension()));
 	}
 
 	protected double getMaxSyncDistanceSquared() {
@@ -284,8 +259,8 @@ public abstract class TileEntityBase extends TileEntity {
 			syncToClients();
 			return true;
 		}
-		ArrayList<EntityPlayer> playersInRange = getAllPlayersWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), instaSyncRange);
-		if (playersInRange.size() > 0) { // sync to players who might need the data
+		ArrayList<EntityPlayer> playersInRange = getAllPlayersWithinRangeAt(pos.getX(), pos.getY(), pos.getZ(), INSTA_SYNC_RANGE);
+		if (playersInRange.size() > 0 && getWorld().getWorldTime() % 20 == 0) { // sync to players who might need the data //every second
 			for (int i = 0; i < playersInRange.size(); i++)
 				this.syncToClient(playersInRange.get(i));
 			return true;

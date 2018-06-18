@@ -23,70 +23,68 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class TileEntityCrusher extends TileEntity implements ITickable {
 
-	public float crushTime;
-	public long lastChangeTime;
-	private static final int[] SLOTS_TOP = new int[] { 0, 1 };
-	private static final int[] SLOTS_BOTTOM = new int[] { 2, 3, 4, 5, 6, 7 };
-	private static final int[] SLOTS_SIDES = new int[] { 0, 1 };
+	public float				crushTime;
+	public long					lastChangeTime;
+	private static final int[]	SLOTS_TOP		= new int[] { 0, 1 };
+	private static final int[]	SLOTS_BOTTOM	= new int[] { 2, 3, 4, 5, 6, 7 };
+	private static final int[]	SLOTS_SIDES		= new int[] { 0, 1 };
 
 	public static int getSlots() {
 		return 8;
 	}
 
-	public ItemStackHandler inventory = new ItemStackHandler(getSlots()) {
-		@Override
-		protected void onContentsChanged(int slot) {
-			if (!TileEntityCrusher.this.world.isRemote) {
-				TileEntityCrusher.this.lastChangeTime = TileEntityCrusher.this.world.getTotalWorldTime();
-				PacketHandler.NETWORK.sendToAllAround(new PacketUpdateCrusher(TileEntityCrusher.this),
-						new NetworkRegistry.TargetPoint(TileEntityCrusher.this.world.provider.getDimension(),
-								TileEntityCrusher.this.pos.getX(), TileEntityCrusher.this.pos.getY(),
-								TileEntityCrusher.this.pos.getZ(), 64.0D));
-			}
-		}
+	public ItemStackHandler	inventory		= new ItemStackHandler(getSlots()) {
+												@Override
+												protected void onContentsChanged(int slot) {
+													if (!TileEntityCrusher.this.world.isRemote) {
+														TileEntityCrusher.this.lastChangeTime = TileEntityCrusher.this.world.getTotalWorldTime();
+														PacketHandler.NETWORK.sendToAllAround(new PacketUpdateCrusher(TileEntityCrusher.this), new NetworkRegistry.TargetPoint(TileEntityCrusher.this.world.provider.getDimension(),
+																TileEntityCrusher.this.pos.getX(), TileEntityCrusher.this.pos.getY(), TileEntityCrusher.this.pos.getZ(), 64.0D));
+													}
+												}
 
-		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			if (stack.isEmpty())
-				return ItemStack.EMPTY;
+												@Override
+												public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+													if (stack.isEmpty())
+														return ItemStack.EMPTY;
 
-			validateSlotIndex(slot);
-			if (slot == 0 && !isItemValidTool(stack))
-				return stack;
-			if (slot == 1 && !isItemValidIngredient(stack))
-				return stack;
-			if (slot > 1 && !isItemValidProduct(stack, slot))
-				return stack;
-			return super.insertItem(slot, stack, simulate);
-		};
-	};
-	public ItemStackHandler inventoryTop = new ItemStackHandler(SLOTS_TOP.length) {
-		@Override
-		public ItemStack getStackInSlot(int slot) {
-			validateSlotIndex(slot);
-			return inventory.getStackInSlot(slot);
-		}
+													validateSlotIndex(slot);
+													if (slot == 0 && !isItemValidTool(stack))
+														return stack;
+													if (slot == 1 && !isItemValidIngredient(stack))
+														return stack;
+													if (slot > 1 && !isItemValidProduct(stack, slot))
+														return stack;
+													return super.insertItem(slot, stack, simulate);
+												};
+											};
+	public ItemStackHandler	inventoryTop	= new ItemStackHandler(SLOTS_TOP.length) {
+												@Override
+												public ItemStack getStackInSlot(int slot) {
+													validateSlotIndex(slot);
+													return inventory.getStackInSlot(slot);
+												}
 
-		@Override
-		public int getSlotLimit(int slot) {
-			return inventory.getSlotLimit(slot);
-		};
+												@Override
+												public int getSlotLimit(int slot) {
+													return inventory.getSlotLimit(slot);
+												};
 
-		@Override
-		public void setStackInSlot(int slot, ItemStack stack) {
-			inventory.setStackInSlot(slot, stack);
-		};
+												@Override
+												public void setStackInSlot(int slot, ItemStack stack) {
+													inventory.setStackInSlot(slot, stack);
+												};
 
-		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			return inventory.insertItem(slot, stack, simulate);
-		};
+												@Override
+												public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+													return inventory.insertItem(slot, stack, simulate);
+												};
 
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			return inventory.extractItem(slot, amount, simulate);
-		};
-	};
+												@Override
+												public ItemStack extractItem(int slot, int amount, boolean simulate) {
+													return inventory.extractItem(slot, amount, simulate);
+												};
+											};
 
 	public ItemStackHandler inventorySides = new ItemStackHandler(SLOTS_SIDES.length) {
 		@Override
@@ -111,30 +109,30 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 		};
 	};
 
-	public ItemStackHandler inventoryBottom = new ItemStackHandler(SLOTS_BOTTOM.length) {
-		@Override
-		public ItemStack getStackInSlot(int slot) {
-			validateSlotIndex(slot);
-			return inventory.getStackInSlot(slot + 2);
-		}
+	public ItemStackHandler	inventoryBottom	= new ItemStackHandler(SLOTS_BOTTOM.length) {
+												@Override
+												public ItemStack getStackInSlot(int slot) {
+													validateSlotIndex(slot);
+													return inventory.getStackInSlot(slot + 2);
+												}
 
-		@Override
-		public void setStackInSlot(int slot, ItemStack stack) {
-			inventory.setStackInSlot(slot + 2, stack);
-		};
+												@Override
+												public void setStackInSlot(int slot, ItemStack stack) {
+													inventory.setStackInSlot(slot + 2, stack);
+												};
 
-		@Override
-		public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-			return inventory.insertItem(slot + 2, stack, simulate);
-		};
+												@Override
+												public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+													return inventory.insertItem(slot + 2, stack, simulate);
+												};
 
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			return inventory.extractItem(slot + 2, amount, simulate);
-		};
+												@Override
+												public ItemStack extractItem(int slot, int amount, boolean simulate) {
+													return inventory.extractItem(slot + 2, amount, simulate);
+												};
 
-	};
-	public double lastCrushAnimation;
+											};
+	public double			lastCrushAnimation;
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -167,8 +165,7 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-				|| (super.hasCapability(capability, facing));
+		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) || (super.hasCapability(capability, facing));
 	}
 
 	@Override
@@ -216,11 +213,9 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 		} else if (canCrush()) {
 			ItemStack stack = this.inventory.getStackInSlot(0);
 			if (stack.getItem() == Items.CRUSHER_BIT) {
-				setCrushTime(
-						((Integer) Recipes.getCrushResult(this.inventory.getStackInSlot(1)).get(7)).intValue() * 1.0F);
+				setCrushTime(((Integer) Recipes.getCrushResult(this.inventory.getStackInSlot(1)).get(7)).intValue() * 1.0F);
 			} else if (stack.getItem() == Items.HAMMER) {
-				setCrushTime(
-						((Integer) Recipes.getHammerResult(this.inventory.getStackInSlot(1)).get(7)).intValue() * 1.0F);
+				setCrushTime(((Integer) Recipes.getHammerResult(this.inventory.getStackInSlot(1)).get(7)).intValue() * 1.0F);
 			}
 		} else {
 			this.crushTime = 0.0F;
@@ -245,11 +240,11 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 				this.inventory.insertItem(7, ((ItemStack) resultList.get(6)).copy(), false);
 				this.inventory.extractItem(1, 1, false);
 			} else {
-				WIPTech.logger.info("ERROR resultList =null so could NOT CRUSH ITEM");
+				WIPTech.info("ERROR resultList == null so could NOT CRUSH ITEM");
 			}
 			return;
 		}
-		WIPTech.logger.info("ERROR COULD NOT CRUSH ITEM");
+		WIPTech.info("ERROR COULD NOT CRUSH ITEM");
 		this.crushTime = 0.0F;
 	}
 
@@ -266,18 +261,12 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 			if (recipeExists) {
 				boolean slot0 = !this.inventory.getStackInSlot(0).isEmpty();
 				boolean slot1 = !this.inventory.getStackInSlot(1).isEmpty();
-				boolean slot2 = this.inventory.getStackInSlot(2).getCount() < this.inventory.getStackInSlot(2)
-						.getMaxStackSize();
-				boolean slot3 = this.inventory.getStackInSlot(3).getCount() < this.inventory.getStackInSlot(3)
-						.getMaxStackSize();
-				boolean slot4 = this.inventory.getStackInSlot(4).getCount() < this.inventory.getStackInSlot(4)
-						.getMaxStackSize();
-				boolean slot5 = this.inventory.getStackInSlot(5).getCount() < this.inventory.getStackInSlot(5)
-						.getMaxStackSize();
-				boolean slot6 = this.inventory.getStackInSlot(6).getCount() < this.inventory.getStackInSlot(6)
-						.getMaxStackSize();
-				boolean slot7 = this.inventory.getStackInSlot(7).getCount() < this.inventory.getStackInSlot(7)
-						.getMaxStackSize();
+				boolean slot2 = this.inventory.getStackInSlot(2).getCount() < this.inventory.getStackInSlot(2).getMaxStackSize();
+				boolean slot3 = this.inventory.getStackInSlot(3).getCount() < this.inventory.getStackInSlot(3).getMaxStackSize();
+				boolean slot4 = this.inventory.getStackInSlot(4).getCount() < this.inventory.getStackInSlot(4).getMaxStackSize();
+				boolean slot5 = this.inventory.getStackInSlot(5).getCount() < this.inventory.getStackInSlot(5).getMaxStackSize();
+				boolean slot6 = this.inventory.getStackInSlot(6).getCount() < this.inventory.getStackInSlot(6).getMaxStackSize();
+				boolean slot7 = this.inventory.getStackInSlot(7).getCount() < this.inventory.getStackInSlot(7).getMaxStackSize();
 				if ((slot0) && (slot1) && (slot2) && (slot3) && (slot4) && (slot5) && (slot6) && (slot7)) {
 					recipeExists = (recipeExists) && (resultsList.size() > 0);
 					if (recipeExists) {
@@ -290,20 +279,13 @@ public class TileEntityCrusher extends TileEntity implements ITickable {
 							slot6 = (slot6) && ((ItemStack) resultsList.get(5) != null);
 							slot7 = (slot7) && ((ItemStack) resultsList.get(6) != null);
 							if ((slot0) && (slot1) && (slot2) && (slot3) && (slot4) && (slot5) && (slot6) && (slot7)) {
-								slot2 = (slot2) && (this.inventory
-										.insertItem(2, ((ItemStack) resultsList.get(1)).copy(), true).isEmpty());
-								slot3 = (slot3) && (this.inventory
-										.insertItem(3, ((ItemStack) resultsList.get(2)).copy(), true).isEmpty());
-								slot4 = (slot4) && (this.inventory
-										.insertItem(4, ((ItemStack) resultsList.get(3)).copy(), true).isEmpty());
-								slot5 = (slot5) && (this.inventory
-										.insertItem(5, ((ItemStack) resultsList.get(4)).copy(), true).isEmpty());
-								slot6 = (slot6) && (this.inventory
-										.insertItem(6, ((ItemStack) resultsList.get(5)).copy(), true).isEmpty());
-								slot7 = (slot7) && (this.inventory
-										.insertItem(7, ((ItemStack) resultsList.get(6)).copy(), true).isEmpty());
-								if ((slot0) && (slot1) && (slot2) && (slot3) && (slot4) && (slot5) && (slot6)
-										&& (slot7)) {
+								slot2 = (slot2) && (this.inventory.insertItem(2, ((ItemStack) resultsList.get(1)).copy(), true).isEmpty());
+								slot3 = (slot3) && (this.inventory.insertItem(3, ((ItemStack) resultsList.get(2)).copy(), true).isEmpty());
+								slot4 = (slot4) && (this.inventory.insertItem(4, ((ItemStack) resultsList.get(3)).copy(), true).isEmpty());
+								slot5 = (slot5) && (this.inventory.insertItem(5, ((ItemStack) resultsList.get(4)).copy(), true).isEmpty());
+								slot6 = (slot6) && (this.inventory.insertItem(6, ((ItemStack) resultsList.get(5)).copy(), true).isEmpty());
+								slot7 = (slot7) && (this.inventory.insertItem(7, ((ItemStack) resultsList.get(6)).copy(), true).isEmpty());
+								if ((slot0) && (slot1) && (slot2) && (slot3) && (slot4) && (slot5) && (slot6) && (slot7)) {
 									return true;
 								}
 							}

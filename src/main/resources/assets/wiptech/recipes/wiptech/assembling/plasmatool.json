@@ -1,0 +1,27 @@
+{
+	"type": "wiptech:assembling",
+	"ingredients": {
+		"required": [
+			{
+				"item": "wiptech:tool_body"
+			},
+			{
+				"tag": "wiptech:capacitor"
+			},
+			{
+				"tag": "wiptech:rail"
+			},
+			{
+				"tag": "wiptech:coil"
+			},
+			{
+				"tag": "wiptech:circuit"
+			}
+		]
+	},
+	"result": {
+		"item": "wiptech:plasmatool"
+	},
+	"energy": 10000,
+	"duration": 200
+}

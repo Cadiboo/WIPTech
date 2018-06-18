@@ -1,9 +1,13 @@
 package cadiboo.wiptech.util;
 
+import cadiboo.wiptech.WIPTech;
+
 public interface IProxy {
 	public String localize(String unlocalized, Object... args);
 
-	public void logLogicalSide();
+	default public void logLogicalSide() {
+		WIPTech.info("Logical Side: " + getSide());
+	}
 
 	public void addToCreativeTab();
 

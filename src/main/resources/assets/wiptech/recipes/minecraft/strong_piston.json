@@ -1,0 +1,41 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "identifier",
+	"pattern": [
+		"CRC",
+		"OPO",
+		"OGO"
+	],
+	"key": {
+		"C": {
+			"item": "wiptech:copper_ingot",
+			"data": 0,
+			"count": 1
+		},
+		"O":{
+			"item": "minecraft:obsidian",
+			"data": 0,
+			"count": 1
+		},
+		"R": {
+			"item": "minecraft:redstone",
+			"data": 0,
+			"count": 1
+		},
+		"P": {
+			"item": "minecraft:piston",
+			"data": 0,
+			"count": 1
+		},
+		"G": {
+			"item": "minecraft:gold_ingot",
+			"data": 0,
+			"count": 1
+		}
+	},
+	"result": {
+		"item": "wiptech:strong_piston",
+		"data": 0,
+		"count": 1
+	}
+}

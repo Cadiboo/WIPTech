@@ -19,6 +19,7 @@ import net.minecraft.block.BlockAnvil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -39,13 +40,13 @@ public class EventSubscriber {
 	@SubscribeEvent
 	public static void registerEntities(final RegistryEvent.Register<EntityEntry> event) {
 		event.getRegistry().registerAll(Entities.ENTITIES);
-		WIPTech.logger.info("Registered Entities");
+		WIPTech.info("Registered Entities");
 	}
 
 	@SubscribeEvent
 	public static void registerBlocks(final RegistryEvent.Register<Block> event) {
 		event.getRegistry().registerAll(cadiboo.wiptech.init.Blocks.BLOCKS);
-		WIPTech.logger.info("Registered Blocks");
+		WIPTech.info("Registered Blocks");
 
 		GameRegistry.registerTileEntity(TileEntityCrusher.class, Reference.ID + "TileEntityCrusher");
 		GameRegistry.registerTileEntity(TileEntityCoiler.class, Reference.ID + "TileEntityCoiler");
@@ -54,24 +55,29 @@ public class EventSubscriber {
 		GameRegistry.registerTileEntity(TileEntityWire.class, Reference.ID + "TileEntityWire");
 		GameRegistry.registerTileEntity(TileEntityAssemblyTable.class, Reference.ID + "TileEntityAssemblyTable");
 		GameRegistry.registerTileEntity(TileEntityPeripheral.class, Reference.ID + "TileEntityPeripheral");
-		WIPTech.logger.info("Registered TileEntities");
+		WIPTech.info("Registered TileEntities");
 	}
 
 	@SubscribeEvent
 	public static void registerItems(final RegistryEvent.Register<Item> event) {
 		event.getRegistry().registerAll(cadiboo.wiptech.init.Items.ITEMS);
-		WIPTech.logger.info("Registered Items");
+		WIPTech.info("Registered Items");
 
 		for (int i = 0; i < Blocks.BLOCKS.length; i++) {
 			if (Blocks.getHiddenBlocks().contains(Blocks.BLOCKS[i]))
 				continue;
 			event.getRegistry().register(new ItemBlock(Blocks.BLOCKS[i]).setRegistryName(Blocks.BLOCKS[i].getRegistryName()));
 		}
-		WIPTech.logger.info("And ItemBlocks");
+		WIPTech.info("And ItemBlocks");
 
-		WIPTech.logger.error("use the 1.13 vanilla equivalent of ore dict! ore dict is already being phased out in this mod");
+		WIPTech.error("use the 1.13 vanilla equivalent of ore dict! ore dict is already being phased out in this mod");
 		// WIPTech.logger.info("Registered OreDictionary");
 
+	}
+
+	@SubscribeEvent
+	public static void registerRecipes(final RegistryEvent.Register<IRecipe> event) {
+		WIPTech.info("registerRecipes", event);
 	}
 
 	private static Block getBlockItem(Item item) {

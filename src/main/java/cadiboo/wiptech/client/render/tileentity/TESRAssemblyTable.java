@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -40,8 +41,8 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 		GlStateManager.translate(0, 0, 1);
 		Utils.renderStackWithoutTransforms(new ItemStack(Blocks.SILVER_MOTOR), te.getWorld());
 		GlStateManager.popMatrix();
-		if (true)
-			return;
+		// if (true)
+		// return;
 
 		IItemHandler inv = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, EnumFacing.UP);
 
@@ -73,8 +74,10 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 			GlStateManager.blendFunc(te.getWorld().getWorldTime() % 24000d / 12000 < 1d ? GlStateManager.SourceFactor.SRC_COLOR : GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
 			// http://www.color-hex.com/color-palette/5951
 
-			Utils.renderItemWithColor(te.getAssembleItem(), Utils.getModelFromStack(te.getAssembleItem(), te.getWorld()), te.getAssemblyTime() > 0 ? (int) System.currentTimeMillis() : HOLO_COLOR);
-
+			// Utils.renderItemWithColor(te.getAssembleItem(),
+			// Utils.getModelFromStack(te.getAssembleItem(), te.getWorld()), (int)
+			// (te.getAssemblyTime() > 0 ? System.currentTimeMillis() : HOLO_COLOR));
+			Utils.renderItemWithColor(te.getAssembleItem(), Utils.getModelFromStack(te.getAssembleItem(), te.getWorld()), te.getAssemblyTime() > 0 ? MathHelper.floor(System.currentTimeMillis() % 1999999999) : HOLO_COLOR);
 			// Utils.renderItemWithColor(new ItemStack(te.getAssembleItem()),
 			// Utils.getModelFromStack(new ItemStack(te.getAssembleItem()), te.getWorld()),
 			// (int) System.currentTimeMillis());

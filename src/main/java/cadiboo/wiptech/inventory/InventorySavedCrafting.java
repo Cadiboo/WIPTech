@@ -97,11 +97,13 @@ public class InventorySavedCrafting extends InventoryCrafting {
 
 	@Override
 	public void openInventory(EntityPlayer player) {
+		super.openInventory(player);
 		this.loadInventory();
 	}
 
 	@Override
 	public void closeInventory(EntityPlayer player) {
+		super.closeInventory(player);
 		this.saveInventory();
 	}
 
@@ -112,9 +114,9 @@ public class InventorySavedCrafting extends InventoryCrafting {
 	}
 
 	public void saveInventory() {
-		for (int i = 0; i < getWidth() * getHeight(); i++) {
-			inventory.extractItem(i, Integer.MAX_VALUE, false);
-			inventory.insertItem(i, stackList.get(i), false);
+		for (int slot = 0; slot < getWidth() * getHeight(); slot++) {
+			ItemStack extract = inventory.extractItem(slot, Integer.MAX_VALUE, false);
+			ItemStack insert = inventory.insertItem(slot, stackList.get(slot), false);
 		}
 	}
 

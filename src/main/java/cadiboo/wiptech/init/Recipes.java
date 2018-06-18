@@ -10,8 +10,8 @@ import cadiboo.wiptech.tileentity.TileEntityCoiler;
 import cadiboo.wiptech.tileentity.TileEntityCrusher;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Recipes {
@@ -27,7 +27,7 @@ public class Recipes {
 		addHammerRecipes();
 		addCoilRecipes();
 		addAssembleRecipes();
-		WIPTech.logger.info("Registered Processing Recipes");
+		WIPTech.info("Registered Processing Recipes");
 
 		GameRegistry.addSmelting(Blocks.COPPER_ORE, new ItemStack(Blocks.COPPER_INGOT, 1), 0.0F);
 		GameRegistry.addSmelting(Blocks.TIN_ORE, new ItemStack(Blocks.TIN_INGOT, 1), 0.0F);
@@ -35,28 +35,41 @@ public class Recipes {
 		GameRegistry.addSmelting(Blocks.SILVER_ORE, new ItemStack(Blocks.SILVER_INGOT, 1), 0.0F);
 		GameRegistry.addSmelting(Blocks.TUNGSTEN_ORE, new ItemStack(Items.TUNGSTEN_INGOT, 1), 0.0F);
 		GameRegistry.addSmelting(Blocks.OSMIUM_ORE, new ItemStack(Items.OSMIUM_INGOT, 1), 0.0F);
-		WIPTech.logger.info("Registered Ore Smelting");
+		WIPTech.info("Registered Ore Smelting");
 
 		GameRegistry.addSmelting(Items.ALUMINA, new ItemStack(Blocks.ALUMINIUM_INGOT, 2), 0.0F);
 		GameRegistry.addSmelting(Items.GALLIUM, new ItemStack(Items.GALLIUM_INGOT, 2), 0.0F);
 		GameRegistry.addSmelting(Items.IRON_OXIDE, new ItemStack(Items.IRON_INGOT), 0.0F);
 		GameRegistry.addSmelting(Items.SILICA, new ItemStack(Items.SILICON, 2), 0.0F);
 		GameRegistry.addSmelting(Items.TITANIA, new ItemStack(Items.TITANIUM_INGOT, 2), 0.0F);
-		WIPTech.logger.info("Registered Item Smelting");
+		WIPTech.info("Registered Item Smelting");
 	}
 
 	@VisibleForTesting
 	public static void addAssembleRecipes() {
 
-		NonNullList<Ingredient> requiredIngredients = NonNullList.<Ingredient>create();
-		requiredIngredients.add(Ingredient.fromItems(Items.ALUMINIUM_RAIL, Items.COPPER_RAIL, Items.GOLD_RAIL, Items.IRON_RAIL, Items.SILVER_RAIL, Items.TIN_RAIL));
-		requiredIngredients.add(Ingredient.fromItems(Items.ALUMINIUM_COIL, Items.COPPER_COIL, Items.GOLD_COIL, Items.IRON_COIL, Items.SILVER_COIL, Items.TIN_COIL));
-
-		NonNullList<Ingredient> optionalIngredients = NonNullList.<Ingredient>create();
-		optionalIngredients.add(Ingredient.fromItems(Items.ALUMINIUM_SWORD, Items.COPPER_SWORD, net.minecraft.init.Items.GOLDEN_SWORD, net.minecraft.init.Items.IRON_SWORD, Items.SILVER_SWORD, Items.TIN_SWORD));
-
-		AssembleRecipe recipe = new AssembleRecipe("wiptech:assembling", new ItemStack(Items.RAILGUN), requiredIngredients, optionalIngredients);
-		assembleRecipes.add(recipe);
+		// assembleRecipes.clear();
+		// NonNullList<Ingredient> requiredIngredients =
+		// NonNullList.<Ingredient>create();
+		// requiredIngredients.add(Ingredient.fromItems(Items.ALUMINIUM_RAIL,
+		// Items.COPPER_RAIL, Items.GOLD_RAIL, Items.IRON_RAIL, Items.SILVER_RAIL,
+		// Items.TIN_RAIL));
+		// requiredIngredients.add(Ingredient.fromItems(Items.CAPACITOR));
+		// requiredIngredients.add(Ingredient.fromItems(Items.GUN_BODY));
+		// // requiredIngredients.add(Ingredient.fromItems(Items.ALUMINIUM_COIL,
+		// // Items.COPPER_COIL, Items.GOLD_COIL, Items.IRON_COIL, Items.SILVER_COIL,
+		// // Items.TIN_COIL));
+		//
+		// NonNullList<Ingredient> optionalIngredients =
+		// NonNullList.<Ingredient>create();
+		// // optionalIngredients.add(Ingredient.fromItems(Items.ALUMINIUM_SWORD,
+		// // Items.COPPER_SWORD, net.minecraft.init.Items.GOLDEN_SWORD,
+		// // net.minecraft.init.Items.IRON_SWORD, Items.SILVER_SWORD,
+		// Items.TIN_SWORD));
+		//
+		// AssembleRecipe recipe = new AssembleRecipe("wiptech:assembling", new
+		// ItemStack(Items.RAILGUN), requiredIngredients, optionalIngredients);
+		// assembleRecipes.add(recipe);
 		// for (int rail = 0; rail < Rails.values().length; rail++)
 		// for (int capacitor = 0; capacitor < Capacitors.values().length; capacitor++)
 		// for (int circuit = 0; circuit < Circuits.values().length; circuit++)
@@ -123,11 +136,19 @@ public class Recipes {
 	}
 
 	public static AssembleRecipe getAssembleRecipeFor(ItemStack stack) {
-		for (AssembleRecipe recipe : assembleRecipes) {
-			if (recipe.getRecipeOutput().isItemEqual(stack))
-				return recipe;
+		// for (AssembleRecipe recipe : assembleRecipes) {
+		// if (recipe.getRecipeOutput().isItemEqual(stack))
+		// return recipe;
+		// }
+		// return null;
+
+		for (IRecipe irecipe : CraftingManager.REGISTRY) {
+			if (ItemStack.areItemsEqual(irecipe.getRecipeOutput(), stack) && irecipe instanceof AssembleRecipe) {
+				return (AssembleRecipe) irecipe;
+			}
 		}
 		return null;
+
 	}
 
 	private static void addHammerRecipes() {

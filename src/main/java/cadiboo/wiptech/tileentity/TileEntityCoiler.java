@@ -32,9 +32,7 @@ public class TileEntityCoiler extends TileEntity implements ITickable {
 		protected void onContentsChanged(int slot) {
 			if (!world.isRemote) {
 				lastChangeTime = world.getTotalWorldTime();
-				PacketHandler.NETWORK.sendToAllAround(new PacketUpdateCoiler(TileEntityCoiler.this),
-						new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(),
-								pos.getZ(), 64));
+				PacketHandler.NETWORK.sendToAllAround(new PacketUpdateCoiler(TileEntityCoiler.this), new NetworkRegistry.TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 64));
 			}
 		};
 	};
@@ -63,8 +61,7 @@ public class TileEntityCoiler extends TileEntity implements ITickable {
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) inventory
-				: super.getCapability(capability, facing);
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY ? (T) inventory : super.getCapability(capability, facing);
 	}
 
 	@Override
@@ -116,7 +113,7 @@ public class TileEntityCoiler extends TileEntity implements ITickable {
 			 * return;
 			 */
 		} else {
-			WIPTech.logger.info("ERROR COULD NOT Coil ITEM");
+			WIPTech.info("ERROR COULD NOT COIL ITEM");
 			windTime = 0;
 			return;
 		}
@@ -203,8 +200,7 @@ public class TileEntityCoiler extends TileEntity implements ITickable {
 	}
 
 	private int getTotalWindTime() {
-		return (int) (!inventory.getStackInSlot(1).isEmpty() ? Recipes.getCoilResult(inventory.getStackInSlot(1)).get(7)
-				: 0);
+		return (int) (!inventory.getStackInSlot(1).isEmpty() ? Recipes.getCoilResult(inventory.getStackInSlot(1)).get(7) : 0);
 	}
 
 	public static int getPercentageOfWindTimeComplete(TileEntityCoiler tileEntity) {

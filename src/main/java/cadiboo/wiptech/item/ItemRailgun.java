@@ -23,11 +23,10 @@ import net.minecraft.world.World;
 
 public class ItemRailgun extends ItemBase {
 
-	private boolean overheat = false;
-	private int shotsFired = 0;
+	private boolean	overheat	= false;
+	private int		shotsFired	= 0;
 
-	public ItemRailgun(String name)
-	{
+	public ItemRailgun(String name) {
 		super(name);
 		this.maxStackSize = 1;
 		setMaxDamage(0);
@@ -35,39 +34,30 @@ public class ItemRailgun extends ItemBase {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-	{
+	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add("Superaccelerates ferromagnetic projectiles");
 	}
 
-	public int getMaxItemUseDuration(ItemStack stack)
-	{
+	@Override
+	public int getMaxItemUseDuration(ItemStack stack) {
 		return 72000;
 	}
 
-	public EnumAction getItemUseAction(ItemStack stack)
-	{
+	@Override
+	public EnumAction getItemUseAction(ItemStack stack) {
 		return EnumAction.BOW;
 	}
 
-	private ItemStack findAmmo(EntityPlayer player)
-	{
-		if (this.isAmmo(player.getHeldItem(EnumHand.OFF_HAND)))
-		{
+	private ItemStack findAmmo(EntityPlayer player) {
+		if (this.isAmmo(player.getHeldItem(EnumHand.OFF_HAND))) {
 			return player.getHeldItem(EnumHand.OFF_HAND);
-		}
-		else if (this.isAmmo(player.getHeldItem(EnumHand.MAIN_HAND)))
-		{
+		} else if (this.isAmmo(player.getHeldItem(EnumHand.MAIN_HAND))) {
 			return player.getHeldItem(EnumHand.MAIN_HAND);
-		}
-		else
-		{
-			for (int i = 0; i < player.inventory.getSizeInventory(); ++i)
-			{
+		} else {
+			for (int i = 0; i < player.inventory.getSizeInventory(); ++i) {
 				ItemStack itemstack = player.inventory.getStackInSlot(i);
 
-				if (this.isAmmo(itemstack))
-				{
+				if (this.isAmmo(itemstack)) {
 					return itemstack;
 				}
 			}
@@ -76,67 +66,64 @@ public class ItemRailgun extends ItemBase {
 		}
 	}
 
-	protected boolean isAmmo(ItemStack stack)
-	{
-		return stack.getItem() instanceof ItemParamagneticProjectile && 3 >= stack.getMetadata() && stack.getMetadata() <=5 ;
+	protected boolean isAmmo(ItemStack stack) {
+		return stack.getItem() instanceof ItemParamagneticProjectile && 3 >= stack.getMetadata() && stack.getMetadata() <= 5;
 	}
 
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
-	{
-		if (entityLiving instanceof EntityPlayer)
-		{
-			EntityPlayer entityplayer = (EntityPlayer)entityLiving;
+	@Override
+	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft) {
+		if (entityLiving instanceof EntityPlayer) {
+			EntityPlayer entityplayer = (EntityPlayer) entityLiving;
 			boolean flag = entityplayer.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 			ItemStack itemstack = this.findAmmo(entityplayer);
 
 			int i = this.getMaxItemUseDuration(stack) - timeLeft;
 
-			if (i <= 0) return;
+			if (i <= 0)
+				return;
 
-			if (!itemstack.isEmpty() || flag)
-			{
-				if (itemstack.isEmpty())
-				{
-					//itemstack = new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN MEDIUM
-					itemstack = new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 2); //TUNGSTEN LARGE
+			if (!itemstack.isEmpty() || flag) {
+				if (itemstack.isEmpty()) {
+					// itemstack = new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 5); //TUNGSTEN
+					// MEDIUM
+					itemstack = new ItemStack(Items.PARAMAGNETIC_PROJECILE, 1, 2); // TUNGSTEN LARGE
 				}
 
 				float velocity = EntityParamagneticProjectile.getProjectileVelocity(stack);
 
-				if ((double)velocity >= 0.1D)
-				{
-					boolean flag1 = entityplayer.capabilities.isCreativeMode/* || (itemstack.getItem() instanceof ItemMagneticMetalRod && ((ItemMagneticMetalRod) itemstack.getItem()).isInfinite(itemstack, stack, entityplayer))*/;
+				if (velocity >= 0.1D) {
+					boolean flag1 = entityplayer.capabilities.isCreativeMode/*
+																			 * || (itemstack.getItem() instanceof ItemMagneticMetalRod &&
+																			 * ((ItemMagneticMetalRod) itemstack.getItem()).isInfinite(itemstack, stack,
+																			 * entityplayer))
+																			 */;
 
-					if (!worldIn.isRemote)
-					{
-						ItemParamagneticProjectile itemprojectile = (ItemParamagneticProjectile)(itemstack.getItem() instanceof ItemParamagneticProjectile ? itemstack.getItem() : Items.PARAMAGNETIC_PROJECILE);
+					if (!worldIn.isRemote) {
+						ItemParamagneticProjectile itemprojectile = (ItemParamagneticProjectile) (itemstack.getItem() instanceof ItemParamagneticProjectile ? itemstack.getItem() : Items.PARAMAGNETIC_PROJECILE);
 						EntityParamagneticProjectile projectile = itemprojectile.createProjectile(worldIn, itemstack, entityplayer, false);
 						projectile.shoot(entityplayer, entityplayer.rotationPitch, entityplayer.rotationYaw, 0.0F, velocity, 0.1F);
-						if(this.overheat) {
-							//projectile.setOverheat(this.overheat);
+						if (this.overheat) {
+							// projectile.setOverheat(this.overheat);
 							projectile.setFire(EntityParamagneticProjectile.overheatFireTime);
 						}
 
-						WIPTech.logger.info("Railgun Overheat: "+overheat);
-						
-						if (flag1 || entityplayer.capabilities.isCreativeMode)
-						{
+						WIPTech.info("Railgun Overheat: " + overheat);
+
+						if (flag1 || entityplayer.capabilities.isCreativeMode) {
 							projectile.pickupStatus = EntityProjectileBase.PickupStatus.CREATIVE_ONLY;
 						}
 
 						worldIn.spawnEntity(projectile);
-						//TODO why was it spawning in plasma?????
-						WIPTech.logger.info(projectile);
+						// TODO why was it spawning in plasma?????
+						WIPTech.info(projectile);
 					}
 
 					worldIn.playSound(null, entityplayer.posX, entityplayer.posY, entityplayer.posZ, SoundEvents.ENTITY_FIREWORK_SHOOT, SoundCategory.PLAYERS, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F);
 
-					if (!flag1 && !entityplayer.capabilities.isCreativeMode)
-					{
+					if (!flag1 && !entityplayer.capabilities.isCreativeMode) {
 						itemstack.shrink(1);
 
-						if (itemstack.isEmpty())
-						{
+						if (itemstack.isEmpty()) {
 							entityplayer.inventory.deleteStack(itemstack);
 						}
 					}
@@ -145,16 +132,15 @@ public class ItemRailgun extends ItemBase {
 		}
 	}
 
-
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn)
-	{
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 		playerIn.setActiveHand(handIn);
 		return new ActionResult(EnumActionResult.SUCCESS, itemstack);
 	}
 
-	public int getItemEnchantability()
-	{
+	@Override
+	public int getItemEnchantability() {
 		return 0;
 	}
 

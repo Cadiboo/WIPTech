@@ -69,13 +69,13 @@ public class EventSubscriber {
 			if (Blocks.getHiddenBlocks().contains(Blocks.BLOCKS[i]))
 				continue blockItemModels;
 
-			WIPTech.logger.info(Blocks.BLOCKS[i]);
+			WIPTech.info(Blocks.BLOCKS[i]);
 
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(Blocks.BLOCKS[i]), 0, new ModelResourceLocation(Blocks.BLOCKS[i].getRegistryName(), "inventory"));
 		}
 
 		for (int i = 0; i < Items.ITEMS.length; i++) {
-			WIPTech.logger.info(Items.ITEMS[i]);
+			WIPTech.info(Items.ITEMS[i]);
 			if (!Items.ITEMS[i].getHasSubtypes()) {
 				ModelLoader.setCustomModelResourceLocation(Items.ITEMS[i], 0, new ModelResourceLocation(Items.ITEMS[i].getRegistryName(), "inventory"));
 			} else if (Items.ITEMS[i] instanceof ItemParamagneticProjectile) {
@@ -90,18 +90,18 @@ public class EventSubscriber {
 		// ModelLoader.setCustomModelResourceLocation(Items.ITEMS[i], 0, new
 		// ModelResourceLocation(Items.ITEMS[i].getRegistryName(), "inventory"));
 		// }
-		WIPTech.logger.info("Registered models");
+		WIPTech.info("Registered models");
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrusher.class, new TESRCrusher());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTurbine.class, new TESRTurbine());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWire.class, new TESRWire());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAssemblyTable.class, new TESRAssemblyTable());
-		WIPTech.logger.info("Registered TileEntity Renders");
+		WIPTech.info("Registered TileEntity Renders");
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityParamagneticProjectile113.class, renderManager -> new RenderEntityParamagneticProjectile113(renderManager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, renderManager -> new Render2D(renderManager, new ResourceLocation(Reference.ID, "textures/entities/napalm.png"), 0.25F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityParamagneticProjectile.class, new RenderEntityParamagneticProjectileFactory());
-		WIPTech.logger.info("Registered Entity Renders");
+		WIPTech.info("Registered Entity Renders");
 	}
 
 	@SubscribeEvent(priority = EventPriority.NORMAL)
