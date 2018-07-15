@@ -46,8 +46,7 @@ public class GuiAssemblyTable extends GuiContainer {
 
 	};
 
-	public static final int		MISSING_INGREDIENT_COLOR	= 1088888888;
-	public static final float	DISPLAY_TIME				= 20.0F;
+	public static final float DISPLAY_TIME = 20.0F;
 
 	public static final int	SLOT_X_OFFSET		= ContainerAssemblyTable.SLOT_X_OFFSET;
 	public static final int	SLOT_Y_OFFSET		= ContainerAssemblyTable.SLOT_Y_OFFSET;
@@ -66,10 +65,20 @@ public class GuiAssemblyTable extends GuiContainer {
 	@Override
 	public void initGui() {
 		super.initGui();
+
+		this.buttonList.add(new GuiButtonImage(1, guiLeft + 60, guiTop + 60, 18, 18, 0, 168, 0, BG_TEXTURE) {
+			@Override
+			public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
+				super.drawButton(mc, mouseX, mouseY, partialTicks);
+				if (mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height)
+					this.drawTexturedModalRect(this.x, this.y, 18, 168, 18, 18);
+			}
+		});
+
 		for (int i = 0; i < ASSEMBLEABLE_ITEMS.length; i++) {
 			final ItemStack stack = ASSEMBLEABLE_ITEMS[i];
 			// id, x, y, width, height, xTexStart, yTexStart, yDiffText, texture_location
-			this.buttonList.add(new GuiButtonImage(i, guiLeft + 10 + (i % 2) * 18, guiTop + 16 + 9 * ((i & 0x1) == 0 ? i : i - 1), 18, 18, 0, 168, 0, BG_TEXTURE) {
+			this.buttonList.add(new GuiButtonImage(i + 1, guiLeft + 10 + (i % 2) * 18, guiTop + 16 + 9 * ((i & 0x1) == 0 ? i : i - 1), 18, 18, 0, 168, 0, BG_TEXTURE) {
 				@Override
 				public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks) {
 					super.drawButton(mc, mouseX, mouseY, partialTicks);
@@ -84,7 +93,10 @@ public class GuiAssemblyTable extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		te.setAssembleItem(ASSEMBLEABLE_ITEMS[button.id]);
+		if (button.id == 1) {
+
+		}
+		te.setAssembleItem(ASSEMBLEABLE_ITEMS[button.id - 1]);
 		PacketHandler.NETWORK.sendToServer(new CPacketSyncTileEntity(te.writeToNBT(new NBTTagCompound()), te.getPos(), te.getWorld().provider.getDimension()));
 		WIPTech.info("Now assembling a" + (Utils.isVowel(te.getAssembleItem().getDisplayName().charAt(0)) ? "n" : "") + " " + te.getAssembleItem().getDisplayName());
 	}
@@ -108,8 +120,7 @@ public class GuiAssemblyTable extends GuiContainer {
 			// Assemble Item
 			GlStateManager.enableBlend();
 			GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
-			Utils.renderItemModelIntoGUIWithColor(te.getAssembleItem(), guiLeft + 130, guiTop + 35, Utils.getModelFromStack(te.getAssembleItem(), te.getWorld()), zLevel + 50,
-					te.getAssemblyTime() > 0 ? (int) System.currentTimeMillis() : MISSING_INGREDIENT_COLOR);
+			Utils.renderItemModelIntoGUIWithColor(te.getAssembleItem(), guiLeft + 130, guiTop + 35, Utils.getModelFromStack(te.getAssembleItem(), te.getWorld()), zLevel + 50, te.getAssembleItemStackColor(playerInv.player));
 
 			// Assemble Required ItemStacks
 			AssembleRecipe recipe = Recipes.getAssembleRecipeFor(te.getAssembleItem());
@@ -122,7 +133,7 @@ public class GuiAssemblyTable extends GuiContainer {
 				GlStateManager.enableBlend();
 				GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE_MINUS_CONSTANT_ALPHA);
 				Utils.renderItemModelIntoGUIWithColor(te.getAssembleItem(), guiLeft + SLOT_X_OFFSET + (s % 2) * SLOT_X_MULTIPLIER, guiTop + SLOT_Y_OFFSET + MathHelper.floor(s / 2) * SLOT_Y_MULTIPLIER, Utils.getModelFromStack(stack, te.getWorld()),
-						zLevel + 50, te.getAssemblyTime() > 0 ? (int) System.currentTimeMillis() : MISSING_INGREDIENT_COLOR);
+						zLevel + 50, te.getAssembleItemStackColor(playerInv.player));
 			}
 		}
 	}

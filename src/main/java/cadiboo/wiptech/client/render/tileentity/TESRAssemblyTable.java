@@ -8,13 +8,10 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
 public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssemblyTable> {
-
-	public static final int HOLO_COLOR = 999999999;
 
 	@Override
 	public void render(TileEntityAssemblyTable te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
@@ -77,7 +74,7 @@ public class TESRAssemblyTable extends TileEntitySpecialRenderer<TileEntityAssem
 			// Utils.renderItemWithColor(te.getAssembleItem(),
 			// Utils.getModelFromStack(te.getAssembleItem(), te.getWorld()), (int)
 			// (te.getAssemblyTime() > 0 ? System.currentTimeMillis() : HOLO_COLOR));
-			Utils.renderItemWithColor(te.getAssembleItem(), Utils.getModelFromStack(te.getAssembleItem(), te.getWorld()), te.getAssemblyTime() > 0 ? MathHelper.floor(System.currentTimeMillis() % 1999999999) : HOLO_COLOR);
+			Utils.renderItemWithColor(te.getAssembleItem(), Utils.getModelFromStack(te.getAssembleItem(), te.getWorld()), te.getAssembleItemHologramColor());
 			// Utils.renderItemWithColor(new ItemStack(te.getAssembleItem()),
 			// Utils.getModelFromStack(new ItemStack(te.getAssembleItem()), te.getWorld()),
 			// (int) System.currentTimeMillis());

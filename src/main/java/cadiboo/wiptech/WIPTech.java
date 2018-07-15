@@ -107,20 +107,4 @@ public class WIPTech {
 			}
 		}
 	}
-
-	// public static void dumpRecursive(Object obj) {
-	// Field[] fields = obj.getClass().getDeclaredFields();
-	// info("Dump of " + obj + ":");
-	// for (int i = 0; i < fields.length; i++) {
-	// try {
-	// fields[i].setAccessible(true);
-	// if(fields[i].getDeclaringClass()!=Object)//EH?
-	// info(fields[i].getName() + " - " + fields[i].get(obj));
-	// } catch (IllegalArgumentException | IllegalAccessException e) {
-	// // TODO Auto-generated catch block
-	// // e.printStackTrace();
-	// }
-	// }
-	// }
-
 }

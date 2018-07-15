@@ -18,8 +18,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.energy.EnergyStorage;
 import net.minecraftforge.energy.IEnergyStorage;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -99,7 +102,7 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 		EntityPlayer player = world.getClosestPlayer(this.pos.getX(), this.pos.getY(), this.pos.getZ(), -1, false);
 		if (player == null)
 			return;
-		ContainerAssemblyTable container = new ContainerAssemblyTable(player.inventory, this);
+		ContainerAssemblyTable container = getNewContainer(player);
 
 		if (assemblyTime > 0 && this.forceExtractEnergy(assemblyCostTick, true) == assemblyCostTick) {
 			--assemblyTime;
@@ -115,6 +118,10 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 		}
 		this.handleSync();
 
+	}
+
+	public ContainerAssemblyTable getNewContainer(EntityPlayer player) {
+		return new ContainerAssemblyTable(player.inventory, this);
 	}
 
 	@Override
@@ -187,6 +194,9 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 			return false;
 		AssembleRecipe arecipe = (AssembleRecipe) irecipe;
 
+		if (!arecipe.matches(craftMatrix, player.world))
+			return false;
+
 		int tempACT = arecipe.getEnergyCost() / arecipe.getDuration();
 		// WIPTech.info(forceExtractEnergy(tempACT, false));
 		// WIPTech.info(energy.extractEnergy(tempACT, false));
@@ -198,6 +208,31 @@ public class TileEntityAssemblyTable extends TileEntityBase implements ITickable
 
 		PacketHandler.NETWORK.sendToServer(new CPacketSyncTileEntity(writeToNBT(new NBTTagCompound()), pos, world.provider.getDimension()));
 		return true;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public int getAssembleItemHologramColor() {
+		if (assemblyTime > 0)
+			return MathHelper.floor(System.currentTimeMillis() % 1800000000); // TODO change % //changing colors
+		return 999999999; // hologram
+	}
+
+	@SideOnly(Side.CLIENT)
+	public int getAssembleItemStackColor(EntityPlayer player) {
+		ContainerAssemblyTable container = getNewContainer(player);
+		IRecipe irecipe = CraftingManager.findMatchingRecipe(container.craftMatrix, player.world);
+		final int MISSING_INGREDIENT_COLOR = 1088888888;
+		if (irecipe == null)
+			return MISSING_INGREDIENT_COLOR;
+		if (!(irecipe instanceof AssembleRecipe))
+			return MISSING_INGREDIENT_COLOR;
+		AssembleRecipe arecipe = (AssembleRecipe) irecipe;
+
+		if (!arecipe.matches(container.craftMatrix, player.world))
+			return MISSING_INGREDIENT_COLOR;
+		if (assemblyTime > 0)
+			return getAssembleItemHologramColor();
+		return 1188888888;// green
 	}
 
 }

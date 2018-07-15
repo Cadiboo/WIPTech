@@ -2,7 +2,6 @@ package cadiboo.wiptech.inventory;
 
 import javax.annotation.Nonnull;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.Recipes;
 import cadiboo.wiptech.recipes.AssembleRecipe;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
@@ -38,8 +37,7 @@ public class ContainerAssemblyTable extends Container {
 
 	@Override
 	public void onCraftMatrixChanged(IInventory inventoryIn) {
-		// TODO make a button instead
-		te.tryStartAssemble(craftMatrix, player);
+		// super.onCraftMatrixChanged(inventoryIn);
 	}
 
 	public void assemble() {
@@ -111,7 +109,6 @@ public class ContainerAssemblyTable extends Container {
 
 		for (int w = 0; w < craftMatrix.getWidth(); ++w) {
 			for (int h = 0; h < craftMatrix.getHeight(); ++h) {
-				WIPTech.info("___", this.getSlot(0), craftResult.getStackInSlot(0), craftMatrix.getStackInSlot(0));
 				this.addSlotToContainer(new Slot(this.craftMatrix, w + h * 2, SLOT_X_OFFSET + w * SLOT_X_MULTIPLIER, SLOT_Y_OFFSET + h * SLOT_Y_MULTIPLIER) {
 					@Override
 					public boolean isItemValid(ItemStack stack) {
