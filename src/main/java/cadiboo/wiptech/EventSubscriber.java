@@ -76,20 +76,14 @@ public final class EventSubscriber {
 
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.COPPER_BLOCK), 0,
 				new ModelResourceLocation(Reference.ID + ":" + ModBlocks.COPPER_BLOCK.getRegistryName(), "inventory"));
-	}
 
-	/*
-	 * Register custom model items
-	 */
-	// ModelLoaderRegistry.registerLoader(ModelSlimeBag.CustomModelLoader.INSTANCE);
-	// ModelLoader.setCustomMeshDefinition(slime_bag, stack ->
-	// ModelSlimeBag.LOCATION);
-	// ModelBakery.registerItemVariants(slime_bag, ModelSlimeBag.LOCATION);
-	}
-
-	private static final void registerBlockModel(Block block) {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
-				new ModelResourceLocation(block.getRegistryName(), "inventory"));
+		/*
+		 * Register custom model items
+		 */
+		// ModelLoaderRegistry.registerLoader(ModelSlimeBag.CustomModelLoader.INSTANCE);
+		// ModelLoader.setCustomMeshDefinition(slime_bag, stack ->
+		// ModelSlimeBag.LOCATION);
+		// ModelBakery.registerItemVariants(slime_bag, ModelSlimeBag.LOCATION);
 	}
 
 }
