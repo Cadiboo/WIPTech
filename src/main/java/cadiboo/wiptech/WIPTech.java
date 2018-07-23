@@ -5,7 +5,8 @@ import java.lang.reflect.Field;
 import org.apache.logging.log4j.Logger;
 
 import cadiboo.wiptech.util.IProxy;
-import cadiboo.wiptech.util.Reference;
+import cadiboo.wiptech.util.ModReference;
+import cadiboo.wiptech.util.ModUtil;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -15,20 +16,18 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 /**
- * Main Mod class
- * 
- * Contains Event Handlers and the basic setup of a Mod
+ * WIPTech Alpha
  * 
  * @author Cadiboo
  */
 
-@Mod(modid = Reference.ID, name = Reference.NAME, version = Reference.VERSION, acceptedMinecraftVersions = Reference.ACCEPTED_VERSIONS, canBeDeactivated = Reference.CAN_BE_DEACTIVATED, clientSideOnly = false, serverSideOnly = false, modLanguage = "java", guiFactory = Reference.GUI_FACTORY_CLASS)
+@Mod(modid = ModReference.ID, name = ModReference.NAME, version = ModReference.VERSION, acceptedMinecraftVersions = ModReference.ACCEPTED_VERSIONS, canBeDeactivated = ModReference.CAN_BE_DEACTIVATED, clientSideOnly = false, serverSideOnly = false, modLanguage = "java", guiFactory = ModReference.GUI_FACTORY_CLASS)
 public class WIPTech {
 
-	@Instance(Reference.ID)
+	@Instance(ModReference.ID)
 	public static WIPTech instance;
 
-	@SidedProxy(serverSide = Reference.SERVER_PROXY_CLASS, clientSide = Reference.CLIENT_PROXY_CLASS)
+	@SidedProxy(serverSide = ModReference.SERVER_PROXY_CLASS, clientSide = ModReference.CLIENT_PROXY_CLASS)
 	public static IProxy proxy;
 
 	private static Logger logger;
@@ -47,6 +46,7 @@ public class WIPTech {
 	public void postinit(FMLPostInitializationEvent event) {
 		// Mod compatibility, or anything which depends on other mods’ init phases being
 		// finished.
+		ModUtil.infoModMaterialsCode();
 	}
 
 	public static void info(Object... msgs) {
@@ -70,6 +70,8 @@ public class WIPTech {
 					fields[i].setAccessible(true);
 					info(fields[i].getName() + " - " + fields[i].get(obj));
 				} catch (IllegalArgumentException | IllegalAccessException e) {
+					info("Error getting field " + fields[i].getName());
+					info(e.getLocalizedMessage());
 				}
 			}
 		}
