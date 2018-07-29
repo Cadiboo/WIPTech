@@ -1,20 +1,23 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.creativetab.ModCreativeTabs;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModUtil;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemPickaxe;
-import net.minecraft.util.ResourceLocation;
 
 public class ItemModPickaxe extends ItemPickaxe {
 
 	public ItemModPickaxe(ModMaterials materialIn) {
 
 		super(materialIn.getToolMaterial());
-		ResourceLocation name = new ResourceLocation(materialIn.getResouceLocationDomain(), materialIn.getNameLowercase() + "_pickaxe");
-		this.setRegistryName(name);
-		this.setUnlocalizedName(name.getResourcePath());
-		this.setCreativeTab(ModCreativeTabs.CREATIVE_TAB);
+		ModUtil.setNameForMaterialItem(this, materialIn, "pickaxe");
+		ModUtil.setCreativeTab(this);
 
+	}
+
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return ModUtil.getCreativeTabs(this);
 	}
 
 }

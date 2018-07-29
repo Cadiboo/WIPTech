@@ -11,24 +11,27 @@ import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemModArmor;
 import cadiboo.wiptech.item.ItemModAxe;
+import cadiboo.wiptech.item.ItemModHoe;
 import cadiboo.wiptech.item.ItemModPickaxe;
 import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
 import cadiboo.wiptech.item.ItemRail;
+import cadiboo.wiptech.item.ModItemBlock;
 import cadiboo.wiptech.util.ModEnums.BlockItemTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModUtil;
+import cadiboo.wiptech.util.ModWritingUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -38,7 +41,6 @@ public final class EventSubscriber {
 
 	@SubscribeEvent
 	public static void onRegisterBlocksEvent(final RegistryEvent.Register<Block> event) {
-		ModUtil.infoModMaterialsCode();
 		final IForgeRegistry<Block> registry = event.getRegistry();
 
 		registry.register(new BlockModOre(ModMaterials.URANIUM));
@@ -52,7 +54,6 @@ public final class EventSubscriber {
 		registry.register(new BlockWire(ModMaterials.TUNGSTEN));
 		registry.register(new BlockEnamel(ModMaterials.TUNGSTEN));
 		registry.register(new BlockSpool(ModMaterials.TUNGSTEN));
-		registry.register(new BlockModOre(ModMaterials.TUNGSTEN_CARBITE));
 		registry.register(new BlockResource(ModMaterials.TUNGSTEN_CARBITE));
 		registry.register(new BlockItem(ModMaterials.TUNGSTEN_CARBITE, BlockItemTypes.INGOT));
 		registry.register(new BlockItem(ModMaterials.TUNGSTEN_CARBITE, BlockItemTypes.NUGGET));
@@ -106,20 +107,19 @@ public final class EventSubscriber {
 		registry.register(new BlockWire(ModMaterials.NICKEL));
 		registry.register(new BlockEnamel(ModMaterials.NICKEL));
 		registry.register(new BlockSpool(ModMaterials.NICKEL));
-		registry.register(new BlockModOre(ModMaterials.STEEL));
 		registry.register(new BlockResource(ModMaterials.STEEL));
 		registry.register(new BlockItem(ModMaterials.STEEL, BlockItemTypes.INGOT));
 		registry.register(new BlockItem(ModMaterials.STEEL, BlockItemTypes.NUGGET));
 		registry.register(new BlockWire(ModMaterials.STEEL));
 		registry.register(new BlockEnamel(ModMaterials.STEEL));
 		registry.register(new BlockSpool(ModMaterials.STEEL));
-		registry.register(new BlockModOre(ModMaterials.ALUMINUM));
-		registry.register(new BlockResource(ModMaterials.ALUMINUM));
-		registry.register(new BlockItem(ModMaterials.ALUMINUM, BlockItemTypes.INGOT));
-		registry.register(new BlockItem(ModMaterials.ALUMINUM, BlockItemTypes.NUGGET));
-		registry.register(new BlockWire(ModMaterials.ALUMINUM));
-		registry.register(new BlockEnamel(ModMaterials.ALUMINUM));
-		registry.register(new BlockSpool(ModMaterials.ALUMINUM));
+		registry.register(new BlockModOre(ModMaterials.ALUMINIUM));
+		registry.register(new BlockResource(ModMaterials.ALUMINIUM));
+		registry.register(new BlockItem(ModMaterials.ALUMINIUM, BlockItemTypes.INGOT));
+		registry.register(new BlockItem(ModMaterials.ALUMINIUM, BlockItemTypes.NUGGET));
+		registry.register(new BlockWire(ModMaterials.ALUMINIUM));
+		registry.register(new BlockEnamel(ModMaterials.ALUMINIUM));
+		registry.register(new BlockSpool(ModMaterials.ALUMINIUM));
 		registry.register(new BlockModOre(ModMaterials.COPPER));
 		registry.register(new BlockResource(ModMaterials.COPPER));
 		registry.register(new BlockItem(ModMaterials.COPPER, BlockItemTypes.INGOT));
@@ -156,10 +156,10 @@ public final class EventSubscriber {
 	public static void onRegisterItemsEvent(final RegistryEvent.Register<Item> event) {
 		final IForgeRegistry<Item> registry = event.getRegistry();
 
-		registry.register(new ItemBlock(ModBlocks.URANIUM_ORE).setRegistryName(ModBlocks.URANIUM_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.URANIUM_BLOCK).setRegistryName(ModBlocks.URANIUM_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.URANIUM_INGOT).setRegistryName(ModBlocks.URANIUM_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.URANIUM_NUGGET).setRegistryName(ModBlocks.URANIUM_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.URANIUM_ORE, new ResourceLocation("wiptech", "uranium_ore")));
+		registry.register(new ModItemBlock(ModBlocks.URANIUM_BLOCK, new ResourceLocation("wiptech", "uranium_block")));
+		registry.register(new ModItemBlock(ModBlocks.URANIUM_INGOT, new ResourceLocation("wiptech", "uranium_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.URANIUM_NUGGET, new ResourceLocation("wiptech", "uranium_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.URANIUM, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.URANIUM, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.URANIUM, EntityEquipmentSlot.LEGS));
@@ -168,10 +168,11 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.URANIUM));
 		registry.register(new ItemModSword(ModMaterials.URANIUM));
 		registry.register(new ItemModShovel(ModMaterials.URANIUM));
-		registry.register(new ItemBlock(ModBlocks.TUNGSTEN_ORE).setRegistryName(ModBlocks.TUNGSTEN_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TUNGSTEN_BLOCK).setRegistryName(ModBlocks.TUNGSTEN_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TUNGSTEN_INGOT).setRegistryName(ModBlocks.TUNGSTEN_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TUNGSTEN_NUGGET).setRegistryName(ModBlocks.TUNGSTEN_NUGGET.getRegistryName()));
+		registry.register(new ItemModHoe(ModMaterials.URANIUM));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_ORE, new ResourceLocation("wiptech", "tungsten_ore")));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_BLOCK, new ResourceLocation("wiptech", "tungsten_block")));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_INGOT, new ResourceLocation("wiptech", "tungsten_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_NUGGET, new ResourceLocation("wiptech", "tungsten_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.TUNGSTEN, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.TUNGSTEN, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.TUNGSTEN, EntityEquipmentSlot.LEGS));
@@ -180,13 +181,15 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.TUNGSTEN));
 		registry.register(new ItemModSword(ModMaterials.TUNGSTEN));
 		registry.register(new ItemModShovel(ModMaterials.TUNGSTEN));
+		registry.register(new ItemModHoe(ModMaterials.TUNGSTEN));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.TUNGSTEN));
-		registry.register(new ItemBlock(ModBlocks.TUNGSTEN_SPOOL).setRegistryName(ModBlocks.TUNGSTEN_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_SPOOL));
 		registry.register(new ItemRail(ModMaterials.TUNGSTEN));
-		registry.register(new ItemBlock(ModBlocks.TUNGSTEN_CARBITE_ORE).setRegistryName(ModBlocks.TUNGSTEN_CARBITE_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TUNGSTEN_CARBITE_BLOCK).setRegistryName(ModBlocks.TUNGSTEN_CARBITE_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TUNGSTEN_CARBITE_INGOT).setRegistryName(ModBlocks.TUNGSTEN_CARBITE_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TUNGSTEN_CARBITE_NUGGET).setRegistryName(ModBlocks.TUNGSTEN_CARBITE_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_CARBITE_BLOCK, new ResourceLocation("wiptech", "tungsten_carbite_block")));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_CARBITE_INGOT, new ResourceLocation("wiptech", "tungsten_carbite_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_CARBITE_NUGGET, new ResourceLocation("wiptech", "tungsten_carbite_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.TUNGSTEN_CARBITE, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.TUNGSTEN_CARBITE, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.TUNGSTEN_CARBITE, EntityEquipmentSlot.LEGS));
@@ -195,13 +198,16 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.TUNGSTEN_CARBITE));
 		registry.register(new ItemModSword(ModMaterials.TUNGSTEN_CARBITE));
 		registry.register(new ItemModShovel(ModMaterials.TUNGSTEN_CARBITE));
+		registry.register(new ItemModHoe(ModMaterials.TUNGSTEN_CARBITE));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_CARBITE_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_CARBITE_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.TUNGSTEN_CARBITE));
-		registry.register(new ItemBlock(ModBlocks.TUNGSTEN_CARBITE_SPOOL).setRegistryName(ModBlocks.TUNGSTEN_CARBITE_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.TUNGSTEN_CARBITE_SPOOL));
 		registry.register(new ItemRail(ModMaterials.TUNGSTEN_CARBITE));
-		registry.register(new ItemBlock(ModBlocks.TITANIUM_ORE).setRegistryName(ModBlocks.TITANIUM_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TITANIUM_BLOCK).setRegistryName(ModBlocks.TITANIUM_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TITANIUM_INGOT).setRegistryName(ModBlocks.TITANIUM_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TITANIUM_NUGGET).setRegistryName(ModBlocks.TITANIUM_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.TITANIUM_ORE, new ResourceLocation("wiptech", "titanium_ore")));
+		registry.register(new ModItemBlock(ModBlocks.TITANIUM_BLOCK, new ResourceLocation("wiptech", "titanium_block")));
+		registry.register(new ModItemBlock(ModBlocks.TITANIUM_INGOT, new ResourceLocation("wiptech", "titanium_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.TITANIUM_NUGGET, new ResourceLocation("wiptech", "titanium_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.TITANIUM, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.TITANIUM, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.TITANIUM, EntityEquipmentSlot.LEGS));
@@ -210,10 +216,11 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.TITANIUM));
 		registry.register(new ItemModSword(ModMaterials.TITANIUM));
 		registry.register(new ItemModShovel(ModMaterials.TITANIUM));
-		registry.register(new ItemBlock(ModBlocks.TIN_ORE).setRegistryName(ModBlocks.TIN_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TIN_BLOCK).setRegistryName(ModBlocks.TIN_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TIN_INGOT).setRegistryName(ModBlocks.TIN_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.TIN_NUGGET).setRegistryName(ModBlocks.TIN_NUGGET.getRegistryName()));
+		registry.register(new ItemModHoe(ModMaterials.TITANIUM));
+		registry.register(new ModItemBlock(ModBlocks.TIN_ORE, new ResourceLocation("wiptech", "tin_ore")));
+		registry.register(new ModItemBlock(ModBlocks.TIN_BLOCK, new ResourceLocation("wiptech", "tin_block")));
+		registry.register(new ModItemBlock(ModBlocks.TIN_INGOT, new ResourceLocation("wiptech", "tin_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.TIN_NUGGET, new ResourceLocation("wiptech", "tin_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.TIN, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.TIN, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.TIN, EntityEquipmentSlot.LEGS));
@@ -222,13 +229,16 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.TIN));
 		registry.register(new ItemModSword(ModMaterials.TIN));
 		registry.register(new ItemModShovel(ModMaterials.TIN));
+		registry.register(new ItemModHoe(ModMaterials.TIN));
+		registry.register(new ModItemBlock(ModBlocks.TIN_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.TIN_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.TIN));
-		registry.register(new ItemBlock(ModBlocks.TIN_SPOOL).setRegistryName(ModBlocks.TIN_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.TIN_SPOOL));
 		registry.register(new ItemRail(ModMaterials.TIN));
-		registry.register(new ItemBlock(ModBlocks.THORIUM_ORE).setRegistryName(ModBlocks.THORIUM_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.THORIUM_BLOCK).setRegistryName(ModBlocks.THORIUM_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.THORIUM_INGOT).setRegistryName(ModBlocks.THORIUM_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.THORIUM_NUGGET).setRegistryName(ModBlocks.THORIUM_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.THORIUM_ORE, new ResourceLocation("wiptech", "thorium_ore")));
+		registry.register(new ModItemBlock(ModBlocks.THORIUM_BLOCK, new ResourceLocation("wiptech", "thorium_block")));
+		registry.register(new ModItemBlock(ModBlocks.THORIUM_INGOT, new ResourceLocation("wiptech", "thorium_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.THORIUM_NUGGET, new ResourceLocation("wiptech", "thorium_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.THORIUM, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.THORIUM, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.THORIUM, EntityEquipmentSlot.LEGS));
@@ -237,10 +247,11 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.THORIUM));
 		registry.register(new ItemModSword(ModMaterials.THORIUM));
 		registry.register(new ItemModShovel(ModMaterials.THORIUM));
-		registry.register(new ItemBlock(ModBlocks.SILVER_ORE).setRegistryName(ModBlocks.SILVER_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.SILVER_BLOCK).setRegistryName(ModBlocks.SILVER_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.SILVER_INGOT).setRegistryName(ModBlocks.SILVER_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.SILVER_NUGGET).setRegistryName(ModBlocks.SILVER_NUGGET.getRegistryName()));
+		registry.register(new ItemModHoe(ModMaterials.THORIUM));
+		registry.register(new ModItemBlock(ModBlocks.SILVER_ORE, new ResourceLocation("wiptech", "silver_ore")));
+		registry.register(new ModItemBlock(ModBlocks.SILVER_BLOCK, new ResourceLocation("wiptech", "silver_block")));
+		registry.register(new ModItemBlock(ModBlocks.SILVER_INGOT, new ResourceLocation("wiptech", "silver_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.SILVER_NUGGET, new ResourceLocation("wiptech", "silver_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.SILVER, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.SILVER, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.SILVER, EntityEquipmentSlot.LEGS));
@@ -249,13 +260,16 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.SILVER));
 		registry.register(new ItemModSword(ModMaterials.SILVER));
 		registry.register(new ItemModShovel(ModMaterials.SILVER));
+		registry.register(new ItemModHoe(ModMaterials.SILVER));
+		registry.register(new ModItemBlock(ModBlocks.SILVER_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.SILVER_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.SILVER));
-		registry.register(new ItemBlock(ModBlocks.SILVER_SPOOL).setRegistryName(ModBlocks.SILVER_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.SILVER_SPOOL));
 		registry.register(new ItemRail(ModMaterials.SILVER));
-		registry.register(new ItemBlock(ModBlocks.PLATINUM_ORE).setRegistryName(ModBlocks.PLATINUM_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.PLATINUM_BLOCK).setRegistryName(ModBlocks.PLATINUM_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.PLATINUM_INGOT).setRegistryName(ModBlocks.PLATINUM_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.PLATINUM_NUGGET).setRegistryName(ModBlocks.PLATINUM_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.PLATINUM_ORE, new ResourceLocation("wiptech", "platinum_ore")));
+		registry.register(new ModItemBlock(ModBlocks.PLATINUM_BLOCK, new ResourceLocation("wiptech", "platinum_block")));
+		registry.register(new ModItemBlock(ModBlocks.PLATINUM_INGOT, new ResourceLocation("wiptech", "platinum_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.PLATINUM_NUGGET, new ResourceLocation("wiptech", "platinum_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.PLATINUM, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.PLATINUM, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.PLATINUM, EntityEquipmentSlot.LEGS));
@@ -264,13 +278,16 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.PLATINUM));
 		registry.register(new ItemModSword(ModMaterials.PLATINUM));
 		registry.register(new ItemModShovel(ModMaterials.PLATINUM));
+		registry.register(new ItemModHoe(ModMaterials.PLATINUM));
+		registry.register(new ModItemBlock(ModBlocks.PLATINUM_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.PLATINUM_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.PLATINUM));
-		registry.register(new ItemBlock(ModBlocks.PLATINUM_SPOOL).setRegistryName(ModBlocks.PLATINUM_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.PLATINUM_SPOOL));
 		registry.register(new ItemRail(ModMaterials.PLATINUM));
-		registry.register(new ItemBlock(ModBlocks.PLUTONIUM_ORE).setRegistryName(ModBlocks.PLUTONIUM_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.PLUTONIUM_BLOCK).setRegistryName(ModBlocks.PLUTONIUM_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.PLUTONIUM_INGOT).setRegistryName(ModBlocks.PLUTONIUM_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.PLUTONIUM_NUGGET).setRegistryName(ModBlocks.PLUTONIUM_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.PLUTONIUM_ORE, new ResourceLocation("wiptech", "plutonium_ore")));
+		registry.register(new ModItemBlock(ModBlocks.PLUTONIUM_BLOCK, new ResourceLocation("wiptech", "plutonium_block")));
+		registry.register(new ModItemBlock(ModBlocks.PLUTONIUM_INGOT, new ResourceLocation("wiptech", "plutonium_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.PLUTONIUM_NUGGET, new ResourceLocation("wiptech", "plutonium_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.PLUTONIUM, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.PLUTONIUM, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.PLUTONIUM, EntityEquipmentSlot.LEGS));
@@ -279,10 +296,11 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.PLUTONIUM));
 		registry.register(new ItemModSword(ModMaterials.PLUTONIUM));
 		registry.register(new ItemModShovel(ModMaterials.PLUTONIUM));
-		registry.register(new ItemBlock(ModBlocks.OSMIUM_ORE).setRegistryName(ModBlocks.OSMIUM_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.OSMIUM_BLOCK).setRegistryName(ModBlocks.OSMIUM_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.OSMIUM_INGOT).setRegistryName(ModBlocks.OSMIUM_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.OSMIUM_NUGGET).setRegistryName(ModBlocks.OSMIUM_NUGGET.getRegistryName()));
+		registry.register(new ItemModHoe(ModMaterials.PLUTONIUM));
+		registry.register(new ModItemBlock(ModBlocks.OSMIUM_ORE, new ResourceLocation("wiptech", "osmium_ore")));
+		registry.register(new ModItemBlock(ModBlocks.OSMIUM_BLOCK, new ResourceLocation("wiptech", "osmium_block")));
+		registry.register(new ModItemBlock(ModBlocks.OSMIUM_INGOT, new ResourceLocation("wiptech", "osmium_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.OSMIUM_NUGGET, new ResourceLocation("wiptech", "osmium_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.OSMIUM, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.OSMIUM, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.OSMIUM, EntityEquipmentSlot.LEGS));
@@ -291,13 +309,16 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.OSMIUM));
 		registry.register(new ItemModSword(ModMaterials.OSMIUM));
 		registry.register(new ItemModShovel(ModMaterials.OSMIUM));
+		registry.register(new ItemModHoe(ModMaterials.OSMIUM));
+		registry.register(new ModItemBlock(ModBlocks.OSMIUM_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.OSMIUM_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.OSMIUM));
-		registry.register(new ItemBlock(ModBlocks.OSMIUM_SPOOL).setRegistryName(ModBlocks.OSMIUM_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.OSMIUM_SPOOL));
 		registry.register(new ItemRail(ModMaterials.OSMIUM));
-		registry.register(new ItemBlock(ModBlocks.NICKEL_ORE).setRegistryName(ModBlocks.NICKEL_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.NICKEL_BLOCK).setRegistryName(ModBlocks.NICKEL_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.NICKEL_INGOT).setRegistryName(ModBlocks.NICKEL_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.NICKEL_NUGGET).setRegistryName(ModBlocks.NICKEL_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.NICKEL_ORE, new ResourceLocation("wiptech", "nickel_ore")));
+		registry.register(new ModItemBlock(ModBlocks.NICKEL_BLOCK, new ResourceLocation("wiptech", "nickel_block")));
+		registry.register(new ModItemBlock(ModBlocks.NICKEL_INGOT, new ResourceLocation("wiptech", "nickel_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.NICKEL_NUGGET, new ResourceLocation("wiptech", "nickel_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.NICKEL, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.NICKEL, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.NICKEL, EntityEquipmentSlot.LEGS));
@@ -306,13 +327,15 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.NICKEL));
 		registry.register(new ItemModSword(ModMaterials.NICKEL));
 		registry.register(new ItemModShovel(ModMaterials.NICKEL));
+		registry.register(new ItemModHoe(ModMaterials.NICKEL));
+		registry.register(new ModItemBlock(ModBlocks.NICKEL_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.NICKEL_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.NICKEL));
-		registry.register(new ItemBlock(ModBlocks.NICKEL_SPOOL).setRegistryName(ModBlocks.NICKEL_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.NICKEL_SPOOL));
 		registry.register(new ItemRail(ModMaterials.NICKEL));
-		registry.register(new ItemBlock(ModBlocks.STEEL_ORE).setRegistryName(ModBlocks.STEEL_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.STEEL_BLOCK).setRegistryName(ModBlocks.STEEL_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.STEEL_INGOT).setRegistryName(ModBlocks.STEEL_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.STEEL_NUGGET).setRegistryName(ModBlocks.STEEL_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.STEEL_BLOCK, new ResourceLocation("wiptech", "steel_block")));
+		registry.register(new ModItemBlock(ModBlocks.STEEL_INGOT, new ResourceLocation("wiptech", "steel_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.STEEL_NUGGET, new ResourceLocation("wiptech", "steel_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.STEEL, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.STEEL, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.STEEL, EntityEquipmentSlot.LEGS));
@@ -321,28 +344,34 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.STEEL));
 		registry.register(new ItemModSword(ModMaterials.STEEL));
 		registry.register(new ItemModShovel(ModMaterials.STEEL));
+		registry.register(new ItemModHoe(ModMaterials.STEEL));
+		registry.register(new ModItemBlock(ModBlocks.STEEL_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.STEEL_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.STEEL));
-		registry.register(new ItemBlock(ModBlocks.STEEL_SPOOL).setRegistryName(ModBlocks.STEEL_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.STEEL_SPOOL));
 		registry.register(new ItemRail(ModMaterials.STEEL));
-		registry.register(new ItemBlock(ModBlocks.ALUMINUM_ORE).setRegistryName(ModBlocks.ALUMINUM_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.ALUMINUM_BLOCK).setRegistryName(ModBlocks.ALUMINUM_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.ALUMINUM_INGOT).setRegistryName(ModBlocks.ALUMINUM_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.ALUMINUM_NUGGET).setRegistryName(ModBlocks.ALUMINUM_NUGGET.getRegistryName()));
-		registry.register(new ItemModArmor(ModMaterials.ALUMINUM, EntityEquipmentSlot.HEAD));
-		registry.register(new ItemModArmor(ModMaterials.ALUMINUM, EntityEquipmentSlot.CHEST));
-		registry.register(new ItemModArmor(ModMaterials.ALUMINUM, EntityEquipmentSlot.LEGS));
-		registry.register(new ItemModArmor(ModMaterials.ALUMINUM, EntityEquipmentSlot.FEET));
-		registry.register(new ItemModPickaxe(ModMaterials.ALUMINUM));
-		registry.register(new ItemModAxe(ModMaterials.ALUMINUM));
-		registry.register(new ItemModSword(ModMaterials.ALUMINUM));
-		registry.register(new ItemModShovel(ModMaterials.ALUMINUM));
-		registry.register(new ItemCoil(ModMaterials.ALUMINUM));
-		registry.register(new ItemBlock(ModBlocks.ALUMINUM_SPOOL).setRegistryName(ModBlocks.ALUMINUM_SPOOL.getRegistryName()));
-		registry.register(new ItemRail(ModMaterials.ALUMINUM));
-		registry.register(new ItemBlock(ModBlocks.COPPER_ORE).setRegistryName(ModBlocks.COPPER_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.COPPER_BLOCK).setRegistryName(ModBlocks.COPPER_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.COPPER_INGOT).setRegistryName(ModBlocks.COPPER_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.COPPER_NUGGET).setRegistryName(ModBlocks.COPPER_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.ALUMINIUM_ORE, new ResourceLocation("wiptech", "aluminium_ore")));
+		registry.register(new ModItemBlock(ModBlocks.ALUMINIUM_BLOCK, new ResourceLocation("wiptech", "aluminium_block")));
+		registry.register(new ModItemBlock(ModBlocks.ALUMINIUM_INGOT, new ResourceLocation("wiptech", "aluminium_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.ALUMINIUM_NUGGET, new ResourceLocation("wiptech", "aluminium_nugget")));
+		registry.register(new ItemModArmor(ModMaterials.ALUMINIUM, EntityEquipmentSlot.HEAD));
+		registry.register(new ItemModArmor(ModMaterials.ALUMINIUM, EntityEquipmentSlot.CHEST));
+		registry.register(new ItemModArmor(ModMaterials.ALUMINIUM, EntityEquipmentSlot.LEGS));
+		registry.register(new ItemModArmor(ModMaterials.ALUMINIUM, EntityEquipmentSlot.FEET));
+		registry.register(new ItemModPickaxe(ModMaterials.ALUMINIUM));
+		registry.register(new ItemModAxe(ModMaterials.ALUMINIUM));
+		registry.register(new ItemModSword(ModMaterials.ALUMINIUM));
+		registry.register(new ItemModShovel(ModMaterials.ALUMINIUM));
+		registry.register(new ItemModHoe(ModMaterials.ALUMINIUM));
+		registry.register(new ModItemBlock(ModBlocks.ALUMINIUM_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.ALUMINIUM_ENAMEL));
+		registry.register(new ItemCoil(ModMaterials.ALUMINIUM));
+		registry.register(new ModItemBlock(ModBlocks.ALUMINIUM_SPOOL));
+		registry.register(new ItemRail(ModMaterials.ALUMINIUM));
+		registry.register(new ModItemBlock(ModBlocks.COPPER_ORE, new ResourceLocation("wiptech", "copper_ore")));
+		registry.register(new ModItemBlock(ModBlocks.COPPER_BLOCK, new ResourceLocation("wiptech", "copper_block")));
+		registry.register(new ModItemBlock(ModBlocks.COPPER_INGOT, new ResourceLocation("wiptech", "copper_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.COPPER_NUGGET, new ResourceLocation("wiptech", "copper_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.COPPER, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.COPPER, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.COPPER, EntityEquipmentSlot.LEGS));
@@ -351,13 +380,16 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.COPPER));
 		registry.register(new ItemModSword(ModMaterials.COPPER));
 		registry.register(new ItemModShovel(ModMaterials.COPPER));
+		registry.register(new ItemModHoe(ModMaterials.COPPER));
+		registry.register(new ModItemBlock(ModBlocks.COPPER_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.COPPER_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.COPPER));
-		registry.register(new ItemBlock(ModBlocks.COPPER_SPOOL).setRegistryName(ModBlocks.COPPER_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.COPPER_SPOOL));
 		registry.register(new ItemRail(ModMaterials.COPPER));
-		registry.register(new ItemBlock(ModBlocks.GOLD_ORE).setRegistryName(ModBlocks.GOLD_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.GOLD_BLOCK).setRegistryName(ModBlocks.GOLD_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.GOLD_INGOT).setRegistryName(ModBlocks.GOLD_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.GOLD_NUGGET).setRegistryName(ModBlocks.GOLD_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.GOLD_ORE, new ResourceLocation("minecraft", "gold_ore")));
+		registry.register(new ModItemBlock(ModBlocks.GOLD_BLOCK, new ResourceLocation("minecraft", "gold_block")));
+		registry.register(new ModItemBlock(ModBlocks.GOLD_INGOT, new ResourceLocation("minecraft", "gold_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.GOLD_NUGGET, new ResourceLocation("minecraft", "gold_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.GOLD, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.GOLD, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.GOLD, EntityEquipmentSlot.LEGS));
@@ -366,13 +398,16 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.GOLD));
 		registry.register(new ItemModSword(ModMaterials.GOLD));
 		registry.register(new ItemModShovel(ModMaterials.GOLD));
+		registry.register(new ItemModHoe(ModMaterials.GOLD));
+		registry.register(new ModItemBlock(ModBlocks.GOLD_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.GOLD_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.GOLD));
-		registry.register(new ItemBlock(ModBlocks.GOLD_SPOOL).setRegistryName(ModBlocks.GOLD_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.GOLD_SPOOL));
 		registry.register(new ItemRail(ModMaterials.GOLD));
-		registry.register(new ItemBlock(ModBlocks.IRON_ORE).setRegistryName(ModBlocks.IRON_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.IRON_BLOCK).setRegistryName(ModBlocks.IRON_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.IRON_INGOT).setRegistryName(ModBlocks.IRON_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.IRON_NUGGET).setRegistryName(ModBlocks.IRON_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.IRON_ORE, new ResourceLocation("minecraft", "iron_ore")));
+		registry.register(new ModItemBlock(ModBlocks.IRON_BLOCK, new ResourceLocation("minecraft", "iron_block")));
+		registry.register(new ModItemBlock(ModBlocks.IRON_INGOT, new ResourceLocation("minecraft", "iron_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.IRON_NUGGET, new ResourceLocation("minecraft", "iron_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.IRON, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.IRON, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.IRON, EntityEquipmentSlot.LEGS));
@@ -381,13 +416,16 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.IRON));
 		registry.register(new ItemModSword(ModMaterials.IRON));
 		registry.register(new ItemModShovel(ModMaterials.IRON));
+		registry.register(new ItemModHoe(ModMaterials.IRON));
+		registry.register(new ModItemBlock(ModBlocks.IRON_WIRE));
+		registry.register(new ModItemBlock(ModBlocks.IRON_ENAMEL));
 		registry.register(new ItemCoil(ModMaterials.IRON));
-		registry.register(new ItemBlock(ModBlocks.IRON_SPOOL).setRegistryName(ModBlocks.IRON_SPOOL.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.IRON_SPOOL));
 		registry.register(new ItemRail(ModMaterials.IRON));
-		registry.register(new ItemBlock(ModBlocks.LEAD_ORE).setRegistryName(ModBlocks.LEAD_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.LEAD_BLOCK).setRegistryName(ModBlocks.LEAD_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.LEAD_INGOT).setRegistryName(ModBlocks.LEAD_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.LEAD_NUGGET).setRegistryName(ModBlocks.LEAD_NUGGET.getRegistryName()));
+		registry.register(new ModItemBlock(ModBlocks.LEAD_ORE, new ResourceLocation("wiptech", "lead_ore")));
+		registry.register(new ModItemBlock(ModBlocks.LEAD_BLOCK, new ResourceLocation("wiptech", "lead_block")));
+		registry.register(new ModItemBlock(ModBlocks.LEAD_INGOT, new ResourceLocation("wiptech", "lead_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.LEAD_NUGGET, new ResourceLocation("wiptech", "lead_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.LEAD, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.LEAD, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.LEAD, EntityEquipmentSlot.LEGS));
@@ -396,10 +434,11 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.LEAD));
 		registry.register(new ItemModSword(ModMaterials.LEAD));
 		registry.register(new ItemModShovel(ModMaterials.LEAD));
-		registry.register(new ItemBlock(ModBlocks.GALLIUM_ORE).setRegistryName(ModBlocks.GALLIUM_ORE.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.GALLIUM_BLOCK).setRegistryName(ModBlocks.GALLIUM_BLOCK.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.GALLIUM_INGOT).setRegistryName(ModBlocks.GALLIUM_INGOT.getRegistryName()));
-		registry.register(new ItemBlock(ModBlocks.GALLIUM_NUGGET).setRegistryName(ModBlocks.GALLIUM_NUGGET.getRegistryName()));
+		registry.register(new ItemModHoe(ModMaterials.LEAD));
+		registry.register(new ModItemBlock(ModBlocks.GALLIUM_ORE, new ResourceLocation("wiptech", "gallium_ore")));
+		registry.register(new ModItemBlock(ModBlocks.GALLIUM_BLOCK, new ResourceLocation("wiptech", "gallium_block")));
+		registry.register(new ModItemBlock(ModBlocks.GALLIUM_INGOT, new ResourceLocation("wiptech", "gallium_ingot")));
+		registry.register(new ModItemBlock(ModBlocks.GALLIUM_NUGGET, new ResourceLocation("wiptech", "gallium_nugget")));
 		registry.register(new ItemModArmor(ModMaterials.GALLIUM, EntityEquipmentSlot.HEAD));
 		registry.register(new ItemModArmor(ModMaterials.GALLIUM, EntityEquipmentSlot.CHEST));
 		registry.register(new ItemModArmor(ModMaterials.GALLIUM, EntityEquipmentSlot.LEGS));
@@ -408,6 +447,7 @@ public final class EventSubscriber {
 		registry.register(new ItemModAxe(ModMaterials.GALLIUM));
 		registry.register(new ItemModSword(ModMaterials.GALLIUM));
 		registry.register(new ItemModShovel(ModMaterials.GALLIUM));
+		registry.register(new ItemModHoe(ModMaterials.GALLIUM));
 
 	}
 
@@ -427,6 +467,7 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.URANIUM_AXE);
 		registerItemModel(ModItems.URANIUM_SWORD);
 		registerItemModel(ModItems.URANIUM_SHOVEL);
+		registerItemModel(ModItems.URANIUM_HOE);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_ORE);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_BLOCK);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_INGOT);
@@ -439,12 +480,12 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.TUNGSTEN_AXE);
 		registerItemModel(ModItems.TUNGSTEN_SWORD);
 		registerItemModel(ModItems.TUNGSTEN_SHOVEL);
+		registerItemModel(ModItems.TUNGSTEN_HOE);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_WIRE);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_ENAMEL);
 		registerItemModel(ModItems.TUNGSTEN_COIL);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_SPOOL);
 		registerItemModel(ModItems.TUNGSTEN_RAIL);
-		registerItemBlockModel(ModBlocks.TUNGSTEN_CARBITE_ORE);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_CARBITE_BLOCK);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_CARBITE_INGOT);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_CARBITE_NUGGET);
@@ -456,6 +497,7 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.TUNGSTEN_CARBITE_AXE);
 		registerItemModel(ModItems.TUNGSTEN_CARBITE_SWORD);
 		registerItemModel(ModItems.TUNGSTEN_CARBITE_SHOVEL);
+		registerItemModel(ModItems.TUNGSTEN_CARBITE_HOE);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_CARBITE_WIRE);
 		registerItemBlockModel(ModBlocks.TUNGSTEN_CARBITE_ENAMEL);
 		registerItemModel(ModItems.TUNGSTEN_CARBITE_COIL);
@@ -473,6 +515,7 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.TITANIUM_AXE);
 		registerItemModel(ModItems.TITANIUM_SWORD);
 		registerItemModel(ModItems.TITANIUM_SHOVEL);
+		registerItemModel(ModItems.TITANIUM_HOE);
 		registerItemBlockModel(ModBlocks.TIN_ORE);
 		registerItemBlockModel(ModBlocks.TIN_BLOCK);
 		registerItemBlockModel(ModBlocks.TIN_INGOT);
@@ -485,6 +528,7 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.TIN_AXE);
 		registerItemModel(ModItems.TIN_SWORD);
 		registerItemModel(ModItems.TIN_SHOVEL);
+		registerItemModel(ModItems.TIN_HOE);
 		registerItemBlockModel(ModBlocks.TIN_WIRE);
 		registerItemBlockModel(ModBlocks.TIN_ENAMEL);
 		registerItemModel(ModItems.TIN_COIL);
@@ -502,6 +546,7 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.THORIUM_AXE);
 		registerItemModel(ModItems.THORIUM_SWORD);
 		registerItemModel(ModItems.THORIUM_SHOVEL);
+		registerItemModel(ModItems.THORIUM_HOE);
 		registerItemBlockModel(ModBlocks.SILVER_ORE);
 		registerItemBlockModel(ModBlocks.SILVER_BLOCK);
 		registerItemBlockModel(ModBlocks.SILVER_INGOT);
@@ -514,6 +559,7 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.SILVER_AXE);
 		registerItemModel(ModItems.SILVER_SWORD);
 		registerItemModel(ModItems.SILVER_SHOVEL);
+		registerItemModel(ModItems.SILVER_HOE);
 		registerItemBlockModel(ModBlocks.SILVER_WIRE);
 		registerItemBlockModel(ModBlocks.SILVER_ENAMEL);
 		registerItemModel(ModItems.SILVER_COIL);
@@ -531,6 +577,7 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.PLATINUM_AXE);
 		registerItemModel(ModItems.PLATINUM_SWORD);
 		registerItemModel(ModItems.PLATINUM_SHOVEL);
+		registerItemModel(ModItems.PLATINUM_HOE);
 		registerItemBlockModel(ModBlocks.PLATINUM_WIRE);
 		registerItemBlockModel(ModBlocks.PLATINUM_ENAMEL);
 		registerItemModel(ModItems.PLATINUM_COIL);
@@ -548,6 +595,7 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.PLUTONIUM_AXE);
 		registerItemModel(ModItems.PLUTONIUM_SWORD);
 		registerItemModel(ModItems.PLUTONIUM_SHOVEL);
+		registerItemModel(ModItems.PLUTONIUM_HOE);
 		registerItemBlockModel(ModBlocks.OSMIUM_ORE);
 		registerItemBlockModel(ModBlocks.OSMIUM_BLOCK);
 		registerItemBlockModel(ModBlocks.OSMIUM_INGOT);
@@ -560,6 +608,7 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.OSMIUM_AXE);
 		registerItemModel(ModItems.OSMIUM_SWORD);
 		registerItemModel(ModItems.OSMIUM_SHOVEL);
+		registerItemModel(ModItems.OSMIUM_HOE);
 		registerItemBlockModel(ModBlocks.OSMIUM_WIRE);
 		registerItemBlockModel(ModBlocks.OSMIUM_ENAMEL);
 		registerItemModel(ModItems.OSMIUM_COIL);
@@ -577,12 +626,12 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.NICKEL_AXE);
 		registerItemModel(ModItems.NICKEL_SWORD);
 		registerItemModel(ModItems.NICKEL_SHOVEL);
+		registerItemModel(ModItems.NICKEL_HOE);
 		registerItemBlockModel(ModBlocks.NICKEL_WIRE);
 		registerItemBlockModel(ModBlocks.NICKEL_ENAMEL);
 		registerItemModel(ModItems.NICKEL_COIL);
 		registerItemBlockModel(ModBlocks.NICKEL_SPOOL);
 		registerItemModel(ModItems.NICKEL_RAIL);
-		registerItemBlockModel(ModBlocks.STEEL_ORE);
 		registerItemBlockModel(ModBlocks.STEEL_BLOCK);
 		registerItemBlockModel(ModBlocks.STEEL_INGOT);
 		registerItemBlockModel(ModBlocks.STEEL_NUGGET);
@@ -594,28 +643,30 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.STEEL_AXE);
 		registerItemModel(ModItems.STEEL_SWORD);
 		registerItemModel(ModItems.STEEL_SHOVEL);
+		registerItemModel(ModItems.STEEL_HOE);
 		registerItemBlockModel(ModBlocks.STEEL_WIRE);
 		registerItemBlockModel(ModBlocks.STEEL_ENAMEL);
 		registerItemModel(ModItems.STEEL_COIL);
 		registerItemBlockModel(ModBlocks.STEEL_SPOOL);
 		registerItemModel(ModItems.STEEL_RAIL);
-		registerItemBlockModel(ModBlocks.ALUMINUM_ORE);
-		registerItemBlockModel(ModBlocks.ALUMINUM_BLOCK);
-		registerItemBlockModel(ModBlocks.ALUMINUM_INGOT);
-		registerItemBlockModel(ModBlocks.ALUMINUM_NUGGET);
-		registerItemModel(ModItems.ALUMINUM_HELMET);
-		registerItemModel(ModItems.ALUMINUM_CHESTPLATE);
-		registerItemModel(ModItems.ALUMINUM_LEGGINGS);
-		registerItemModel(ModItems.ALUMINUM_BOOTS);
-		registerItemModel(ModItems.ALUMINUM_PICKAXE);
-		registerItemModel(ModItems.ALUMINUM_AXE);
-		registerItemModel(ModItems.ALUMINUM_SWORD);
-		registerItemModel(ModItems.ALUMINUM_SHOVEL);
-		registerItemBlockModel(ModBlocks.ALUMINUM_WIRE);
-		registerItemBlockModel(ModBlocks.ALUMINUM_ENAMEL);
-		registerItemModel(ModItems.ALUMINUM_COIL);
-		registerItemBlockModel(ModBlocks.ALUMINUM_SPOOL);
-		registerItemModel(ModItems.ALUMINUM_RAIL);
+		registerItemBlockModel(ModBlocks.ALUMINIUM_ORE);
+		registerItemBlockModel(ModBlocks.ALUMINIUM_BLOCK);
+		registerItemBlockModel(ModBlocks.ALUMINIUM_INGOT);
+		registerItemBlockModel(ModBlocks.ALUMINIUM_NUGGET);
+		registerItemModel(ModItems.ALUMINIUM_HELMET);
+		registerItemModel(ModItems.ALUMINIUM_CHESTPLATE);
+		registerItemModel(ModItems.ALUMINIUM_LEGGINGS);
+		registerItemModel(ModItems.ALUMINIUM_BOOTS);
+		registerItemModel(ModItems.ALUMINIUM_PICKAXE);
+		registerItemModel(ModItems.ALUMINIUM_AXE);
+		registerItemModel(ModItems.ALUMINIUM_SWORD);
+		registerItemModel(ModItems.ALUMINIUM_SHOVEL);
+		registerItemModel(ModItems.ALUMINIUM_HOE);
+		registerItemBlockModel(ModBlocks.ALUMINIUM_WIRE);
+		registerItemBlockModel(ModBlocks.ALUMINIUM_ENAMEL);
+		registerItemModel(ModItems.ALUMINIUM_COIL);
+		registerItemBlockModel(ModBlocks.ALUMINIUM_SPOOL);
+		registerItemModel(ModItems.ALUMINIUM_RAIL);
 		registerItemBlockModel(ModBlocks.COPPER_ORE);
 		registerItemBlockModel(ModBlocks.COPPER_BLOCK);
 		registerItemBlockModel(ModBlocks.COPPER_INGOT);
@@ -628,40 +679,17 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.COPPER_AXE);
 		registerItemModel(ModItems.COPPER_SWORD);
 		registerItemModel(ModItems.COPPER_SHOVEL);
+		registerItemModel(ModItems.COPPER_HOE);
 		registerItemBlockModel(ModBlocks.COPPER_WIRE);
 		registerItemBlockModel(ModBlocks.COPPER_ENAMEL);
 		registerItemModel(ModItems.COPPER_COIL);
 		registerItemBlockModel(ModBlocks.COPPER_SPOOL);
 		registerItemModel(ModItems.COPPER_RAIL);
-		registerItemBlockModel(ModBlocks.GOLD_ORE);
-		registerItemBlockModel(ModBlocks.GOLD_BLOCK);
-		registerItemBlockModel(ModBlocks.GOLD_INGOT);
-		registerItemBlockModel(ModBlocks.GOLD_NUGGET);
-		registerItemModel(ModItems.GOLD_HELMET);
-		registerItemModel(ModItems.GOLD_CHESTPLATE);
-		registerItemModel(ModItems.GOLD_LEGGINGS);
-		registerItemModel(ModItems.GOLD_BOOTS);
-		registerItemModel(ModItems.GOLD_PICKAXE);
-		registerItemModel(ModItems.GOLD_AXE);
-		registerItemModel(ModItems.GOLD_SWORD);
-		registerItemModel(ModItems.GOLD_SHOVEL);
 		registerItemBlockModel(ModBlocks.GOLD_WIRE);
 		registerItemBlockModel(ModBlocks.GOLD_ENAMEL);
 		registerItemModel(ModItems.GOLD_COIL);
 		registerItemBlockModel(ModBlocks.GOLD_SPOOL);
 		registerItemModel(ModItems.GOLD_RAIL);
-		registerItemBlockModel(ModBlocks.IRON_ORE);
-		registerItemBlockModel(ModBlocks.IRON_BLOCK);
-		registerItemBlockModel(ModBlocks.IRON_INGOT);
-		registerItemBlockModel(ModBlocks.IRON_NUGGET);
-		registerItemModel(ModItems.IRON_HELMET);
-		registerItemModel(ModItems.IRON_CHESTPLATE);
-		registerItemModel(ModItems.IRON_LEGGINGS);
-		registerItemModel(ModItems.IRON_BOOTS);
-		registerItemModel(ModItems.IRON_PICKAXE);
-		registerItemModel(ModItems.IRON_AXE);
-		registerItemModel(ModItems.IRON_SWORD);
-		registerItemModel(ModItems.IRON_SHOVEL);
 		registerItemBlockModel(ModBlocks.IRON_WIRE);
 		registerItemBlockModel(ModBlocks.IRON_ENAMEL);
 		registerItemModel(ModItems.IRON_COIL);
@@ -679,6 +707,7 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.LEAD_AXE);
 		registerItemModel(ModItems.LEAD_SWORD);
 		registerItemModel(ModItems.LEAD_SHOVEL);
+		registerItemModel(ModItems.LEAD_HOE);
 		registerItemBlockModel(ModBlocks.GALLIUM_ORE);
 		registerItemBlockModel(ModBlocks.GALLIUM_BLOCK);
 		registerItemBlockModel(ModBlocks.GALLIUM_INGOT);
@@ -691,17 +720,50 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.GALLIUM_AXE);
 		registerItemModel(ModItems.GALLIUM_SWORD);
 		registerItemModel(ModItems.GALLIUM_SHOVEL);
+		registerItemModel(ModItems.GALLIUM_HOE);
 
 	}
 
 	@SideOnly(Side.CLIENT)
 	protected static final void registerItemModel(final Item item) {
-		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "normal"));
 	}
 
 	@SideOnly(Side.CLIENT)
 	protected static final void registerItemBlockModel(final Block block) {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
+	}
+
+	@SideOnly(Side.CLIENT)
+	protected static final void registerBlockItemModel(final Block block) {
+		registerItemBlockModel(block);
+	}
+
+	@SideOnly(Side.CLIENT)
+	protected static final void registerBlockItemItemOverrideModel(final Block block) {
+		ModelLoader.setCustomModelResourceLocation(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft", block.getRegistryName().getResourcePath())), 0,
+				new ModelResourceLocation(block.getRegistryName(), "normal"));
+	}
+
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public static final void writeMod(final ModelRegistryEvent event) {
+
+		ModWritingUtil.writeMod();
+
+		for (ModMaterials material : ModMaterials.values()) {
+			if (!material.getProperties().hasWire())
+				continue;
+			WIPTech.info(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_wire").toString());
+			Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_wire"));
+			if (item == null)
+				continue;
+			// ModelLoader.registerItemVariants(item, new ResourceLocation(ModReference.ID,
+			// "block/" + material.getNameLowercase() + "_wire_extension"),
+			// new ResourceLocation(ModReference.ID, "block/" + material.getNameLowercase()
+			// + "_wire"));
+		}
+
 	}
 
 }

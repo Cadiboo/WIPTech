@@ -1,0 +1,8 @@
+{
+	"parent": "wiptech:block/ingot",
+	"textures": {
+		"ingot": "wiptech:item/nickel_ingot"
+	}
+}
+
+

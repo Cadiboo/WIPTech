@@ -1,20 +1,23 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.creativetab.ModCreativeTabs;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
-import net.minecraft.item.ItemSword;
-import net.minecraft.util.ResourceLocation;
+import cadiboo.wiptech.util.ModUtil;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemSpade;
 
-public class ItemModShovel extends ItemSword {
+public class ItemModShovel extends ItemSpade {
 
 	public ItemModShovel(ModMaterials materialIn) {
 
 		super(materialIn.getToolMaterial());
-		ResourceLocation name = new ResourceLocation(materialIn.getResouceLocationDomain(), materialIn.getNameLowercase() + "_shovel");
-		this.setRegistryName(name);
-		this.setUnlocalizedName(name.getResourcePath());
-		this.setCreativeTab(ModCreativeTabs.CREATIVE_TAB);
+		ModUtil.setNameForMaterialItem(this, materialIn, "shovel");
+		ModUtil.setCreativeTab(this);
 
+	}
+
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return ModUtil.getCreativeTabs(this);
 	}
 
 }

@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=north": { "model": "wiptech:aluminium_ingot", "y": 0 },
+        "facing=south": { "model": "wiptech:aluminium_ingot", "y": 180 },
+        "facing=west":  { "model": "wiptech:aluminium_ingot", "y": 270 },
+        "facing=east":  { "model": "wiptech:aluminium_ingot", "y": 90 }
+    }
+}
+

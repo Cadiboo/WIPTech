@@ -1,22 +1,33 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.creativetab.ModCreativeTabs;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModUtil;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.item.ItemStack;
 
 public class ItemModArmor extends ItemArmor {
 
+	protected final ModMaterials material;
+
 	public ItemModArmor(ModMaterials materialIn, EntityEquipmentSlot slotIn) {
 
-		super(materialIn.getArmorMaterial(), 4, slotIn);
-		ResourceLocation name = new ResourceLocation(materialIn.getResouceLocationDomain(), materialIn.getNameLowercase() + "_" + ModUtil.getSlotGameNameLowercase(slotIn));
-		this.setRegistryName(name);
-		this.setUnlocalizedName(name.getResourcePath());
-		this.setCreativeTab(ModCreativeTabs.CREATIVE_TAB);
+		super(materialIn.getArmorMaterial(), materialIn.getId() + 5, slotIn);
+		this.material = materialIn;
+		ModUtil.setNameForMaterialItem(this, materialIn, ModUtil.getSlotGameNameLowercase(slotIn));
+		ModUtil.setCreativeTab(this);
 
+	}
+
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return ModUtil.getCreativeTabs(this);
+	}
+
+	@Override
+	public boolean hasOverlay(ItemStack stack) {
+		return material == ModMaterials.TUNGSTEN_CARBITE;
 	}
 
 }

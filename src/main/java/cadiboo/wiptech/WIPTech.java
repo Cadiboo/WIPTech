@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import cadiboo.wiptech.util.IProxy;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModUtil;
+import cadiboo.wiptech.util.ModWritingUtil;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -21,8 +21,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
  * @author Cadiboo
  */
 
-@Mod(modid = ModReference.ID, name = ModReference.NAME, version = ModReference.VERSION, acceptedMinecraftVersions = ModReference.ACCEPTED_VERSIONS, canBeDeactivated = ModReference.CAN_BE_DEACTIVATED, clientSideOnly = false, serverSideOnly = false, modLanguage = "java", guiFactory = ModReference.GUI_FACTORY_CLASS)
+@Mod(modid = ModReference.ID, name = ModReference.NAME, version = ModReference.VERSION, acceptedMinecraftVersions = ModReference.ACCEPTED_VERSIONS, dependencies = "after:minecraft", canBeDeactivated = ModReference.CAN_BE_DEACTIVATED, clientSideOnly = false, serverSideOnly = false, modLanguage = "java", guiFactory = ModReference.GUI_FACTORY_CLASS)
 public class WIPTech {
+
+	// TODO radioactivity
+	// TODO paramagnetism
 
 	@Instance(ModReference.ID)
 	public static WIPTech instance;
@@ -46,7 +49,7 @@ public class WIPTech {
 	public void postinit(FMLPostInitializationEvent event) {
 		// Mod compatibility, or anything which depends on other mods’ init phases being
 		// finished.
-		ModUtil.infoModMaterialsCode();
+		ModWritingUtil.writeMod();
 	}
 
 	public static void info(Object... msgs) {

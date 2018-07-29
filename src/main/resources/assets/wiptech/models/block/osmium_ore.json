@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:block/ore",
+	"textures": {
+		"ore": "wiptech:block/osmium_ore"
+	}
+}
+

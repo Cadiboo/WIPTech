@@ -12,9 +12,13 @@ public class ModBlock extends Block {
 	}
 
 	public ModBlock(Material materialIn, ResourceLocation resourceLocation) {
+		this(materialIn, resourceLocation, resourceLocation.getResourcePath());
+	}
+
+	public ModBlock(Material materialIn, ResourceLocation registryName, String unlocalizedName) {
 		super(materialIn);
-		this.setRegistryName(resourceLocation);
-		this.setUnlocalizedName(resourceLocation.getResourcePath());
+		this.setRegistryName(registryName);
+		this.setUnlocalizedName(unlocalizedName);
 	}
 
 }

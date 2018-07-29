@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=north": { "model": "wiptech:silver_nugget", "y": 90 },
+        "facing=south": { "model": "wiptech:silver_nugget", "y": 270 },
+        "facing=west":  { "model": "wiptech:silver_nugget", "y": 0 },
+        "facing=east":  { "model": "wiptech:silver_nugget", "y": 180 }
+    }
+}
+

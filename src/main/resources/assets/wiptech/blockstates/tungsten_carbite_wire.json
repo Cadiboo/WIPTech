@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "facing=up"	: { "model": "wiptech:tungsten_carbite_wire", "x": 90	},
+        "facing=down"	: { "model": "wiptech:tungsten_carbite_wire", "x": 180	},
+        "facing=north"	: { "model": "wiptech:tungsten_carbite_wire", "y": 0	},
+        "facing=south"	: { "model": "wiptech:tungsten_carbite_wire", "y": 180	},
+        "facing=west"	: { "model": "wiptech:tungsten_carbite_wire", "y": 270	},
+        "facing=east"	: { "model": "wiptech:tungsten_carbite_wire", "y": 90	}
+    }
+}
+

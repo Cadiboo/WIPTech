@@ -1,19 +1,20 @@
 package cadiboo.wiptech.util;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 
-import cadiboo.wiptech.WIPTech;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 
@@ -40,7 +41,7 @@ public class ModEnums {
 		 * String.toUpperCase}.
 		 */
 		public default String getNameUppercase() {
-			return this.name().toUpperCase();
+			return this.getNameLowercase().toUpperCase();
 		}
 
 		/**
@@ -49,7 +50,7 @@ public class ModEnums {
 		 * StringUtils.capitalize}.
 		 */
 		public default String getNameFormatted() {
-			return StringUtils.capitalize(this.name().toLowerCase());
+			return StringUtils.capitalize(this.getNameLowercase());
 		}
 
 		public String name(); // not exactly hacky, but this method is provided by enum
@@ -70,10 +71,10 @@ public class ModEnums {
 	public static enum ModMaterials implements EnumNameFormattable {
 
 		/* @formatter:off */
-		/*													  material			ore	block ingot armor tools hard   cond	para */
+		/*													  material			ore	  block ingot armor tools hard   cond	para */
 		URANIUM				(0,		new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 6.00f, 24,	false)),
 		TUNGSTEN			(1,		new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 7.50f, 173,	false)),
-		TUNGSTEN_CARBITE	(2,		new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 9.00f, 173,	false)),
+		TUNGSTEN_CARBITE	(2,		new ModMaterialProperties(Material.IRON,	false, true, true, true, true, 9.00f, 173,	false)),
 		TITANIUM			(3,		new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 6.00f, 23,	false)),
 		TIN					(4,		new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 1.50f, 68,	false)),
 		THORIUM				(5,		new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 3.00f, 42,	false)),
@@ -82,8 +83,8 @@ public class ModEnums {
 		PLUTONIUM			(8,		new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 0.01f, 8,		false)),
 		OSMIUM				(9,		new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 7.00f, 61,	false)),
 		NICKEL				(10,	new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 4.00f, 90,	false)),
-		STEEL				(11,	new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 4.50f, 54,	false)),
-		ALUMINUM			(12,	new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 2.75f, 204,	false)),
+		STEEL				(11,	new ModMaterialProperties(Material.IRON,	false, true, true, true, true, 4.50f, 54,	false)),
+		ALUMINIUM			(12,	new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 2.75f, 204,	false)),
 		COPPER				(13,	new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 3.00f, 386,	false)),
 		GOLD				(14,	new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 2.50f, 315,	false)),
 		IRON				(15,	new ModMaterialProperties(Material.IRON,	true, true, true, true, true, 4.00f, 73,	false)),
@@ -104,7 +105,7 @@ public class ModEnums {
 			if (this.getProperties().hasArmor()) {
 				String name = this.getNameUppercase();
 
-				String textureName = new ResourceLocation(this.getResouceLocationDomain(), getNameLowercase()).toString();
+				String textureName = new ResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), getNameLowercase()).toString();
 
 				int durability = Math.round(this.getProperties().getHardness() * ModReference.ARMOR_MATERIAL_HARDNESS_MULTIPLIER);
 
@@ -118,6 +119,8 @@ public class ModEnums {
 				float toughness = Math.round(this.getProperties().getHardness() / 5f);
 
 				this.armorMaterial = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability, soundOnEquip, toughness);
+				this.armorMaterial
+						.setRepairItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), getNameLowercase()))));
 			} else
 				this.armorMaterial = ItemArmor.ArmorMaterial.LEATHER;
 
@@ -154,24 +157,62 @@ public class ModEnums {
 		/**
 		 * if the item already exists in the registry, overwrite it
 		 */
-		public final String getResouceLocationDomain() {
-			for (Field field : ForgeRegistries.class.getFields()) {
-				if (!(field.getType().isAssignableFrom(IForgeRegistry.class)))
-					continue;
-				IForgeRegistry registry;
-				try {
-					registry = (IForgeRegistry) field.get(ForgeRegistries.class);
-
-					for (String type : properties.getPotentialVanillaTypes())
-						if (registry.containsKey(new ResourceLocation("minecraft", getNameLowercase() + "_" + type)))
-							return "minecraft";
-				} catch (IllegalArgumentException | IllegalAccessException e) {
-					WIPTech.error("Error that should never have happened!!!!", e.getMessage());
-				}
-
+		public final String getResouceLocationDomain(String nameSuffix, IForgeRegistry registry) {
+			for (ModContainer mod : Loader.instance().getActiveModList()) {
+				if (mod.getModId() != ModReference.ID)
+					if (registry.containsKey(new ResourceLocation(mod.getModId(), getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix)))
+						return mod.getModId();
 			}
 			return ModReference.ID;
 		}
+
+		public String getVanillaNameLowercase(String suffix) {
+			switch (suffix.toLowerCase()) {
+				case "sword":
+				case "shovel":
+				case "pickaxe":
+				case "axe":
+				case "hoe":
+				case "helmet":
+				case "chestplate":
+				case "leggings":
+				case "boots":
+				case "apple":
+				case "carrot":
+				case "horse_armor":
+					return getNameLowercase() + (getNameLowercase().contains("gold") ? "en" : "");
+				default:
+					return getNameLowercase();
+			}
+
+		}
+
+		public String getVanillaNameUppercase(String suffix) {
+			return getVanillaNameLowercase(suffix).toUpperCase();
+		}
+
+		public String getVanillaNameFormatted(String suffix) {
+			return StringUtils.capitalize(getVanillaNameLowercase(suffix));
+		}
+
+//		public final String getResouceLocationDomain() {
+//			for (Field field : ForgeRegistries.class.getFields()) {
+//				if (!(field.getType().isAssignableFrom(IForgeRegistry.class)))
+//					continue;
+//				IForgeRegistry registry;
+//				try {
+//					registry = (IForgeRegistry) field.get(ForgeRegistries.class);
+//
+//					for (String type : properties.getPotentialVanillaTypes())
+//						if (registry.containsKey(new ResourceLocation("minecraft", getNameLowercase() + "_" + type)))
+//							return "minecraft";
+//				} catch (IllegalArgumentException | IllegalAccessException e) {
+//					WIPTech.error("Error that should never have happened!!!!", e.getMessage());
+//				}
+//
+//			}
+//			return ModReference.ID;
+//		}
 
 	}
 

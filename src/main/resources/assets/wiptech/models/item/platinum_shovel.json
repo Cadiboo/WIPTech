@@ -1,0 +1,7 @@
+{
+	"parent": "item/handheld",
+	"textures": {
+		"layer0": "wiptech:item/platinum_shovel"
+	}
+}
+

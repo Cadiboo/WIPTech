@@ -27,65 +27,56 @@ public class ModMaterialProperties {
 		this.paramagnetic = isParamagnetic;
 	}
 
-	public synchronized final Material getMaterial() {
+	public final Material getMaterial() {
 		return this.material;
 	}
 
-	public synchronized final boolean hasOre() {
+	public final boolean hasOre() {
 		return this.ore;
 	}
 
-	public synchronized final boolean hasBlock() {
+	public final boolean hasBlock() {
 		return block;
 	}
 
-	public synchronized final boolean hasIngotAndNugget() {
+	public final boolean hasIngotAndNugget() {
 		return ingotAndNugget;
 	}
 
-	public synchronized final boolean hasArmor() {
+	public final boolean hasArmor() {
 		return armor;
 	}
 
-	public synchronized final boolean hasTools() {
+	public final boolean hasTools() {
 		return tools;
 	}
 
-	public synchronized final float getHardness() {
+	public final float getHardness() {
 		return hardness;
 	}
 
-	public synchronized final int getConductivity() {
+	public final int getConductivity() {
 		return conductivity;
 	}
 
-	public synchronized final boolean isParamagnetic() {
+	public final boolean isParamagnetic() {
 		return paramagnetic;
 	}
 
-	public synchronized final String[] getPotentialVanillaTypes() {
-		return new String[] { "block", "ore", "ingot", "helmet", "axe" };
-	}
-
-	public synchronized final boolean hasWire() {
+	public final boolean hasWire() {
 		return conductivity > 50;
 	}
 
-	public synchronized final boolean hasEnamel() {
+	public final boolean hasEnamel() {
 		return hasWire();
 	}
 
-	public synchronized final boolean hasCoil() {
+	public final boolean hasCoil() {
 		return hasWire();
 	}
 
-	public synchronized final boolean hasRail() {
+	public final boolean hasRail() {
 		return hasWire();
 	}
-
-//	public synchronized final String[] getPotentialTypes() {
-//		return new String[] { "block", "ore", "ingot", "helmet", "chestplate", "leggings", "boots", "pickaxe", "axe",
-//				"sword", "shovel", "wire", "enamel" };
-//	}
 
 }
