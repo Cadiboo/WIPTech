@@ -8,13 +8,12 @@ public class TileEntityWireRenderer extends TileEntitySpecialRenderer<TileEntity
 	@Override
 	public void render(TileEntityWire te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 		// TODO Auto-generated method stub
-		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
+		// super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 
 	}
 
 	private void render() {
 		// TODO Auto-generated method stub
-
 	}
 
 }

@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/wire_extension",
+	"textures": {
+		"ingot": "minecraft:items/iron_ingot"
+	}
+}

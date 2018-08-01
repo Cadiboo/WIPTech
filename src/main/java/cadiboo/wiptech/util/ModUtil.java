@@ -66,7 +66,7 @@ public class ModUtil {
 	}
 
 	public static CreativeTabs[] getCreativeTabs(Item item) {
-		return new CreativeTabs[] { item.getCreativeTab(), ModCreativeTabs.CREATIVE_TAB };
+		return new CreativeTabs[] { item.getCreativeTab(), ModCreativeTabs.CREATIVE_TAB, CreativeTabs.SEARCH };
 	}
 
 	public static void setCreativeTab(Item item) {

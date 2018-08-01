@@ -1,11 +1,8 @@
 {
-    "variants": {
-        "facing=up"	: { "model": "wiptech:iron_wire", "x": 90	},
-        "facing=down"	: { "model": "wiptech:iron_wire", "x": 180	},
-        "facing=north"	: { "model": "wiptech:iron_wire", "y": 0	},
-        "facing=south"	: { "model": "wiptech:iron_wire", "y": 180	},
-        "facing=west"	: { "model": "wiptech:iron_wire", "y": 270	},
-        "facing=east"	: { "model": "wiptech:iron_wire", "y": 90	}
-    }
+	"variants": {
+		"normal": {
+			"model": "wiptech:iron_wire"
+		}
+	}
 }
 

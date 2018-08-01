@@ -1,11 +1,14 @@
 package cadiboo.wiptech.tileentity;
 
+import java.util.Random;
+
 import net.minecraft.util.EnumFacing;
-import scala.util.Random;
 
-public class TileEntityEnamel extends ModTileEntity {
+public class TileEntityEnamel extends TileEntityWire {
 
-	public boolean isConnectedTo(EnumFacing down) {
+	@Override
+	public boolean isConnectedTo(EnumFacing face) {
+//		return true;
 		// TODO Auto-generated method stub
 		return new Random().nextBoolean();
 	}

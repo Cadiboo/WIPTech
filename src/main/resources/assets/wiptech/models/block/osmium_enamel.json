@@ -1,8 +1,7 @@
 {
-	"parent": "wiptech:block/enamel_extension",
+	"parent": "wiptech:block/enamel",
 	"textures": {
 		"ingot": "wiptech:item/osmium_ingot"
 	}
 }
-
 

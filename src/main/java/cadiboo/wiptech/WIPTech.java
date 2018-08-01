@@ -4,9 +4,13 @@ import java.lang.reflect.Field;
 
 import org.apache.logging.log4j.Logger;
 
+import cadiboo.wiptech.api.WIPTechAPI;
 import cadiboo.wiptech.util.IProxy;
+import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModMaterialProperties;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModWritingUtil;
+import cadiboo.wiptech.world.gen.ModWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -14,6 +18,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * WIPTech Alpha
@@ -35,37 +40,97 @@ public class WIPTech {
 
 	private static Logger logger;
 
+	/**
+	 * Run before anything else. <s>Read your config, create blocks, items, etc, and
+	 * register them with the GameRegistry</s>
+	 */
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
+		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 3);
+		WIPTechAPI.addMaterial("bauxite",
+				new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), ModMaterials.ALUMINIUM.getProperties().getConductivity(), false));
 	}
 
+	/**
+	 * Do your mod setup. Build whatever data structures you care about. Register
+	 * recipes, send FMLInterModComms messages to other mods.
+	 */
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 
 	}
 
+	/**
+	 * Mod compatibility, or anything which depends on other mods’ init phases being
+	 * finished.
+	 */
 	@EventHandler
 	public void postinit(FMLPostInitializationEvent event) {
-		// Mod compatibility, or anything which depends on other mods’ init phases being
-		// finished.
 		ModWritingUtil.writeMod();
 	}
 
-	public static void info(Object... msgs) {
-		for (Object msg : msgs) {
+	/**
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#INFO
+	 * ERROR} INFO.
+	 * 
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
+	 */
+	public static void info(Object... messages) {
+		for (Object msg : messages) {
 			logger.info(msg);
 		}
 	}
 
-	public static void error(Object... msgs) {
-		for (Object msg : msgs) {
+	/**
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#ERROR
+	 * ERROR} level.
+	 * 
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
+	 */
+	public static void error(Object... messages) {
+		for (Object msg : messages) {
 			logger.error(msg);
 		}
 	}
 
-	public static void dump(Object... objs) {
-		for (Object obj : objs) {
+	/**
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#DEBUG
+	 * DEBUG} level.
+	 * 
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
+	 */
+	public static void debug(Object... messages) {
+		for (Object msg : messages) {
+			logger.debug(msg);
+		}
+	}
+
+	/**
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#FATAL
+	 * FATAL} level.
+	 * 
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
+	 */
+	public static void fatal(Object... messages) {
+		for (Object msg : messages) {
+			logger.fatal(msg);
+		}
+	}
+
+	/**
+	 * Logs all {@link java.lang.reflect.Field Field}s and their values of an object
+	 * with the {@link org.apache.logging.log4j.Level#INFO INFO} level.
+	 * 
+	 * @param objects the objects to dump.
+	 * @author Cadiboo
+	 */
+	public static void dump(Object... objects) {
+		for (Object obj : objects) {
 			Field[] fields = obj.getClass().getDeclaredFields();
 			info("Dump of " + obj + ":");
 			for (int i = 0; i < fields.length; i++) {

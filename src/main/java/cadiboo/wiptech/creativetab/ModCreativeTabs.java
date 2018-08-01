@@ -1,6 +1,6 @@
 package cadiboo.wiptech.creativetab;
 
-import cadiboo.wiptech.init.ModItems;
+import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -44,7 +44,7 @@ public class ModCreativeTabs {
 		@SideOnly(Side.CLIENT)
 		@Override
 		public ItemStack getTabIconItem() {
-			return new ItemStack(ModItems.URANIUM_HELMET);
+			return new ItemStack(ModMaterials.COPPER.getSpool());
 		}
 
 		/*
