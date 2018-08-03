@@ -48,8 +48,7 @@ public class WIPTech {
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 3);
-		WIPTechAPI.addMaterial("bauxite",
-				new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), ModMaterials.ALUMINIUM.getProperties().getConductivity(), false));
+		WIPTechAPI.addMaterial("bauxite", new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0, false));
 	}
 
 	/**

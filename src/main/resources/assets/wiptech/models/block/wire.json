@@ -16,5 +16,13 @@
 				"down": {"uv": [7, 6, 8, 7], "texture": "#ingot"}
 			}
 		}
-	]
+	],
+	"display": {
+		"gui": {
+			"scale": [4, 4, 4]
+		},
+		"fixed": {
+			"scale": [4, 4, 4]
+		}
+	}
 }

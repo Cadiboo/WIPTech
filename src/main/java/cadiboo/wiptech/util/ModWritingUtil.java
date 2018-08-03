@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class ModWritingUtil {
 
-	private static String	default_variant_name	= "normal";
+	public static String	default_variant_name	= "normal";
 	private static String	assetDir				= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
 
 	public static void writeMod() {
@@ -261,7 +261,12 @@ public class ModWritingUtil {
 
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
 				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
-//				blockModels.add(new Tuple<String, String>(nameUpper + "_extension", generateBlockItemModelJSON(material, suffixLower + "_extension")));
+
+				suffixLower += "_extension";
+				nameUpper += "_extension".toUpperCase();
+
+				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
+				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
 			}
 
 			//
@@ -280,7 +285,12 @@ public class ModWritingUtil {
 
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
 				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
-//				blockModels.add(new Tuple<String, String>(nameUpper + "_extension", generateBlockItemModelJSON(material, suffixLower + "_extension")));
+
+				suffixLower += "_extension";
+				nameUpper += "_extension".toUpperCase();
+
+				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
+				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
 			}
 
 			//

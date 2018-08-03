@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:block/wire",
+	"textures": {
+		"ingot": "wiptech:item/bauxite_ingot"
+	}
+}
+

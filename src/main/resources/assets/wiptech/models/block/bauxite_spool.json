@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:block/spool",
+	"textures": {
+		"ingot": "wiptech:item/bauxite_ingot"
+	}
+}
+
