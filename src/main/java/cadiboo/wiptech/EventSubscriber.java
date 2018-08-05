@@ -225,9 +225,9 @@ public final class EventSubscriber {
 
 			if (material.getProperties().hasIngotAndNugget()) {
 
-				if (material.getIngot() != null && material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS) == ModReference.ID)
+				if (material.getIngot() != null && material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals(ModReference.ID))
 					registerItemBlockModel(material.getIngot());
-				if (material.getNugget() != null && material.getResouceLocationDomain("nugget", ForgeRegistries.ITEMS) == ModReference.ID)
+				if (material.getNugget() != null && material.getResouceLocationDomain("nugget", ForgeRegistries.ITEMS).equals(ModReference.ID))
 					registerItemBlockModel(material.getNugget());
 
 			}
@@ -288,12 +288,12 @@ public final class EventSubscriber {
 
 	@SideOnly(Side.CLIENT)
 	protected static final void registerItemModel(final Item item) {
-		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "normal"));
+		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
 	@SideOnly(Side.CLIENT)
 	protected static final void registerItemBlockModel(final Block block) {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), "normal"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -304,7 +304,7 @@ public final class EventSubscriber {
 	@SideOnly(Side.CLIENT)
 	protected static final void registerBlockItemItemOverrideModel(final Block block) {
 		ModelLoader.setCustomModelResourceLocation(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft", block.getRegistryName().getResourcePath())), 0,
-				new ModelResourceLocation(block.getRegistryName(), "normal"));
+				new ModelResourceLocation(block.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

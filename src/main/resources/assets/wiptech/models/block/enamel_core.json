@@ -32,10 +32,10 @@
 	],
 	"display": {
 		"gui": {
-			"scale": [4, 4, 4]
+			"scale": [3, 3, 3]
 		},
 		"fixed": {
-			"scale": [4, 4, 4]
+			"scale": [3, 3, 3]
 		}
 	}
 }
