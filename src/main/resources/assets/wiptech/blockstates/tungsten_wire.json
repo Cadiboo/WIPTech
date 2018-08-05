@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:tungsten_wire"
+			"model": "wiptech:wiremodel/tungsten_wire"
 		}
 	}
 }

@@ -4,10 +4,7 @@ import java.lang.reflect.Field;
 
 import org.apache.logging.log4j.Logger;
 
-import cadiboo.wiptech.api.WIPTechAPI;
 import cadiboo.wiptech.util.IProxy;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
-import cadiboo.wiptech.util.ModMaterialProperties;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModWritingUtil;
 import cadiboo.wiptech.world.gen.ModWorldGenerator;
@@ -31,6 +28,15 @@ public class WIPTech {
 
 	// TODO radioactivity
 	// TODO paramagnetism
+	// TODO json models
+	// FIXME json wire model gen & ^^^
+	// TODO electricity damage
+	// TODO electricity transfer
+	// TODO electricity rendering
+	// TODO autogenerate lang file (1.12.2 & 1.13)
+	// TODO world gen to subscriber
+	// TODO client SYNCING!!!
+	// TODO start on machines. guns and entities later
 
 	@Instance(ModReference.ID)
 	public static WIPTech instance;
@@ -47,8 +53,10 @@ public class WIPTech {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
+		ModWritingUtil.writeMod();
 		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 3);
-		WIPTechAPI.addMaterial("bauxite", new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0, false));
+//		WIPTechAPI.addMaterial("bauxite", new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0, false));
+
 	}
 
 	/**

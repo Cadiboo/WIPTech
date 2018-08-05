@@ -22,6 +22,9 @@ public class TileEntityWireRenderer extends ModTileEntitySpecialRenderer<TileEnt
 	@Override
 	public void renderAtCentre(TileEntityWire te, float partialTicks, int destroyStage, float alpha) {
 
+		if (true)
+			return;
+
 		if (!(te.getBlockType() instanceof BlockWire)) {
 			WIPTech.error("Error rendering TileEntityWire! block at location is not an instanceof BlockWire!");
 			new Exception().printStackTrace();

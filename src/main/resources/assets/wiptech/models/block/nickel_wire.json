@@ -1,5 +1,5 @@
 {
-	"parent": "wiptech:block/wire",
+	"parent": "wiptech:block/wire_core",
 	"textures": {
 		"ingot": "wiptech:item/nickel_ingot"
 	}

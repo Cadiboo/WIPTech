@@ -1,5 +1,6 @@
 package cadiboo.wiptech.client.model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,14 +9,18 @@ import javax.vecmath.Matrix4f;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.util.ModReference;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverride;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 
@@ -33,6 +38,14 @@ import net.minecraftforge.common.property.IUnlistedProperty;
  * 
  */
 public class CompositeModel implements IBakedModel {
+
+	private IBakedModel	modelCore;
+	private IBakedModel	modelUp;
+	private IBakedModel	modelDown;
+	private IBakedModel	modelWest;
+	private IBakedModel	modelEast;
+	private IBakedModel	modelNorth;
+	private IBakedModel	modelSouth;
 
 	public CompositeModel(IBakedModel i_modelCore, IBakedModel i_modelUp, IBakedModel i_modelDown, IBakedModel i_modelWest, IBakedModel i_modelEast, IBakedModel i_modelNorth,
 			IBakedModel i_modelSouth) {
@@ -63,24 +76,24 @@ public class CompositeModel implements IBakedModel {
 			return quadsList;
 		}
 		IExtendedBlockState extendedBlockState = (IExtendedBlockState) blockState;
-//		if (isLinkPresent(extendedBlockState, Block3DWeb.LINK_UP)) {
-//			quadsList.addAll(modelUp.getQuads(extendedBlockState, side, rand));
-//		}
-//		if (isLinkPresent(extendedBlockState, Block3DWeb.LINK_DOWN)) {
-//			quadsList.addAll(modelDown.getQuads(extendedBlockState, side, rand));
-//		}
-//		if (isLinkPresent(extendedBlockState, Block3DWeb.LINK_WEST)) {
-//			quadsList.addAll(modelWest.getQuads(extendedBlockState, side, rand));
-//		}
-//		if (isLinkPresent(extendedBlockState, Block3DWeb.LINK_EAST)) {
-//			quadsList.addAll(modelEast.getQuads(extendedBlockState, side, rand));
-//		}
-//		if (isLinkPresent(extendedBlockState, Block3DWeb.LINK_NORTH)) {
-//			quadsList.addAll(modelNorth.getQuads(extendedBlockState, side, rand));
-//		}
-//		if (isLinkPresent(extendedBlockState, Block3DWeb.LINK_SOUTH)) {
-//			quadsList.addAll(modelSouth.getQuads(extendedBlockState, side, rand));
-//		}
+		if (isLinkPresent(extendedBlockState, BlockWire.CONNECTION_UP)) {
+			quadsList.addAll(modelUp.getQuads(extendedBlockState, side, rand));
+		}
+		if (isLinkPresent(extendedBlockState, BlockWire.CONNECTION_DOWN)) {
+			quadsList.addAll(modelDown.getQuads(extendedBlockState, side, rand));
+		}
+		if (isLinkPresent(extendedBlockState, BlockWire.CONNECTION_WEST)) {
+			quadsList.addAll(modelWest.getQuads(extendedBlockState, side, rand));
+		}
+		if (isLinkPresent(extendedBlockState, BlockWire.CONNECTION_EAST)) {
+			quadsList.addAll(modelEast.getQuads(extendedBlockState, side, rand));
+		}
+		if (isLinkPresent(extendedBlockState, BlockWire.CONNECTION_NORTH)) {
+			quadsList.addAll(modelNorth.getQuads(extendedBlockState, side, rand));
+		}
+		if (isLinkPresent(extendedBlockState, BlockWire.CONNECTION_SOUTH)) {
+			quadsList.addAll(modelSouth.getQuads(extendedBlockState, side, rand));
+		}
 		return quadsList;
 	}
 
@@ -102,7 +115,7 @@ public class CompositeModel implements IBakedModel {
 	// used for block breaking shards
 	@Override
 	public TextureAtlasSprite getParticleTexture() {
-		TextureAtlasSprite textureAtlasSprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraftbyexample:blocks/mbe05_block_3d_web");
+		TextureAtlasSprite textureAtlasSprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(new ResourceLocation(ModReference.ID, "item/copper_ingot").toString());
 
 		return textureAtlasSprite;
 	}
@@ -146,7 +159,7 @@ public class CompositeModel implements IBakedModel {
 
 	@Override
 	public ItemOverrideList getOverrides() {
-		return null;
+		return new ItemOverrideList(new ArrayList<ItemOverride>(0));
 	}
 
 	private boolean isLinkPresent(IExtendedBlockState iExtendedBlockState, IUnlistedProperty<Boolean> whichLink) {
@@ -156,12 +169,4 @@ public class CompositeModel implements IBakedModel {
 		}
 		return link;
 	}
-
-	private IBakedModel	modelCore;
-	private IBakedModel	modelUp;
-	private IBakedModel	modelDown;
-	private IBakedModel	modelWest;
-	private IBakedModel	modelEast;
-	private IBakedModel	modelNorth;
-	private IBakedModel	modelSouth;
 }

@@ -1,12 +1,16 @@
 package cadiboo.wiptech.block;
 
+import java.util.List;
+
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
@@ -131,33 +135,56 @@ public class BlockWire extends ModMaterialBlock {
 		if (!(state instanceof IExtendedBlockState) || world.getTileEntity(pos) == null || !(world.getTileEntity(pos) instanceof TileEntityWire))
 			return state;
 
-		TileEntityWire tile = (TileEntityWire) world.getTileEntity(pos);
+		final TileEntityWire tile = (TileEntityWire) world.getTileEntity(pos);
 
 		IExtendedBlockState retval = (IExtendedBlockState) state;
 
-		boolean linkdown = tile.isConnectedTo(EnumFacing.DOWN);
+		final boolean linkdown = tile.isConnectedTo(EnumFacing.DOWN);
 		retval = retval.withProperty(CONNECTION_DOWN, linkdown);
 
-		boolean linkup = tile.isConnectedTo(EnumFacing.UP);
+		final boolean linkup = tile.isConnectedTo(EnumFacing.UP);
 		retval = retval.withProperty(CONNECTION_UP, linkup);
 
-		boolean linknorth = tile.isConnectedTo(EnumFacing.NORTH);
+		final boolean linknorth = tile.isConnectedTo(EnumFacing.NORTH);
 		retval = retval.withProperty(CONNECTION_NORTH, linknorth);
 
-		boolean linksouth = tile.isConnectedTo(EnumFacing.SOUTH);
+		final boolean linksouth = tile.isConnectedTo(EnumFacing.SOUTH);
 		retval = retval.withProperty(CONNECTION_SOUTH, linksouth);
 
-		boolean linkwest = tile.isConnectedTo(EnumFacing.WEST);
+		final boolean linkwest = tile.isConnectedTo(EnumFacing.WEST);
 		retval = retval.withProperty(CONNECTION_WEST, linkwest);
 
-		boolean linkeast = tile.isConnectedTo(EnumFacing.EAST);
+		final boolean linkeast = tile.isConnectedTo(EnumFacing.EAST);
 		retval = retval.withProperty(CONNECTION_EAST, linkeast);
 
 		return retval;
 	}
 
+	/* exists for testing */
 	protected boolean canConnectTo(IBlockAccess worldIn, BlockPos pos) {
-		return true;
+		return worldIn.getBlockState(pos).getMaterial() != Material.AIR;
+	}
+
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean isActualState) {
+		TileEntity tile = worldIn.getTileEntity(pos);
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, CORE_AABB);
+		if (tile != null && tile instanceof TileEntityWire) {
+			TileEntityWire wire = (TileEntityWire) tile;
+
+			if (wire.isConnectedTo(EnumFacing.DOWN))
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
+			if (wire.isConnectedTo(EnumFacing.UP))
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, UP_AABB);
+			if (wire.isConnectedTo(EnumFacing.NORTH))
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
+			if (wire.isConnectedTo(EnumFacing.SOUTH))
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
+			if (wire.isConnectedTo(EnumFacing.WEST))
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
+			if (wire.isConnectedTo(EnumFacing.EAST))
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
+		}
 	}
 
 	// the LINK properties are used to communicate to the ISmartBlockModel which of

@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:tungsten_enamel"
+			"model": "wiptech:wiremodel/tungsten_enamel"
 		}
 	}
 }

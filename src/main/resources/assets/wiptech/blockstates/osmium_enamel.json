@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:osmium_enamel"
+			"model": "wiptech:wiremodel/osmium_enamel"
 		}
 	}
 }

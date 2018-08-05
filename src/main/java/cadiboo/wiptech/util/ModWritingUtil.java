@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.common.Loader;
@@ -23,15 +24,16 @@ public class ModWritingUtil {
 
 	public static void writeMod() {
 
-		boolean code = true;
+		boolean code = false;
 		boolean json = true;
 
-//		try {
-//			Generator.genVanillaBlockState("/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources", ModReference.ID, "testWire", ModBlocks.COPPER_WIRE);
-//		} catch (Exception e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
+		try {
+			Generator.genVanillaBlockState("/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources", ModReference.ID, "testWire",
+					new BlockWire(ModMaterials.COPPER));
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		WIPTech.info("infoModMaterialsCode with options write code: " + code + ", write json: " + json);
 
@@ -259,14 +261,14 @@ public class ModWritingUtil {
 
 				registerModels.add("registerItemBlockModel(ModBlocks." + nameUpper + ");");
 
-				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
-				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
+				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
+				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower + "_core")));
 
-				suffixLower += "_extension";
-				nameUpper += "_extension".toUpperCase();
-
-				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
-				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
+//				suffixLower += "_extension";
+//				nameUpper += "_extension".toUpperCase();
+//
+//				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
+//				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
 			}
 
 			//
@@ -283,14 +285,14 @@ public class ModWritingUtil {
 
 				registerModels.add("registerItemBlockModel(ModBlocks." + nameUpper + ");");
 
-				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
-				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
+				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
+				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower + "_core")));
 
-				suffixLower += "_extension";
-				nameUpper += "_extension".toUpperCase();
-
-				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
-				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
+//				suffixLower += "_extension";
+//				nameUpper += "_extension".toUpperCase();
+//
+//				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
+//				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
 			}
 
 			//

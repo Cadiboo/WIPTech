@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:copper_wire"
+			"model": "wiptech:wiremodel/copper_wire"
 		}
 	}
 }

@@ -1,7 +1,0 @@
-{
-	"parent": "wiptech:block/wire_extension",
-	"textures": {
-		"ingot": "wiptech:item/aluminium_ingot"
-	}
-}
-

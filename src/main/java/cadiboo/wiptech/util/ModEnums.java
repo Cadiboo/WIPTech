@@ -89,24 +89,25 @@ public class ModEnums {
 
 		/* @formatter:off */
 		/*													  ore	block ingot armor tools hard   cond	para */
-		URANIUM				(0,		new ModMaterialProperties(true, true, true, true, true, 6.00f, 24,	false)),
-		TUNGSTEN			(1,		new ModMaterialProperties(true, true, true, true, true, 7.50f, 173,	false)),
-		TUNGSTEN_CARBITE	(2,		new ModMaterialProperties(false, true, true, true, true, 9.00f, 173,	false)),
-		TITANIUM			(3,		new ModMaterialProperties(true, true, true, true, true, 6.00f, 23,	false)),
-		TIN					(4,		new ModMaterialProperties(true, true, true, true, true, 1.50f, 68,	false)),
-		THORIUM				(5,		new ModMaterialProperties(true, true, true, true, true, 3.00f, 42,	false)),
-		SILVER				(6,		new ModMaterialProperties(true, true, true, true, true, 2.50f, 407,	false)),
-		PLATINUM			(7,		new ModMaterialProperties(true, true, true, true, true, 3.50f, 73,	false)),
-		PLUTONIUM			(8,		new ModMaterialProperties(true, true, true, true, true, 0.01f, 8,		false)),
-		OSMIUM				(9,		new ModMaterialProperties(true, true, true, true, true, 7.00f, 61,	false)),
-		NICKEL				(10,	new ModMaterialProperties(true, true, true, true, true, 4.00f, 90,	false)),
-		STEEL				(11,	new ModMaterialProperties(false, true, true, true, true, 4.50f, 54,	false)),
-		ALUMINIUM			(12,	new ModMaterialProperties(true, true, true, true, true, 2.75f, 204,	false)),
-		COPPER				(13,	new ModMaterialProperties(true, true, true, true, true, 3.00f, 386,	false)),
-		GOLD				(14,	new ModMaterialProperties(true, true, true, true, true, 2.50f, 315,	false)),
-		IRON				(15,	new ModMaterialProperties(true, true, true, true, true, 4.00f, 73,	false)),
-		LEAD				(16,	new ModMaterialProperties(true, true, true, true, true, 1.50f, 35,	false)),
-		GALLIUM				(17,	new ModMaterialProperties(true, true, true, true, true, 1.50f, 29,	false));
+		URANIUM				(0, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	6.00f, 	24, 	false)),
+		TUNGSTEN			(1, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	7.50f, 	173, 	false)),
+		TUNGSTEN_CARBITE	(2, 	new ModMaterialProperties(false, 	true, 	true, 	true, 	true, 	9.00f, 	173, 	false)),
+		TITANIUM			(3, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	6.00f, 	23, 	false)),
+		TIN					(4, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	1.50f, 	68, 	false)),
+		THORIUM				(5, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	3.00f, 	42, 	false)),
+		SILVER				(6, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	2.50f, 	407, 	false)),
+		PLATINUM			(7, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	3.50f, 	73, 	false)),
+		PLUTONIUM			(8, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	0.01f, 	8,  	false)),
+		OSMIUM				(9, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	7.00f, 	61, 	false)),
+		NICKEL				(10, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	4.00f, 	90, 	false)),
+		STEEL				(11, 	new ModMaterialProperties(false, 	true, 	true, 	true, 	true, 	4.50f, 	54, 	false)),
+		ALUMINIUM			(12, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	2.75f, 	204, 	false)),
+		COPPER				(13, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	3.00f, 	386, 	false)),
+		GOLD				(14, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	2.50f, 	315, 	false)),
+		IRON				(15, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	4.00f, 	73, 	false)),
+		LEAD				(16, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	1.50f, 	35, 	false)),
+		GALLIUM				(17, 	new ModMaterialProperties(true, 	true, 	true, 	true, 	true, 	1.50f, 	29, 	false)),
+		BAUXITE				(18, 	new ModMaterialProperties(true, 	false, 	false, 	false, 	false, 	ModMaterials.ALUMINIUM.getProperties().getHardness(), 	0, 	false));
 		
 		/* @formatter:on */
 

@@ -1,5 +1,5 @@
 {
-	"parent": "wiptech:block/enamel",
+	"parent": "wiptech:block/enamel_core",
 	"textures": {
 		"ingot": "wiptech:item/platinum_ingot"
 	}

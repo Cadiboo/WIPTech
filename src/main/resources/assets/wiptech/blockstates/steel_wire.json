@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:steel_wire"
+			"model": "wiptech:wiremodel/steel_wire"
 		}
 	}
 }

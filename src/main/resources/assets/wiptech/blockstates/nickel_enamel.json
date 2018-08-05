@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:nickel_enamel"
+			"model": "wiptech:wiremodel/nickel_enamel"
 		}
 	}
 }

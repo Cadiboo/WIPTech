@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:aluminium_enamel"
+			"model": "wiptech:wiremodel/aluminium_enamel"
 		}
 	}
 }

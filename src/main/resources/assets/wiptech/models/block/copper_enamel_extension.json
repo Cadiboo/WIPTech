@@ -1,7 +1,0 @@
-{
-	"parent": "wiptech:block/enamel_extension",
-	"textures": {
-		"ingot": "wiptech:item/copper_ingot"
-	}
-}
-

@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:tin_wire"
+			"model": "wiptech:wiremodel/tin_wire"
 		}
 	}
 }

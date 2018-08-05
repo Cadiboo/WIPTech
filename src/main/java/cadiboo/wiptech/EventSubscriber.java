@@ -9,6 +9,7 @@ import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.client.model.ModelsCache;
+import cadiboo.wiptech.client.render.block.model.WireModelLoader;
 import cadiboo.wiptech.client.render.tileentity.TileEntityEnamelRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityWireRenderer;
 import cadiboo.wiptech.item.ItemCoil;
@@ -28,12 +29,14 @@ import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModWritingUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -45,6 +48,7 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.RegistryEvent;
@@ -91,6 +95,8 @@ public final class EventSubscriber {
 				registry.register(new BlockEnamel(material));
 
 		}
+
+		WIPTech.debug("registered blocks");
 
 	}
 
@@ -144,6 +150,8 @@ public final class EventSubscriber {
 
 		}
 
+		WIPTech.debug("registered items");
+
 	}
 
 	@SubscribeEvent
@@ -152,6 +160,59 @@ public final class EventSubscriber {
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWire.class, new TileEntityWireRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnamel.class, new TileEntityEnamelRenderer());
+		WIPTech.debug("registered TESRs");
+
+		for (ModMaterials material : ModMaterials.values()) {
+
+			// We need to tell Forge how to map our Block3DWebs's IBlockState to a
+			// ModelResourceLocation.
+			// For example, the BlockStone granite variant has a BlockStateMap entry that
+			// looks like
+			// "stone[variant=granite]" (iBlockState) -> "minecraft:granite#normal"
+			// (ModelResourceLocation)
+			// For the 3DWeb block, we ignore the iBlockState completely and always return
+			// the same ModelResourceLocation,
+			// which is done using the anonymous class below
+
+			if (material.getProperties().hasWire())
+				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
+					@Override
+					protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
+						return new ModelResourceLocation(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name);
+					}
+				});
+			if (material.getProperties().hasEnamel())
+				ModelLoader.setCustomStateMapper(material.getEnamel(), new StateMapperBase() {
+					@Override
+					protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
+						return new ModelResourceLocation(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
+					}
+				});
+
+			//
+
+			// This is currently necessary in order to make your block render properly when
+			// it is an item (i.e. in the inventory
+			// or in your hand or thrown on the ground).
+			// Minecraft knows to look for the item model based on the
+			// GameRegistry.registerBlock. However the registration of
+			// the model for each item is normally done by RenderItem.registerItems(), and
+			// this is not currently aware
+			// of any extra items you have created. Hence you have to do it manually.
+			// It must be done on client only, and must be done after the block has been
+			// created in Common.preinit().
+
+//			if (material.getProperties().hasWire())
+//				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(material.getWire()), 0,
+//						new ModelResourceLocation(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name));
+//			if (material.getProperties().hasEnamel())
+//				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(material.getEnamel()), 0,
+//						new ModelResourceLocation(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_enamel"), "inventory"));
+
+		}
+
+		ModelLoaderRegistry.registerLoader(new WireModelLoader());
+		WIPTech.debug("registered wire & enamel custom models");
 
 		for (ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre())
@@ -217,6 +278,7 @@ public final class EventSubscriber {
 					registerItemModel(material.getRail());
 
 		}
+		WIPTech.debug("registered block & item models");
 
 	}
 
@@ -315,7 +377,7 @@ public final class EventSubscriber {
 				int Width = Scaled.getScaledWidth() - 10;
 				int Height = Scaled.getScaledHeight() - 54;
 
-				Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(ModReference.ID, "textures/gui/turbine.png"));
+//				Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(ModReference.ID, "textures/gui/turbine.png"));
 
 				drawNonStandardTexturedRect(Width, Height, 83, 16, 10, 54, 256, 256);
 				drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 176, 0, 8, 52 - scaled_height, 256, 256);

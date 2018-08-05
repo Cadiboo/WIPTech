@@ -1,9 +1,12 @@
 package cadiboo.wiptech.tileentity;
 
+import java.util.List;
+
 import cadiboo.wiptech.capability.ModEnergyStorage;
+import cadiboo.wiptech.util.ModDamageSource;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -26,10 +29,18 @@ public class TileEntityWire extends ModTileEntity implements ITickable {
 
 	@Override
 	public final void update() {
-		// WIPTech.info("update");
-		this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).grow(20 * 2)).forEach((entity) -> {
-			entity.attackEntityFrom(DamageSource.LIGHTNING_BOLT, 10);
+		getElectrocutableEntities().forEach((entity) -> {
+			if (shouldElectrocuteEntity(entity))
+				entity.attackEntityFrom(ModDamageSource.ELECTRICITY, 10);
 		});
+	}
+
+	public boolean shouldElectrocuteEntity(Entity entity) {
+		return entity instanceof EntityLivingBase;
+	}
+
+	public List<Entity> getElectrocutableEntities() {
+		return this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).grow(20 * 2));
 	}
 
 	@Override
