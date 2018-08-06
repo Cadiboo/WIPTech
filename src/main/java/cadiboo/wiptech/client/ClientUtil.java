@@ -42,6 +42,8 @@ public class ClientUtil {
 //	net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(BufferBuilder wr, BakedQuad quad, int auxColor);
 //	
 //	Tessellator.getInstance().getBuffer().lightmap(p_187314_1_, p_187314_2_);
+//	
+//	OpenGlHelper.setLightmapTextureCoords(int target, float p_77475_1_, float t)
 
 	/**
 	 * Modifed by Cadiboo, based on Notch?'s lightning code, cleaned it up, made it
