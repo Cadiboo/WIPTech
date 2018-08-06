@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 
 import org.apache.logging.log4j.Logger;
 
+import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.util.IProxy;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModWritingUtil;
@@ -30,13 +31,14 @@ public class WIPTech {
 	// TODO paramagnetism
 	// TODO json models
 	// FIXME json wire model gen & ^^^
-	// TODO electricity damage
-	// TODO electricity transfer
-	// TODO electricity rendering
 	// TODO autogenerate lang file (1.12.2 & 1.13)
 	// TODO world gen to subscriber
-	// TODO client SYNCING!!!
+	// TODO NetworkManager to subscriber
+	// TODO better client SYNCING!!!
 	// TODO start on machines. guns and entities later
+	// TODO FIXME HELP! I was in the middle of something and I've forgotten what I
+	// was doing
+	// TODO electricity better rendering
 
 	@Instance(ModReference.ID)
 	public static WIPTech instance;
@@ -53,8 +55,10 @@ public class WIPTech {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
+		proxy.logLogicalSide();
 		ModWritingUtil.writeMod();
 		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 3);
+		new ModNetworkManager();
 //		WIPTechAPI.addMaterial("bauxite", new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0, false));
 
 	}

@@ -7,10 +7,12 @@ import cadiboo.wiptech.util.ModDamageSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileEntityWire extends ModTileEntity implements ITickable {
 
@@ -29,18 +31,41 @@ public class TileEntityWire extends ModTileEntity implements ITickable {
 
 	@Override
 	public final void update() {
+		handleSync();
 		getElectrocutableEntities().forEach((entity) -> {
-			if (shouldElectrocuteEntity(entity))
-				entity.attackEntityFrom(ModDamageSource.ELECTRICITY, 10);
+			if (shouldElectrocuteEntity(entity) && !entity.isDead)
+				if (energy.extractEnergy(getElectrocutionEnergy(), false) == getElectrocutionEnergy())
+					entity.attackEntityFrom(ModDamageSource.ELECTRICITY, getElectrocutionDamage());
 		});
+		if (energy.getEnergyStored() > 0)
+			for (EnumFacing face : EnumFacing.VALUES)
+				transferEnergyTowards(face);
+	}
+
+	private void transferEnergyTowards(EnumFacing face) {
+		TileEntity tile = this.getWorld().getTileEntity(this.pos.offset(face));
+		if (tile == null || tile.getCapability(CapabilityEnergy.ENERGY, face.getOpposite()) == null)
+			return;
+		IEnergyStorage storage = tile.getCapability(CapabilityEnergy.ENERGY, face.getOpposite());
+		if (storage.canReceive())
+			energy.extractEnergy(storage.receiveEnergy(Math.round(energy.getEnergyStored() / EnumFacing.VALUES.length), false), false);
+
+	}
+
+	private float getElectrocutionDamage() {
+		return getElectrocutionEnergy() / 0.0001f;
+	}
+
+	private int getElectrocutionEnergy() {
+		return 1;
 	}
 
 	public boolean shouldElectrocuteEntity(Entity entity) {
-		return entity instanceof EntityLivingBase;
+		return entity instanceof EntityLivingBase && this.energy.getEnergyStored() >= getElectrocutionEnergy();
 	}
 
 	public List<Entity> getElectrocutableEntities() {
-		return this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).grow(20 * 2));
+		return this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).grow(20 * 2), EntitySelectors.CAN_AI_TARGET);
 	}
 
 	@Override

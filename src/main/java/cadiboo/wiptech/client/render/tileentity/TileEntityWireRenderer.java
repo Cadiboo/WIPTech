@@ -1,19 +1,11 @@
 package cadiboo.wiptech.client.render.tileentity;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.client.ClientUtil;
-import cadiboo.wiptech.client.model.ModelsCache;
 import cadiboo.wiptech.tileentity.TileEntityWire;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
-import cadiboo.wiptech.util.ModWritingUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
 
 public class TileEntityWireRenderer extends ModTileEntitySpecialRenderer<TileEntityWire> {
 
@@ -22,34 +14,45 @@ public class TileEntityWireRenderer extends ModTileEntitySpecialRenderer<TileEnt
 	@Override
 	public void renderAtCentre(TileEntityWire te, float partialTicks, int destroyStage, float alpha) {
 
-		if (true)
-			return;
+		te.getElectrocutableEntities().forEach(entity -> {
 
-		if (!(te.getBlockType() instanceof BlockWire)) {
-			WIPTech.error("Error rendering TileEntityWire! block at location is not an instanceof BlockWire!");
-			new Exception().printStackTrace();
-			return;
-		}
+			if (!te.shouldElectrocuteEntity(entity))
+				return;
 
-		ModMaterials material = ((BlockWire) te.getBlockType()).getModMaterial();
-		ResourceLocation wireRegistryName = material.getWire().getRegistryName();
-		ResourceLocation extensionRegistryName = new ResourceLocation(wireRegistryName.getResourceDomain(), wireRegistryName.getResourcePath() + "_extension");
-		ModelResourceLocation materialWireExtensionLocation = new ModelResourceLocation(extensionRegistryName, ModWritingUtil.default_variant_name);
+			GlStateManager.pushMatrix();
+			try {
+				final Vec3d tilePos = new Vec3d(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
+				final Vec3d entityPos = ClientUtil.getEntityRenderPos(entity, partialTicks).addVector(-0.5, entity.getEyeHeight() / 2, -0.5);
+//				destination.subtract(new Vec3d(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ()));
 
-		IBakedModel extension = ModelsCache.INSTANCE.getOrLoadBakedModel(materialWireExtensionLocation);
+//				ClientUtil.rotateTowardsPos(tilePos, entityPos);
 
-		for (EnumFacing side : EnumFacing.VALUES) {
-			if (te.isConnectedTo(side)) {
-				GlStateManager.pushMatrix();
-				GlStateManager.enableLighting();
-				ClientUtil.rotateForFace(side);
+				ClientUtil.rotateTowardsPos(new Vec3d(0, 0, 0), tilePos.subtract(entityPos));
 
-				Minecraft.getMinecraft().getRenderItem().renderItem(stack, extension);
+//				GlStateManager.rotate(180, 1, 0, 0);
 
-				GlStateManager.disableLighting();
-				GlStateManager.popMatrix();
+				final Vec3d relativeEntityPos = tilePos.subtract(entityPos);
+
+				final double scale = 0.125 * Math.sqrt(Math.pow(relativeEntityPos.x, 2) + Math.pow(relativeEntityPos.y, 2) + Math.pow(relativeEntityPos.z, 2));
+
+				GlStateManager.translate(0, -8 * scale, 0);
+
+				for (int i = 0; i < 2; i++) {
+					ClientUtil.renderElectricity((int) te.getWorld().getTotalWorldTime() + i, 1, scale);
+//					ClientUtil.drawLightning(new Random().nextInt(), 1, 0, scale);
+//					ClientUtil.renderElectricity(i + 1, 1, scale);
+				}
+
+//				ClientUtil.drawLightning(2, 1, 0, scale);
+
+			} catch (Exception e) {
+				WIPTech.error(e.getLocalizedMessage());
+				e.printStackTrace();
 			}
-		}
+
+			GlStateManager.popMatrix();
+
+		});
 
 	}
 
