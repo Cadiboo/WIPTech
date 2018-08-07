@@ -11,6 +11,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 
+/**
+ * Util that is only used on the client i.e. Rendering code
+ * 
+ * @author Cadiboo
+ *
+ */
 public class ClientUtil {
 
 	/**
@@ -18,6 +24,8 @@ public class ClientUtil {
 	 * "https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2772267-tesr-getting-darker-and-lighter-as-it-rotates">here</a>
 	 * 
 	 * @param face the {@link net.minecraft.util.EnumFacing face} to rotate for
+	 * 
+	 * @author Cadiboo
 	 */
 	public static void rotateForFace(EnumFacing face) {
 		GlStateManager.rotate(face == EnumFacing.DOWN ? 0 : face == EnumFacing.UP ? 180F : face == EnumFacing.NORTH || face == EnumFacing.EAST ? 90F : -90F,
@@ -57,7 +65,7 @@ public class ClientUtil {
 	 * @param scale                       How large/small it will render
 	 * @author Cadiboo
 	 */
-	public static void drawLightning(final int number, final int NumberOfBranches, final int NumberOfPossibleSubBranches, final double scale) {
+	public static void renderLightning(final int number, final int NumberOfBranches, final int NumberOfPossibleSubBranches, final double scale) {
 		GlStateManager.depthMask(true);
 		GlStateManager.disableTexture2D();
 		GlStateManager.disableLighting();
@@ -168,6 +176,17 @@ public class ClientUtil {
 		GlStateManager.enableTexture2D();
 	}
 
+	/**
+	 * Put a lot of effort into this, it gets the entities exact (really, really
+	 * exact) position
+	 * 
+	 * @param entity       The entity to calculate the position of
+	 * @param partialTicks The multiplier used to predict where the entity is/will
+	 *                     be
+	 * 
+	 * @return The position of the entity as a Vec3d
+	 * @author Cadiboo
+	 */
 	public static Vec3d getEntityRenderPos(final Entity entity, final double partialTicks) {
 		double flyingMultiplier = 1.825;
 		double yFlying = 1.02;
@@ -211,8 +230,15 @@ public class ClientUtil {
 		return new Vec3d(dX, dY, dZ);
 	}
 
-	public static void rotateTowardsPos(Vec3d origin, Vec3d destination) {
-		double yAngle = Math.atan2(destination.x - origin.x, destination.z - origin.z);
+	/**
+	 * 
+	 * @param source      The position to rotate from (I think that I've messed up
+	 *                    the maths, currently only works with 0, 0, 0 i.e. the
+	 *                    Origin)
+	 * @param destination The position to rotate towards
+	 */
+	public static void rotateTowardsPos(Vec3d source, Vec3d destination) {
+		double yAngle = Math.atan2(destination.x - source.x, destination.z - source.z);
 		yAngle = yAngle * (180 / Math.PI);
 		yAngle = yAngle < 0 ? 360 - (-yAngle) : yAngle;
 		GlStateManager.rotate((float) yAngle + 90, 0, 1, 0);
@@ -223,6 +249,17 @@ public class ClientUtil {
 		GlStateManager.rotate(90 - (float) _Angle, 0, 0, 1);
 	}
 
+	/**
+	 * 
+	 * Modified version of {@link ClientUtil#renderLightning(int, int, int, double)
+	 * renderLightning} that looks more electricity-arcy
+	 * 
+	 * @param number           The seed for the randoms that are used
+	 * @param NumberOfBranches The number of main (full length) branches
+	 * @param scale            How large/small/long it will be
+	 * 
+	 * @author Cadiboo
+	 */
 	public static void renderElectricity(final int number, final int NumberOfBranches, double scale) {
 		GlStateManager.depthMask(true);
 		GlStateManager.disableTexture2D();
