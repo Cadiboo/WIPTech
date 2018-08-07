@@ -8,6 +8,7 @@ public class PortableGenerator extends ModEntity {
 
 	public PortableGenerator(World worldIn) {
 		super(worldIn);
+		this.setSize(1, 1);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -27,6 +28,12 @@ public class PortableGenerator extends ModEntity {
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+		// TODO Auto-generated method stub
 	}
 
 }

@@ -43,7 +43,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -103,6 +102,10 @@ public final class EventSubscriber {
 
 		WIPTech.debug("registered blocks");
 
+	}
+
+	private static final void registerTileEntity(Class<? extends ModTileEntity> clazz) {
+		GameRegistry.registerTileEntity(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz)));
 	}
 
 	@SubscribeEvent
@@ -170,8 +173,8 @@ public final class EventSubscriber {
 
 		EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
 		builder = builder.entity(clazz);
-		builder = builder.id(new ResourceLocation(ModReference.ID, clazz.getSimpleName().replaceAll("([A-Z])", "_$1")), entityId++);
-		builder = builder.name(clazz.getSimpleName().replaceAll("([A-Z])", "_$1"));
+		builder = builder.id(new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz)), entityId++);
+		builder = builder.name(getRegistryNameForClass(clazz));
 		builder = builder.tracker(64, 20, sendVelocityUpdates);
 
 		if (hasEgg)
@@ -179,6 +182,10 @@ public final class EventSubscriber {
 
 		return builder.build();
 
+	}
+
+	private static final String getRegistryNameForClass(Class clazz) {
+		return org.apache.commons.lang3.StringUtils.uncapitalize(clazz.getSimpleName()).replaceAll("([A-Z])", "_$1");
 	}
 
 	@SubscribeEvent
@@ -283,10 +290,6 @@ public final class EventSubscriber {
 		}
 		WIPTech.debug("registered block & item models");
 
-	}
-
-	private static final void registerTileEntity(Class<? extends ModTileEntity> clazz) {
-		GameRegistry.registerTileEntity(clazz, new ResourceLocation(ModReference.ID, clazz.getSimpleName().replace("TileEntity", "").toLowerCase()));
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -418,7 +421,7 @@ public final class EventSubscriber {
 
 	private static final void setTooltip(final ItemTooltipEvent event, final String tooltip) {
 		for (int i = 0; i < event.getToolTip().size(); i++) {
-			if (StringUtils.stripControlCodes(event.getToolTip().get(i)).equals(event.getItemStack().getItem().getRegistryName().toString())) { // TODO why and what does this do???
+			if (net.minecraft.util.StringUtils.stripControlCodes(event.getToolTip().get(i)).equals(event.getItemStack().getItem().getRegistryName().toString())) { // TODO why and what does this do???
 				event.getToolTip().add(i, tooltip);
 				return;
 			}
