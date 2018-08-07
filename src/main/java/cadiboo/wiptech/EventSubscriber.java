@@ -8,10 +8,11 @@ import cadiboo.wiptech.block.BlockModOre;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
-import cadiboo.wiptech.client.model.ModelsCache;
 import cadiboo.wiptech.client.render.block.model.WireModelLoader;
 import cadiboo.wiptech.client.render.tileentity.TileEntityEnamelRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityWireRenderer;
+import cadiboo.wiptech.entity.ModEntity;
+import cadiboo.wiptech.entity.item.PortableGenerator;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemModArmor;
 import cadiboo.wiptech.item.ItemModAxe;
@@ -34,10 +35,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -57,6 +58,8 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -65,6 +68,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod.EventBusSubscriber(modid = ModReference.ID)
 public final class EventSubscriber {
+
+	private static int entityId = 0;
 
 	@SubscribeEvent
 	public static void onRegisterBlocksEvent(final RegistryEvent.Register<Block> event) {
@@ -155,6 +160,28 @@ public final class EventSubscriber {
 	}
 
 	@SubscribeEvent
+	public static void onRegisterEntitiesEvent(final RegistryEvent.Register<EntityEntry> event) {
+
+		event.getRegistry().register(buildEntityEntry(PortableGenerator.class, true, false));
+
+	}
+
+	private static final EntityEntry buildEntityEntry(final Class<? extends ModEntity> clazz, final boolean hasEgg, final boolean sendVelocityUpdates) {
+
+		EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
+		builder = builder.entity(clazz);
+		builder = builder.id(new ResourceLocation(ModReference.ID, clazz.getSimpleName().replaceAll("([A-Z])", "_$1")), entityId++);
+		builder = builder.name(clazz.getSimpleName().replaceAll("([A-Z])", "_$1"));
+		builder = builder.tracker(64, 20, sendVelocityUpdates);
+
+		if (hasEgg)
+			builder = builder.egg(0xFFFFFF, 0xAAAAAA);
+
+		return builder.build();
+
+	}
+
+	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static final void onRegisterModelsEvent(final ModelRegistryEvent event) {
 
@@ -164,57 +191,33 @@ public final class EventSubscriber {
 
 		for (ModMaterials material : ModMaterials.values()) {
 
-			// We need to tell Forge how to map our Block3DWebs's IBlockState to a
-			// ModelResourceLocation.
-			// For example, the BlockStone granite variant has a BlockStateMap entry that
-			// looks like
-			// "stone[variant=granite]" (iBlockState) -> "minecraft:granite#normal"
-			// (ModelResourceLocation)
-			// For the 3DWeb block, we ignore the iBlockState completely and always return
-			// the same ModelResourceLocation,
-			// which is done using the anonymous class below
-
-			if (material.getProperties().hasWire())
+			if (material.getProperties().hasWire()) {
 				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
 						return new ModelResourceLocation(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name);
 					}
 				});
-			if (material.getProperties().hasEnamel())
+			}
+
+			if (material.getProperties().hasEnamel()) {
 				ModelLoader.setCustomStateMapper(material.getEnamel(), new StateMapperBase() {
+
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
 						return new ModelResourceLocation(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
 					}
 				});
-
-			//
-
-			// This is currently necessary in order to make your block render properly when
-			// it is an item (i.e. in the inventory
-			// or in your hand or thrown on the ground).
-			// Minecraft knows to look for the item model based on the
-			// GameRegistry.registerBlock. However the registration of
-			// the model for each item is normally done by RenderItem.registerItems(), and
-			// this is not currently aware
-			// of any extra items you have created. Hence you have to do it manually.
-			// It must be done on client only, and must be done after the block has been
-			// created in Common.preinit().
-
-//			if (material.getProperties().hasWire())
-//				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(material.getWire()), 0,
-//						new ModelResourceLocation(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name));
-//			if (material.getProperties().hasEnamel())
-//				ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(material.getEnamel()), 0,
-//						new ModelResourceLocation(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_enamel"), "inventory"));
+			}
 
 		}
 
 		ModelLoaderRegistry.registerLoader(new WireModelLoader());
 		WIPTech.debug("registered wire & enamel custom models");
 
-		for (ModMaterials material : ModMaterials.values()) {
+		for (
+
+		ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre())
 				if (material.getOre() != null)
 					registerItemBlockModel(material.getOre());
@@ -282,27 +285,27 @@ public final class EventSubscriber {
 
 	}
 
-	private static void registerTileEntity(Class<? extends ModTileEntity> clazz) {
-		GameRegistry.registerTileEntity(clazz, new ResourceLocation(ModReference.ID, clazz.getName().replace("TileEntity", "").toLowerCase()));
+	private static final void registerTileEntity(Class<? extends ModTileEntity> clazz) {
+		GameRegistry.registerTileEntity(clazz, new ResourceLocation(ModReference.ID, clazz.getSimpleName().replace("TileEntity", "").toLowerCase()));
 	}
 
 	@SideOnly(Side.CLIENT)
-	protected static final void registerItemModel(final Item item) {
+	private static final void registerItemModel(final Item item) {
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
 	@SideOnly(Side.CLIENT)
-	protected static final void registerItemBlockModel(final Block block) {
+	private static final void registerItemBlockModel(final Block block) {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
 	@SideOnly(Side.CLIENT)
-	protected static final void registerBlockItemModel(final Block block) {
+	private static final void registerBlockItemModel(final Block block) {
 		registerItemBlockModel(block);
 	}
 
 	@SideOnly(Side.CLIENT)
-	protected static final void registerBlockItemItemOverrideModel(final Block block) {
+	private static final void registerBlockItemItemOverrideModel(final Block block) {
 		ModelLoader.setCustomModelResourceLocation(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft", block.getRegistryName().getResourcePath())), 0,
 				new ModelResourceLocation(block.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
@@ -322,40 +325,27 @@ public final class EventSubscriber {
 	@SideOnly(Side.CLIENT)
 	public static final void onModelBakeEvent(final ModelBakeEvent event) {
 
-		for (ModMaterials material : ModMaterials.values()) {
-//		ModMaterials material = ModMaterials.TUNGSTEN_CARBITE;
-			if (!material.getProperties().hasWire())
-				return;
-			ResourceLocation wireRegistryName = material.getWire().getRegistryName();
-			ResourceLocation extensionRegistryName = new ResourceLocation(wireRegistryName.getResourceDomain(), wireRegistryName.getResourcePath() + "_extension");
-			ModelResourceLocation materialWireExtensionLocation = new ModelResourceLocation(extensionRegistryName, ModWritingUtil.default_variant_name);
-
-			IBakedModel extension = ModelsCache.INSTANCE.getOrLoadBakedModel(materialWireExtensionLocation);
-
-			event.getModelRegistry().putObject(materialWireExtensionLocation, extension);
-
-			WIPTech.fatal("please work");
-		}
-
-//		ModelResourceLocation resLoc = new ModelResourceLocation(OresBase.sluice.getRegistryName(), "facing=north");
-//		IBakedModel water = ev.getModelRegistry().getObject(resLoc);
-//		IBakedModel planking = ModelsCache.INSTANCE.getOrLoadBakedModel(new ModelResourceLocation("harderores:sluice_bottom"));
+		/**
+		 * the below code is not needed anymore but may be needed again in the future
+		 */
+//		for (ModMaterials material : ModMaterials.values()) {
+//			if (!material.getProperties().hasWire())
+//				return;
+//			ResourceLocation wireRegistryName = material.getWire().getRegistryName();
+//			ResourceLocation extensionRegistryName = new ResourceLocation(wireRegistryName.getResourceDomain(), wireRegistryName.getResourcePath() + "_extension");
+//			ModelResourceLocation materialWireExtensionLocation = new ModelResourceLocation(extensionRegistryName, ModWritingUtil.default_variant_name);
 //
-//		ev.getModelRegistry().putObject(resLoc, new BakedModelBasicSluice(water, planking));
-//		resLoc = new ModelResourceLocation(OresBase.sluice.getRegistryName(), "facing=south");
-//		water = ev.getModelRegistry().getObject(resLoc);
-//		ev.getModelRegistry().putObject(resLoc, new BakedModelBasicSluice(water, planking));
-//		resLoc = new ModelResourceLocation(OresBase.sluice.getRegistryName(), "facing=east");
-//		water = ev.getModelRegistry().getObject(resLoc);
-//		ev.getModelRegistry().putObject(resLoc, new BakedModelBasicSluice(water, planking));
-//		resLoc = new ModelResourceLocation(OresBase.sluice.getRegistryName(), "facing=west");
-//		water = ev.getModelRegistry().getObject(resLoc);
-//		ev.getModelRegistry().putObject(resLoc, new BakedModelBasicSluice(water, planking));
+//			IBakedModel extension = ModelsCache.INSTANCE.getOrLoadBakedModel(materialWireExtensionLocation);
+//
+//			event.getModelRegistry().putObject(materialWireExtensionLocation, extension);
+//
+//			WIPTech.fatal("please work");
+//		}
 	}
 
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
-	public static void onRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
+	public static final void onRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
 		if (event.getType() != RenderGameOverlayEvent.ElementType.ALL || Minecraft.getMinecraft().currentScreen != null)
 			return;
 
@@ -377,6 +367,7 @@ public final class EventSubscriber {
 				int Width = Scaled.getScaledWidth() - 10;
 				int Height = Scaled.getScaledHeight() - 54;
 
+				// TODO replace this with binding the energy texture
 //				Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(ModReference.ID, "textures/gui/turbine.png"));
 
 				drawNonStandardTexturedRect(Width, Height, 83, 16, 10, 54, 256, 256);
@@ -389,7 +380,7 @@ public final class EventSubscriber {
 		}
 	}
 
-	protected static void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
+	private static final void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
 		double f = 1F / (double) textureWidth;
 		double f1 = 1F / (double) textureHeight;
 		Tessellator tessellator = Tessellator.getInstance();
@@ -403,7 +394,7 @@ public final class EventSubscriber {
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void onTooltipEvent(final ItemTooltipEvent event) {
+	public static final void onTooltipEvent(final ItemTooltipEvent event) {
 		Item item = event.getItemStack().getItem();
 
 		if (item.getRegistryName().getResourceDomain() != ModReference.ID)
@@ -425,7 +416,7 @@ public final class EventSubscriber {
 
 	}
 
-	private static void setTooltip(final ItemTooltipEvent event, final String tooltip) {
+	private static final void setTooltip(final ItemTooltipEvent event, final String tooltip) {
 		for (int i = 0; i < event.getToolTip().size(); i++) {
 			if (StringUtils.stripControlCodes(event.getToolTip().get(i)).equals(event.getItemStack().getItem().getRegistryName().toString())) { // TODO why and what does this do???
 				event.getToolTip().add(i, tooltip);

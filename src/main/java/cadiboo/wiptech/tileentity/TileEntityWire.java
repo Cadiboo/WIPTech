@@ -34,8 +34,10 @@ public class TileEntityWire extends ModTileEntity implements ITickable {
 		handleSync();
 		getElectrocutableEntities().forEach((entity) -> {
 			if (shouldElectrocuteEntity(entity) && !entity.isDead)
-				if (energy.extractEnergy(getElectrocutionEnergy(), false) == getElectrocutionEnergy())
+				if (energy.extractEnergy(getElectrocutionEnergy(), false) == getElectrocutionEnergy()) {
 					entity.attackEntityFrom(ModDamageSource.ELECTRICITY, getElectrocutionDamage());
+					entity.setFire(2);
+				}
 		});
 		if (energy.getEnergyStored() > 0)
 			for (EnumFacing face : EnumFacing.VALUES)
