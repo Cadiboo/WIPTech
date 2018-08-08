@@ -71,7 +71,7 @@ public final class EventSubscriber {
 	private static int entityId = 0;
 
 	@SubscribeEvent
-	public static void onRegisterBlocksEvent(final RegistryEvent.Register<Block> event) {
+	public static final void onRegisterBlocksEvent(final RegistryEvent.Register<Block> event) {
 		final IForgeRegistry<Block> registry = event.getRegistry();
 
 		registerTileEntity(TileEntityWire.class);
@@ -109,7 +109,7 @@ public final class EventSubscriber {
 	}
 
 	@SubscribeEvent
-	public static void onRegisterItemsEvent(final RegistryEvent.Register<Item> event) {
+	public static final void onRegisterItemsEvent(final RegistryEvent.Register<Item> event) {
 		final IForgeRegistry<Item> registry = event.getRegistry();
 
 		for (ModMaterials material : ModMaterials.values()) {
@@ -163,7 +163,7 @@ public final class EventSubscriber {
 	}
 
 	@SubscribeEvent
-	public static void onRegisterEntitiesEvent(final RegistryEvent.Register<EntityEntry> event) {
+	public static final void onRegisterEntitiesEvent(final RegistryEvent.Register<EntityEntry> event) {
 
 		event.getRegistry().register(buildEntityEntry(PortableGenerator.class, true, false));
 
@@ -185,7 +185,7 @@ public final class EventSubscriber {
 	}
 
 	private static final String getRegistryNameForClass(Class clazz) {
-		return org.apache.commons.lang3.StringUtils.uncapitalize(clazz.getSimpleName()).replaceAll("([A-Z])", "_$1");
+		return org.apache.commons.lang3.StringUtils.uncapitalize(clazz.getSimpleName()).replaceAll("([A-Z])", "_$1").toLowerCase();
 	}
 
 	@SubscribeEvent
@@ -360,8 +360,13 @@ public final class EventSubscriber {
 		Block blockHit = mc.world.getBlockState(posHit.getBlockPos()).getBlock();
 		TileEntity tileHit = mc.world.getTileEntity(posHit.getBlockPos());
 
+		// crashy
+//		Entity entityHit = mc.world.getEntitiesWithinAABB(ModEntity.class, new AxisAlignedBB(mc.player.getPosition()).grow(20 * 2), EntitySelectors.CAN_AI_TARGET).get(0);
+
 		if (tileHit != null) {
 			IEnergyStorage energy = tileHit.getCapability(CapabilityEnergy.ENERGY, null);
+//		if (entityHit != null) {
+//			IEnergyStorage energy = entityHit.getCapability(CapabilityEnergy.ENERGY, null);
 			if (energy != null) {
 
 				double power = (double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored();
