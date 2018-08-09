@@ -24,7 +24,18 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
  * @author Cadiboo
  */
 
-@Mod(modid = ModReference.ID, name = ModReference.NAME, version = ModReference.VERSION, acceptedMinecraftVersions = ModReference.ACCEPTED_VERSIONS, dependencies = "after:minecraft", canBeDeactivated = ModReference.CAN_BE_DEACTIVATED, clientSideOnly = false, serverSideOnly = false, modLanguage = "java", guiFactory = ModReference.GUI_FACTORY_CLASS)
+/*@formatter:off*/
+@Mod(modid = ModReference.ID,
+	name = ModReference.NAME,
+	version = ModReference.VERSION,
+	acceptedMinecraftVersions = ModReference.ACCEPTED_VERSIONS,
+	dependencies = ModReference.DEPENDENCIES,
+	canBeDeactivated = ModReference.CAN_BE_DEACTIVATED,
+	clientSideOnly = false,
+	serverSideOnly = false,
+	modLanguage = "java",
+	guiFactory = ModReference.GUI_FACTORY_CLASS)
+/*@formatter:on*/
 public class WIPTech {
 
 	// TODO radioactivity
