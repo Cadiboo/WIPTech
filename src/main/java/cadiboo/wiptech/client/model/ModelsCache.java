@@ -50,6 +50,7 @@ public enum ModelsCache implements IResourceManagerReloadListener {
 	private final Map<ResourceLocation, IBakedModel>	bakedCache	= new HashMap<ResourceLocation, IBakedModel>();
 
 	public IModel getOrLoadModel(ResourceLocation location) {
+		// FIXME TODO dont need any of this anymore. delete it
 		IModel model = cache.get(location);
 		if (model == null) {
 			try {
