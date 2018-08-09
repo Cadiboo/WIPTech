@@ -9,10 +9,19 @@ import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.client.render.block.model.WireModelLoader;
+import cadiboo.wiptech.client.render.entity.EntityPortableGeneratorRenderer;
+import cadiboo.wiptech.client.render.entity.EntityRailgunCasingRenderer;
+import cadiboo.wiptech.client.render.entity.EntityRailgunRenderer;
+import cadiboo.wiptech.client.render.entity.EntityRailgunSlugRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityEnamelRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityWireRenderer;
 import cadiboo.wiptech.entity.ModEntity;
-import cadiboo.wiptech.entity.item.PortableGenerator;
+import cadiboo.wiptech.entity.item.EntityPortableGenerator;
+import cadiboo.wiptech.entity.item.EntityRailgun;
+import cadiboo.wiptech.entity.projectile.EntityRailgunCasing;
+import cadiboo.wiptech.entity.projectile.EntityRailgunSlug;
+import cadiboo.wiptech.init.ModEntities;
+import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemModArmor;
 import cadiboo.wiptech.item.ItemModAxe;
@@ -20,6 +29,7 @@ import cadiboo.wiptech.item.ItemModHoe;
 import cadiboo.wiptech.item.ItemModPickaxe;
 import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
+import cadiboo.wiptech.item.ItemPortableGenerator;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.item.ModItemBlock;
 import cadiboo.wiptech.tileentity.ModTileEntity;
@@ -54,6 +64,7 @@ import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -105,7 +116,7 @@ public final class EventSubscriber {
 	}
 
 	private static final void registerTileEntity(Class<? extends ModTileEntity> clazz) {
-		GameRegistry.registerTileEntity(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz)));
+		GameRegistry.registerTileEntity(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz, "TileEntity")));
 	}
 
 	@SubscribeEvent
@@ -158,6 +169,8 @@ public final class EventSubscriber {
 
 		}
 
+		registry.register(new ItemPortableGenerator("portable_generator"));
+
 		WIPTech.debug("registered items");
 
 	}
@@ -165,27 +178,57 @@ public final class EventSubscriber {
 	@SubscribeEvent
 	public static final void onRegisterEntitiesEvent(final RegistryEvent.Register<EntityEntry> event) {
 
-		event.getRegistry().register(buildEntityEntry(PortableGenerator.class, true, false));
+		event.getRegistry().register(buildEntityEntryFromClass(EntityPortableGenerator.class, false, true));
+
+		event.getRegistry().register(buildEntityEntryFromClass(EntityRailgun.class, false, true));
+
+		event.getRegistry().register(buildEntityEntryFromClass(EntityRailgunCasing.class, false, true));
+
+		for (ModMaterials material : ModMaterials.values()) {
+			if (material.getProperties().hasRailgunSlug()) {
+
+				final Class<? extends ModEntity> clazz = EntityRailgunSlug.class;
+				final ResourceLocation registryName = new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_slug");
+
+				EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
+				builder = builder.entity(clazz);
+				builder = builder.factory(worldIn -> new EntityRailgunSlug(worldIn, ModMaterials.TUNGSTEN_CARBITE));
+				builder = builder.id(registryName, entityId++);
+				builder = builder.name(registryName.getResourcePath());
+				builder = builder.tracker(64, 5, true);
+
+				event.getRegistry().register(builder.build());
+
+			}
+			// event.getRegistry().register(buildEntityEntryFromClassWithName(EntityRailgunSlug.class,
+			// new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_slug"),
+			// false, true));
+		}
 
 	}
 
-	private static final EntityEntry buildEntityEntry(final Class<? extends ModEntity> clazz, final boolean hasEgg, final boolean sendVelocityUpdates) {
+	private static final EntityEntry buildEntityEntryFromClass(final Class<? extends ModEntity> clazz, final boolean hasEgg, final boolean sendVelocityUpdates) {
 
+		return buildEntityEntryFromClassWithName(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz, "Entity")), hasEgg, sendVelocityUpdates);
+
+	}
+
+	private static final EntityEntry buildEntityEntryFromClassWithName(final Class<? extends ModEntity> clazz, final ResourceLocation registryName, final boolean hasEgg,
+			final boolean sendVelocityUpdates) {
 		EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
 		builder = builder.entity(clazz);
-		builder = builder.id(new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz)), entityId++);
-		builder = builder.name(getRegistryNameForClass(clazz));
+		builder = builder.id(registryName, entityId++);
+		builder = builder.name(registryName.getResourcePath());
 		builder = builder.tracker(64, 20, sendVelocityUpdates);
 
 		if (hasEgg)
 			builder = builder.egg(0xFFFFFF, 0xAAAAAA);
 
 		return builder.build();
-
 	}
 
-	private static final String getRegistryNameForClass(Class clazz) {
-		return org.apache.commons.lang3.StringUtils.uncapitalize(clazz.getSimpleName()).replaceAll("([A-Z])", "_$1").toLowerCase();
+	private static final String getRegistryNameForClass(Class clazz, String removeType) {
+		return org.apache.commons.lang3.StringUtils.uncapitalize(clazz.getSimpleName().replace(removeType, "")).replaceAll("([A-Z])", "_$1").toLowerCase();
 	}
 
 	@SubscribeEvent
@@ -195,6 +238,13 @@ public final class EventSubscriber {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWire.class, new TileEntityWireRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnamel.class, new TileEntityEnamelRenderer());
 		WIPTech.debug("registered TESRs");
+
+		RenderingRegistry.registerEntityRenderingHandler(EntityPortableGenerator.class, renderManager -> new EntityPortableGeneratorRenderer(renderManager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityRailgunCasing.class, renderManager -> new EntityRailgunCasingRenderer(renderManager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityRailgunSlug.class, renderManager -> new EntityRailgunSlugRenderer(renderManager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityRailgun.class, renderManager -> new EntityRailgunRenderer(renderManager));
+
+		WIPTech.debug("registered EntityRenderers");
 
 		for (ModMaterials material : ModMaterials.values()) {
 
@@ -288,6 +338,11 @@ public final class EventSubscriber {
 					registerItemModel(material.getRail());
 
 		}
+
+		ResourceLocation portableGeneratorRegistryName = ModEntities.PORTABLE_GENERATOR.getRegistryName();
+		ModelLoader.setCustomModelResourceLocation(ModItems.PORTABLE_GENERATOR, 0,
+				new ModelResourceLocation(new ResourceLocation(portableGeneratorRegistryName.getResourceDomain(), "" + portableGeneratorRegistryName.getResourcePath()), ""));
+
 		WIPTech.debug("registered block & item models");
 
 	}

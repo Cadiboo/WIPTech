@@ -9,10 +9,9 @@ public class ModMaterialProperties {
 	private boolean	tools;
 	private float	hardness;
 	private int		conductivity;
-	private boolean	paramagnetic;
 
 	public ModMaterialProperties(final boolean hasOre, final boolean hasBlock, final boolean hasIngotAndNugget, final boolean hasArmor, final boolean hasTools, final float MOHS_Hardness,
-			final int thermalConductivityAt20DegreesCelsius, final boolean isParamagnetic) {
+			final int thermalConductivityAt20DegreesCelsius) {
 		this.ore = hasOre;
 		this.block = hasBlock;
 		this.ingotAndNugget = hasIngotAndNugget;
@@ -20,7 +19,6 @@ public class ModMaterialProperties {
 		this.tools = hasTools;
 		this.hardness = MOHS_Hardness;
 		this.conductivity = thermalConductivityAt20DegreesCelsius;
-		this.paramagnetic = isParamagnetic;
 	}
 
 	public final boolean hasOre() {
@@ -51,8 +49,8 @@ public class ModMaterialProperties {
 		return conductivity;
 	}
 
-	public final boolean isParamagnetic() {
-		return paramagnetic;
+	public final boolean hasRailgunSlug() {
+		return this.hardness >= 4;
 	}
 
 	public final boolean hasWire() {

@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
@@ -84,6 +85,10 @@ public abstract class ModTileEntity extends TileEntity {
 
 	public int getMaxSyncDistanceSquared() {
 		return 64;
+	}
+
+	public BlockPos getPosition() {
+		return getPos();
 	}
 
 }
