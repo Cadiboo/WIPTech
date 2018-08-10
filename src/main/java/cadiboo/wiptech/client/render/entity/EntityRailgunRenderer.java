@@ -25,12 +25,24 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((float) x, (float) y + 0.5, (float) z);
+		
+		GlStateManager.translate(0, 0.5, 0);
 
 		GlStateManager.scale(entity.width, entity.height, entity.width);
 
 		ItemStack stack = new ItemStack(Blocks.IRON_BLOCK);
 
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, entity.getEntityWorld(), null);
+		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
+
+		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
+		
+		
+		GlStateManager.scale(0.1, 0.1, 0.1);
+		
+		GlStateManager.translate(entity.getAdjustedHorizontalFacing().getFrontOffsetX()*10, entity.getAdjustedHorizontalFacing().getFrontOffsetY() + 4, entity.getAdjustedHorizontalFacing().getFrontOffsetZ()*10);
+		
 		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
 
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);

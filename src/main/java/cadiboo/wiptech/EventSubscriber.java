@@ -192,7 +192,13 @@ public final class EventSubscriber {
 
 				EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
 				builder = builder.entity(clazz);
-				builder = builder.factory(worldIn -> new EntityRailgunSlug(worldIn, material));
+//				builder = builder.factory(worldIn -> new EntityRailgunSlug(worldIn, ModMaterials.URANIUM));
+				WIPTech.info("creating factory->material", material);
+				builder = builder.factory(worldIn -> {
+					ModMaterials materialRef = material;
+					WIPTech.info("factory->worldIn, materialRef", worldIn, materialRef);
+					return new EntityRailgunSlug(worldIn, materialRef);
+				});
 				builder = builder.id(registryName, entityId++);
 				builder = builder.name(registryName.getResourcePath());
 				builder = builder.tracker(64, 5, true);

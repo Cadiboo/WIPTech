@@ -3,14 +3,22 @@ package cadiboo.wiptech.entity.projectile;
 import cadiboo.wiptech.capability.ModEnergyStorage;
 import cadiboo.wiptech.entity.ModEntity;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.functions.SetMetadata;
 import net.minecraftforge.common.model.animation.AnimationStateMachine;
 import net.minecraftforge.items.IItemHandler;
 
 public class EntityRailgunSlug extends ModEntity {
 
+	
+	//FIXME do all this with capabilities or IEEPs. THe issue is that the material isnt synced between client & server
 	private ModMaterials material;
+	private static final DataParameter<Integer> MATERIAL = EntityDataManager.<Integer>createKey(EntityRailgunSlug.class, DataSerializers.VARINT);
 
 	public EntityRailgunSlug(World worldIn) {
 		this(worldIn, ModMaterials.IRON);
@@ -18,12 +26,16 @@ public class EntityRailgunSlug extends ModEntity {
 
 	public EntityRailgunSlug(World worldIn, ModMaterials materialIn) {
 		super(worldIn);
-		this.material = materialIn;
+//		this.material = materialIn;
+		if(!world.isRemote)
+			this.dataManager.set(MATERIAL, materialIn.getId());
 		this.setSize(0.25f, 0.25f);
 	}
 
 	public ModMaterials getMaterial() {
-		return material;
+//		return material;
+		return ModMaterials.byId(this.dataManager.get(MATERIAL).intValue());
+		
 	}
 
 	@Override
@@ -46,20 +58,31 @@ public class EntityRailgunSlug extends ModEntity {
 
 	@Override
 	protected void entityInit() {
-		// TODO Auto-generated method stub
-
+//		this.dataManager.register(MATERIAL, material.getId());
+		this.dataManager.register(MATERIAL, 0);
 	}
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
-		compound.setInteger("material", material.getId());
+//		if(compound.hasKey("material"))
+//			this.material = ModMaterials.byId(compound.getInteger("material"));
+//		getMaterial();
+		
+		if(compound.hasKey("material"))
+			this.dataManager.set(MATERIAL, compound.getInteger("material"));
+		
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
-		this.material = ModMaterials.byId(compound.getInteger("material"));
-
-	}/* extends EntityArrow { */
+//		compound.setInteger("material", material.getId());
+//		getMaterial();
+		
+		compound.setInteger("material", this.dataManager.get(MATERIAL).intValue());
+		
+	}
+	
+	/* extends EntityArrow { */
 
 //	public EntityRailgunSlug(World worldIn, double x, double y, double z) {
 //		super(worldIn, x, y, z);
