@@ -64,7 +64,7 @@ public class WIPTech {
 	 * register them with the GameRegistry</s>
 	 */
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) {
+	public void preInit(final FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		proxy.logLogicalSide();
 		ModWritingUtil.writeMod();
@@ -79,7 +79,7 @@ public class WIPTech {
 	 * recipes, send FMLInterModComms messages to other mods.
 	 */
 	@EventHandler
-	public void init(FMLInitializationEvent event) {
+	public void init(final FMLInitializationEvent event) {
 
 	}
 
@@ -88,7 +88,7 @@ public class WIPTech {
 	 * finished.
 	 */
 	@EventHandler
-	public void postinit(FMLPostInitializationEvent event) {
+	public void postinit(final FMLPostInitializationEvent event) {
 		ModWritingUtil.writeMod();
 	}
 
@@ -99,7 +99,7 @@ public class WIPTech {
 	 * @param messages the message objects to log.
 	 * @author Cadiboo
 	 */
-	public static void info(Object... messages) {
+	public static void info(final Object... messages) {
 		for (Object msg : messages) {
 			logger.info(msg);
 		}
@@ -112,7 +112,7 @@ public class WIPTech {
 	 * @param messages the message objects to log.
 	 * @author Cadiboo
 	 */
-	public static void error(Object... messages) {
+	public static void error(final Object... messages) {
 		for (Object msg : messages) {
 			logger.error(msg);
 		}
@@ -125,7 +125,7 @@ public class WIPTech {
 	 * @param messages the message objects to log.
 	 * @author Cadiboo
 	 */
-	public static void debug(Object... messages) {
+	public static void debug(final Object... messages) {
 		for (Object msg : messages) {
 			logger.debug(msg);
 		}
@@ -138,7 +138,7 @@ public class WIPTech {
 	 * @param messages the message objects to log.
 	 * @author Cadiboo
 	 */
-	public static void fatal(Object... messages) {
+	public static void fatal(final Object... messages) {
 		for (Object msg : messages) {
 			logger.fatal(msg);
 		}
@@ -151,7 +151,7 @@ public class WIPTech {
 	 * @param objects the objects to dump.
 	 * @author Cadiboo
 	 */
-	public static void dump(Object... objects) {
+	public static void dump(final Object... objects) {
 		for (Object obj : objects) {
 			Field[] fields = obj.getClass().getDeclaredFields();
 			info("Dump of " + obj + ":");
