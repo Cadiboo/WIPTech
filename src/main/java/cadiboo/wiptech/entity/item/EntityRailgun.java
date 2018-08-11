@@ -143,7 +143,7 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 
 	    BlockPos blockpos = getPosition();
 	    EntityRailgunSlug slug = new EntityRailgunSlug(world, ModMaterials.TUNGSTEN_CARBITE);
-	    slug.setPosition(blockpos.getX(), blockpos.getY() + 1.5, blockpos.getZ());
+	    slug.setPosition(blockpos.getX() + 0.5, blockpos.getY() + 1.5, blockpos.getZ() + 0.5);
 
 	    slug.motionX += getForward().x;
 	    slug.motionY += getForward().y;
@@ -334,7 +334,7 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 		Entity entity = list.get(j);
 
 		if (!entity.isPassenger(this)) {
-		    if (flag && this.getPassengers().size() < 2 && !entity.isRiding() && entity.width < this.width
+		    if (flag && this.getPassengers().size() < 10 && !entity.isRiding() && entity.width < this.width
 			    && entity instanceof EntityLivingBase && !(entity instanceof EntityWaterMob)
 			    && !(entity instanceof EntityPlayer)) {
 			entity.startRiding(this);
@@ -666,7 +666,7 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 	    this.applyYawToEntity(passenger);
 
 	    if (passenger instanceof EntityAnimal && this.getPassengers().size() > 1) {
-		int j = passenger.getEntityId() % 2 == 0 ? 90 : 270;
+		int j = passenger.getEntityId() % 10 == 0 ? 90 : 270;
 		passenger.setRenderYawOffset(((EntityAnimal) passenger).renderYawOffset + j);
 		passenger.setRotationYawHead(passenger.getRotationYawHead() + j);
 	    }

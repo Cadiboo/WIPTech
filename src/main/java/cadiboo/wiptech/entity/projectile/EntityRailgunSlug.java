@@ -1,5 +1,7 @@
 package cadiboo.wiptech.entity.projectile;
 
+import javax.annotation.Nullable;
+
 import cadiboo.wiptech.capability.ModEnergyStorage;
 import cadiboo.wiptech.entity.ModEntity;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
@@ -7,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.model.animation.AnimationStateMachine;
 import net.minecraftforge.items.IItemHandler;
@@ -93,17 +96,15 @@ public class EntityRailgunSlug extends ModEntity {
 	this.motionZ *= 0.95;
     }
 
-    /* extends EntityArrow { */
+    @Override
+    public boolean canBeCollidedWith() {
+	return !this.isDead;
+    }
 
-//	public EntityRailgunSlug(World worldIn, double x, double y, double z) {
-//		super(worldIn, x, y, z);
-//		// TODO Auto-generated constructor stub
-//	}
-
-//	@Override
-//	protected ItemStack getArrowStack() {
-//		// TODO Auto-generated method stub
-//		return ItemStack.EMPTY;
-//	}
+    @Override
+    @Nullable
+    public AxisAlignedBB getCollisionBoundingBox() {
+	return this.getEntityBoundingBox();
+    }
 
 }
