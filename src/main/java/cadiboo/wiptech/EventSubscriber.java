@@ -210,62 +210,6 @@ public final class EventSubscriber {
 	    }
 	}
 
-//	for (final ModMaterials material : ModMaterials.values()) {
-//	    if (material.getProperties().hasRailgunSlug()) {
-//
-//		final Class<? extends ModEntity> clazz = EntityRailgunSlug.class;
-//		final ResourceLocation registryName = new ResourceLocation(ModReference.ID,
-//			material.getNameLowercase() + "_slug");
-//
-//		EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
-//		builder = builder.entity(clazz);
-////				builder = builder.factory(worldIn -> new EntityRailgunSlug(worldIn, ModMaterials.URANIUM));
-//		WIPTech.info("creating factory->material", material);
-//		builder = builder.factory(worldIn -> {
-//		    final ModMaterials materialRef = material;
-//		    WIPTech.info("factory->worldIn, materialRef", worldIn, materialRef);
-//		    return new EntityRailgunSlug(worldIn, materialRef);
-//		});
-//		builder = builder.id(registryName, entityId++);
-//		builder = builder.name(registryName.getResourcePath());
-//		builder = builder.tracker(64, 5, true);
-//
-//		event.getRegistry().register(builder.build());
-//
-//	    }
-//	    // event.getRegistry().register(buildEntityEntryFromClassWithName(EntityRailgunSlug.class,
-//	    // new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_slug"),
-//	    // false, true));
-//	}
-
-//	for (int i = 0; i < ModMaterials.values().length; i++) {
-//	    if (ModMaterials.values()[i].getProperties().hasRailgunSlug()) {
-//
-//		final Class<? extends ModEntity> clazz = EntityRailgunSlug.class;
-//		final ResourceLocation registryName = new ResourceLocation(ModReference.ID,
-//			ModMaterials.values()[i].getNameLowercase() + "_slug");
-//
-//		EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
-//		builder = builder.entity(clazz);
-////			builder = builder.factory(worldIn -> new EntityRailgunSlug(worldIn, ModMaterials.URANIUM));
-//
-//		final ModMaterials material = ModMaterials.values()[i];
-//
-//		WIPTech.info("creating factory->material", ModMaterials.values()[i]);
-//		builder = builder.factory(worldIn -> {
-//		    final ModMaterials materialRef = material;
-//		    WIPTech.info("factory->worldIn, materialRef", worldIn, materialRef);
-//		    return new EntityRailgunSlug(worldIn, materialRef);
-//		});
-//		builder = builder.id(registryName, entityId++);
-//		builder = builder.name(registryName.getResourcePath());
-//		builder = builder.tracker(64, 5, true);
-//
-//		event.getRegistry().register(builder.build());
-//
-//	    }
-//	}
-
     }
 
     private static final EntityEntry buildEntityEntryFromClass(final Class<? extends ModEntity> clazz,
