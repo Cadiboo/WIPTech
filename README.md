@@ -24,6 +24,8 @@
 
 
 ## Setting up a Workspace/Compiling from Source
+# DONT DO THIS - I'll update it soon Download Forge's MDK (currently forge-2747) and put the SRC folder from this repository into it
+
 1) Clone/Download the project from [https://github.com/Cadiboo/WIPTechAlpha](https://github.com/Cadiboo/WIPTechAlpha)
 2) Open up your command prompt (Terminal on Mac, CMD on Windows) and navigate to the project folder
 3) If you're on a Mac run the command "./gradlew setupDecompWorkspace", If you're on a Windows run the command "gradlew setupDecompWorkspace"
