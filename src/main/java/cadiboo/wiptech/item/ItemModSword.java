@@ -5,19 +5,26 @@ import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemSword;
 
-public class ItemModSword extends ItemSword {
+public class ItemModSword extends ItemSword implements IItemModMaterial {
 
-	public ItemModSword(ModMaterials materialIn) {
+    protected final ModMaterials material;
 
-		super(materialIn.getToolMaterial());
-		ModUtil.setNameForMaterialItem(this, materialIn, "sword");
-		ModUtil.setCreativeTab(this);
+    public ItemModSword(ModMaterials materialIn) {
+	super(materialIn.getToolMaterial());
+	ModUtil.setNameForMaterialItem(this, materialIn, "sword");
+	ModUtil.setCreativeTab(this);
+	this.material = materialIn;
 
-	}
+    }
 
-	@Override
-	public CreativeTabs[] getCreativeTabs() {
-		return ModUtil.getCreativeTabs(this);
-	}
+    @Override
+    public CreativeTabs[] getCreativeTabs() {
+	return ModUtil.getCreativeTabs(this);
+    }
+
+    @Override
+    public final ModMaterials getModMaterial() {
+	return material;
+    }
 
 }

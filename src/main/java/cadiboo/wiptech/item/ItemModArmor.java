@@ -7,27 +7,30 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 
-public class ItemModArmor extends ItemArmor {
+public class ItemModArmor extends ItemArmor implements IItemModMaterial {
 
-	protected final ModMaterials material;
+    protected final ModMaterials material;
 
-	public ItemModArmor(ModMaterials materialIn, EntityEquipmentSlot slotIn) {
+    public ItemModArmor(ModMaterials materialIn, EntityEquipmentSlot slotIn) {
+	super(materialIn.getArmorMaterial(), materialIn.getId() + 5, slotIn);
+	ModUtil.setNameForMaterialItem(this, materialIn, ModUtil.getSlotGameNameLowercase(slotIn));
+	ModUtil.setCreativeTab(this);
+	this.material = materialIn;
+    }
 
-		super(materialIn.getArmorMaterial(), materialIn.getId() + 5, slotIn);
-		this.material = materialIn;
-		ModUtil.setNameForMaterialItem(this, materialIn, ModUtil.getSlotGameNameLowercase(slotIn));
-		ModUtil.setCreativeTab(this);
+    @Override
+    public CreativeTabs[] getCreativeTabs() {
+	return ModUtil.getCreativeTabs(this);
+    }
 
-	}
+    @Override
+    public boolean hasOverlay(ItemStack stack) {
+	return material == ModMaterials.TUNGSTEN_CARBITE;
+    }
 
-	@Override
-	public CreativeTabs[] getCreativeTabs() {
-		return ModUtil.getCreativeTabs(this);
-	}
-
-	@Override
-	public boolean hasOverlay(ItemStack stack) {
-		return material == ModMaterials.TUNGSTEN_CARBITE;
-	}
+    @Override
+    public ModMaterials getModMaterial() {
+	return material;
+    }
 
 }

@@ -5,19 +5,27 @@ import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemPickaxe;
 
-public class ItemModPickaxe extends ItemPickaxe {
+public class ItemModPickaxe extends ItemPickaxe implements IItemModMaterial {
 
-	public ItemModPickaxe(ModMaterials materialIn) {
+    protected final ModMaterials material;
 
-		super(materialIn.getToolMaterial());
-		ModUtil.setNameForMaterialItem(this, materialIn, "pickaxe");
-		ModUtil.setCreativeTab(this);
+    public ItemModPickaxe(ModMaterials materialIn) {
 
-	}
+	super(materialIn.getToolMaterial());
+	ModUtil.setNameForMaterialItem(this, materialIn, "pickaxe");
+	ModUtil.setCreativeTab(this);
+	this.material = materialIn;
 
-	@Override
-	public CreativeTabs[] getCreativeTabs() {
-		return ModUtil.getCreativeTabs(this);
-	}
+    }
+
+    @Override
+    public CreativeTabs[] getCreativeTabs() {
+	return ModUtil.getCreativeTabs(this);
+    }
+
+    @Override
+    public ModMaterials getModMaterial() {
+	return material;
+    }
 
 }
