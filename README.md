@@ -2,6 +2,7 @@
 ### The second version of WIPTech (for 1.13+)
 ### A technology based mod that adds many real life (and some theoretically possible) experimental technologies.
 
+
 ## Includes
 - [x] New metals (ores, ingots, blocks)
 - [ ] Accurate recipes
@@ -17,8 +18,10 @@
 - [ ] Plasma Cannon
 - [ ] Taser
 
+
 ## Download (May not be the latest version or a stable version)
 [https://github.com/Cadiboo/WIPTechAlpha/tree/master/build/libs](https://github.com/Cadiboo/WIPTechAlpha/tree/master/build/libs)
+
 
 ## Setting up a Workspace/Compiling from Source
 1) Clone/Download the project from [https://github.com/Cadiboo/WIPTechAlpha](https://github.com/Cadiboo/WIPTechAlpha)
@@ -33,6 +36,7 @@
 2. Select your build.gradle file and have it import.
 3. Once IntelliJ IDEA has finished importing your project close IntelliJ IDEA and run the command "./gradlew genIntellijRuns" if your on a Mac or "gradlew genIntellijRuns" if your on a Windows
 ### Refer to [Forge's Guide](https://github.com/MinecraftForge/MinecraftForge/blob/1.12.x/mdk/README.txt) for more information and/or troubleshooting
+
 
 ## Issue reporting
 Please include the following:
