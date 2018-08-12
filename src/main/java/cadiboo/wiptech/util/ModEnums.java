@@ -22,6 +22,7 @@ import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
 import cadiboo.wiptech.item.ItemRail;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
@@ -360,10 +361,17 @@ public class ModEnums {
 	}
 
 	@Nullable
-	public EntityEntry getSlug() {
+	public EntityEntry getSlugEntity() {
 	    if (!this.getProperties().hasRailgunSlug())
 		return null;
 	    return getRegistryValue(ForgeRegistries.ENTITIES, "slug");
+	}
+
+	@Nullable
+	public Item getSlugItem() {
+	    if (!this.getProperties().hasRailgunSlug())
+		return null;
+	    return getRegistryValue(ForgeRegistries.ITEMS, "slug");
 	}
 
 	@Nullable
