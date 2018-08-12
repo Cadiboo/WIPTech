@@ -9,6 +9,7 @@ import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.client.render.block.model.WireModelLoader;
+import cadiboo.wiptech.client.render.entity.EntityNapalmRenderer;
 import cadiboo.wiptech.client.render.entity.EntityPortableGeneratorRenderer;
 import cadiboo.wiptech.client.render.entity.EntityRailgunCasingRenderer;
 import cadiboo.wiptech.client.render.entity.EntityRailgunRenderer;
@@ -18,11 +19,13 @@ import cadiboo.wiptech.client.render.tileentity.TileEntityWireRenderer;
 import cadiboo.wiptech.entity.ModEntity;
 import cadiboo.wiptech.entity.item.EntityPortableGenerator;
 import cadiboo.wiptech.entity.item.EntityRailgun;
+import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntityRailgunCasing;
 import cadiboo.wiptech.entity.projectile.EntityRailgunSlug;
 import cadiboo.wiptech.init.ModEntities;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.ItemCoil;
+import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemModArmor;
 import cadiboo.wiptech.item.ItemModAxe;
 import cadiboo.wiptech.item.ItemModHoe;
@@ -31,6 +34,7 @@ import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
 import cadiboo.wiptech.item.ItemPortableGenerator;
 import cadiboo.wiptech.item.ItemRail;
+import cadiboo.wiptech.item.ItemSlug;
 import cadiboo.wiptech.item.ModItemBlock;
 import cadiboo.wiptech.tileentity.ModTileEntity;
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
@@ -173,9 +177,14 @@ public final class EventSubscriber {
 	    if (material.getProperties().hasRail())
 		registry.register(new ItemRail(material));
 
+	    if (material.getProperties().hasRailgunSlug())
+		registry.register(new ItemSlug(material));
+
 	}
 
 	registry.register(new ItemPortableGenerator("portable_generator"));
+
+	registry.register(new ItemFlamethrower("flamethrower"));
 
 	WIPTech.debug("registered items");
 
@@ -189,6 +198,20 @@ public final class EventSubscriber {
 	event.getRegistry().register(buildEntityEntryFromClass(EntityRailgun.class, false, true));
 
 	event.getRegistry().register(buildEntityEntryFromClass(EntityRailgunCasing.class, false, true));
+
+//	event.getRegistry().register(buildEntityEntryFromClass(EntityNapalm.class, false, true));
+
+	final Class<? extends Entity> napalmClazz = EntityNapalm.class;
+	final ResourceLocation napalmRegistryName = new ResourceLocation(ModReference.ID,
+		getRegistryNameForClass(napalmClazz, "Entity"));
+
+	EntityEntryBuilder<Entity> napalmBuilder = EntityEntryBuilder.create();
+	napalmBuilder = napalmBuilder.entity(napalmClazz);
+	napalmBuilder = napalmBuilder.id(napalmRegistryName, entityId++);
+	napalmBuilder = napalmBuilder.name(napalmRegistryName.getResourcePath());
+	napalmBuilder = napalmBuilder.tracker(64, 20, true);
+
+	event.getRegistry().register(napalmBuilder.build());
 
 	/* GRRRRRR Its forge fucking it up after all */
 
@@ -256,6 +279,8 @@ public final class EventSubscriber {
 		renderManager -> new EntityRailgunSlugRenderer(renderManager));
 	RenderingRegistry.registerEntityRenderingHandler(EntityRailgun.class,
 		renderManager -> new EntityRailgunRenderer(renderManager));
+	RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class,
+		renderManager -> new EntityNapalmRenderer(renderManager));
 
 	WIPTech.debug("registered EntityRenderers");
 
@@ -356,12 +381,18 @@ public final class EventSubscriber {
 		if (material.getRail() != null)
 		    registerItemModel(material.getRail());
 
+	    if (material.getProperties().hasRailgunSlug())
+		if (material.getSlugItem() != null)
+		    registerItemModel(material.getSlugItem());
+
 	}
 
 	ResourceLocation portableGeneratorRegistryName = ModEntities.PORTABLE_GENERATOR.getRegistryName();
 	ModelLoader.setCustomModelResourceLocation(ModItems.PORTABLE_GENERATOR, 0,
 		new ModelResourceLocation(new ResourceLocation(portableGeneratorRegistryName.getResourceDomain(),
 			"" + portableGeneratorRegistryName.getResourcePath()), ""));
+
+	registerItemModel(ModItems.FLAMETHROWER);
 
 	WIPTech.debug("registered block & item models");
 
