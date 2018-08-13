@@ -18,16 +18,16 @@ public class ModUtil {
 	 */
 	public static final String getSlotGameNameUppercase(final EntityEquipmentSlot slotIn) {
 		switch (slotIn) {
-			case CHEST:
-				return "CHESTPLATE";
-			case FEET:
-				return "BOOTS";
-			case HEAD:
-				return "HELMET";
-			case LEGS:
-				return "LEGGINGS";
-			default:
-				return slotIn.name();
+		case CHEST:
+			return "CHESTPLATE";
+		case FEET:
+			return "BOOTS";
+		case HEAD:
+			return "HELMET";
+		case LEGS:
+			return "LEGGINGS";
+		default:
+			return slotIn.name();
 		}
 	}
 
@@ -50,8 +50,8 @@ public class ModUtil {
 
 	public static void setNameForMaterialItem(Item item, ModMaterials materialIn, String nameSuffix) {
 
-		ResourceLocation name = new ResourceLocation(materialIn.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.ITEMS),
-				materialIn.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
+		ResourceLocation name = new ResourceLocation(materialIn.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.ITEMS), materialIn.getVanillaNameLowercase(nameSuffix) + "_"
+				+ nameSuffix);
 		item.setRegistryName(name);
 		Item overriddenItem = ForgeRegistries.ITEMS.getValue(name);
 		item.setUnlocalizedName(overriddenItem != null ? overriddenItem.getUnlocalizedName().replace("item.", "") : name.getResourcePath());
@@ -76,13 +76,30 @@ public class ModUtil {
 
 	public static int getMaterialLightValue(ModMaterials material) {
 		switch (material) {
-			case PLUTONIUM:
-				return 6;
-			case URANIUM:
-				return 8;
-			default:
-				return 0;
+		case PLUTONIUM:
+			return 6;
+		case URANIUM:
+			return 8;
+		default:
+			return 0;
 		}
+	}
+
+	/**
+	 * https://stackoverflow.com/a/5732117
+	 * 
+	 * @param input_start
+	 * @param input_end
+	 * @param output_start
+	 * @param output_end
+	 * @param input
+	 * @return
+	 */
+	public static double map(double input_start, double input_end, double output_start, double output_end, double input) {
+		double input_range = input_end - input_start;
+		double output_range = output_end - output_start;
+
+		return (input - input_start) * output_range / input_range + output_start;
 	}
 
 }
