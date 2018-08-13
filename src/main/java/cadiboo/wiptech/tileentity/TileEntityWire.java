@@ -3,6 +3,7 @@ package cadiboo.wiptech.tileentity;
 import java.util.List;
 
 import cadiboo.wiptech.capability.ModEnergyStorage;
+import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.util.IEnergyTransferer;
 import cadiboo.wiptech.util.ModDamageSource;
 import net.minecraft.entity.Entity;
@@ -21,6 +22,17 @@ public class TileEntityWire extends ModTileEntity implements ITickable, IEnergyT
 
 	@Override
 	public final void update() {
+
+		List<EntityLivingBase> list = getWorld().getEntitiesWithinAABB(EntityLivingBase.class,
+				new AxisAlignedBB(-10, -10, -10, 10, 10, 10).offset(this.getPosition()));
+		if (list.size() > 0) {
+			EntityLivingBase player = list.get(0);
+			EntityNapalm entitynapalm = new EntityNapalm(player.world, player);
+			entitynapalm.setPosition(getPos().getX(), getPos().getY() + 2, getPos().getZ());
+			entitynapalm.shoot(player, 1f, 1f, 0.0F, 2, 5.0F);
+			player.world.spawnEntity(entitynapalm);
+		}
+
 		handleSync();
 		getElectrocutableEntities().forEach((entityIn) -> {
 
@@ -57,7 +69,8 @@ public class TileEntityWire extends ModTileEntity implements ITickable, IEnergyT
 	}
 
 	public List<Entity> getElectrocutableEntities() {
-		return this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).grow(getElectrocutionRage()), EntitySelectors.CAN_AI_TARGET);
+		return this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class,
+				new AxisAlignedBB(getPos()).grow(getElectrocutionRage()), EntitySelectors.CAN_AI_TARGET);
 	}
 
 	@Override
