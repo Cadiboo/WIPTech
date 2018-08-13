@@ -1,9 +1,11 @@
 package cadiboo.wiptech.entity.projectile;
 
+import java.util.Random;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -22,6 +24,24 @@ public class EntityNapalm extends EntityThrowable {
 	public void onUpdate() {
 		super.onUpdate();
 		this.igniteBlocks();
+
+		if (this.ticksExisted <= 2)
+			return;
+
+		for (int i = 0; i < ticksExisted; i++) {
+			double randX = new Random().nextGaussian() * 0.0025 * ticksExisted;
+			double randY = new Random().nextDouble() * 0.025 * ticksExisted;
+			double randZ = new Random().nextGaussian() * 0.0025 * ticksExisted;
+
+//			randX = randY = randZ = 0;
+
+			world.spawnParticle(EnumParticleTypes.FLAME, true, posX, posY, posZ, randX, randY, randZ);
+		}
+
+//		if (this.ticksExisted > 2)
+//			for (int i = 0; i < this.ticksExisted; i++)
+//				world.spawnParticle(EnumParticleTypes.FLAME, posX, posY, posZ, (new Random().nextInt(3) - 1) * 0.025,
+//						(new Random().nextInt(2)) * 0.2, (new Random().nextInt(3) - 1) * 0.025);
 	}
 
 	@Override
@@ -37,6 +57,7 @@ public class EntityNapalm extends EntityThrowable {
 				result.entityHit.setFire(100);
 
 		this.igniteBlocks();
+//		world.newExplosion(this, this.posX, posY, posZ, 10, false, false);
 		this.setDead();
 	}
 
@@ -47,12 +68,32 @@ public class EntityNapalm extends EntityThrowable {
 		if (world.getBlockState(pos) != Blocks.AIR.getDefaultState())
 			return;
 
-		for (EnumFacing facing : EnumFacing.VALUES) {
-//	    if (world.getBlockState(pos.offset(facing)).getBlock().isFlammable(world, pos, facing.getOpposite()))
-			if (world.getBlockState(pos.offset(facing)) != Blocks.AIR.getDefaultState()
-					&& world.getBlockState(pos.offset(facing)) != Blocks.FIRE.getDefaultState())
-				world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 2);
+		int radius = Math.min(3, Math.round(ticksExisted / 50f));
+		for (int x = -(radius); x <= radius; x++) {
+			for (int y = -(radius); y <= radius; y++) {
+				for (int z = -(radius); z <= radius; z++) {
+					pos = new BlockPos(this.posX + x, this.posY + y, this.posZ + z);
+//					for (EnumFacing facing : EnumFacing.VALUES) {
+
+//						if (world.getBlockState(pos.offset(facing)) != Blocks.AIR.getDefaultState())
+//							if (world.getBlockState(pos.offset(facing)) != Blocks.FIRE.getDefaultState())
+////								if (world.getBlockState(pos.offset(facing)).getBlock().isFlammable(world,
+////										pos.offset(facing), facing.getOpposite()))
+//								if (world.getBlockState(pos.offset(facing)).isSideSolid(world, pos.offset(facing),
+//										facing.getOpposite()))
+//									if (world.getBlockState(pos).getBlock().isReplaceable(world, pos))
+//										if (!world.getBlockState(pos).getBlock().is)
+
+//						IBlockState offset = world.getBlockState(pos.offset(facing));
+//						IBlockState position = world.getBlockState(pos);
+
+					if (world.getBlockState(pos) == Blocks.AIR.getDefaultState())
+						world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 2);
+//					}
+				}
+			}
 		}
+
 	}
 
 }
