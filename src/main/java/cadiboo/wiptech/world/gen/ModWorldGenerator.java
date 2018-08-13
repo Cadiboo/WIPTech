@@ -2,7 +2,6 @@ package cadiboo.wiptech.world.gen;
 
 import java.util.Random;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
@@ -34,20 +33,10 @@ public class ModWorldGenerator implements IWorldGenerator {
 	}
 
 	private void generateOverworld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-
-//			  this.coalGen = new WorldGenMinable(Blocks.COAL_ORE.getDefaultState(), this.chunkProviderSettings.coalSize);
-//            this.ironGen = new WorldGenMinable(Blocks.IRON_ORE.getDefaultState(), this.chunkProviderSettings.ironSize);
-//            this.goldGen = new WorldGenMinable(Blocks.GOLD_ORE.getDefaultState(), this.chunkProviderSettings.goldSize);
-//            this.redstoneGen = new WorldGenMinable(Blocks.REDSTONE_ORE.getDefaultState(), this.chunkProviderSettings.redstoneSize);
-//            this.diamondGen = new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(), this.chunkProviderSettings.diamondSize);
-//            this.lapisGen = new WorldGenMinable(Blocks.LAPIS_ORE.getDefaultState(), this.chunkProviderSettings.lapisSize);
-
 		for (ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre()) {
 				Block ore = material.getOre();
 				if (ore != null) {
-					if (material == ModMaterials.TUNGSTEN || material == ModMaterials.TITANIUM)
-						WIPTech.info(material, getSize(material), getChance(material));
 					generateOre(ore.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, getMinY(material), getMaxY(material), getSize(material), getChance(material));
 				}
 			}
@@ -59,34 +48,30 @@ public class ModWorldGenerator implements IWorldGenerator {
 	}
 
 	private int getMaxY(ModMaterials material) {
-		return Math.max(1 + getMinY(material),
-				
-				Math.round(
-						
-						Math.round(128
-								
+		return Math.max(1 + getMinY(material), Math.round(
+
+				Math.round(128 * ModUtil.map(0,
+
+						ModMaterials.getHighestHardness(), 0, 1,
+
+						maxHardnessMinusMaterialHardness(material)
+
 								* ModUtil.map(0,
-										
-										ModMaterials.getHighestHardness(), 0, 1,
-										
-										maxHardnessMinusMaterialHardness(material)
-												
-												* ModUtil.map(0,
-														
-														ModMaterials.getHighestConductivity(),
-														
-														0, 1,
-														
-														material.getProperties().getConductivity()
-												
-												)
-								
+
+										ModMaterials.getHighestConductivity(),
+
+										0, 1,
+
+										material.getProperties().getConductivity()
+
 								)
-						
-						)
-				
+
 				)
-		
+
+				)
+
+		)
+
 		);
 	}
 
@@ -95,8 +80,6 @@ public class ModWorldGenerator implements IWorldGenerator {
 		if (chance <= 1)
 			chance = 1;
 		chance += 3;
-//		chance *= 2;
-//		WIPTech.info(material, "chance: " + chance);
 		return chance;
 	}
 
@@ -104,7 +87,6 @@ public class ModWorldGenerator implements IWorldGenerator {
 		int size = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 0, 10, maxHardnessMinusMaterialHardness(material))));
 		if (size <= 2)
 			size = 2;
-//		WIPTech.info(material, "size: " + size);
 		return size;
 	}
 
