@@ -1,5 +1,6 @@
 package cadiboo.wiptech.client.render.entity;
 
+import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,8 +27,6 @@ public class EntitySlugRenderer extends ModEntityRenderer<EntitySlug> {
 
 		GlStateManager.translate(0, -0.56f, 0);
 
-//		WIPTech.info(entity.getName());
-
 		ItemStack stack = new ItemStack(entity.getMaterial().getBlock());
 
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, entity.getEntityWorld(), null);
@@ -35,6 +34,18 @@ public class EntitySlugRenderer extends ModEntityRenderer<EntitySlug> {
 
 		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
+
+		GlStateManager.popMatrix();
+
+		GlStateManager.pushMatrix();
+
+		GlStateManager.translate((float) x, (float) y + 0.5, (float) z);
+
+		GlStateManager.translate(0, -0.56f, 0);
+
+		GlStateManager.rotate(180, 1, 0, 0);
+
+		ClientUtil.renderStack(new ItemStack(entity.getMaterial().getSlugItem()), entity.world);
 
 		GlStateManager.popMatrix();
 
