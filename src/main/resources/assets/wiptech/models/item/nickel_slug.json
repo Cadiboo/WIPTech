@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:entity/slug",
+	"textures": {
+		"ingot": "wiptech:item/nickel_ingot"
+	}
+}
+
