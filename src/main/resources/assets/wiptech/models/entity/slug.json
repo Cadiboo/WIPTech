@@ -1,0 +1,57 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"ingot": "wiptech:item/uranium_ingot",
+		"particle": "#ingot"
+	},
+	"elements": [
+		{
+			"from": [7, 4, 5],
+			"to": [9, 6, 14],
+			"faces": {
+				"north": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"east": {"uv": [0, 6, 16, 10], "texture": "#ingot", "rotation": 180},
+				"south": {"uv": [15, 6, 16, 10], "texture": "#ingot"},
+				"west": {"uv": [0, 6, 16, 10], "texture": "#ingot"},
+				"up": {"uv": [0, 6, 16, 10], "texture": "#ingot", "rotation": 90},
+				"down": {"uv": [0, 6, 16, 10], "texture": "#ingot", "rotation": 270}
+			}
+		},
+		{
+			"from": [7.25, 4.25, 4],
+			"to": [8.75, 5.75, 11],
+			"faces": {
+				"north": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"east": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"south": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"west": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"up": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"down": {"uv": [0, 6, 1, 10], "texture": "#ingot"}
+			}
+		},
+		{
+			"from": [7.5, 4.5, 3],
+			"to": [8.5, 5.5, 11],
+			"faces": {
+				"north": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"east": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"south": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"west": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"up": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"down": {"uv": [0, 6, 1, 10], "texture": "#ingot"}
+			}
+		},
+		{
+			"from": [7.75, 4.75, 2],
+			"to": [8.25, 5.25, 9.5],
+			"faces": {
+				"north": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"east": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"south": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"west": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"up": {"uv": [0, 6, 1, 10], "texture": "#ingot"},
+				"down": {"uv": [0, 6, 1, 10], "texture": "#ingot"}
+			}
+		}
+	]
+}
