@@ -4,7 +4,6 @@ import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -37,13 +36,14 @@ public class EntityNapalmRenderer extends Render<EntityNapalm> {
 
 			TextureAtlasSprite lava = texturemap.getAtlasSprite("minecraft:blocks/lava_flow");
 
-			RenderHelper.enableGUIStandardItemLighting();
-
 			ClientUtil.drawSeamlessCuboid(lava.getMinU(), lava.getMaxU(), lava.getMinV(), lava.getMaxV(), 0.125, 0.125, 0.125, 1);
 
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+
+		GlStateManager.enableLighting();
+
 		GlStateManager.popMatrix();
 
 	}
