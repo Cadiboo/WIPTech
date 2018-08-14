@@ -170,6 +170,7 @@ public class ModWritingUtil {
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
+				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower + "_core")));
 				blockModels.add(new Tuple<String, String>(nameUpper + "_core", generateBlockItemModelJSON(material, suffixLower + "_core")));
 
 				for (EnumFacing facing : EnumFacing.VALUES) {
@@ -187,6 +188,7 @@ public class ModWritingUtil {
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
+				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower + "_core")));
 				blockModels.add(new Tuple<String, String>(nameUpper + "_core", generateBlockItemModelJSON(material, suffixLower + "_core")));
 
 				for (EnumFacing facing : EnumFacing.VALUES) {
