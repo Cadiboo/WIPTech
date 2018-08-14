@@ -76,17 +76,13 @@ public class ModWorldGenerator implements IWorldGenerator {
 	}
 
 	private int getChance(ModMaterials material) {
-		int chance = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 0, 10, maxHardnessMinusMaterialHardness(material))));
-		if (chance <= 1)
-			chance = 1;
-		chance += 3;
+		int chance = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 1, 5, maxHardnessMinusMaterialHardness(material))));
+//		chance += 3;
 		return chance;
 	}
 
 	private int getSize(ModMaterials material) {
-		int size = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 0, 10, maxHardnessMinusMaterialHardness(material))));
-		if (size <= 2)
-			size = 2;
+		int size = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 3, 8, maxHardnessMinusMaterialHardness(material))));
 		return size;
 	}
 
