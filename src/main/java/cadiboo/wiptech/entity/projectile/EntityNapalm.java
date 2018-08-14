@@ -23,14 +23,15 @@ public class EntityNapalm extends EntityThrowable {
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
+
 		this.igniteBlocks();
 
 		if (this.ticksExisted <= 2)
 			return;
 
-		for (int i = 0; i < ticksExisted; i++) {
+		for (int i = 0; i < Math.min(100, ticksExisted); i++) {
 			double randX = new Random().nextGaussian() * 0.0025 * ticksExisted;
-			double randY = new Random().nextDouble() * 0.025 * ticksExisted;
+			double randY = new Random().nextDouble() * 0.025 * Math.min(25, ticksExisted);
 			double randZ = new Random().nextGaussian() * 0.0025 * ticksExisted;
 
 //			randX = randY = randZ = 0;
