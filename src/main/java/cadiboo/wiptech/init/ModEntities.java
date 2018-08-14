@@ -13,12 +13,12 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 @ObjectHolder(ModReference.ID)
 public class ModEntities {
 
-    public static final EntityEntry PORTABLE_GENERATOR = null;
+	public static final EntityEntry PORTABLE_GENERATOR = null;
 
-    public static final EntityEntry RAILGUN = null;
+	public static final EntityEntry RAILGUN = null;
 
-    public static final EntityEntry RAILGUN_CASING = null;
+	public static final EntityEntry NAPALM = null;
 
-    public static final EntityEntry NAPALM = null;
+	public static final EntityEntry SLUG_CASING = null;
 
 }

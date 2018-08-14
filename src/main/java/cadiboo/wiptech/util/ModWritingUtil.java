@@ -13,41 +13,35 @@ import org.apache.commons.lang3.StringUtils;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class ModWritingUtil {
 
-	public static String	default_variant_name	= "normal";
-	private static String	assetDir				= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
+	public static String default_variant_name = "normal";
+	private static String assetDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
+	public static boolean debugOres = true;
 
 	public static void writeMod() {
 
-		boolean code = false;
+		boolean lang = true;
 		boolean json = true;
 
 		try {
-			Generator.genVanillaBlockState("/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources", ModReference.ID, "testWire",
-					new BlockWire(ModMaterials.COPPER));
+			Generator.genVanillaBlockState("/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources", ModReference.ID, "testWire", new BlockWire(
+					ModMaterials.COPPER));
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
-		WIPTech.info("infoModMaterialsCode with options write code: " + code + ", write json: " + json);
+		WIPTech.info("infoModMaterialsCode with options write lang: " + lang + ", write json: " + json);
 
 		//
 
 		//
-
-		ArrayList<String> modBlocks = new ArrayList<String>();
-		ArrayList<String> registerBlocks = new ArrayList<String>();
-
-		ArrayList<String> modItems = new ArrayList<String>();
-		ArrayList<String> registerItems = new ArrayList<String>();
-
-		ArrayList<String> registerModels = new ArrayList<String>();
 
 		ArrayList<Tuple<String, String>> blockstates = new ArrayList<Tuple<String, String>>();
 		ArrayList<Tuple<String, String>> blockModels = new ArrayList<Tuple<String, String>>();
@@ -63,18 +57,6 @@ public class ModWritingUtil {
 				String suffixLower = "ore";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
-				modBlocks.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.BLOCKS) + ":" + nameUpper.toLowerCase() + "\")");
-				modBlocks.add("public static final BlockModOre " + nameUpper + " = null;");
-
-				registerBlocks.add("registry.register(new BlockModOre(ModMaterials." + material.getNameUppercase() + "));");
-				registerItems.add("registry.register(new ModItemBlock(ModBlocks." + nameUpper
-						+ (material.getResouceLocationDomain("ore", ForgeRegistries.BLOCKS) != ModReference.ID
-								? ", new ResourceLocation(\"" + material.getResouceLocationDomain("ore", ForgeRegistries.BLOCKS) + "\", \"" + nameUpper.toLowerCase() + "\")"
-								: "")
-						+ "));");
-				if (material.getResouceLocationDomain("ore", ForgeRegistries.BLOCKS) != "minecraft")
-					registerModels.add("registerItemBlockModel(ModBlocks." + nameUpper + ");");
-
 				if (material.getResouceLocationDomain("ore", ForgeRegistries.BLOCKS) != "minecraft")
 					blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
 
@@ -89,19 +71,6 @@ public class ModWritingUtil {
 				String suffixLower = "block";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
-				modBlocks.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.BLOCKS) + ":" + nameUpper.toLowerCase() + "\")");
-				modBlocks.add("public static final BlockResource " + nameUpper + " = null;");
-
-				registerBlocks.add("registry.register(new BlockResource(ModMaterials." + material.getNameUppercase() + "));");
-				registerItems.add("registry.register(new ModItemBlock(ModBlocks." + nameUpper
-						+ (material.getResouceLocationDomain("block", ForgeRegistries.BLOCKS) != ModReference.ID
-								? ", new ResourceLocation(\"" + material.getResouceLocationDomain("block", ForgeRegistries.BLOCKS) + "\", \"" + nameUpper.toLowerCase() + "\")"
-								: "")
-						+ "));");
-
-				if (material.getResouceLocationDomain("block", ForgeRegistries.BLOCKS) != "minecraft")
-					registerModels.add("registerItemBlockModel(ModBlocks." + nameUpper + ");");
-
 				if (material.getResouceLocationDomain("block", ForgeRegistries.BLOCKS) != "minecraft")
 					blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
 
@@ -115,27 +84,11 @@ public class ModWritingUtil {
 				String suffixLower = "ingot";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
-				modBlocks.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.BLOCKS) + ":" + nameUpper.toLowerCase() + "\")");
-				modBlocks.add("public static final BlockItem " + nameUpper + " = null;");
-
-				registerBlocks.add("registry.register(new BlockItem(ModMaterials." + material.getNameUppercase() + ", BlockItemTypes.INGOT));");
-				registerItems.add("registry.register(new ModItemBlock(ModBlocks." + nameUpper
-						+ (material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) != ModReference.ID
-								? ", new ResourceLocation(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) + "\", \"" + nameUpper.toLowerCase() + "\")"
-								: "")
-						+ "));");
-
-				if (material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) != "minecraft")
-					registerModels.add("registerItemBlockModel(ModBlocks." + nameUpper + ");");
-
 				/* @formatter:off */
-				blockstates.add(new Tuple<String, String>(nameUpper,
-						"{\n" + "    \"variants\": {\n" 
-								+ "        \"facing=north\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 0 },\n"
-								+ "        \"facing=south\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 180 },\n"
-								+ "        \"facing=west\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 },\n"
-								+ "        \"facing=east\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 }\n" 
-						+ "    }\n" + "}\n"));
+				blockstates.add(new Tuple<String, String>(nameUpper, "{\n" + "    \"variants\": {\n" + "        \"facing=north\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase()
+						+ "\", \"y\": 0 },\n" + "        \"facing=south\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 180 },\n"
+						+ "        \"facing=west\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 },\n" + "        \"facing=east\":  { \"model\": \""
+						+ ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 }\n" + "    }\n" + "}\n"));
 				/* @formatter:on */
 				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
 
@@ -145,39 +98,20 @@ public class ModWritingUtil {
 				suffixLower = "nugget";
 				nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
-				modBlocks.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.BLOCKS) + ":" + nameUpper.toLowerCase() + "\")");
-				modBlocks.add("public static final BlockItem " + nameUpper + " = null;");
-
-				registerBlocks.add("registry.register(new BlockItem(ModMaterials." + material.getNameUppercase() + ", BlockItemTypes.NUGGET));");
-				registerItems.add("registry.register(new ModItemBlock(ModBlocks." + nameUpper
-						+ (material.getResouceLocationDomain("nugget", ForgeRegistries.ITEMS) != ModReference.ID
-								? ", new ResourceLocation(\"" + material.getResouceLocationDomain("nugget", ForgeRegistries.ITEMS) + "\", \"" + nameUpper.toLowerCase() + "\")"
-								: "")
-						+ "));");
-
-				if (material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) != "minecraft")
-					registerModels.add("registerItemBlockModel(ModBlocks." + nameUpper + ");");
-
 				if (material == ModMaterials.GOLD) /* gold is sideways */
 					/* @formatter:off */
-					blockstates.add(new Tuple<String, String>(nameUpper,
-							"{\n" + "    \"variants\": {\n" 
-									+ "        \"facing=north\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 180},\n"
-									+ "        \"facing=south\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 0 },\n"
-									+ "        \"facing=west\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 },\n"
-									+ "        \"facing=east\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 }\n" 
-							+ "    }\n" + "}\n"));
-					/* @formatter:on */
+					blockstates.add(new Tuple<String, String>(nameUpper, "{\n" + "    \"variants\": {\n" + "        \"facing=north\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase()
+							+ "\", \"y\": 180},\n" + "        \"facing=south\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 0 },\n"
+							+ "        \"facing=west\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 },\n" + "        \"facing=east\":  { \"model\": \""
+							+ ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 }\n" + "    }\n" + "}\n"));
+				/* @formatter:on */
 				else
 					/* @formatter:off */
-					blockstates.add(new Tuple<String, String>(nameUpper,
-							"{\n" + "    \"variants\": {\n" 
-									+ "        \"facing=north\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 },\n"
-									+ "        \"facing=south\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 },\n"
-									+ "        \"facing=west\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 0 },\n"
-									+ "        \"facing=east\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 180 }\n" 
-							+ "    }\n" + "}\n"));
-					/* @formatter:on */
+					blockstates.add(new Tuple<String, String>(nameUpper, "{\n" + "    \"variants\": {\n" + "        \"facing=north\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase()
+							+ "\", \"y\": 90 },\n" + "        \"facing=south\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 },\n"
+							+ "        \"facing=west\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 0 },\n" + "        \"facing=east\":  { \"model\": \""
+							+ ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 180 }\n" + "    }\n" + "}\n"));
+				/* @formatter:on */
 				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
 
 				if (material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) != "minecraft")
@@ -194,29 +128,20 @@ public class ModWritingUtil {
 
 					String slotName;
 					switch (suffixLower.toUpperCase()) {
-						case "HELMET":
-							slotName = "HEAD";
+					case "HELMET":
+						slotName = "HEAD";
 						break;
-						case "CHESTPLATE":
-							slotName = "CHEST";
+					case "CHESTPLATE":
+						slotName = "CHEST";
 						break;
-						case "LEGGINGS":
-							slotName = "LEGS";
+					case "LEGGINGS":
+						slotName = "LEGS";
 						break;
-						default:
-						case "BOOTS":
-							slotName = "FEET";
+					default:
+					case "BOOTS":
+						slotName = "FEET";
 						break;
 					}
-
-					modItems.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) + ":" + material.getVanillaNameLowercase(suffixLower) + "_" + suffixLower
-							+ "\")");
-					modItems.add("public static final ItemModArmor" + " " + nameUpper + " = null;");
-
-					registerItems.add("registry.register(new ItemModArmor(ModMaterials." + material.getNameUppercase() + ", EntityEquipmentSlot. " + slotName + "));");
-
-					if (material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) != "minecraft")
-						registerModels.add("registerItemModel(ModItems." + nameUpper + ");");
 
 					if (material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) != "minecraft")
 						itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper)));
@@ -233,15 +158,6 @@ public class ModWritingUtil {
 
 					String itemType = "Mod" + StringUtils.capitalize(suffixLower);
 
-					modItems.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) + ":" + material.getVanillaNameLowercase(suffixLower) + "_" + suffixLower
-							+ "\")");
-					modItems.add("public static final Item" + itemType + " " + nameUpper + " = null;");
-
-					registerItems.add("registry.register(new Item" + itemType + "(ModMaterials." + material.getNameUppercase() + "));");
-
-					if (material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) != "minecraft")
-						registerModels.add("registerItemModel(ModItems." + nameUpper + ");");
-
 					if (material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) != "minecraft")
 						itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, "handheld")));
 				}
@@ -253,22 +169,15 @@ public class ModWritingUtil {
 				String suffixLower = "wire";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
-				modBlocks.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.BLOCKS) + ":" + nameUpper.toLowerCase() + "\")");
-				modBlocks.add("public static final BlockWire " + nameUpper + " = null;");
-
-				registerBlocks.add("registry.register(new BlockWire(ModMaterials." + material.getNameUppercase() + "));");
-				registerItems.add("registry.register(new ModItemBlock(ModBlocks." + nameUpper + "));");
-
-				registerModels.add("registerItemBlockModel(ModBlocks." + nameUpper + ");");
-
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
-				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower + "_core")));
+				blockModels.add(new Tuple<String, String>(nameUpper + "_core", generateBlockItemModelJSON(material, suffixLower + "_core")));
 
-//				suffixLower += "_extension";
-//				nameUpper += "_extension".toUpperCase();
-//
-//				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
-//				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
+				for (EnumFacing facing : EnumFacing.VALUES) {
+//					String name = (nameUpper + "_" + facing.name()).toLowerCase();
+
+					blockModels.add(new Tuple<String, String>(nameUpper + "_extension_" + facing.name().toLowerCase(), generateBlockItemModelJSON(material, suffixLower + "_extension_" + facing.name()
+							.toLowerCase())));
+				}
 			}
 
 			//
@@ -277,22 +186,30 @@ public class ModWritingUtil {
 				String suffixLower = "enamel";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
-				modBlocks.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.BLOCKS) + ":" + nameUpper.toLowerCase() + "\")");
-				modBlocks.add("public static final BlockEnamel " + nameUpper + " = null;");
-
-				registerBlocks.add("registry.register(new BlockEnamel(ModMaterials." + material.getNameUppercase() + "));");
-				registerItems.add("registry.register(new ModItemBlock(ModBlocks." + nameUpper + "));");
-
-				registerModels.add("registerItemBlockModel(ModBlocks." + nameUpper + ");");
-
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
-				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower + "_core")));
+				blockModels.add(new Tuple<String, String>(nameUpper + "_core", generateBlockItemModelJSON(material, suffixLower + "_core")));
 
-//				suffixLower += "_extension";
-//				nameUpper += "_extension".toUpperCase();
-//
-//				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
-//				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
+				for (EnumFacing facing : EnumFacing.VALUES) {
+//					String name = (nameUpper + "_" + facing.name()).toLowerCase();
+
+					blockModels.add(new Tuple<String, String>(nameUpper + "_extension_" + facing.name().toLowerCase(), generateBlockItemModelJSON(material, suffixLower + "_extension_" + facing.name()
+							.toLowerCase())));
+				}
+
+			}
+
+			if (material.getProperties().hasRailgunSlug()) {
+				String suffixLower = "slug";
+				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
+				itemModels.add(new Tuple<String, String>(nameUpper,
+
+				/* @formatter:off */
+						"{\n" + "	\"parent\": \"" + ModReference.ID + ":entity/" + suffixLower + "\",\n" + "	\"textures\": {\n" + "		\"ingot\": \"" + material.getResouceLocationDomain("ingot",
+								ForgeRegistries.ITEMS) + ":item" + (material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS) != "minecraft" || Loader.MC_VERSION.contains("1.13") ? "" : "s") + "/" + material
+										.getNameLowercase() + "_ingot\"\n" + "	}\n" + "}\n"
+						/* @formatter:on */
+
+				));
 			}
 
 			//
@@ -301,24 +218,10 @@ public class ModWritingUtil {
 				String suffixLower = "coil";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
-				modItems.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) + ":" + nameUpper.toLowerCase() + "\")");
-				modItems.add("public static final ItemCoil" + " " + nameUpper + " = null;");
-
-				registerItems.add("registry.register(new ItemCoil(ModMaterials." + material.getNameUppercase() + "));");
-				registerModels.add("registerItemModel(ModItems." + nameUpper + ");");
-
 				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper)));
 
 				suffixLower = "spool";
 				nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
-
-				modBlocks.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.BLOCKS) + ":" + nameUpper.toLowerCase() + "\")");
-				modBlocks.add("public static final BlockSpool " + nameUpper + " = null;");
-
-				registerBlocks.add("registry.register(new BlockSpool(ModMaterials." + material.getNameUppercase() + "));");
-				registerItems.add("registry.register(new ModItemBlock(ModBlocks." + nameUpper + "));");
-
-				registerModels.add("registerItemBlockModel(ModBlocks." + nameUpper + ");");
 
 //				/* @formatter:off */
 //				blockstates.add(new Tuple<String, String>(nameUpper,
@@ -339,92 +242,12 @@ public class ModWritingUtil {
 				String suffixLower = "rail";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
-				modItems.add("@ObjectHolder(\"" + material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) + ":" + nameUpper.toLowerCase() + "\")");
-				modItems.add("public static final ItemRail" + " " + nameUpper + " = null;");
-				registerItems.add("registry.register(new ItemRail(ModMaterials." + material.getNameUppercase() + "));");
-				registerModels.add("registerItemModel(ModItems." + nameUpper + ");");
 				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper)));
 			}
 
 		}
 
-		if (code) {
-
-			WIPTech.info("Writing ModBlocks_autogenerated");
-			Path file = Paths.get("/Users/" + System.getProperty("user.name") + "/Desktop/ModBlocks_autogenerated.txt");
-			try {
-				List<String> data = new ArrayList<String>();
-				data.add("public class ModBlocks {\n");
-				for (String block : modBlocks)
-					data.add("	" + block);
-				data.add("\n}");
-				Files.write(file, data, Charset.forName("UTF-8"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			WIPTech.info("Writing ModItems_autogenerated");
-			file = Paths.get("/Users/" + System.getProperty("user.name") + "/Desktop/ModItems_autogenerated.txt");
-			try {
-				List<String> data = new ArrayList<String>();
-				data.add("public class ModItems {\n");
-				for (String item : modItems)
-					data.add("	" + item);
-				data.add("\n}");
-				Files.write(file, data, Charset.forName("UTF-8"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			WIPTech.info("Writing RegisterBlocks_autogenerated");
-			file = Paths.get("/Users/" + System.getProperty("user.name") + "/Desktop/RegisterBlocks_autogenerated.txt");
-			try {
-				List<String> data = new ArrayList<String>();
-				data.add("	" + "@SubscribeEvent");
-				data.add("	" + "public static void onRegisterBlocksEvent(final RegistryEvent.Register<Block> event) {");
-				data.add("		" + "final IForgeRegistry<Block> registry = event.getRegistry();");
-				for (String block : registerBlocks)
-					data.add("		" + block);
-				data.add("	" + "}");
-				data.add("registerTileEntity(TileEntityWire.class);");
-				data.add("registerTileEntity(TileEntityEnamel.class);");
-				Files.write(file, data, Charset.forName("UTF-8"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			WIPTech.info("Writing RegisterItems_autogenerated");
-			file = Paths.get("/Users/" + System.getProperty("user.name") + "/Desktop/RegisterItems_autogenerated.txt");
-			try {
-				List<String> data = new ArrayList<String>();
-				data.add("	" + "@SubscribeEvent");
-				data.add("	" + "public static void onRegisterItemsEvent(final RegistryEvent.Register<Item> event) {");
-				data.add("		" + "final IForgeRegistry<Item> registry = event.getRegistry();");
-				for (String item : registerItems)
-					data.add("		" + item);
-				data.add("	" + "}");
-				Files.write(file, data, Charset.forName("UTF-8"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			WIPTech.info("Writing RegisterModels_autogenerated");
-			file = Paths.get("/Users/" + System.getProperty("user.name") + "/Desktop/RegisterModels_autogenerated.txt");
-			try {
-				List<String> data = new ArrayList<String>();
-				data.add("	@SubscribeEvent\n" + "	@SideOnly(Side.CLIENT)\n" + "	public static final void onRegisterModelsEvent(final ModelRegistryEvent event) {\n");
-
-				data.add("\n	}");
-				data.add("	" + "@SubscribeEvent");
-				data.add("	" + "@SideOnly(Side.CLIENT)");
-				data.add("	" + "public static final void onRegisterModelsEvent(final ModelRegistryEvent event) {");
-				for (String model : registerModels)
-					data.add("		" + model);
-				data.add("	" + "}");
-				Files.write(file, data, Charset.forName("UTF-8"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		if (lang) {
 
 		}
 
@@ -475,14 +298,10 @@ public class ModWritingUtil {
 
 	public static final String generateItemModelJSON(String name, String parent) {
 
-		/*@formatter:off*/
-		String ret = "{" + "\n\t" + 
-					"\"parent\": \"item/" + parent.toLowerCase() + "\"," + "\n\t" + 
-					"\"textures\": {" + "\n\t\t" + 
-						"\"layer0\": \"" + ModReference.ID + ":item/" + name.toLowerCase() + "\"" + "\n\t" + 
-					"}" + "\n" +
-				"}" + "\n";
-		/*@formatter:on*/
+		/* @formatter:off */
+		String ret = "{" + "\n\t" + "\"parent\": \"item/" + parent.toLowerCase() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"layer0\": \"" + ModReference.ID + ":item/" + name.toLowerCase()
+				+ "\"" + "\n\t" + "}" + "\n" + "}" + "\n";
+		/* @formatter:on */
 		return ret;
 
 	}
@@ -493,43 +312,31 @@ public class ModWritingUtil {
 
 	public static final String generateBlockModelJSON(String fullParentPath, String textureName, String texture) {
 
-		/*@formatter:off*/
-		String ret = "{" + "\n\t" + 
-					"\"parent\": \"" + fullParentPath.toLowerCase() + "\"," + "\n\t" + 
-					"\"textures\": {" + "\n\t\t" + 
-							"\""+textureName.toLowerCase()+"\": \"" + ModReference.ID + ":block/" + texture.toLowerCase() + "\"" + "\n\t" + 
-					"}" + "\n" +
-				"}\n";
-		/*@formatter:on*/
+		/* @formatter:off */
+		String ret = "{" + "\n\t" + "\"parent\": \"" + fullParentPath.toLowerCase() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"" + textureName.toLowerCase() + "\": \"" + ModReference.ID
+				+ ":block/" + texture.toLowerCase() + "\"" + "\n\t" + "}" + "\n" + "}\n";
+		/* @formatter:on */
 		return ret;
 
 	}
 
 	public static final String generateBlockItemModelJSON(ModMaterials material, String suffixLower) {
 
-		/*@formatter:off*/
-		String ret = "{\n" + 
-				"	\"parent\": \""+ModReference.ID+":block/"+suffixLower+"\",\n" + 
-				"	\"textures\": {\n" + 
-				"		\"ingot\": \""+material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS)+":item"+(material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS)!="minecraft" || Loader.MC_VERSION.contains("1.13")?"":"s")+"/"+material.getNameLowercase()+"_ingot\"\n" + 
-				"	}\n" + 
-				"}\n";
-		/*@formatter:on*/
+		/* @formatter:off */
+		String ret = "{\n" + "	\"parent\": \"" + ModReference.ID + ":block/" + suffixLower + "\",\n" + "	\"textures\": {\n" + "		\"ingot\": \"" + material.getResouceLocationDomain("ingot",
+				ForgeRegistries.ITEMS) + ":item" + (material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS) != "minecraft" || Loader.MC_VERSION.contains("1.13") ? "" : "s") + "/" + material
+						.getNameLowercase() + "_ingot\"\n" + "	}\n" + "}\n";
+		/* @formatter:on */
 		return ret;
 
 	}
 
 	public static final String generateBlockstateJSON(String name) {
 
-		/*@formatter:off*/
-		String ret = "{" + "\n\t" + 
-					"\"variants\": {" + "\n\t\t" + 
-						"\""+default_variant_name+"\": {" + "\n\t\t\t" + 
-								"\"model\": \"" + ModReference.ID + ":" + name.toLowerCase() + "\"" +  "\n\t\t" +
-							"}" + "\n\t" +
-					"}\n" + 
-				"}\n";
-		/*@formatter:on*/
+		/* @formatter:off */
+		String ret = "{" + "\n\t" + "\"variants\": {" + "\n\t\t" + "\"" + default_variant_name + "\": {" + "\n\t\t\t" + "\"model\": \"" + ModReference.ID + ":" + name.toLowerCase() + "\"" + "\n\t\t"
+				+ "}" + "\n\t" + "}\n" + "}\n";
+		/* @formatter:on */
 		return ret;
 
 	}
