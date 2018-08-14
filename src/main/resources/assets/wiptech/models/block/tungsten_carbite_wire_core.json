@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:block/wire_core",
+	"textures": {
+		"ingot": "wiptech:item/tungsten_carbite_ingot"
+	}
+}
+

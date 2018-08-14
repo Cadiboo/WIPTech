@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:block/enamel_extension_up",
+	"textures": {
+		"ingot": "wiptech:item/nickel_ingot"
+	}
+}
+

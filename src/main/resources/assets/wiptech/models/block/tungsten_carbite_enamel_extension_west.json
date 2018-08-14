@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:block/enamel_extension_west",
+	"textures": {
+		"ingot": "wiptech:item/tungsten_carbite_ingot"
+	}
+}
+

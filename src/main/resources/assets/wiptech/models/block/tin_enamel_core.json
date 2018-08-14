@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:block/enamel_core",
+	"textures": {
+		"ingot": "wiptech:item/tin_ingot"
+	}
+}
+

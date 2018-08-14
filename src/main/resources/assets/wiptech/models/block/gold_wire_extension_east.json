@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:block/wire_extension_east",
+	"textures": {
+		"ingot": "minecraft:items/gold_ingot"
+	}
+}
+

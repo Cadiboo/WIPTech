@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:block/wire_extension_north",
+	"textures": {
+		"ingot": "wiptech:item/nickel_ingot"
+	}
+}
+
