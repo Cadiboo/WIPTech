@@ -2,19 +2,20 @@ package cadiboo.wiptech.entity.projectile;
 
 import javax.annotation.Nullable;
 
-import cadiboo.wiptech.capability.ModEnergyStorage;
-import cadiboo.wiptech.entity.ModEntity;
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.common.model.animation.AnimationStateMachine;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntitySlug extends ModEntity {
+public class EntitySlug extends EntityThrowable implements IEntityAdditionalSpawnData {
 
 	// FIXME do all this with capabilities or IEEPs. THe issue is that the material
 	// isnt synced between client & server
@@ -40,31 +41,13 @@ public class EntitySlug extends ModEntity {
 	}
 
 	@Override
-	public ModEnergyStorage getEnergy() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public AnimationStateMachine getAnimation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IItemHandler getInventory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	protected void entityInit() {
 //		this.dataManager.register(MATERIAL, material.getId());
 		this.dataManager.register(MATERIAL, 0);
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
+	public void readEntityFromNBT(NBTTagCompound compound) {
 //		if(compound.hasKey("material"))
 //			this.material = ModMaterials.byId(compound.getInteger("material"));
 //		getMaterial();
@@ -75,7 +58,7 @@ public class EntitySlug extends ModEntity {
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
+	public void writeEntityToNBT(NBTTagCompound compound) {
 //		compound.setInteger("material", material.getId());
 //		getMaterial();
 
@@ -87,12 +70,6 @@ public class EntitySlug extends ModEntity {
 	public void onUpdate() {
 		// TODO Auto-generated method stub
 		super.onUpdate();
-		this.posX += this.motionX;
-		this.posY += this.motionY;
-		this.posZ += this.motionZ;
-		this.motionX *= 0.95;
-		this.motionY *= 0.95;
-		this.motionZ *= 0.95;
 	}
 
 	@Override
@@ -104,6 +81,25 @@ public class EntitySlug extends ModEntity {
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox() {
 		return this.getEntityBoundingBox();
+	}
+
+	@Override
+	public void writeSpawnData(ByteBuf buffer) {
+		WIPTech.info("writeSpawnData", buffer);
+	}
+
+	@Override
+	public void readSpawnData(ByteBuf additionalData) {
+		WIPTech.info("readSpawnData", additionalData);
+	}
+
+	@Override
+	protected void onImpact(RayTraceResult result) {
+		if (result.entityHit != this.getThrower()) {
+			this.motionX = 0;
+			this.motionY = 0;
+			this.motionZ = 0;
+		}
 	}
 
 }

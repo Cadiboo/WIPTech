@@ -90,9 +90,22 @@ public final class EventSubscriber {
 	public static final void onRegisterBlocksEvent(final RegistryEvent.Register<Block> event) {
 		final IForgeRegistry<Block> registry = event.getRegistry();
 
+		registerBlocksForMaterials(registry);
+
+		WIPTech.debug("registered blocks");
+
 		registerTileEntity(TileEntityWire.class);
 		registerTileEntity(TileEntityEnamel.class);
 
+		WIPTech.debug("registered tile entities");
+
+	}
+
+	private static final void registerTileEntity(Class<? extends ModTileEntity> clazz) {
+		GameRegistry.registerTileEntity(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz, "TileEntity")));
+	}
+
+	private static final void registerBlocksForMaterials(IForgeRegistry<Block> registry) {
 		for (ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre())
 				registry.register(new BlockModOre(material));
@@ -115,19 +128,27 @@ public final class EventSubscriber {
 				registry.register(new BlockEnamel(material));
 
 		}
-
-		WIPTech.debug("registered blocks");
-
-	}
-
-	private static final void registerTileEntity(Class<? extends ModTileEntity> clazz) {
-		GameRegistry.registerTileEntity(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz, "TileEntity")));
 	}
 
 	@SubscribeEvent
 	public static final void onRegisterItemsEvent(final RegistryEvent.Register<Item> event) {
 		final IForgeRegistry<Item> registry = event.getRegistry();
 
+		registerItemsForMaterials(registry);
+
+		registry.register(new ItemPortableGenerator("portable_generator"));
+
+		registry.register(new ItemFlamethrower("flamethrower"));
+
+		registry.register(new ModItem("slug_casing"));
+
+		registry.register(new ModItem("railgun"));
+
+		WIPTech.debug("registered items");
+
+	}
+
+	private static final void registerItemsForMaterials(IForgeRegistry<Item> registry) {
 		for (ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre())
 				registry.register(new ModItemBlock(material.getOre(), new ResourceLocation(material.getResouceLocationDomain("ore", ForgeRegistries.ITEMS), material.getNameLowercase() + "_ore")));
@@ -177,14 +198,6 @@ public final class EventSubscriber {
 
 		}
 
-		registry.register(new ItemPortableGenerator("portable_generator"));
-
-		registry.register(new ItemFlamethrower("flamethrower"));
-
-		registry.register(new ModItem("slug_casing"));
-
-		WIPTech.debug("registered items");
-
 	}
 
 	@SubscribeEvent
@@ -209,12 +222,12 @@ public final class EventSubscriber {
 
 		event.getRegistry().register(napalmBuilder.build());
 
-		/* GRRRRRR Its forge fucking it up after all */
+		// TODO AdditionalSpawnData
 
 		for (final ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasRailgunSlug()) {
 
-				final Class<? extends ModEntity> clazz = EntitySlug.class;
+				final Class<? extends EntitySlug> clazz = EntitySlug.class;
 				final ResourceLocation registryName = new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_slug");
 				EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
 				builder = builder.entity(clazz);
@@ -270,6 +283,24 @@ public final class EventSubscriber {
 
 		WIPTech.debug("registered EntityRenderers");
 
+		registerModelsForMaterials();
+
+		ResourceLocation portableGeneratorRegistryName = ModEntities.PORTABLE_GENERATOR.getRegistryName();
+		ModelLoader.setCustomModelResourceLocation(ModItems.PORTABLE_GENERATOR, 0, new ModelResourceLocation(new ResourceLocation(portableGeneratorRegistryName.getResourceDomain(), ""
+				+ portableGeneratorRegistryName.getResourcePath()), ""));
+
+		registerItemModel(ModItems.FLAMETHROWER);
+
+		ResourceLocation slugCasingRegistryName = ModEntities.SLUG_CASING.getRegistryName();
+		ModelLoader.setCustomModelResourceLocation(ModItems.SLUG_CASING, 0, new ModelResourceLocation(new ResourceLocation(slugCasingRegistryName.getResourceDomain(), "" + slugCasingRegistryName
+				.getResourcePath()), ""));
+
+		WIPTech.debug("registered block & item models");
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	private static final void registerModelsForMaterials() {
 		for (ModMaterials material : ModMaterials.values()) {
 
 			if (material.getProperties().hasWire()) {
@@ -296,9 +327,7 @@ public final class EventSubscriber {
 		ModelLoaderRegistry.registerLoader(new WireModelLoader());
 		WIPTech.debug("registered wire & enamel custom models");
 
-		for (
-
-		ModMaterials material : ModMaterials.values()) {
+		for (ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre())
 				if (material.getOre() != null)
 					registerItemBlockModel(material.getOre());
@@ -366,19 +395,6 @@ public final class EventSubscriber {
 					registerItemModel(material.getSlugItem());
 
 		}
-
-		ResourceLocation portableGeneratorRegistryName = ModEntities.PORTABLE_GENERATOR.getRegistryName();
-		ModelLoader.setCustomModelResourceLocation(ModItems.PORTABLE_GENERATOR, 0, new ModelResourceLocation(new ResourceLocation(portableGeneratorRegistryName.getResourceDomain(), ""
-				+ portableGeneratorRegistryName.getResourcePath()), ""));
-
-		registerItemModel(ModItems.FLAMETHROWER);
-
-		ResourceLocation slugCasingRegistryName = ModEntities.SLUG_CASING.getRegistryName();
-		ModelLoader.setCustomModelResourceLocation(ModItems.SLUG_CASING, 0, new ModelResourceLocation(new ResourceLocation(slugCasingRegistryName.getResourceDomain(), "" + slugCasingRegistryName
-				.getResourcePath()), ""));
-
-		WIPTech.debug("registered block & item models");
-
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -491,7 +507,9 @@ public final class EventSubscriber {
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	@SideOnly(Side.CLIENT)
 	public static final void onTooltipEvent(final ItemTooltipEvent event) {
+
 		Item item = event.getItemStack().getItem();
 
 		if (item.getRegistryName().getResourceDomain() != ModReference.ID)
@@ -515,7 +533,7 @@ public final class EventSubscriber {
 
 	private static final void setTooltip(final ItemTooltipEvent event, final String tooltip) {
 		for (int i = 0; i < event.getToolTip().size(); i++) {
-			if (net.minecraft.util.StringUtils.stripControlCodes(event.getToolTip().get(i)).equals(event.getItemStack().getItem().getRegistryName().toString())) { // TODO why and what does
+			if (net.minecraft.util.StringUtils.stripControlCodes(event.getToolTip().get(i)).equals(event.getItemStack().getItem().getRegistryName().toString())) { // TODO why? and what does
 				// this do???
 				event.getToolTip().add(i, tooltip);
 				return;

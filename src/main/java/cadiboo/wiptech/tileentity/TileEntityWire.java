@@ -3,6 +3,7 @@ package cadiboo.wiptech.tileentity;
 import java.util.List;
 
 import cadiboo.wiptech.capability.ModEnergyStorage;
+import cadiboo.wiptech.capability.ModItemStackHandler;
 import cadiboo.wiptech.util.IEnergyTransferer;
 import cadiboo.wiptech.util.ModDamageSource;
 import net.minecraft.entity.Entity;
@@ -78,6 +79,11 @@ public class TileEntityWire extends ModTileEntity implements ITickable, IEnergyT
 
 	private int getElectrocutionRage() {
 		return 5;
+	}
+
+	@Override
+	public ModItemStackHandler getInventory() {
+		return null;
 	}
 
 }

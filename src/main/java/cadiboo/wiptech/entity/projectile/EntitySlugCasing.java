@@ -1,13 +1,13 @@
 package cadiboo.wiptech.entity.projectile;
 
 import cadiboo.wiptech.capability.ModEnergyStorage;
+import cadiboo.wiptech.capability.ModItemStackHandler;
 import cadiboo.wiptech.entity.ModEntity;
 import cadiboo.wiptech.util.ModEnums.IEnumNameFormattable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.model.animation.AnimationStateMachine;
-import net.minecraftforge.items.IItemHandler;
 
 public class EntitySlugCasing extends ModEntity {
 
@@ -58,7 +58,7 @@ public class EntitySlugCasing extends ModEntity {
 	}
 
 	@Override
-	public IItemHandler getInventory() {
+	public ModItemStackHandler getInventory() {
 		return null;
 	}
 

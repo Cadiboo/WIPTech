@@ -21,4 +21,6 @@ public class ModItems {
 
 	public static final ModItem SLUG_CASING = null;
 
+	public static final ModItem RAILGUN = null;
+
 }

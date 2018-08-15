@@ -1,6 +1,7 @@
 package cadiboo.wiptech.tileentity;
 
 import cadiboo.wiptech.capability.ModEnergyStorage;
+import cadiboo.wiptech.capability.ModItemStackHandler;
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.network.play.client.CPacketSyncModTileEntity;
 import cadiboo.wiptech.network.play.server.SPacketSyncModTileEntity;
@@ -10,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -17,6 +19,8 @@ import net.minecraftforge.energy.CapabilityEnergy;
 public abstract class ModTileEntity extends TileEntity {
 
 	public abstract ModEnergyStorage getEnergy();
+
+	public abstract ModItemStackHandler getInventory();
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
@@ -54,13 +58,25 @@ public abstract class ModTileEntity extends TileEntity {
 
 	public void handleSync() {
 		if (!this.world.isRemote) {
-			for (EntityPlayer player : this.world.playerEntities) {
+			if (world.getTotalWorldTime() % 10 == 0) {
+				for (EntityPlayer player : this.world.playerEntities) {
+					syncToClient(player);
+				}
+				return;
+			}
+
+			for (EntityPlayer player : this.world.getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(-getInstaSyncRange(), -getInstaSyncRange(), -getInstaSyncRange(), getInstaSyncRange()
+					- 1, getInstaSyncRange() - 1, getInstaSyncRange() - 1).offset(this.pos))) {
 				syncToClient(player);
 			}
 		} else {
 
 		}
 
+	}
+
+	private int getInstaSyncRange() {
+		return 6;
 	}
 
 	public void syncToClient(EntityPlayer player) {

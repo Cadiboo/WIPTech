@@ -1,55 +1,37 @@
 package cadiboo.wiptech.client.render.entity;
 
+import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.entity.item.EntityRailgun;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraft.util.math.Vec3d;
 
 public class EntityRailgunRenderer extends ModEntityRenderer<EntityRailgun> {
 
-    public EntityRailgunRenderer(RenderManager renderManager) {
-	super(renderManager);
-    }
+	public EntityRailgunRenderer(RenderManager renderManager) {
+		super(renderManager);
+	}
 
-    @Override
-    public void doRender(EntityRailgun entity, double x, double y, double z, float entityYaw, float partialTicks) {
-	super.doRender(entity, x, y, z, entityYaw, partialTicks);
+	@Override
+	public void doRender(EntityRailgun entity, double x, double y, double z, float entityYaw, float partialTicks) {
+		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
-	GlStateManager.pushMatrix();
-	GlStateManager.translate((float) x, (float) y + 0.5, (float) z);
+		GlStateManager.pushMatrix();
 
-	GlStateManager.translate(0, 0.5, 0);
+		GlStateManager.translate(x, y, z);
 
-	GlStateManager.scale(entity.width, entity.height, entity.width);
+		Vec3d look = entity.getLook(partialTicks);
 
-	ItemStack stack = new ItemStack(Blocks.IRON_BLOCK);
+		ClientUtil.rotateTowardsPos(new Vec3d(0, 0, 0), look);
 
-	IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack,
-		entity.getEntityWorld(), null);
-	model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
+//		GlStateManager.translate(0, 0, 3);
 
-	bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-	Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
+		GlStateManager.bindTexture(1);
 
-	GlStateManager.scale(0.1, 0.1, 0.1);
+		ClientUtil.drawCuboid(0, 0.1f, 0, 0.1f, 0.1, 110.1, 0.1, 1);
 
-	GlStateManager.translate(entity.getAdjustedHorizontalFacing().getFrontOffsetX() * 10,
-		entity.getAdjustedHorizontalFacing().getFrontOffsetY() + 4,
-		entity.getAdjustedHorizontalFacing().getFrontOffsetZ() * 10);
+		GlStateManager.popMatrix();
 
-	model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
-
-	bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-	Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
-
-	GlStateManager.popMatrix();
-
-    }
+	}
 
 }

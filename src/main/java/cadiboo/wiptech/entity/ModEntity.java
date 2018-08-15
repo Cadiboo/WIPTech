@@ -3,6 +3,7 @@ package cadiboo.wiptech.entity;
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.capability.ModEnergyStorage;
+import cadiboo.wiptech.capability.ModItemStackHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -11,7 +12,6 @@ import net.minecraftforge.common.model.animation.AnimationStateMachine;
 import net.minecraftforge.common.model.animation.CapabilityAnimation;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 public abstract class ModEntity extends Entity {
 
@@ -43,6 +43,6 @@ public abstract class ModEntity extends Entity {
 	public abstract AnimationStateMachine getAnimation();
 
 	@Nullable
-	public abstract IItemHandler getInventory();
+	public abstract ModItemStackHandler getInventory();
 
 }

@@ -3,6 +3,7 @@ package cadiboo.wiptech.entity.item;
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.capability.ModEnergyStorage;
+import cadiboo.wiptech.capability.ModItemStackHandler;
 import cadiboo.wiptech.entity.ModEntity;
 import cadiboo.wiptech.util.IEnergyTransferer;
 import net.minecraft.block.Block;
@@ -16,7 +17,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
 import net.minecraftforge.common.model.animation.AnimationStateMachine;
-import net.minecraftforge.items.IItemHandler;
 
 public class EntityPortableGenerator extends ModEntity implements IWorldNameable, IEnergyTransferer {
 
@@ -95,7 +95,7 @@ public class EntityPortableGenerator extends ModEntity implements IWorldNameable
 	}
 
 	@Override
-	public IItemHandler getInventory() {
+	public ModItemStackHandler getInventory() {
 		// TODO Auto-generated method stub
 		return null;
 	}
