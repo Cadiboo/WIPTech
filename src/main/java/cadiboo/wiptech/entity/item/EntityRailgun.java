@@ -51,6 +51,7 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 
 	private ModEnergyStorage energy;
 	private ModItemStackHandler inventory;
+	private int shootCooldown;
 
 	public EntityRailgun(World worldIn) {
 		super(worldIn);
@@ -77,6 +78,10 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 		this.prevPosZ = z;
 	}
 
+//	public int getRideCooldown() {
+//		return rideCooldown;
+//	}
+
 	/**
 	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk
 	 * on. used for spiders and wolves to prevent them from trampling crops
@@ -84,6 +89,10 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 	@Override
 	protected boolean canTriggerWalking() {
 		return false;
+	}
+
+	public int getShootCooldown() {
+		return shootCooldown;
 	}
 
 	@Override
@@ -213,6 +222,8 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 	@Override
 	public void onUpdate() {
 
+		shootCooldown--;
+
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
@@ -276,36 +287,8 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 
 	private void controlRailgun() {
 		if (this.isBeingRidden()) {
-
 			this.rotationPitch = getControllingPassenger().rotationPitch;
 			this.rotationYaw = getControllingPassenger().rotationYaw;
-
-//			float f = 0.0F;
-//
-//			if (this.leftInputDown) {
-//				this.deltaRotation += -1.0F;
-//			}
-//
-//			if (this.rightInputDown) {
-//				++this.deltaRotation;
-//			}
-//
-//			if (this.rightInputDown != this.leftInputDown && !this.forwardInputDown && !this.backInputDown) {
-//				f += 0.005F;
-//			}
-//
-//			this.rotationYaw += this.deltaRotation;
-//
-//			if (this.forwardInputDown) {
-//				f += 0.04F;
-//			}
-//
-//			if (this.backInputDown) {
-//				f -= 0.005F;
-//			}
-//
-//			this.motionX += MathHelper.sin(-this.rotationYaw * 0.017453292F) * f;
-//			this.motionZ += MathHelper.cos(this.rotationYaw * 0.017453292F) * f;
 		}
 	}
 
@@ -401,29 +384,67 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 	@Override
 	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
 
-		if (getControllingPassenger() != null && getControllingPassenger() instanceof EntityPlayer && player == getControllingPassenger()) {
+		return super.applyPlayerInteraction(player, vec, hand);
+	}
+
+	public void shoot() {
+		if (getControllingPassenger() != null && getControllingPassenger() instanceof EntityPlayer) {
 
 			if (world.isRemote)
-				return EnumActionResult.SUCCESS;
+				return;// EnumActionResult.SUCCESS;
 
-			float velocity = 3f;
+			if (getShootCooldown() > 0)
+				return;
+
+			float velocity = 5f;
 
 			Vec3d look = this.getLookVec();
 
-			BlockPos blockpos = getPosition();
+			BlockPos pos = getPosition();
 
-			look.addVector(blockpos.getX(), blockpos.getY(), blockpos.getZ());
+			/**
+			 * https://stackoverflow.com/questions/8922589/given-two-points-calculate-third-point-at-a-given-angle
+			 * https://gamedev.stackexchange.com/questions/19379/how-to-draw-a-line-of-a-given-length-towards-a-given-object
+			 */
+
+//			float dx = endX - startX;
+//			float dy = endY - startY;
+//			float scale = 100 / sqrt (dx * dx + dy * dy);
+//			CGPoint p1 = CGPointMake (startX, startY);
+//			CGPoint p2 = CGPointMake (startX + dx * scale, startY + dy * scale); 
+
+			double startX = 0;
+			double startY = 0;
+			double startZ = 0;
+
+			double endX = look.x;
+			double endY = look.y;
+			double endZ = look.z;
+
+			double dx = endX - startX;
+			double dy = endY - startY;
+			double dz = endZ - startZ;
+			double scale = 100 / Math.sqrt(dx * dx + dy * dy + dz * dz);
+//			double scale = 50;// 100 / Math.sqrt(dx * dx + dy * dy + dz * dz);
+//			CGPoint p1 = CGPointMake (startX, startY);
+			Vec3d p2 = new Vec3d(startX + dx * scale, startY + dy * scale, startZ + dz * scale);
 
 			EntitySlug slug = new EntitySlug(world, ModMaterials.TUNGSTEN_CARBITE);
-			slug.setPosition(blockpos.getX() + 0.5, blockpos.getY() + 13.5, blockpos.getZ() + 0.5);
+			slug.setPosition(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
 
-			slug.shoot(player, player.rotationPitch, player.rotationYaw, 0.0F, velocity, 0.0F);
+			slug.setThrower((EntityPlayer) getControllingPassenger());
+
+//			EntityArrow slug = new EntityTippedArrow(world, (EntityPlayer) getControllingPassenger());
+//
+//			slug.setPosition(pos.getX() + 0.5, pos.getY() + 2.5, pos.getZ() + 0.5);
+
+//			p2 = p2.addVector(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
+
+			slug.shoot(p2.x, p2.y, p2.z, velocity, 0.0F);
 
 			world.spawnEntity(slug);
 
-			return EnumActionResult.SUCCESS;
-		} else {
-			return super.applyPlayerInteraction(player, vec, hand);
+//			return EnumActionResult.SUCCESS;
 		}
 	}
 
@@ -509,6 +530,7 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 	@Override
 	protected void addPassenger(Entity passenger) {
 		super.addPassenger(passenger);
+		this.shootCooldown = 10;
 		if (this.canPassengerSteer() && this.lerpSteps > 0) {
 			this.lerpSteps = 0;
 			this.posX = this.lerpX;
@@ -538,4 +560,5 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 	public ModItemStackHandler getInventory() {
 		return inventory;
 	}
+
 }

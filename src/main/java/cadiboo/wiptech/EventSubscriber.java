@@ -34,6 +34,7 @@ import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
 import cadiboo.wiptech.item.ItemPortableGenerator;
 import cadiboo.wiptech.item.ItemRail;
+import cadiboo.wiptech.item.ItemRailgun;
 import cadiboo.wiptech.item.ItemSlug;
 import cadiboo.wiptech.item.ModItem;
 import cadiboo.wiptech.item.ModItemBlock;
@@ -68,6 +69,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -142,7 +144,7 @@ public final class EventSubscriber {
 
 		registry.register(new ModItem("slug_casing"));
 
-		registry.register(new ModItem("railgun"));
+		registry.register(new ItemRailgun("railgun"));
 
 		WIPTech.debug("registered items");
 
@@ -218,7 +220,7 @@ public final class EventSubscriber {
 		napalmBuilder = napalmBuilder.entity(napalmClazz);
 		napalmBuilder = napalmBuilder.id(napalmRegistryName, entityId++);
 		napalmBuilder = napalmBuilder.name(napalmRegistryName.getResourcePath());
-		napalmBuilder = napalmBuilder.tracker(64, 20, true);
+		napalmBuilder = napalmBuilder.tracker(128, 2, true);
 
 		event.getRegistry().register(napalmBuilder.build());
 
@@ -327,7 +329,9 @@ public final class EventSubscriber {
 		ModelLoaderRegistry.registerLoader(new WireModelLoader());
 		WIPTech.debug("registered wire & enamel custom models");
 
-		for (ModMaterials material : ModMaterials.values()) {
+		for (
+
+		ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre())
 				if (material.getOre() != null)
 					registerItemBlockModel(material.getOre());
@@ -542,4 +546,13 @@ public final class EventSubscriber {
 		event.getToolTip().add(tooltip);
 	}
 
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public static final void onPlayerInteract(final PlayerInteractEvent event) {
+		if (event.getEntityPlayer() == null || event.getEntityPlayer().getRidingEntity() == null || !(event.getEntityPlayer().getRidingEntity() instanceof EntityRailgun))
+			return;
+
+		((EntityRailgun) event.getEntityPlayer().getRidingEntity()).shoot();
+
+		return;
+	}
 }

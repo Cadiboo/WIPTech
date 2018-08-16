@@ -41,9 +41,12 @@ public class EntitySlugRenderer extends ModEntityRenderer<EntitySlug> {
 
 		GlStateManager.translate((float) x, (float) y + 0.5, (float) z);
 
+		GlStateManager.rotate(entity.rotationYaw, 0, 1, 0);
+		GlStateManager.rotate(entity.rotationPitch, 1, 0, 0);
+
 		GlStateManager.translate(0, -0.56f, 0);
 
-		GlStateManager.rotate(180, 1, 0, 0);
+//		GlStateManager.rotate(180, 1, 0, 0);
 
 		ClientUtil.renderStack(new ItemStack(entity.getMaterial().getSlugItem()), entity.world);
 

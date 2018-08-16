@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
+import cadiboo.wiptech.WIPTech;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -272,6 +273,10 @@ public class ClientUtil {
 		xzAngle = xzAngle * (180 / Math.PI);
 		xzAngle = xzAngle < 0 ? 360 - (-xzAngle) : xzAngle;
 		GlStateManager.rotate(90 - (float) xzAngle, 0, 0, 1);
+	}
+
+	public static final void rotateForPitchYaw(double pitch, double yaw) {
+		WIPTech.info("rotateForPitchYaw isn\'t implemented yet");
 	}
 
 	/**

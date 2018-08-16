@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -95,11 +96,16 @@ public class EntitySlug extends EntityThrowable implements IEntityAdditionalSpaw
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		if (result.entityHit != this.getThrower()) {
-			this.motionX = 0;
-			this.motionY = 0;
-			this.motionZ = 0;
-		}
+		if (ticksExisted > 5)
+			if (result.entityHit != this.getThrower()) {
+				this.motionX = 0;
+				this.motionY = 0;
+				this.motionZ = 0;
+			}
+	}
+
+	public void setThrower(EntityLivingBase entityThrower) {
+		this.thrower = entityThrower;
 	}
 
 }

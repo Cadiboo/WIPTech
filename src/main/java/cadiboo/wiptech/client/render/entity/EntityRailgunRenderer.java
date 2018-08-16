@@ -20,6 +20,8 @@ public class EntityRailgunRenderer extends ModEntityRenderer<EntityRailgun> {
 
 		GlStateManager.translate(x, y, z);
 
+		GlStateManager.translate(0, 1.5, 0);
+
 		Vec3d look = entity.getLook(partialTicks);
 
 		ClientUtil.rotateTowardsPos(new Vec3d(0, 0, 0), look);
