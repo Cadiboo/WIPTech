@@ -38,18 +38,26 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 /*@formatter:on*/
 public class WIPTech {
 
+	/***** FOR 1.13 *****/
+	// TODO Recipes
+	// TODO Texture locations
+	// TODO Lang file
+
+	/***** FOR ALL VERSIONS *****/
+	// TODO clean up JSONs
+	// TODO Wire & Enamel ItemBlock Models -> Wire & Enamel Item Models (Code & JSON
 	// TODO radioactivity
-	// TODO paramagnetism
-	// TODO json models
-	// FIXME json wire model gen & ^^^
-	// TODO autogenerate lang file (1.12.2 & 1.13)
+	// TODO Slugs & SlugCasings
 	// TODO world gen to subscriber
 	// TODO NetworkManager to subscriber
-	// TODO better client SYNCING!!!
-	// TODO start on machines. guns and entities later
-	// TODO FIXME HELP! I was in the middle of something and I've forgotten what I
-	// was doing
-	// TODO electricity better rendering
+	// TODO models for Railgun, etc
+	// TODO generators
+	// TODO handheld coilgun
+	// TODO Gauss cannon (mounted coilgun)
+	// TODO handheld PlasmaGun & mounted Plasma Cannon
+	// TODO Crushing & hammering
+	// TODO weapon modules :( scopes, chips, etc
+	// TODO tungsten carbite
 
 	@Instance(ModReference.ID)
 	public static WIPTech instance;
