@@ -1,4 +1,7 @@
 {
-	"parent": "wiptech:block/tungsten_enamel_core",
+	"parent": "wiptech:enamel",
+	"textures": {
+		"layer0": "wiptech:item/tungsten_enamel"
+	}
 }
 

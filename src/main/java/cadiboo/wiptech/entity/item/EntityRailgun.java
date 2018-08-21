@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import cadiboo.wiptech.capability.IEnergyUser;
+import cadiboo.wiptech.capability.IInventoryUser;
 import cadiboo.wiptech.capability.ModEnergyStorage;
 import cadiboo.wiptech.capability.ModItemStackHandler;
-import cadiboo.wiptech.entity.ModEntity;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.init.ModItems;
-import cadiboo.wiptech.util.IEnergyTransferer;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.entity.Entity;
@@ -29,14 +29,15 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
-import net.minecraftforge.common.model.animation.AnimationStateMachine;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 
-public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyTransferer {
+public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser, IInventoryUser {
 
 	private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager.<Integer>createKey(EntityRailgun.class, DataSerializers.VARINT);
 	/** How much of current speed to retain. Value zero to one. */
@@ -77,10 +78,6 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 		this.prevPosY = y;
 		this.prevPosZ = z;
 	}
-
-//	public int getRideCooldown() {
-//		return rideCooldown;
-//	}
 
 	/**
 	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk
@@ -140,7 +137,7 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 	 */
 	@Override
 	public double getMountedYOffset() {
-		return 2.5;
+		return 1.5;
 	}
 
 	/**
@@ -245,6 +242,32 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 		}
 
 		this.doBlockCollisions();
+
+		int width = Math.round(this.width / 2);
+		int height = Math.round(this.height / 2);
+		int length = width;
+		for (int x = -(width); x <= width; x++) {
+			for (int y = -(height); y <= height; y++) {
+				for (int z = -(length); z <= length; z++) {
+					BlockPos pos = new BlockPos(this.posX + x, this.posY + y, this.posZ + z);
+					if (world.getTileEntity(pos) != null)
+						if (world.getTileEntity(pos).hasCapability(CapabilityEnergy.ENERGY, null))
+							if (world.getTileEntity(pos).getCapability(CapabilityEnergy.ENERGY, null) != null)
+								if (world.getTileEntity(pos).getCapability(CapabilityEnergy.ENERGY, null).canExtract())
+									energy.receiveEnergy(world.getTileEntity(pos).getCapability(CapabilityEnergy.ENERGY, null).extractEnergy(energy.receiveEnergy(Integer.MAX_VALUE, true), false),
+											false);
+					for (Entity entity : world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos))) {
+						if (entity == null)
+							continue;
+						if (entity.getCapability(CapabilityEnergy.ENERGY, null) != null)
+							if (entity.getCapability(CapabilityEnergy.ENERGY, null).canExtract())
+								energy.receiveEnergy(entity.getCapability(CapabilityEnergy.ENERGY, null).extractEnergy(energy.receiveEnergy(Integer.MAX_VALUE, true), false), false);
+					}
+
+				}
+			}
+		}
+
 	}
 
 	private void tickLerp() {
@@ -354,6 +377,7 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 	 */
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
+		compound.setInteger("energy", energy.getEnergyStored());
 	}
 
 	/**
@@ -361,6 +385,8 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 	 */
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
+		if (compound.hasKey("energy"))
+			energy.setEnergy(compound.getInteger("energy"));
 	}
 
 	@Override
@@ -396,7 +422,12 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 			if (getShootCooldown() > 0)
 				return;
 
-			float velocity = 5f;
+			if (energy.getEnergyStored() < getShootEnergy() || energy.extractEnergy(getShootEnergy(), true) != getShootEnergy())
+				return;
+
+			energy.extractEnergy(getShootEnergy(), false);
+
+			float velocity = 4f;
 
 			Vec3d look = this.getLookVec();
 
@@ -430,7 +461,7 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 			Vec3d p2 = new Vec3d(startX + dx * scale, startY + dy * scale, startZ + dz * scale);
 
 			EntitySlug slug = new EntitySlug(world, ModMaterials.TUNGSTEN_CARBITE);
-			slug.setPosition(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
+			slug.setPosition(pos.getX() + 0.5, pos.getY() + getEyeHeight() - 1, pos.getZ() + 0.5);
 
 			slug.setThrower((EntityPlayer) getControllingPassenger());
 
@@ -446,6 +477,10 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 
 //			return EnumActionResult.SUCCESS;
 		}
+	}
+
+	public int getShootEnergy() {
+		return 1000;
 	}
 
 	/**
@@ -542,18 +577,31 @@ public class EntityRailgun extends ModEntity implements IWorldNameable, IEnergyT
 	}
 
 	@Override
-	public IBlockAccess getWorld() {
+	public World getWorld() {
 		return world;
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY)
+			return true;
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return true;
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY)
+			return (T) energy;
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return (T) inventory;
+		return super.getCapability(capability, facing);
 	}
 
 	@Override
 	public ModEnergyStorage getEnergy() {
 		return energy;
-	}
-
-	@Override
-	public AnimationStateMachine getAnimation() {
-		return null;
 	}
 
 	@Override

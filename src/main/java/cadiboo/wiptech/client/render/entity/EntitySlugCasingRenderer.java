@@ -5,13 +5,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.ForgeHooksClient;
 
-public class EntitySlugCasingRenderer extends ModEntityRenderer<EntitySlugCasing> {
+public class EntitySlugCasingRenderer extends Render<EntitySlugCasing> {
 
 	public EntitySlugCasingRenderer(RenderManager renderManager) {
 		super(renderManager);
@@ -21,20 +23,31 @@ public class EntitySlugCasingRenderer extends ModEntityRenderer<EntitySlugCasing
 	public void doRender(EntitySlugCasing entity, double x, double y, double z, float entityYaw, float partialTicks) {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
-		GlStateManager.pushMatrix();
-		GlStateManager.translate((float) x, (float) y + 0.5, (float) z);
+		try {
 
-		GlStateManager.translate(0, -0.56f, 0);
+			GlStateManager.pushMatrix();
+			GlStateManager.translate((float) x, (float) y + 0.5, (float) z);
 
-		ItemStack stack = new ItemStack(Blocks.IRON_BLOCK);
+			GlStateManager.translate(0, -0.56f, 0);
 
-		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, entity.getEntityWorld(), null);
-		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
+			ItemStack stack = new ItemStack(Blocks.IRON_BLOCK);
 
-		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-		Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
+			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, entity.getEntityWorld(), null);
+			model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
 
-		GlStateManager.popMatrix();
+			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+			Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
 
+			GlStateManager.popMatrix();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(EntitySlugCasing entity) {
+		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 }

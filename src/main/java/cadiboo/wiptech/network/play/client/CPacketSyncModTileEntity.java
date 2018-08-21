@@ -2,7 +2,7 @@ package cadiboo.wiptech.network.play.client;
 
 import java.io.IOException;
 
-import cadiboo.wiptech.tileentity.ModTileEntity;
+import cadiboo.wiptech.tileentity.ITileEntitySyncable;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -18,9 +18,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CPacketSyncModTileEntity implements IMessage, IMessageHandler<CPacketSyncModTileEntity, IMessage> {
 
-	private NBTTagCompound	syncTag;
-	private BlockPos		pos;
-	private int				dimension;
+	private NBTTagCompound syncTag;
+	private BlockPos pos;
+	private int dimension;
 
 	public CPacketSyncModTileEntity() {
 	}
@@ -59,8 +59,8 @@ public class CPacketSyncModTileEntity implements IMessage, IMessageHandler<CPack
 		if (message.syncTag != null) {
 			FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {
 				TileEntity tile = world.getTileEntity(message.pos);
-				if (tile != null && tile instanceof ModTileEntity) {
-					((ModTileEntity) tile).readNBT(message.syncTag);
+				if (tile != null && tile instanceof ITileEntitySyncable) {
+					((ITileEntitySyncable) tile).readNBT(message.syncTag);
 				}
 			});
 		}

@@ -1,4 +1,7 @@
 {
-	"parent": "wiptech:block/aluminium_wire_core",
+	"parent": "wiptech:wire",
+	"textures": {
+		"layer0": "wiptech:item/aluminium_wire"
+	}
 }
 

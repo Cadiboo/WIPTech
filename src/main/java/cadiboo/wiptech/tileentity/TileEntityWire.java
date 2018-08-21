@@ -2,17 +2,23 @@ package cadiboo.wiptech.tileentity;
 
 import java.util.List;
 
+import cadiboo.wiptech.capability.IEnergyUser;
 import cadiboo.wiptech.capability.ModEnergyStorage;
-import cadiboo.wiptech.capability.ModItemStackHandler;
-import cadiboo.wiptech.util.IEnergyTransferer;
 import cadiboo.wiptech.util.ModDamageSource;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
-public class TileEntityWire extends ModTileEntity implements ITickable, IEnergyTransferer {
+public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser, ITileEntitySyncable {
 
 	private final ModEnergyStorage energy;
 
@@ -63,8 +69,7 @@ public class TileEntityWire extends ModTileEntity implements ITickable, IEnergyT
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		// TODO return Block.FULL_BLOCK_AABB; //FIXME full block AABB doesnt work
-		return INFINITE_EXTENT_AABB;
+		return Block.FULL_BLOCK_AABB.offset(this.getPos());
 	}
 
 	@Override
@@ -82,8 +87,46 @@ public class TileEntityWire extends ModTileEntity implements ITickable, IEnergyT
 	}
 
 	@Override
-	public ModItemStackHandler getInventory() {
-		return null;
+	public BlockPos getPosition() {
+		return getPos();
+	}
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY)
+			return true;
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY)
+			return (T) energy;
+		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		this.readNBT(compound);
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		super.writeToNBT(compound);
+		this.writeNBT(compound);
+		return compound;
+	}
+
+	@Override
+	public void readNBT(NBTTagCompound syncTag) {
+		if (syncTag.hasKey("energy"))
+			this.energy.setEnergy(syncTag.getInteger("energy"));
+	}
+
+	@Override
+	public void writeNBT(NBTTagCompound syncTag) {
+		syncTag.setInteger("energy", energy.getEnergyStored());
 	}
 
 }

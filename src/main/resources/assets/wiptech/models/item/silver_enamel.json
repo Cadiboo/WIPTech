@@ -1,4 +1,7 @@
 {
-	"parent": "wiptech:block/silver_enamel_core",
+	"parent": "wiptech:enamel",
+	"textures": {
+		"layer0": "wiptech:item/silver_enamel"
+	}
 }
 

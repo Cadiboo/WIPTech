@@ -1,4 +1,7 @@
 {
-	"parent": "wiptech:block/iron_wire_core",
+	"parent": "wiptech:wire",
+	"textures": {
+		"layer0": "wiptech:item/iron_wire"
+	}
 }
 

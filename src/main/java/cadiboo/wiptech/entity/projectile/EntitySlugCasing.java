@@ -1,15 +1,12 @@
 package cadiboo.wiptech.entity.projectile;
 
-import cadiboo.wiptech.capability.ModEnergyStorage;
-import cadiboo.wiptech.capability.ModItemStackHandler;
-import cadiboo.wiptech.entity.ModEntity;
 import cadiboo.wiptech.util.ModEnums.IEnumNameFormattable;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.model.animation.AnimationStateMachine;
 
-public class EntitySlugCasing extends ModEntity {
+public class EntitySlugCasing extends Entity {
 
 	public enum CasingParts implements IEnumNameFormattable {
 
@@ -45,21 +42,6 @@ public class EntitySlugCasing extends ModEntity {
 
 	private CasingParts getPart() {
 		return this.part;
-	}
-
-	@Override
-	public ModEnergyStorage getEnergy() {
-		return null;
-	}
-
-	@Override
-	public AnimationStateMachine getAnimation() {
-		return null;
-	}
-
-	@Override
-	public ModItemStackHandler getInventory() {
-		return null;
 	}
 
 	@Override

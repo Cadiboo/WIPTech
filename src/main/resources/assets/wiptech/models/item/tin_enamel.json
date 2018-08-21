@@ -1,4 +1,7 @@
 {
-	"parent": "wiptech:block/tin_enamel_core",
+	"parent": "wiptech:enamel",
+	"textures": {
+		"layer0": "wiptech:item/tin_enamel"
+	}
 }
 

@@ -1,12 +1,12 @@
 package cadiboo.wiptech.client.render.tileentity;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.tileentity.ModTileEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
 
-public abstract class ModTileEntitySpecialRenderer<T extends ModTileEntity> extends TileEntitySpecialRenderer<T> {
+public abstract class ModTileEntitySpecialRenderer<T extends TileEntity> extends TileEntitySpecialRenderer<T> {
 
 	@Override
 	public final void render(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {

@@ -2,38 +2,34 @@ package cadiboo.wiptech.entity.item;
 
 import javax.annotation.Nullable;
 
+import cadiboo.wiptech.capability.IEnergyUser;
 import cadiboo.wiptech.capability.ModEnergyStorage;
-import cadiboo.wiptech.capability.ModItemStackHandler;
-import cadiboo.wiptech.entity.ModEntity;
-import cadiboo.wiptech.util.IEnergyTransferer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.IWorldNameable;
 import net.minecraft.world.World;
-import net.minecraftforge.common.model.animation.AnimationStateMachine;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
-public class EntityPortableGenerator extends ModEntity implements IWorldNameable, IEnergyTransferer {
+public class EntityPortableGenerator extends Entity implements IWorldNameable, IEnergyUser /* IInventoryUser */ {
 
-	protected ModEnergyStorage energy;
+	private ModEnergyStorage energy;
 
 	public EntityPortableGenerator(World worldIn) {
 		super(worldIn);
 		this.setSize(1, 1);
 		this.preventEntitySpawning = true;
 		this.energy = new ModEnergyStorage(1000);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	protected void entityInit() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -84,20 +80,22 @@ public class EntityPortableGenerator extends ModEntity implements IWorldNameable
 	}
 
 	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY)
+			return true;
+		return super.hasCapability(capability, facing);
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY)
+			return (T) energy;
+		return super.getCapability(capability, facing);
+	}
+
+	@Override
 	public ModEnergyStorage getEnergy() {
 		return this.energy;
-	}
-
-	@Override
-	public AnimationStateMachine getAnimation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ModItemStackHandler getInventory() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -123,8 +121,8 @@ public class EntityPortableGenerator extends ModEntity implements IWorldNameable
 	}
 
 	@Override
-	public IBlockAccess getWorld() {
-		return this.getEntityWorld();
+	public World getWorld() {
+		return world;
 	}
 
 }

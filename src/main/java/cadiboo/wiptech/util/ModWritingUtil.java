@@ -61,7 +61,7 @@ public class ModWritingUtil {
 					blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
 
 				if (material.getResouceLocationDomain("ore", ForgeRegistries.BLOCKS) != "minecraft")
-					blockModels.add(new Tuple<String, String>(nameUpper, generateBlockModelJSON(ModReference.ID + ":block/ore", suffixLower, nameUpper)));
+					blockModels.add(new Tuple<String, String>(nameUpper, generateBlockModelJSON(new ModResourceLocation(ModReference.ID, "block/ore"), suffixLower, nameUpper)));
 
 			}
 
@@ -75,7 +75,7 @@ public class ModWritingUtil {
 					blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
 
 				if (material.getResouceLocationDomain("block", ForgeRegistries.BLOCKS) != "minecraft")
-					blockModels.add(new Tuple<String, String>(nameUpper, generateBlockModelJSON("block/cube_all", "all", nameUpper)));
+					blockModels.add(new Tuple<String, String>(nameUpper, generateBlockModelJSON(new ModResourceLocation("", "block/cube_all"), "all", nameUpper)));
 			}
 
 			//
@@ -159,7 +159,7 @@ public class ModWritingUtil {
 					String itemType = "Mod" + StringUtils.capitalize(suffixLower);
 
 					if (material.getResouceLocationDomain(suffixLower, ForgeRegistries.ITEMS) != "minecraft")
-						itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, "handheld")));
+						itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation("", "item/handheld"))));
 				}
 			}
 
@@ -169,8 +169,10 @@ public class ModWritingUtil {
 				String suffixLower = "wire";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
+				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation(ModReference.ID, suffixLower))));
+
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
-				blockModels.add(new Tuple<String, String>(nameUpper, "{\n" + "	\"parent\": \"wiptech:block/" + material.getNameLowercase() + "_" + suffixLower + "_core\",\n" + "}\n" + ""));
+//				blockModels.add(new Tuple<String, String>(nameUpper, "{\n" + "	\"parent\": \"wiptech:block/" + material.getNameLowercase() + "_" + suffixLower + "_core\",\n" + "}\n" + ""));
 				blockModels.add(new Tuple<String, String>(nameUpper + "_core", generateBlockItemModelJSON(material, suffixLower + "_core")));
 
 				for (EnumFacing facing : EnumFacing.VALUES) {
@@ -187,8 +189,10 @@ public class ModWritingUtil {
 				String suffixLower = "enamel";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
+				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation(ModReference.ID, suffixLower))));
+
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
-				blockModels.add(new Tuple<String, String>(nameUpper, "{\n" + "	\"parent\": \"wiptech:block/" + material.getNameLowercase() + "_" + suffixLower + "_core\",\n" + "}\n" + ""));
+//				blockModels.add(new Tuple<String, String>(nameUpper, "{\n" + "	\"parent\": \"wiptech:block/" + material.getNameLowercase() + "_" + suffixLower + "_core\",\n" + "}\n" + ""));
 				blockModels.add(new Tuple<String, String>(nameUpper + "_core", generateBlockItemModelJSON(material, suffixLower + "_core")));
 
 				for (EnumFacing facing : EnumFacing.VALUES) {
@@ -298,10 +302,10 @@ public class ModWritingUtil {
 
 	}
 
-	public static final String generateItemModelJSON(String name, String parent) {
+	public static final String generateItemModelJSON(String name, ModResourceLocation parent) {
 
 		/* @formatter:off */
-		String ret = "{" + "\n\t" + "\"parent\": \"item/" + parent.toLowerCase() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"layer0\": \"" + ModReference.ID + ":item/" + name.toLowerCase()
+		String ret = "{" + "\n\t" + "\"parent\": \"" + parent.toString() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"layer0\": \"" + ModReference.ID + ":item/" + name.toLowerCase()
 				+ "\"" + "\n\t" + "}" + "\n" + "}" + "\n";
 		/* @formatter:on */
 		return ret;
@@ -309,13 +313,13 @@ public class ModWritingUtil {
 	}
 
 	public static final String generateItemModelJSON(String name) {
-		return generateItemModelJSON(name, "generated");
+		return generateItemModelJSON(name, new ModResourceLocation("", "item/generated"));
 	}
 
-	public static final String generateBlockModelJSON(String fullParentPath, String textureName, String texture) {
+	public static final String generateBlockModelJSON(ModResourceLocation fullParentPath, String textureName, String texture) {
 
 		/* @formatter:off */
-		String ret = "{" + "\n\t" + "\"parent\": \"" + fullParentPath.toLowerCase() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"" + textureName.toLowerCase() + "\": \"" + ModReference.ID
+		String ret = "{" + "\n\t" + "\"parent\": \"" + fullParentPath.toString() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"" + textureName.toLowerCase() + "\": \"" + ModReference.ID
 				+ ":block/" + texture.toLowerCase() + "\"" + "\n\t" + "}" + "\n" + "}\n";
 		/* @formatter:on */
 		return ret;

@@ -649,7 +649,17 @@ public class ClientUtil {
 	 * @param color
 	 * @author Cadiboo
 	 */
-	public static final void renderStackWithColor(ItemStack stack, IBakedModel model, int color) {
+	public static final void renderStackWithColor(ItemStack stack, World world, int color) {
+		IBakedModel model = getModelFromStack(stack, world);
+		renderModelWithColor(model, color);
+
+	}
+
+	public static final void renderModel(IBakedModel model) {
+		renderModelWithColor(model, -1);
+	}
+
+	public static final void renderModelWithColor(IBakedModel model, int color) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(-0.5F, -0.5F, -0.5F);
 
@@ -660,10 +670,10 @@ public class ClientUtil {
 		bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 
 		for (EnumFacing enumfacing : EnumFacing.values()) {
-			renderQuadsColor(bufferbuilder, model.getQuads((IBlockState) null, enumfacing, 0L), color, stack);
+			renderQuadsColor(bufferbuilder, model.getQuads((IBlockState) null, enumfacing, 0L), color);
 		}
 
-		renderQuadsColor(bufferbuilder, model.getQuads((IBlockState) null, (EnumFacing) null, 0L), color, stack);
+		renderQuadsColor(bufferbuilder, model.getQuads((IBlockState) null, (EnumFacing) null, 0L), color);
 		tessellator.draw();
 
 		GlStateManager.popMatrix();
@@ -678,13 +688,13 @@ public class ClientUtil {
 	 * @param stack
 	 * @author Cadiboo
 	 */
-	private static final void renderQuadsColor(BufferBuilder bufferbuilder, List<BakedQuad> quads, int color, ItemStack stack) {
+	private static final void renderQuadsColor(BufferBuilder bufferbuilder, List<BakedQuad> quads, int color) {
 
 		int i = 0;
 		for (int j = quads.size(); i < j; ++i) {
 			BakedQuad bakedquad = quads.get(i);
 
-			if (bakedquad.hasTintIndex()) {
+			if (color == -1 && bakedquad.hasTintIndex()) {
 				if (EntityRenderer.anaglyphEnable) {
 					color = TextureUtil.anaglyphColor(color);
 				}
@@ -715,6 +725,7 @@ public class ClientUtil {
 	 * Sets lightmap texture coords to brightest possbile
 	 */
 	public static final void enableMaxLighting() {
+		GlStateManager.disableLighting();
 		int i = 15728880;
 
 		int j = i % 65536;
@@ -722,5 +733,4 @@ public class ClientUtil {
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j, k);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 	}
-
 }

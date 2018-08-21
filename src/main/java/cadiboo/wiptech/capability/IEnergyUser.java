@@ -1,20 +1,26 @@
-package cadiboo.wiptech.util;
+package cadiboo.wiptech.capability;
 
 import java.util.ArrayList;
 
-import cadiboo.wiptech.capability.ModEnergyStorage;
+import javax.annotation.Nonnull;
+
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public interface IEnergyTransferer {
+public interface IEnergyUser extends ICapabilityProvider {
 
-	ModEnergyStorage getEnergy();
+	@Nonnull
+	public ModEnergyStorage getEnergy();
 
 	default public void transferEnergyToAllAround() {
+		if (!getEnergy().canExtract())
+			return;
+
 		if (getEnergy().getEnergyStored() <= 0)
 			return;
 
@@ -35,6 +41,9 @@ public interface IEnergyTransferer {
 	}
 
 	default public int transferEnergyTo(EnumFacing side, int energyToTransfer) {
+		if (!getEnergy().canExtract())
+			return 0;
+
 		if (getWorld() == null)
 			return 0;
 
@@ -52,9 +61,9 @@ public interface IEnergyTransferer {
 		return getEnergy().extractEnergy(storage.receiveEnergy(Math.round(getEnergy().getEnergyStored() / energyToTransfer), false), false);
 	}
 
-	BlockPos getPosition();
+	public BlockPos getPosition();
 
-	IBlockAccess getWorld();
+	public World getWorld();
 
 	default public boolean isConnectedTo(EnumFacing side) {
 		if (getWorld() == null)

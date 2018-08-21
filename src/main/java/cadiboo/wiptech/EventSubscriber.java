@@ -8,6 +8,7 @@ import cadiboo.wiptech.block.BlockModOre;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.client.model.ModelsCache;
 import cadiboo.wiptech.client.render.block.model.WireModelLoader;
 import cadiboo.wiptech.client.render.entity.EntityNapalmRenderer;
 import cadiboo.wiptech.client.render.entity.EntityPortableGeneratorRenderer;
@@ -16,7 +17,6 @@ import cadiboo.wiptech.client.render.entity.EntitySlugCasingRenderer;
 import cadiboo.wiptech.client.render.entity.EntitySlugRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityEnamelRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityWireRenderer;
-import cadiboo.wiptech.entity.ModEntity;
 import cadiboo.wiptech.entity.item.EntityPortableGenerator;
 import cadiboo.wiptech.entity.item.EntityRailgun;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
@@ -38,7 +38,6 @@ import cadiboo.wiptech.item.ItemRailgun;
 import cadiboo.wiptech.item.ItemSlug;
 import cadiboo.wiptech.item.ModItem;
 import cadiboo.wiptech.item.ModItemBlock;
-import cadiboo.wiptech.tileentity.ModTileEntity;
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ModEnums.BlockItemTypes;
@@ -51,6 +50,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -103,7 +103,7 @@ public final class EventSubscriber {
 
 	}
 
-	private static final void registerTileEntity(Class<? extends ModTileEntity> clazz) {
+	private static final void registerTileEntity(Class<? extends TileEntity> clazz) {
 		GameRegistry.registerTileEntity(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz, "TileEntity")));
 	}
 
@@ -205,59 +205,34 @@ public final class EventSubscriber {
 	@SubscribeEvent
 	public static final void onRegisterEntitiesEvent(final RegistryEvent.Register<EntityEntry> event) {
 
-		event.getRegistry().register(buildEntityEntryFromClass(EntityPortableGenerator.class, false, true));
+		event.getRegistry().register(buildEntityEntryFromClass(EntityPortableGenerator.class, false, 64, 20, true));
 
-		event.getRegistry().register(buildEntityEntryFromClass(EntityRailgun.class, false, true));
+		event.getRegistry().register(buildEntityEntryFromClass(EntityRailgun.class, false, 64, 10, true));
 
-		event.getRegistry().register(buildEntityEntryFromClass(EntitySlugCasing.class, false, true));
+		event.getRegistry().register(buildEntityEntryFromClass(EntitySlugCasing.class, false, 128, 2, true));
 
-//	event.getRegistry().register(buildEntityEntryFromClass(EntityNapalm.class, false, true));
-
-		final Class<? extends Entity> napalmClazz = EntityNapalm.class;
-		final ResourceLocation napalmRegistryName = new ResourceLocation(ModReference.ID, getRegistryNameForClass(napalmClazz, "Entity"));
-
-		EntityEntryBuilder<Entity> napalmBuilder = EntityEntryBuilder.create();
-		napalmBuilder = napalmBuilder.entity(napalmClazz);
-		napalmBuilder = napalmBuilder.id(napalmRegistryName, entityId++);
-		napalmBuilder = napalmBuilder.name(napalmRegistryName.getResourcePath());
-		napalmBuilder = napalmBuilder.tracker(128, 2, true);
-
-		event.getRegistry().register(napalmBuilder.build());
+		event.getRegistry().register(buildEntityEntryFromClass(EntityNapalm.class, false, 128, 5, true));
 
 		// TODO AdditionalSpawnData
 
-		for (final ModMaterials material : ModMaterials.values()) {
-			if (material.getProperties().hasRailgunSlug()) {
-
-				final Class<? extends EntitySlug> clazz = EntitySlug.class;
-				final ResourceLocation registryName = new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_slug");
-				EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
-				builder = builder.entity(clazz);
-				builder = builder.factory(worldIn -> new EntitySlug(worldIn, material));
-				builder = builder.id(registryName, entityId++);
-				builder = builder.name(registryName.getResourcePath());
-				builder = builder.tracker(64, 5, true);
-
-				event.getRegistry().register(builder.build());
-
-			}
-		}
+		for (final ModMaterials material : ModMaterials.values())
+			if (material.getProperties().hasRailgunSlug())
+				event.getRegistry().register(buildEntityEntryFromClassWithName(EntitySlug.class, new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_slug"), false, 128, 5, true));
 
 	}
 
-	private static final EntityEntry buildEntityEntryFromClass(final Class<? extends ModEntity> clazz, final boolean hasEgg, final boolean sendVelocityUpdates) {
-
-		return buildEntityEntryFromClassWithName(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz, "Entity")), hasEgg, sendVelocityUpdates);
-
-	}
-
-	private static final EntityEntry buildEntityEntryFromClassWithName(final Class<? extends ModEntity> clazz, final ResourceLocation registryName, final boolean hasEgg,
+	private static final EntityEntry buildEntityEntryFromClass(final Class<? extends Entity> clazz, final boolean hasEgg, final int range, final int updateFrequency,
 			final boolean sendVelocityUpdates) {
+		return buildEntityEntryFromClassWithName(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz, "Entity")), hasEgg, range, updateFrequency, sendVelocityUpdates);
+	}
+
+	private static final EntityEntry buildEntityEntryFromClassWithName(final Class<? extends Entity> clazz, final ResourceLocation registryName, final boolean hasEgg, final int range,
+			final int updateFrequency, final boolean sendVelocityUpdates) {
 		EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
 		builder = builder.entity(clazz);
 		builder = builder.id(registryName, entityId++);
 		builder = builder.name(registryName.getResourcePath());
-		builder = builder.tracker(64, 20, sendVelocityUpdates);
+		builder = builder.tracker(range, updateFrequency, sendVelocityUpdates);
 
 		if (hasEgg)
 			builder = builder.egg(0xFFFFFF, 0xAAAAAA);
@@ -292,6 +267,7 @@ public final class EventSubscriber {
 				+ portableGeneratorRegistryName.getResourcePath()), ""));
 
 		registerItemModel(ModItems.FLAMETHROWER);
+		registerItemModel(ModItems.RAILGUN);
 
 		ResourceLocation slugCasingRegistryName = ModEntities.SLUG_CASING.getRegistryName();
 		ModelLoader.setCustomModelResourceLocation(ModItems.SLUG_CASING, 0, new ModelResourceLocation(new ResourceLocation(slugCasingRegistryName.getResourceDomain(), "" + slugCasingRegistryName
@@ -437,22 +413,21 @@ public final class EventSubscriber {
 	@SideOnly(Side.CLIENT)
 	public static final void onModelBakeEvent(final ModelBakeEvent event) {
 
-		/**
-		 * the below code is not needed anymore but may be needed again in the future
-		 */
-//		for (ModMaterials material : ModMaterials.values()) {
-//			if (!material.getProperties().hasWire())
-//				return;
-//			ResourceLocation wireRegistryName = material.getWire().getRegistryName();
-//			ResourceLocation extensionRegistryName = new ResourceLocation(wireRegistryName.getResourceDomain(), wireRegistryName.getResourcePath() + "_extension");
-//			ModelResourceLocation materialWireExtensionLocation = new ModelResourceLocation(extensionRegistryName, ModWritingUtil.default_variant_name);
-//
-//			IBakedModel extension = ModelsCache.INSTANCE.getOrLoadBakedModel(materialWireExtensionLocation);
-//
-//			event.getModelRegistry().putObject(materialWireExtensionLocation, extension);
-//
-//			WIPTech.fatal("please work");
-//		}
+		/*@formatter:off*/
+		final ResourceLocation[] models = {
+				new ResourceLocation(ModReference.ID, "entity/portable_generator_handle"),
+				new ResourceLocation(ModReference.ID, "entity/railgun_base"),
+				new ResourceLocation(ModReference.ID, "entity/railgun_turret")
+		};
+		/*@formatter:on*/
+
+		for (ResourceLocation model : models) {
+			ModelResourceLocation location = new ModelResourceLocation(model.toString());
+
+			IBakedModel bakedModel = ModelsCache.INSTANCE.getOrLoadBakedModel(model);
+
+			event.getModelRegistry().putObject(location, bakedModel);
+		}
 	}
 
 	@SubscribeEvent
@@ -461,40 +436,50 @@ public final class EventSubscriber {
 		if (event.getType() != RenderGameOverlayEvent.ElementType.ALL || Minecraft.getMinecraft().currentScreen != null)
 			return;
 
+		IEnergyStorage energy = null;
+
 		Minecraft mc = Minecraft.getMinecraft();
-		RayTraceResult posHit = mc.objectMouseOver;
-		if (posHit == null || posHit.getBlockPos() == null)
+		RayTraceResult rayTraceResult = mc.objectMouseOver;
+		mc.entityRenderer.getMouseOver(event.getPartialTicks());
+
+		if (energy == null && mc.getRenderViewEntity().getRidingEntity() != null) {
+			if (mc.getRenderViewEntity().getRidingEntity().hasCapability(CapabilityEnergy.ENERGY, null))
+				energy = mc.getRenderViewEntity().getRidingEntity().getCapability(CapabilityEnergy.ENERGY, null);
+		}
+		if (energy == null && rayTraceResult != null && rayTraceResult.getBlockPos() != null) {
+			TileEntity tileHit = mc.world.getTileEntity(rayTraceResult.getBlockPos());
+			if (tileHit != null)
+				if (tileHit.hasCapability(CapabilityEnergy.ENERGY, rayTraceResult.sideHit))
+					energy = tileHit.getCapability(CapabilityEnergy.ENERGY, rayTraceResult.sideHit);
+		}
+		if (energy == null && rayTraceResult != null && rayTraceResult.entityHit != null) {
+			if (rayTraceResult.entityHit.hasCapability(CapabilityEnergy.ENERGY, null))
+				energy = rayTraceResult.entityHit.getCapability(CapabilityEnergy.ENERGY, null);
+		}
+
+		if (energy == null)
 			return;
 
-		Block blockHit = mc.world.getBlockState(posHit.getBlockPos()).getBlock();
-		TileEntity tileHit = mc.world.getTileEntity(posHit.getBlockPos());
+		double power = (double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored();
+		int scaled_height = (int) Math.round((1 - power) * 52D);
+		ScaledResolution Scaled = new ScaledResolution(Minecraft.getMinecraft());
+		int Width = Scaled.getScaledWidth() - 10;
+		int Height = Scaled.getScaledHeight() - 54;
 
-		// crashy
-//		Entity entityHit = mc.world.getEntitiesWithinAABB(ModEntity.class, new AxisAlignedBB(mc.player.getPosition()).grow(20 * 2), EntitySelectors.CAN_AI_TARGET).get(0);
-
-		if (tileHit != null) {
-			IEnergyStorage energy = tileHit.getCapability(CapabilityEnergy.ENERGY, null);
-//		if (entityHit != null) {
-//			IEnergyStorage energy = entityHit.getCapability(CapabilityEnergy.ENERGY, null);
-			if (energy != null) {
-
-				double power = (double) energy.getEnergyStored() / (double) energy.getMaxEnergyStored();
-				int scaled_height = (int) Math.round((1 - power) * 52D);
-				ScaledResolution Scaled = new ScaledResolution(Minecraft.getMinecraft());
-				int Width = Scaled.getScaledWidth() - 10;
-				int Height = Scaled.getScaledHeight() - 54;
-
-				// TODO replace this with binding the energy texture
+		// TODO replace this with binding the energy texture
 //				Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(ModReference.ID, "textures/gui/turbine.png"));
 
-				drawNonStandardTexturedRect(Width, Height, 83, 16, 10, 54, 256, 256);
-				drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 176, 0, 8, 52 - scaled_height, 256, 256);
-				int percent = (int) Math.round(power * 100);
-				mc.fontRenderer.drawStringWithShadow(percent + "%", Width - 7 - String.valueOf(percent).length() * 6, Height + 35, 0xFFFFFF);
-				String outOf = energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
-				mc.fontRenderer.drawStringWithShadow(outOf, Width - 1 - outOf.length() * 6, Height + 45, 0xFFFFFF);
-			}
-		}
+		// TESTING
+
+		mc.getTextureManager().bindTexture(new ResourceLocation(ModReference.ID, "textures/gui/energy.png"));
+
+		drawNonStandardTexturedRect(Width, Height, 0, 0, 10, 54, 256, 256);
+		drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 10, 0, 8, 52 - scaled_height, 256, 256);
+		int percent = (int) Math.round(power * 100);
+		mc.fontRenderer.drawStringWithShadow(percent + "%", Width - 7 - String.valueOf(percent).length() * 6, Height + 35, 0xFFFFFF);
+		String outOf = energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
+		mc.fontRenderer.drawStringWithShadow(outOf, Width - 1 - outOf.length() * 6, Height + 45, 0xFFFFFF);
+
 	}
 
 	private static final void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
@@ -516,22 +501,22 @@ public final class EventSubscriber {
 
 		Item item = event.getItemStack().getItem();
 
-		if (item.getRegistryName().getResourceDomain() != ModReference.ID)
+		if (!item.getRegistryName().getResourceDomain().equals(ModReference.ID))
 			return;
 
 		if (item instanceof ItemCoil)
-			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((ItemCoil) item).getModMaterial().getProperties().getConductivity() + "%");
+			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((ItemCoil) item).getModMaterial().getProperties().getConductivity() + "");
 
 		if (item instanceof ItemRail)
-			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((ItemRail) item).getModMaterial().getProperties().getConductivity() + "%");
+			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((ItemRail) item).getModMaterial().getProperties().getConductivity() + "");
 
 		if (Block.getBlockFromItem(item) instanceof BlockWire && !(Block.getBlockFromItem(item) instanceof BlockEnamel)) {
-			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((BlockWire) Block.getBlockFromItem(item)).getModMaterial().getProperties().getConductivity() + "%");
+			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((BlockWire) Block.getBlockFromItem(item)).getModMaterial().getProperties().getConductivity() + "");
 			setTooltip(event, WIPTech.proxy.localize("Ouch! Put some insulation around it"));
 		}
 
 		if (Block.getBlockFromItem(item) instanceof BlockEnamel)
-			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((BlockEnamel) Block.getBlockFromItem(item)).getModMaterial().getProperties().getConductivity() + "%");
+			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((BlockEnamel) Block.getBlockFromItem(item)).getModMaterial().getProperties().getConductivity() + "");
 
 	}
 

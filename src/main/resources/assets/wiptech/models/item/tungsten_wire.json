@@ -1,4 +1,7 @@
 {
-	"parent": "wiptech:block/tungsten_wire_core",
+	"parent": "wiptech:wire",
+	"textures": {
+		"layer0": "wiptech:item/tungsten_wire"
+	}
 }
 

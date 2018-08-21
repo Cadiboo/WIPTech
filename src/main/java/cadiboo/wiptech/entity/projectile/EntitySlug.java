@@ -6,11 +6,13 @@ import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -70,12 +72,20 @@ public class EntitySlug extends EntityThrowable implements IEntityAdditionalSpaw
 	@Override
 	public void onUpdate() {
 		// TODO Auto-generated method stub
+		if (!this.hasNoGravity() && this.ticksExisted < 20)
+			this.motionY += getGravityVelocity() / 1.1f;
 		super.onUpdate();
 	}
 
 	@Override
 	public boolean canBeCollidedWith() {
 		return !this.isDead;
+	}
+
+	@Override
+	public void onCollideWithPlayer(EntityPlayer entityIn) {
+		entityIn.attackEntityFrom(DamageSource.ANVIL, 1);
+		super.onCollideWithPlayer(entityIn);
 	}
 
 	@Override
@@ -106,6 +116,19 @@ public class EntitySlug extends EntityThrowable implements IEntityAdditionalSpaw
 
 	public void setThrower(EntityLivingBase entityThrower) {
 		this.thrower = entityThrower;
+	}
+
+	@Override
+	public boolean isInRangeToRenderDist(double distance) {
+		if (distance < 256)
+			return true;
+		return super.isInRangeToRenderDist(distance);
+	}
+
+	@Override
+	public boolean isInRangeToRender3d(double x, double y, double z) {
+		// TODO Auto-generated method stub
+		return super.isInRangeToRender3d(x, y, z);
 	}
 
 }

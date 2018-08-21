@@ -1,4 +1,7 @@
 {
-	"parent": "wiptech:block/nickel_wire_core",
+	"parent": "wiptech:wire",
+	"textures": {
+		"layer0": "wiptech:item/nickel_wire"
+	}
 }
 

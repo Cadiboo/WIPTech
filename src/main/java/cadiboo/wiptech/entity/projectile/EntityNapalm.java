@@ -29,7 +29,7 @@ public class EntityNapalm extends EntityThrowable {
 		if (this.ticksExisted <= 2)
 			return;
 
-		for (int i = 0; i < Math.min(100, ticksExisted); i++) {
+		for (int i = 0; i < Math.min(50, ticksExisted); i++) {
 			double randX = new Random().nextGaussian() * 0.0025 * ticksExisted;
 			double randY = new Random().nextDouble() * 0.025 * Math.min(25, ticksExisted);
 			double randZ = new Random().nextGaussian() * 0.0025 * ticksExisted;
@@ -89,7 +89,7 @@ public class EntityNapalm extends EntityThrowable {
 //						IBlockState position = world.getBlockState(pos);
 
 					if (world.getBlockState(pos) == Blocks.AIR.getDefaultState())
-						world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 2);
+						world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 11);
 //					}
 				}
 			}
