@@ -1,25 +1,27 @@
 package cadiboo.wiptech.entity.item;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.IEnergyUser;
 import cadiboo.wiptech.capability.IInventoryUser;
 import cadiboo.wiptech.capability.ModEnergyStorage;
 import cadiboo.wiptech.capability.ModItemStackHandler;
+import cadiboo.wiptech.entity.IEntitySyncable;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.init.ModItems;
+import cadiboo.wiptech.item.ItemSlug;
+import cadiboo.wiptech.util.ModGuiHandler;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.EnumActionResult;
@@ -37,10 +39,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser, IInventoryUser {
+public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser, IInventoryUser, IEntitySyncable {
 
-	private static final DataParameter<Integer> FORWARD_DIRECTION = EntityDataManager.<Integer>createKey(EntityRailgun.class, DataSerializers.VARINT);
-	/** How much of current speed to retain. Value zero to one. */
 	private float momentum;
 	private float deltaRotation;
 	private int lerpSteps;
@@ -59,11 +59,19 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 		this.preventEntitySpawning = true;
 		this.setSize(3, 2);
 
-		this.energy = new ModEnergyStorage(100000);
-		this.inventory = new ModItemStackHandler(1) {
+		this.energy = new ModEnergyStorage(100000) {
 			@Override
-			public int getSlotLimit(int slot) {
-				return 128;
+			public void onEnergyChanged() {
+				super.onEnergyChanged();
+				if (!world.isRemote)
+					syncToTracking();
+			}
+		};
+		this.inventory = new ModItemStackHandler(3) {
+			@Override
+			protected void onContentsChanged(int slot) {
+				super.onContentsChanged(slot);
+				/* we trust vanilla/forge to do inventory syncing */
 			}
 		};
 	}
@@ -79,10 +87,6 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 		this.prevPosZ = z;
 	}
 
-	/**
-	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk
-	 * on. used for spiders and wolves to prevent them from trampling crops
-	 */
 	@Override
 	protected boolean canTriggerWalking() {
 		return false;
@@ -94,55 +98,30 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 
 	@Override
 	protected void entityInit() {
-		this.dataManager.register(FORWARD_DIRECTION, Integer.valueOf(1));
 	}
 
-	/**
-	 * Returns a boundingBox used to collide the entity with other entities and
-	 * blocks. This enables the entity to be pushable on contact, like boats or
-	 * minecarts.
-	 */
 	@Override
 	@Nullable
 	public AxisAlignedBB getCollisionBox(Entity entityIn) {
 		return entityIn.getEntityBoundingBox();
 	}
 
-	/**
-	 * Returns the <b>solid</b> collision bounding box for this entity. Used to make
-	 * (e.g.) boats solid. Return null if this entity is not solid.
-	 * 
-	 * For general purposes, use {@link #width} and {@link #height}.
-	 * 
-	 * @see getEntityBoundingBox
-	 */
 	@Override
 	@Nullable
 	public AxisAlignedBB getCollisionBoundingBox() {
 		return this.getEntityBoundingBox();
 	}
 
-	/**
-	 * Returns true if this entity should push and be pushed by other entities when
-	 * colliding.
-	 */
 	@Override
 	public boolean canBePushed() {
 		return false;
 	}
 
-	/**
-	 * Returns the Y offset from the entity's position for any entity riding this
-	 * one.
-	 */
 	@Override
 	public double getMountedYOffset() {
 		return 1.5;
 	}
 
-	/**
-	 * Called when the entity is attacked.
-	 */
 	@Override
 	public boolean attackEntityFrom(DamageSource source, float amount) {
 		if (this.isEntityInvulnerable(source)) {
@@ -156,6 +135,7 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 
 				if (!flag && this.world.getGameRules().getBoolean("doEntityDrops")) {
 					this.dropItemWithOffset(ModItems.RAILGUN, 1, 0.0F);
+					inventory.dropItems(world, posX, posY, posZ);
 				}
 
 				this.setDead();
@@ -167,32 +147,11 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 		}
 	}
 
-	/**
-	 * Applies a velocity to the entities, to push them away from eachother.
-	 */
-	@Override
-	public void applyEntityCollision(Entity entityIn) {
-		if (entityIn instanceof EntityRailgun) {
-			if (entityIn.getEntityBoundingBox().minY < this.getEntityBoundingBox().maxY) {
-				super.applyEntityCollision(entityIn);
-			}
-		} else if (entityIn.getEntityBoundingBox().minY <= this.getEntityBoundingBox().minY) {
-			super.applyEntityCollision(entityIn);
-		}
-	}
-
-	/**
-	 * Returns true if other Entities should be prevented from moving through this
-	 * Entity.
-	 */
 	@Override
 	public boolean canBeCollidedWith() {
 		return !this.isDead;
 	}
 
-	/**
-	 * Set the position and rotation values directly without any clamping.
-	 */
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
@@ -204,18 +163,11 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 		this.lerpSteps = 10;
 	}
 
-	/**
-	 * Gets the horizontal facing direction of this Entity, adjusted to take
-	 * specially-treated entity types into account.
-	 */
 	@Override
 	public EnumFacing getAdjustedHorizontalFacing() {
 		return this.getHorizontalFacing().rotateY();
 	}
 
-	/**
-	 * Called to update the entity's position/logic.
-	 */
 	@Override
 	public void onUpdate() {
 
@@ -234,11 +186,7 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 				this.controlRailgun();
 			}
 
-			this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
-		} else {
-			this.motionX = 0.0D;
-			this.motionY = 0.0D;
-			this.motionZ = 0.0D;
+			this.move(MoverType.SELF, 0, this.motionY, 0);
 		}
 
 		this.doBlockCollisions();
@@ -284,35 +232,22 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 		}
 	}
 
-	/**
-	 * Update the boat's speed, based on momentum.
-	 */
 	private void updateMotion() {
-		double d0 = -0.03999999910593033D;
 		double d1 = this.hasNoGravity() ? 0.0D : -0.03999999910593033D;
-		double d2 = 0.0D;
-		this.momentum = 0.05F;
-
-		this.momentum = 0.9F;
-
-		this.motionX *= this.momentum;
-		this.motionZ *= this.momentum;
-		this.deltaRotation *= this.momentum;
 		this.motionY += d1;
-
-		if (d2 > 0.0D) {
-			double d3 = 0.65D;
-			this.motionY += d2 * 0.06153846016296973D;
-			double d4 = 0.75D;
-			this.motionY *= 0.75D;
-		}
 	}
 
 	private void controlRailgun() {
 		if (this.isBeingRidden()) {
-			this.rotationPitch = getControllingPassenger().rotationPitch;
-			this.rotationYaw = getControllingPassenger().rotationYaw;
+			float pitch = getControllingPassenger().rotationPitch;
+			pitch = Math.max(-getMaxPitch(), pitch);
+			pitch = Math.min(getMaxPitch(), pitch);
+			setRotation(getControllingPassenger().rotationYaw, pitch);
 		}
+	}
+
+	public float getMaxPitch() {
+		return 60;
 	}
 
 	@Override
@@ -349,10 +284,6 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 		}
 	}
 
-	/**
-	 * Applies this boat's yaw to the given entity. Used to update the orientation
-	 * of its passenger.
-	 */
 	protected void applyYawToEntity(Entity entityToUpdate) {
 		entityToUpdate.setRenderYawOffset(this.rotationYaw);
 		float f = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
@@ -362,39 +293,36 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 		entityToUpdate.setRotationYawHead(entityToUpdate.rotationYaw);
 	}
 
-	/**
-	 * Applies this entity's orientation (pitch/yaw) to another entity. Used to
-	 * update passenger orientation.
-	 */
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void applyOrientationToEntity(Entity entityToUpdate) {
 		this.applyYawToEntity(entityToUpdate);
 	}
 
-	/**
-	 * (abstract) Protected helper method to write subclass entity data to NBT.
-	 */
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound compound) {
 		compound.setInteger("energy", energy.getEnergyStored());
+		compound.setTag("inventory", getInventory().serializeNBT());
 	}
 
-	/**
-	 * (abstract) Protected helper method to read subclass entity data from NBT.
-	 */
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		if (compound.hasKey("energy"))
 			energy.setEnergy(compound.getInteger("energy"));
+		if (compound.hasKey("inventory"))
+			getInventory().deserializeNBT(compound.getCompoundTag("inventory"));
 	}
 
 	@Override
 	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
-		if (player.isSneaking()) {
-			return false;
-		} else {
-			if (!this.world.isRemote) {
+		if (super.processInitialInteract(player, hand))
+			return true;
+
+		if (!world.isRemote) {
+			if (player.isSneaking()) {
+				player.openGui(WIPTech.instance, ModGuiHandler.RAILGUN, world, getPosition().getX(), getPosition().getY(), getPosition().getZ());
+				return true;
+			} else {
 				player.startRiding(this);
 				return true;
 			}
@@ -413,8 +341,22 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 		return super.applyPlayerInteraction(player, vec, hand);
 	}
 
+	private ItemStack findAmmo() {
+		Iterator<ItemStack> it = getInventory().getStacks().iterator();
+		while (it.hasNext()) {
+			if (isAmmo(it.next()))
+				return it.next();
+		}
+		return ItemStack.EMPTY;
+	}
+
+	protected boolean isAmmo(ItemStack stack) {
+		return stack.getItem() instanceof ItemSlug;
+	}
+
 	public void shoot() {
 		if (getControllingPassenger() != null && getControllingPassenger() instanceof EntityPlayer) {
+			final EntityPlayer player = (EntityPlayer) getControllingPassenger();
 
 			if (world.isRemote)
 				return;// EnumActionResult.SUCCESS;
@@ -425,6 +367,14 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 			if (energy.getEnergyStored() < getShootEnergy() || energy.extractEnergy(getShootEnergy(), true) != getShootEnergy())
 				return;
 
+			ItemStack ammo = this.findAmmo();
+
+			if (ammo.isEmpty())
+				if (player.isCreative())
+					ammo = new ItemStack(ModMaterials.IRON.getSlugItem());
+				else
+					return;
+
 			energy.extractEnergy(getShootEnergy(), false);
 
 			float velocity = 4f;
@@ -432,11 +382,6 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 			Vec3d look = this.getLookVec();
 
 			BlockPos pos = getPosition();
-
-			/**
-			 * https://stackoverflow.com/questions/8922589/given-two-points-calculate-third-point-at-a-given-angle
-			 * https://gamedev.stackexchange.com/questions/19379/how-to-draw-a-line-of-a-given-length-towards-a-given-object
-			 */
 
 //			float dx = endX - startX;
 //			float dy = endY - startY;
@@ -460,7 +405,7 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 //			CGPoint p1 = CGPointMake (startX, startY);
 			Vec3d p2 = new Vec3d(startX + dx * scale, startY + dy * scale, startZ + dz * scale);
 
-			EntitySlug slug = new EntitySlug(world, ModMaterials.TUNGSTEN_CARBITE);
+			EntitySlug slug = new EntitySlug(world, ((ItemSlug) ammo.getItem()).getModMaterial());
 			slug.setPosition(pos.getX() + 0.5, pos.getY() + getEyeHeight() - 1, pos.getZ() + 0.5);
 
 			slug.setThrower((EntityPlayer) getControllingPassenger());
@@ -475,7 +420,9 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 
 			world.spawnEntity(slug);
 
-//			return EnumActionResult.SUCCESS;
+			// TODO FIXME THIS IS BAD, FORGE DOCS SAYS EXPLICITLY "SERIOUSLY: DO NOT MODIFY
+			// THE RETURNED ITEMSTACK."
+			ammo.shrink(1);
 		}
 	}
 
@@ -483,82 +430,16 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 		return 1000;
 	}
 
-	/**
-	 * Sets the forward direction of the entity.
-	 */
-	public void setForwardDirection(int forwardDirection) {
-		this.dataManager.set(FORWARD_DIRECTION, Integer.valueOf(forwardDirection));
-	}
-
-	/**
-	 * Gets the forward direction of the entity.
-	 */
-	public int getForwardDirection() {
-		return this.dataManager.get(FORWARD_DIRECTION).intValue();
-	}
-
 	@Override
 	protected boolean canFitPassenger(Entity passenger) {
 		return this.getPassengers().size() < 1;
 	}
 
-	/**
-	 * For vehicles, the first passenger is generally considered the controller and
-	 * "drives" the vehicle. For example, Pigs, Horses, and Boats are generally
-	 * "steered" by the controlling passenger.
-	 */
 	@Override
 	@Nullable
 	public Entity getControllingPassenger() {
 		List<Entity> list = this.getPassengers();
 		return list.isEmpty() ? null : (Entity) list.get(0);
-	}
-
-	public static enum Type {
-		OAK(BlockPlanks.EnumType.OAK.getMetadata(), "oak"), SPRUCE(BlockPlanks.EnumType.SPRUCE.getMetadata(), "spruce"), BIRCH(BlockPlanks.EnumType.BIRCH.getMetadata(), "birch"), JUNGLE(
-				BlockPlanks.EnumType.JUNGLE.getMetadata(), "jungle"), ACACIA(BlockPlanks.EnumType.ACACIA.getMetadata(), "acacia"), DARK_OAK(BlockPlanks.EnumType.DARK_OAK.getMetadata(), "dark_oak");
-
-		private final String name;
-		private final int metadata;
-
-		private Type(int metadataIn, String nameIn) {
-			this.name = nameIn;
-			this.metadata = metadataIn;
-		}
-
-		public String getName() {
-			return this.name;
-		}
-
-		public int getMetadata() {
-			return this.metadata;
-		}
-
-		@Override
-		public String toString() {
-			return this.name;
-		}
-
-		/**
-		 * Get a boat type by it's enum ordinal
-		 */
-		public static EntityRailgun.Type byId(int id) {
-			if (id < 0 || id >= values().length) {
-				id = 0;
-			}
-
-			return values()[id];
-		}
-
-		public static EntityRailgun.Type getTypeFromString(String nameIn) {
-			for (int i = 0; i < values().length; ++i) {
-				if (values()[i].getName().equals(nameIn)) {
-					return values()[i];
-				}
-			}
-
-			return values()[0];
-		}
 	}
 
 	// Forge: Fix MC-119811 by instantly completing lerp on board
@@ -607,6 +488,26 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	@Override
 	public ModItemStackHandler getInventory() {
 		return inventory;
+	}
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return super.getRenderBoundingBox().grow(1);
+	}
+
+	@Override
+	public Entity getEntity() {
+		return this;
+	}
+
+	@Override
+	public void writeSyncTag(NBTTagCompound compound) {
+		writeEntityToNBT(compound);
+	}
+
+	@Override
+	public void readSyncTag(NBTTagCompound compound) {
+		readEntityFromNBT(compound);
 	}
 
 }

@@ -165,9 +165,6 @@ public class ModEnums {
 			return this.toolMaterial;
 		}
 
-		/**
-		 * if the item already exists in the registry, overwrite it
-		 */
 		public final String getResouceLocationDomain(String nameSuffix, IForgeRegistry registry) {
 			for (ModContainer mod : Loader.instance().getActiveModList()) {
 				if (mod.getModId() != ModReference.ID)

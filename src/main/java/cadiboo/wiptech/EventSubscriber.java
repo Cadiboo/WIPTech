@@ -1,13 +1,12 @@
 package cadiboo.wiptech;
 
-import org.lwjgl.opengl.GL11;
-
 import cadiboo.wiptech.block.BlockEnamel;
 import cadiboo.wiptech.block.BlockItem;
 import cadiboo.wiptech.block.BlockModOre;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.client.model.ModelsCache;
 import cadiboo.wiptech.client.render.block.model.WireModelLoader;
 import cadiboo.wiptech.client.render.entity.EntityNapalmRenderer;
@@ -22,7 +21,6 @@ import cadiboo.wiptech.entity.item.EntityRailgun;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.entity.projectile.EntitySlugCasing;
-import cadiboo.wiptech.init.ModEntities;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemFlamethrower;
@@ -43,23 +41,23 @@ import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ModEnums.BlockItemTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModReference;
+import cadiboo.wiptech.util.ModResourceLocation;
+import cadiboo.wiptech.util.ModUtil;
 import cadiboo.wiptech.util.ModWritingUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -94,17 +92,12 @@ public final class EventSubscriber {
 
 		registerBlocksForMaterials(registry);
 
-		WIPTech.debug("registered blocks");
+		WIPTech.info("Registered blocks");
 
-		registerTileEntity(TileEntityWire.class);
-		registerTileEntity(TileEntityEnamel.class);
+		registerTileEntities();
 
-		WIPTech.debug("registered tile entities");
+		WIPTech.debug("Registered tile entities");
 
-	}
-
-	private static final void registerTileEntity(Class<? extends TileEntity> clazz) {
-		GameRegistry.registerTileEntity(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz, "TileEntity")));
 	}
 
 	private static final void registerBlocksForMaterials(IForgeRegistry<Block> registry) {
@@ -121,7 +114,6 @@ public final class EventSubscriber {
 			}
 
 			if (material.getProperties().hasWire()) {
-
 				registry.register(new BlockWire(material));
 				registry.register(new BlockSpool(material));
 			}
@@ -129,6 +121,21 @@ public final class EventSubscriber {
 			if (material.getProperties().hasEnamel())
 				registry.register(new BlockEnamel(material));
 
+		}
+		WIPTech.debug("Registered blocks for materials");
+	}
+
+	private static final void registerTileEntities() {
+		registerTileEntity(TileEntityWire.class);
+		registerTileEntity(TileEntityEnamel.class);
+	}
+
+	private static final void registerTileEntity(final Class<? extends TileEntity> clazz) {
+		try {
+			GameRegistry.registerTileEntity(clazz, new ModResourceLocation(ModReference.ID, ModUtil.getRegistryNameForClass(clazz, "TileEntity")));
+		} catch (Exception e) {
+			WIPTech.error("Error registering Tile Entity " + clazz.getSimpleName());
+			e.printStackTrace();
 		}
 	}
 
@@ -146,23 +153,23 @@ public final class EventSubscriber {
 
 		registry.register(new ItemRailgun("railgun"));
 
-		WIPTech.debug("registered items");
+		WIPTech.info("Registered items");
 
 	}
 
 	private static final void registerItemsForMaterials(IForgeRegistry<Item> registry) {
 		for (ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre())
-				registry.register(new ModItemBlock(material.getOre(), new ResourceLocation(material.getResouceLocationDomain("ore", ForgeRegistries.ITEMS), material.getNameLowercase() + "_ore")));
+				registry.register(new ModItemBlock(material.getOre(), new ModResourceLocation(material.getResouceLocationDomain("ore", ForgeRegistries.ITEMS), material.getNameLowercase() + "_ore")));
 
 			if (material.getProperties().hasBlock())
-				registry.register(new ModItemBlock(material.getBlock(), new ResourceLocation(material.getResouceLocationDomain("block", ForgeRegistries.ITEMS), material.getNameLowercase()
+				registry.register(new ModItemBlock(material.getBlock(), new ModResourceLocation(material.getResouceLocationDomain("block", ForgeRegistries.ITEMS), material.getNameLowercase()
 						+ "_block")));
 
 			if (material.getProperties().hasIngotAndNugget()) {
-				registry.register(new ModItemBlock(material.getIngot(), new ResourceLocation(material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS), material.getNameLowercase()
+				registry.register(new ModItemBlock(material.getIngot(), new ModResourceLocation(material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS), material.getNameLowercase()
 						+ "_ingot")));
-				registry.register(new ModItemBlock(material.getNugget(), new ResourceLocation(material.getResouceLocationDomain("nugget", ForgeRegistries.ITEMS), material.getNameLowercase()
+				registry.register(new ModItemBlock(material.getNugget(), new ModResourceLocation(material.getResouceLocationDomain("nugget", ForgeRegistries.ITEMS), material.getNameLowercase()
 						+ "_nugget")));
 			}
 
@@ -200,33 +207,43 @@ public final class EventSubscriber {
 
 		}
 
+		WIPTech.debug("Registered items for materials");
+
 	}
 
 	@SubscribeEvent
 	public static final void onRegisterEntitiesEvent(final RegistryEvent.Register<EntityEntry> event) {
+		final IForgeRegistry<EntityEntry> registry = event.getRegistry();
 
-		event.getRegistry().register(buildEntityEntryFromClass(EntityPortableGenerator.class, false, 64, 20, true));
+		registerEntitiesForMaterials(registry);
 
-		event.getRegistry().register(buildEntityEntryFromClass(EntityRailgun.class, false, 64, 10, true));
+		event.getRegistry().register(buildEntityEntryFromClass(EntityPortableGenerator.class, false, 64, 2, true));
+
+		event.getRegistry().register(buildEntityEntryFromClass(EntityRailgun.class, false, 64, 2, true));
 
 		event.getRegistry().register(buildEntityEntryFromClass(EntitySlugCasing.class, false, 128, 2, true));
 
-		event.getRegistry().register(buildEntityEntryFromClass(EntityNapalm.class, false, 128, 5, true));
+		event.getRegistry().register(buildEntityEntryFromClass(EntityNapalm.class, false, 128, 2, true));
 
+		WIPTech.info("Registered entities");
+
+	}
+
+	private static final void registerEntitiesForMaterials(IForgeRegistry<EntityEntry> registry) {
 		// TODO AdditionalSpawnData
-
 		for (final ModMaterials material : ModMaterials.values())
 			if (material.getProperties().hasRailgunSlug())
-				event.getRegistry().register(buildEntityEntryFromClassWithName(EntitySlug.class, new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_slug"), false, 128, 5, true));
-
+				registry.register(buildEntityEntryFromClassWithName(EntitySlug.class, new ModResourceLocation(ModReference.ID, material.getNameLowercase() + "_slug"), false, 128, 2, true));
+		WIPTech.debug("Registered entities for materials");
 	}
 
 	private static final EntityEntry buildEntityEntryFromClass(final Class<? extends Entity> clazz, final boolean hasEgg, final int range, final int updateFrequency,
 			final boolean sendVelocityUpdates) {
-		return buildEntityEntryFromClassWithName(clazz, new ResourceLocation(ModReference.ID, getRegistryNameForClass(clazz, "Entity")), hasEgg, range, updateFrequency, sendVelocityUpdates);
+		return buildEntityEntryFromClassWithName(clazz, new ModResourceLocation(ModReference.ID, ModUtil.getRegistryNameForClass(clazz, "Entity")), hasEgg, range, updateFrequency,
+				sendVelocityUpdates);
 	}
 
-	private static final EntityEntry buildEntityEntryFromClassWithName(final Class<? extends Entity> clazz, final ResourceLocation registryName, final boolean hasEgg, final int range,
+	private static final EntityEntry buildEntityEntryFromClassWithName(final Class<? extends Entity> clazz, final ModResourceLocation registryName, final boolean hasEgg, final int range,
 			final int updateFrequency, final boolean sendVelocityUpdates) {
 		EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
 		builder = builder.entity(clazz);
@@ -240,41 +257,43 @@ public final class EventSubscriber {
 		return builder.build();
 	}
 
-	private static final String getRegistryNameForClass(Class clazz, String removeType) {
-		return org.apache.commons.lang3.StringUtils.uncapitalize(clazz.getSimpleName().replace(removeType, "")).replaceAll("([A-Z])", "_$1").toLowerCase();
-	}
-
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static final void onRegisterModelsEvent(final ModelRegistryEvent event) {
 
+		((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(ModelsCache.INSTANCE);
+		WIPTech.info("Registered resource manager reload listener for " + ModelsCache.class.getSimpleName());
+
+		registerTileEntitySpecialRenderers();
+		WIPTech.info("Registered tile entity special renderers");
+
+		registerEntityRenderers();
+		WIPTech.info("Registered entity renderers");
+
+		registerModelsForMaterials();
+
+		registerItemModel(ModItems.PORTABLE_GENERATOR);
+		registerItemModel(ModItems.FLAMETHROWER);
+		registerItemModel(ModItems.RAILGUN);
+		registerItemModel(ModItems.SLUG_CASING);
+
+		WIPTech.info("Registered models");
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	private static final void registerTileEntitySpecialRenderers() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWire.class, new TileEntityWireRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnamel.class, new TileEntityEnamelRenderer());
-		WIPTech.debug("registered TESRs");
+	}
 
+	@SideOnly(Side.CLIENT)
+	private static final void registerEntityRenderers() {
 		RenderingRegistry.registerEntityRenderingHandler(EntityPortableGenerator.class, renderManager -> new EntityPortableGeneratorRenderer(renderManager));
 		RenderingRegistry.registerEntityRenderingHandler(EntitySlugCasing.class, renderManager -> new EntitySlugCasingRenderer(renderManager));
 		RenderingRegistry.registerEntityRenderingHandler(EntitySlug.class, renderManager -> new EntitySlugRenderer(renderManager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityRailgun.class, renderManager -> new EntityRailgunRenderer(renderManager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, renderManager -> new EntityNapalmRenderer(renderManager));
-
-		WIPTech.debug("registered EntityRenderers");
-
-		registerModelsForMaterials();
-
-		ResourceLocation portableGeneratorRegistryName = ModEntities.PORTABLE_GENERATOR.getRegistryName();
-		ModelLoader.setCustomModelResourceLocation(ModItems.PORTABLE_GENERATOR, 0, new ModelResourceLocation(new ResourceLocation(portableGeneratorRegistryName.getResourceDomain(), ""
-				+ portableGeneratorRegistryName.getResourcePath()), ""));
-
-		registerItemModel(ModItems.FLAMETHROWER);
-		registerItemModel(ModItems.RAILGUN);
-
-		ResourceLocation slugCasingRegistryName = ModEntities.SLUG_CASING.getRegistryName();
-		ModelLoader.setCustomModelResourceLocation(ModItems.SLUG_CASING, 0, new ModelResourceLocation(new ResourceLocation(slugCasingRegistryName.getResourceDomain(), "" + slugCasingRegistryName
-				.getResourcePath()), ""));
-
-		WIPTech.debug("registered block & item models");
-
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -285,7 +304,7 @@ public final class EventSubscriber {
 				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-						return new ModelResourceLocation(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.ID, material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name);
 					}
 				});
 			}
@@ -295,19 +314,16 @@ public final class EventSubscriber {
 
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-						return new ModelResourceLocation(new ResourceLocation(ModReference.ID, material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.ID, material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
 					}
 				});
 			}
 
 		}
-
 		ModelLoaderRegistry.registerLoader(new WireModelLoader());
-		WIPTech.debug("registered wire & enamel custom models");
+		WIPTech.debug("Registered custom State Mappers for wire and enamel with the Model Loader");
 
-		for (
-
-		ModMaterials material : ModMaterials.values()) {
+		for (ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre())
 				if (material.getOre() != null)
 					registerItemBlockModel(material.getOre());
@@ -375,6 +391,7 @@ public final class EventSubscriber {
 					registerItemModel(material.getSlugItem());
 
 		}
+		WIPTech.debug("Registered models for materials");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -394,7 +411,7 @@ public final class EventSubscriber {
 
 	@SideOnly(Side.CLIENT)
 	private static final void registerBlockItemItemOverrideModel(final Block block) {
-		ModelLoader.setCustomModelResourceLocation(ForgeRegistries.ITEMS.getValue(new ResourceLocation("minecraft", block.getRegistryName().getResourcePath())), 0, new ModelResourceLocation(block
+		ModelLoader.setCustomModelResourceLocation(ForgeRegistries.ITEMS.getValue(new ModResourceLocation("minecraft", block.getRegistryName().getResourcePath())), 0, new ModelResourceLocation(block
 				.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
@@ -412,21 +429,46 @@ public final class EventSubscriber {
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static final void onModelBakeEvent(final ModelBakeEvent event) {
+		final IRegistry<ModelResourceLocation, IBakedModel> registry = event.getModelRegistry();
 
-		/*@formatter:off*/
-		final ResourceLocation[] models = {
-				new ResourceLocation(ModReference.ID, "entity/portable_generator_handle"),
-				new ResourceLocation(ModReference.ID, "entity/railgun_base"),
-				new ResourceLocation(ModReference.ID, "entity/railgun_turret")
+		injectModels(registry);
+
+		WIPTech.info("Injected models");
+	}
+
+	@SideOnly(Side.CLIENT)
+	private static final void injectModels(final IRegistry<ModelResourceLocation, IBakedModel> registry) {
+		final ModResourceLocation[] models = {
+
+				new ModResourceLocation(ModReference.ID, "entity/portable_generator_handle"),
+
+				new ModResourceLocation(ModReference.ID, "entity/portable_generator_wheel"),
+
+				new ModResourceLocation(ModReference.ID, "entity/railgun_base"),
+
+				new ModResourceLocation(ModReference.ID, "entity/railgun_turret"),
+
+				new ModResourceLocation(ModReference.ID, "entity/railgun_gun"),
+
+//				new ModResourceLocation(ModReference.ID, "entity/slug_casing_back"),
+//
+//				new ModResourceLocation(ModReference.ID, "entity/slug_casing_top"),
+//
+//				new ModResourceLocation(ModReference.ID, "entity/slug_casing_bottom"),
+
 		};
-		/*@formatter:on*/
 
-		for (ResourceLocation model : models) {
-			ModelResourceLocation location = new ModelResourceLocation(model.toString());
+		for (ModResourceLocation model : models) {
+			try {
+				ModelResourceLocation location = new ModelResourceLocation(model.toString());
 
-			IBakedModel bakedModel = ModelsCache.INSTANCE.getOrLoadBakedModel(model);
+				IBakedModel bakedModel = ModelsCache.INSTANCE.getBakedModel(model);
 
-			event.getModelRegistry().putObject(location, bakedModel);
+				registry.putObject(location, bakedModel);
+				WIPTech.debug("Sucessfully injected " + model.toString() + " into Model Registry");
+			} catch (Exception e) {
+				WIPTech.error("Error injecting model " + model.toString() + " into Model Registry");
+			}
 		}
 	}
 
@@ -466,33 +508,15 @@ public final class EventSubscriber {
 		int Width = Scaled.getScaledWidth() - 10;
 		int Height = Scaled.getScaledHeight() - 54;
 
-		// TODO replace this with binding the energy texture
-//				Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation(ModReference.ID, "textures/gui/turbine.png"));
+		mc.getTextureManager().bindTexture(new ModResourceLocation(ModReference.ID, "textures/gui/energy.png"));
 
-		// TESTING
-
-		mc.getTextureManager().bindTexture(new ResourceLocation(ModReference.ID, "textures/gui/energy.png"));
-
-		drawNonStandardTexturedRect(Width, Height, 0, 0, 10, 54, 256, 256);
-		drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 10, 0, 8, 52 - scaled_height, 256, 256);
+		ClientUtil.drawNonStandardTexturedRect(Width, Height, 0, 0, 10, 54, 256, 256);
+		ClientUtil.drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 10, 0, 8, 52 - scaled_height, 256, 256);
 		int percent = (int) Math.round(power * 100);
 		mc.fontRenderer.drawStringWithShadow(percent + "%", Width - 7 - String.valueOf(percent).length() * 6, Height + 35, 0xFFFFFF);
 		String outOf = energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
 		mc.fontRenderer.drawStringWithShadow(outOf, Width - 1 - outOf.length() * 6, Height + 45, 0xFFFFFF);
 
-	}
-
-	private static final void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
-		double f = 1F / (double) textureWidth;
-		double f1 = 1F / (double) textureHeight;
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
-		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		bufferbuilder.pos(x, y + height, 0).tex(u * f, (v + height) * f1).endVertex();
-		bufferbuilder.pos(x + width, y + height, 0).tex((u + width) * f, (v + height) * f1).endVertex();
-		bufferbuilder.pos(x + width, y, 0).tex((u + width) * f, v * f1).endVertex();
-		bufferbuilder.pos(x, y, 0).tex(u * f, v * f1).endVertex();
-		tessellator.draw();
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -520,6 +544,7 @@ public final class EventSubscriber {
 
 	}
 
+	@SideOnly(Side.CLIENT)
 	private static final void setTooltip(final ItemTooltipEvent event, final String tooltip) {
 		for (int i = 0; i < event.getToolTip().size(); i++) {
 			if (net.minecraft.util.StringUtils.stripControlCodes(event.getToolTip().get(i)).equals(event.getItemStack().getItem().getRegistryName().toString())) { // TODO why? and what does
@@ -540,4 +565,5 @@ public final class EventSubscriber {
 
 		return;
 	}
+
 }

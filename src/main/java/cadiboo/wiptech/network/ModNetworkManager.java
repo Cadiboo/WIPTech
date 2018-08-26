@@ -1,7 +1,9 @@
 package cadiboo.wiptech.network;
 
-import cadiboo.wiptech.network.play.client.CPacketSyncModTileEntity;
-import cadiboo.wiptech.network.play.server.SPacketSyncModTileEntity;
+import cadiboo.wiptech.network.play.client.CPacketSyncEntity;
+import cadiboo.wiptech.network.play.client.CPacketSyncTileEntity;
+import cadiboo.wiptech.network.play.server.SPacketSyncEntity;
+import cadiboo.wiptech.network.play.server.SPacketSyncTileEntity;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -12,15 +14,20 @@ public class ModNetworkManager {
 	/**
 	 * CANT BE LONGER THAN 20 CHARS
 	 */
-	public static final String					CHANNEL	= ModReference.ID + "_chanel";
-	public static final SimpleNetworkWrapper	NETWORK	= NetworkRegistry.INSTANCE.newSimpleChannel(CHANNEL);
+	public static final String CHANNEL = ModReference.ID + "_chanel";
+	public static final SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(CHANNEL);
 
 	public ModNetworkManager() {
 		int networkIds = 0;
 		/* Client -> Server */
-		NETWORK.registerMessage(CPacketSyncModTileEntity.class, CPacketSyncModTileEntity.class, networkIds++, Side.SERVER);
+		NETWORK.registerMessage(CPacketSyncTileEntity.class, CPacketSyncTileEntity.class, networkIds++, Side.SERVER);
 		/* Server -> Client */
-		NETWORK.registerMessage(SPacketSyncModTileEntity.class, SPacketSyncModTileEntity.class, networkIds++, Side.CLIENT);
+		NETWORK.registerMessage(SPacketSyncTileEntity.class, SPacketSyncTileEntity.class, networkIds++, Side.CLIENT);
+
+		/* Client -> Server */
+		NETWORK.registerMessage(CPacketSyncEntity.class, CPacketSyncEntity.class, networkIds++, Side.SERVER);
+		/* Server -> Client */
+		NETWORK.registerMessage(SPacketSyncEntity.class, SPacketSyncEntity.class, networkIds++, Side.CLIENT);
 	}
 
 }

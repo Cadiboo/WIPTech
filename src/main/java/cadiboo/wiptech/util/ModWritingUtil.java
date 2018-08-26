@@ -1,6 +1,7 @@
 package cadiboo.wiptech.util;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,13 +12,19 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.init.ModBlocks;
+import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class ModWritingUtil {
 
 	public static String default_variant_name = "normal";
@@ -29,27 +36,11 @@ public class ModWritingUtil {
 		boolean lang = true;
 		boolean json = true;
 
-		try {
-			Generator.genVanillaBlockState("/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources", ModReference.ID, "testWire", new BlockWire(
-					ModMaterials.COPPER));
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
 		WIPTech.info("infoModMaterialsCode with options write lang: " + lang + ", write json: " + json);
-
-		//
-
-		//
 
 		ArrayList<Tuple<String, String>> blockstates = new ArrayList<Tuple<String, String>>();
 		ArrayList<Tuple<String, String>> blockModels = new ArrayList<Tuple<String, String>>();
 		ArrayList<Tuple<String, String>> itemModels = new ArrayList<Tuple<String, String>>();
-
-		//
-
-		//
 
 		for (ModMaterials material : ModMaterials.values()) {
 
@@ -254,6 +245,159 @@ public class ModWritingUtil {
 		}
 
 		if (lang) {
+
+			WIPTech.info("Writing lang");
+
+			ArrayList<Tuple<String, String>> langObj = new ArrayList<Tuple<String, String>>();
+
+			for (ModMaterials material : ModMaterials.values()) {
+
+				if (material.getOre() != null)
+					langObj.add(new Tuple<String, String>(material.getOre().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Ore"));
+
+				if (material.getBlock() != null)
+					langObj.add(new Tuple<String, String>(material.getBlock().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Block"));
+
+				if (material.getIngot() != null)
+					langObj.add(new Tuple<String, String>(material.getIngot().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Ingot"));
+
+				if (material.getNugget() != null)
+					langObj.add(new Tuple<String, String>(material.getNugget().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Nugget"));
+
+				// armor
+
+				if (material.getHelmet() != null)
+					langObj.add(new Tuple<String, String>(material.getHelmet().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Helmet"));
+
+				if (material.getChestplate() != null)
+					langObj.add(new Tuple<String, String>(material.getChestplate().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Chestplate"));
+
+				if (material.getLeggings() != null)
+					langObj.add(new Tuple<String, String>(material.getLeggings().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Leggings"));
+
+				if (material.getBoots() != null)
+					langObj.add(new Tuple<String, String>(material.getBoots().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Boots"));
+
+				// tools
+
+				if (material.getAxe() != null)
+					langObj.add(new Tuple<String, String>(material.getAxe().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Axe"));
+
+				if (material.getPickaxe() != null)
+					langObj.add(new Tuple<String, String>(material.getPickaxe().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Pickaxe"));
+
+				if (material.getSword() != null)
+					langObj.add(new Tuple<String, String>(material.getSword().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Sword"));
+
+				if (material.getShovel() != null)
+					langObj.add(new Tuple<String, String>(material.getShovel().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Shovel"));
+
+				if (material.getHoe() != null)
+					langObj.add(new Tuple<String, String>(material.getHoe().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Hoe"));
+
+				//
+
+				if (material.getWire() != null)
+					langObj.add(new Tuple<String, String>(material.getWire().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Wire"));
+
+				if (material.getEnamel() != null)
+					langObj.add(new Tuple<String, String>(material.getEnamel().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Enamel"));
+
+				if (material.getRail() != null)
+					langObj.add(new Tuple<String, String>(material.getRail().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Rail"));
+
+				if (material.getCoil() != null)
+					langObj.add(new Tuple<String, String>(material.getCoil().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Coil"));
+
+				if (material.getSpool() != null)
+					langObj.add(new Tuple<String, String>(material.getSpool().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Spool"));
+
+				if (material.getSlugItem() != null)
+					langObj.add(new Tuple<String, String>(material.getSlugItem().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Slug"));
+
+			}
+
+			for (Field field : ModItems.class.getFields()) {
+				Object value;
+				try {
+					value = field.get(ModItems.class);
+
+					if (!(value instanceof Item))
+						continue;
+
+					Item item = (Item) value;
+
+					if (item != null)
+						langObj.add(new Tuple<String, String>(item.getUnlocalizedName(), ModUtil.getLocalisedName(item.getRegistryName().getResourcePath())));
+
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					WIPTech.error("fucking hell jeff...");
+					e.printStackTrace();
+				}
+			}
+
+			for (Field field : ModBlocks.class.getFields()) {
+				Object value;
+				try {
+					value = field.get(ModItems.class);
+
+					if (!(value instanceof Block))
+						continue;
+
+					Block block = (Block) value;
+
+					if (block != null)
+						langObj.add(new Tuple<String, String>(block.getUnlocalizedName(), ModUtil.getLocalisedName(block.getRegistryName().getResourcePath())));
+
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					WIPTech.error("fucking hell derek...");
+					e.printStackTrace();
+				}
+			}
+
+			List<String> data = new ArrayList<String>();
+
+			for (Tuple<String, String> langEntity : langObj) {
+				String unlocalised = langEntity.getFirst();
+				String name = langEntity.getSecond();
+
+				if (Loader.MC_VERSION.contains("1.13"))
+					data.add("\"" + unlocalised + ".name" + "\"" + ": " + "\"" + name + "\"" + ",");
+				else
+					data.add(unlocalised + ".name" + "=" + name);
+			}
+
+			if (Loader.MC_VERSION.contains("1.13")) {
+				String removeComma = data.get(data.size() - 1);
+				removeComma = removeComma.substring(0, removeComma.length() - 2);
+				data.set(data.size() - 1, removeComma);
+			}
+
+			ArrayList<String> finalData = new ArrayList<String>();
+			if (Loader.MC_VERSION.contains("1.13"))
+				finalData.add("{");
+
+			if (Loader.MC_VERSION.contains("1.13"))
+				finalData.add("\"itemGroup." + ModReference.ID + "\"" + ": " + "\"" + ModReference.NAME + "\"" + ",");
+			else
+				finalData.add("itemGroup." + ModReference.ID + "=" + ModReference.NAME);
+
+			finalData.addAll(data);
+			if (Loader.MC_VERSION.contains("1.13"))
+				finalData.add("}");
+
+			Path file = Paths.get(assetDir + "lang/en_us." + (Loader.MC_VERSION.contains("1.13") ? "json" : "lang"));
+			try {
+				Files.write(file, finalData, Charset.forName("UTF-8"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+//			{
+//				  "language.name": "English",
+//				  "language.region": "United States",
+//				  "language.code": "en_us",
+//				  "gui.done": "Done",
 
 		}
 

@@ -16,16 +16,16 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CPacketSyncModTileEntity implements IMessage, IMessageHandler<CPacketSyncModTileEntity, IMessage> {
+public class CPacketSyncTileEntity implements IMessage, IMessageHandler<CPacketSyncTileEntity, IMessage> {
 
 	private NBTTagCompound syncTag;
 	private BlockPos pos;
 	private int dimension;
 
-	public CPacketSyncModTileEntity() {
+	public CPacketSyncTileEntity() {
 	}
 
-	public CPacketSyncModTileEntity(NBTTagCompound syncTag, BlockPos pos, int dimension) {
+	public CPacketSyncTileEntity(NBTTagCompound syncTag, BlockPos pos, int dimension) {
 		this.syncTag = syncTag;
 		this.pos = pos;
 		this.dimension = dimension;
@@ -54,7 +54,7 @@ public class CPacketSyncModTileEntity implements IMessage, IMessageHandler<CPack
 	 */
 	@Override
 	@SideOnly(Side.SERVER)
-	public IMessage onMessage(CPacketSyncModTileEntity message, MessageContext ctx) {
+	public IMessage onMessage(CPacketSyncTileEntity message, MessageContext ctx) {
 		World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(message.dimension);
 		if (message.syncTag != null) {
 			FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> {

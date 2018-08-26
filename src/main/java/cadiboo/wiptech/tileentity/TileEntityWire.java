@@ -4,6 +4,7 @@ import java.util.List;
 
 import cadiboo.wiptech.capability.IEnergyUser;
 import cadiboo.wiptech.capability.ModEnergyStorage;
+import cadiboo.wiptech.capability.SidedModEnergyStorage;
 import cadiboo.wiptech.util.ModDamageSource;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -20,10 +21,10 @@ import net.minecraftforge.energy.CapabilityEnergy;
 
 public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser, ITileEntitySyncable {
 
-	private final ModEnergyStorage energy;
+	private final SidedModEnergyStorage energy;
 
 	public TileEntityWire() {
-		this.energy = new ModEnergyStorage(10000);
+		this.energy = new SidedModEnergyStorage(10000, EnumFacing.VALUES);
 	}
 
 	@Override
@@ -49,6 +50,13 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 			}
 		});
 		transferEnergyToAllAround();
+	}
+
+	@Override
+	public int transferEnergyTo(EnumFacing side, int energyToTransfer, boolean simulate) {
+		if (IEnergyUser.super.transferEnergyTo(side, energyToTransfer, true) == energyToTransfer && (energy.getStorage(side) != energy.getLastRecieved() || world.getTotalWorldTime() % 10 == 0))
+			return IEnergyUser.super.transferEnergyTo(side, energyToTransfer, simulate);
+		return 0;
 	}
 
 	private float getElectrocutionDamage() {
@@ -100,8 +108,9 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if (capability == CapabilityEnergy.ENERGY)
-			return (T) energy;
+		if (capability == CapabilityEnergy.ENERGY) {
+			return (T) energy.getStorage(facing);
+		}
 		return super.getCapability(capability, facing);
 	}
 

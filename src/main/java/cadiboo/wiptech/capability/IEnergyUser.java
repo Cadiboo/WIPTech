@@ -18,16 +18,25 @@ public interface IEnergyUser extends ICapabilityProvider {
 	public ModEnergyStorage getEnergy();
 
 	default public void transferEnergyToAllAround() {
-		if (!getEnergy().canExtract())
-			return;
-
-		if (getEnergy().getEnergyStored() <= 0)
+		if (!canTransferEnergyToAllAround())
 			return;
 
 		getConnectedSides().forEach(side -> {
-			transferEnergyTo(side, getConnectedSides().size());
+			transferEnergyTo(side, (int) ((float) getEnergy().getEnergyStored() / (float) getConnectedSides().size()), false);
 		});
 
+	}
+
+	public default boolean canTransferEnergyToAllAround() {
+		if (getWorld().isRemote)
+			return false;
+
+		if (!getEnergy().canExtract())
+			return false;
+
+		if (getEnergy().getEnergyStored() <= 0)
+			return false;
+		return true;
 	}
 
 	default public ArrayList<EnumFacing> getConnectedSides() {
@@ -40,25 +49,35 @@ public interface IEnergyUser extends ICapabilityProvider {
 		return connectedSides;
 	}
 
-	default public int transferEnergyTo(EnumFacing side, int energyToTransfer) {
-		if (!getEnergy().canExtract())
+	default public int transferEnergyTo(EnumFacing side, int energyToTransfer, boolean simulate) {
+		if (!canTransferEnergyTo(side, energyToTransfer))
 			return 0;
+		IEnergyStorage storage = getWorld().getTileEntity(getPosition().offset(side)).getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		return getEnergy().extractEnergy(storage.receiveEnergy(energyToTransfer, simulate), simulate);
+	}
+
+	public default boolean canTransferEnergyTo(EnumFacing side, int energyToTransfer) {
+		if (!getEnergy().canExtract())
+			return false;
 
 		if (getWorld() == null)
-			return 0;
+			return false;
+
+		if (getWorld().isRemote)
+			return false;
 
 		if (getWorld().getTileEntity(getPosition().offset(side)) == null)
-			return 0;
+			return false;
 
 		IEnergyStorage storage = getWorld().getTileEntity(getPosition().offset(side)).getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
 
 		if (storage == null)
-			return 0;
+			return false;
 
 		if (!storage.canReceive())
-			return 0;
+			return false;
 
-		return getEnergy().extractEnergy(storage.receiveEnergy(Math.round(getEnergy().getEnergyStored() / energyToTransfer), false), false);
+		return true;
 	}
 
 	public BlockPos getPosition();

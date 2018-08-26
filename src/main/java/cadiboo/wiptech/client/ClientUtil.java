@@ -5,7 +5,6 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-import cadiboo.wiptech.WIPTech;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -26,14 +25,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Util that is only used on the client i.e. Rendering code
  * 
- * 
- *
  * @author Cadiboo
  */
+@SideOnly(Side.CLIENT)
 public class ClientUtil {
 
 	/**
@@ -42,9 +42,9 @@ public class ClientUtil {
 	 * 
 	 * @param face the {@link net.minecraft.util.EnumFacing face} to rotate for
 	 * 
-	 * 
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void rotateForFace(EnumFacing face) {
 		GlStateManager.rotate(face == EnumFacing.DOWN ? 0 : face == EnumFacing.UP ? 180F : face == EnumFacing.NORTH || face == EnumFacing.EAST ? 90F : -90F, face.getAxis() == EnumFacing.Axis.Z ? 1
 				: 0, 0, face.getAxis() == EnumFacing.Axis.Z ? 0 : 1);
@@ -54,9 +54,9 @@ public class ClientUtil {
 	/**
 	 * All Light methods I can remember
 	 * 
-	 * 
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	private static final void allLightMethods() {
 
 //	GlStateManager.disableLighting();
@@ -89,6 +89,7 @@ public class ClientUtil {
 	 * 
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void renderLightning(final int number, final int NumberOfBranches, final int NumberOfPossibleSubBranches, final double scale) {
 		GlStateManager.depthMask(true);
 		GlStateManager.disableTexture2D();
@@ -212,6 +213,7 @@ public class ClientUtil {
 	 * 
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final Vec3d getEntityRenderPos(final Entity entity, final double partialTicks) {
 		double flyingMultiplier = 1.825;
 		double yFlying = 1.02;
@@ -263,20 +265,23 @@ public class ClientUtil {
 	 * @param destination The position to rotate towards
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void rotateTowardsPos(Vec3d source, Vec3d destination) {
-		double yAngle = Math.atan2(destination.x - source.x, destination.z - source.z);
-		yAngle = yAngle * (180 / Math.PI);
-		yAngle = yAngle < 0 ? 360 - (-yAngle) : yAngle;
-		GlStateManager.rotate((float) yAngle + 90, 0, 1, 0);
-
-		double xzAngle = Math.atan2(destination.y, Math.sqrt(destination.x * destination.x + destination.z * destination.z));
-		xzAngle = xzAngle * (180 / Math.PI);
-		xzAngle = xzAngle < 0 ? 360 - (-xzAngle) : xzAngle;
-		GlStateManager.rotate(90 - (float) xzAngle, 0, 0, 1);
+		GlStateManager.rotate((float) getYaw(source, destination), 0, 1, 0);
+		GlStateManager.rotate((float) getPitch(source, destination), 0, 0, 1);
 	}
 
+	/**
+	 * Rotates around X axis based on Pitch input and around Y axis based on Yaw
+	 * input
+	 * 
+	 * @param pitch
+	 * @param yaw
+	 */
+	@SideOnly(Side.CLIENT)
 	public static final void rotateForPitchYaw(double pitch, double yaw) {
-		WIPTech.info("rotateForPitchYaw isn\'t implemented yet");
+		GlStateManager.rotate((float) yaw, 0, 1, 0);
+		GlStateManager.rotate((float) pitch, 1, 0, 0);
 	}
 
 	/**
@@ -291,6 +296,7 @@ public class ClientUtil {
 	 * 
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void renderElectricity(final int number, final int NumberOfBranches, double scale) {
 		GlStateManager.depthMask(true);
 		GlStateManager.disableTexture2D();
@@ -436,6 +442,7 @@ public class ClientUtil {
 	 *               GLStateManager.scale}
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void drawCuboid(float minU, float maxU, float minV, float maxV, double x_size, double y_size, double z_size, double scale) {
 
 		GlStateManager.scale(scale, scale, scale);
@@ -492,7 +499,7 @@ public class ClientUtil {
 
 	/**
 	 * 
-	 * Draws a cuboid that has its texture always be seamless
+	 * Draws a cuboid that has its texture always be "seamless"
 	 * 
 	 * 
 	 * @param minU   Minimum texture U (x) to draw from (between 0 and 1)
@@ -507,6 +514,7 @@ public class ClientUtil {
 	 *               GLStateManager.scale}
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void drawSeamlessCuboid(float minU, float maxU, float minV, float maxV, double z_size, double y_size, double x_size, double scale) {
 
 		GlStateManager.scale(scale, scale, scale);
@@ -587,6 +595,7 @@ public class ClientUtil {
 	 *               GLStateManager.scale}
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void drawQuad(float minU, float maxU, float minV, float maxV, double x_size, double y_size, double scale) {
 		GlStateManager.scale(scale, scale, scale);
 
@@ -617,6 +626,7 @@ public class ClientUtil {
 	 * @param world
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void renderStack(ItemStack stack, World world) {
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
 		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
@@ -632,6 +642,7 @@ public class ClientUtil {
 	 * @param world
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void renderStackWithoutTransforms(ItemStack stack, World world) {
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
 		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
@@ -649,16 +660,30 @@ public class ClientUtil {
 	 * @param color
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void renderStackWithColor(ItemStack stack, World world, int color) {
 		IBakedModel model = getModelFromStack(stack, world);
 		renderModelWithColor(model, color);
 
 	}
 
+	/**
+	 * Renders a baked model
+	 * 
+	 * @param model
+	 */
+	@SideOnly(Side.CLIENT)
 	public static final void renderModel(IBakedModel model) {
 		renderModelWithColor(model, -1);
 	}
 
+	/**
+	 * renders a baked model with the specified color
+	 * 
+	 * @param model
+	 * @param color
+	 */
+	@SideOnly(Side.CLIENT)
 	public static final void renderModelWithColor(IBakedModel model, int color) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(-0.5F, -0.5F, -0.5F);
@@ -688,6 +713,7 @@ public class ClientUtil {
 	 * @param stack
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	private static final void renderQuadsColor(BufferBuilder bufferbuilder, List<BakedQuad> quads, int color) {
 
 		int i = 0;
@@ -715,6 +741,7 @@ public class ClientUtil {
 	 * 
 	 * @author Cadiboo
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final IBakedModel getModelFromStack(ItemStack stack, World world) {
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
 		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
@@ -724,6 +751,7 @@ public class ClientUtil {
 	/**
 	 * Sets lightmap texture coords to brightest possbile
 	 */
+	@SideOnly(Side.CLIENT)
 	public static final void enableMaxLighting() {
 		GlStateManager.disableLighting();
 		int i = 15728880;
@@ -733,4 +761,60 @@ public class ClientUtil {
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j, k);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 	}
+
+	/**
+	 * draws a texture that doesn't have to be 256x256, used in GUIs
+	 * 
+	 * @param x
+	 * @param y
+	 * @param u
+	 * @param v
+	 * @param width
+	 * @param height
+	 * @param textureWidth
+	 * @param textureHeight
+	 */
+	@SideOnly(Side.CLIENT)
+	public static final void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
+		double f = 1F / (double) textureWidth;
+		double f1 = 1F / (double) textureHeight;
+		Tessellator tessellator = Tessellator.getInstance();
+		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		bufferbuilder.pos(x, y + height, 0).tex(u * f, (v + height) * f1).endVertex();
+		bufferbuilder.pos(x + width, y + height, 0).tex((u + width) * f, (v + height) * f1).endVertex();
+		bufferbuilder.pos(x + width, y, 0).tex((u + width) * f, v * f1).endVertex();
+		bufferbuilder.pos(x, y, 0).tex(u * f, v * f1).endVertex();
+		tessellator.draw();
+	}
+
+	/**
+	 * Gets the pitch rotation between two vectors
+	 * 
+	 * @param source
+	 * @param destination
+	 * @return the pitch rotation
+	 */
+	@SideOnly(Side.CLIENT)
+	public static final double getPitch(Vec3d source, Vec3d destination) {
+		double pitch = Math.atan2(destination.y, Math.sqrt(destination.x * destination.x + destination.z * destination.z));
+		pitch = pitch * (180 / Math.PI);
+		pitch = pitch < 0 ? 360 - (-pitch) : pitch;
+		return 90 - pitch;
+	}
+
+	/**
+	 * Gets the yaw rotation between two vectors
+	 * 
+	 * @param source
+	 * @param destination
+	 * @return the yaw rotation
+	 */
+	public static final double getYaw(Vec3d source, Vec3d destination) {
+		double yaw = Math.atan2(destination.x - source.x, destination.z - source.z);
+		yaw = yaw * (180 / Math.PI);
+		yaw = yaw < 0 ? 360 - (-yaw) : yaw;
+		return yaw + 90;
+	}
+
 }

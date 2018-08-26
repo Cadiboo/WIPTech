@@ -15,15 +15,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class SPacketSyncModTileEntity implements IMessage, IMessageHandler<SPacketSyncModTileEntity, IMessage> {
+public class SPacketSyncTileEntity implements IMessage, IMessageHandler<SPacketSyncTileEntity, IMessage> {
 
 	private NBTTagCompound syncTag;
 	private BlockPos pos;
 
-	public SPacketSyncModTileEntity() {
+	public SPacketSyncTileEntity() {
 	}
 
-	public SPacketSyncModTileEntity(NBTTagCompound syncTag, BlockPos pos) {
+	public SPacketSyncTileEntity(NBTTagCompound syncTag, BlockPos pos) {
 		this.syncTag = syncTag;
 		this.pos = pos;
 	}
@@ -49,7 +49,7 @@ public class SPacketSyncModTileEntity implements IMessage, IMessageHandler<SPack
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IMessage onMessage(SPacketSyncModTileEntity message, MessageContext ctx) {
+	public IMessage onMessage(SPacketSyncTileEntity message, MessageContext ctx) {
 		if (message.syncTag != null) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
 				if (Minecraft.getMinecraft() == null)

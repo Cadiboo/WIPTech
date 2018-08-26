@@ -3,8 +3,8 @@ package cadiboo.wiptech.tileentity;
 import javax.annotation.Nonnull;
 
 import cadiboo.wiptech.network.ModNetworkManager;
-import cadiboo.wiptech.network.play.client.CPacketSyncModTileEntity;
-import cadiboo.wiptech.network.play.server.SPacketSyncModTileEntity;
+import cadiboo.wiptech.network.play.client.CPacketSyncTileEntity;
+import cadiboo.wiptech.network.play.server.SPacketSyncTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -52,7 +52,7 @@ public interface ITileEntitySyncable {
 		if (player instanceof EntityPlayerMP && shouldSyncToPlayer(player)) {
 			NBTTagCompound syncTag = new NBTTagCompound();
 			writeNBT(syncTag);
-			ModNetworkManager.NETWORK.sendTo(new SPacketSyncModTileEntity(syncTag, getPosition()), (EntityPlayerMP) player);
+			ModNetworkManager.NETWORK.sendTo(new SPacketSyncTileEntity(syncTag, getPosition()), (EntityPlayerMP) player);
 		}
 	}
 
@@ -73,7 +73,7 @@ public interface ITileEntitySyncable {
 	public default void syncToServer() {
 		NBTTagCompound syncTag = new NBTTagCompound();
 		writeNBT(syncTag);
-		ModNetworkManager.NETWORK.sendToServer(new CPacketSyncModTileEntity(syncTag, getPosition(), Minecraft.getMinecraft().world.provider.getDimension()));
+		ModNetworkManager.NETWORK.sendToServer(new CPacketSyncTileEntity(syncTag, getPosition(), Minecraft.getMinecraft().world.provider.getDimension()));
 	}
 
 	public default int getMaxSyncDistanceSquared() {

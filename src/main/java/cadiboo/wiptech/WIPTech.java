@@ -2,12 +2,14 @@ package cadiboo.wiptech;
 
 import java.lang.reflect.Field;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.util.IProxy;
+import cadiboo.wiptech.util.ModGuiHandler;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModWritingUtil;
+import cadiboo.wiptech.util.ModUtil;
 import cadiboo.wiptech.world.gen.ModWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -16,6 +18,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
@@ -41,23 +44,24 @@ public class WIPTech {
 	/***** FOR 1.13 *****/
 	// TODO Recipes
 	// TODO Texture locations
-	// TODO Lang file
 
 	/***** FOR ALL VERSIONS *****/
 	// TODO clean up JSONs
-	// TODO Wire & Enamel ItemBlock Models -> Wire & Enamel Item Models (Code & JSON
+	// TODO Wire & Enamel ItemBlock Models->Wire & Enamel Item Models (Code & JSON)
 	// TODO radioactivity
 	// TODO Slugs & SlugCasings
 	// TODO world gen to subscriber
 	// TODO NetworkManager to subscriber
-	// TODO models for Railgun, etc
 	// TODO generators
 	// TODO handheld coilgun
 	// TODO Gauss cannon (mounted coilgun)
 	// TODO handheld PlasmaGun & mounted Plasma Cannon
 	// TODO Crushing & hammering
 	// TODO weapon modules :( scopes, chips, etc
-	// TODO tungsten carbite
+
+	static {
+		WIPTech.info(ModUtil.getRomanNumeralFor(1000000), ModUtil.getRomanNumeralFor(321231), ModUtil.getRomanNumeralFor(0), ModUtil.getRomanNumeralFor(4), ModUtil.getRomanNumeralFor(2134));
+	}
 
 	@Instance(ModReference.ID)
 	public static WIPTech instance;
@@ -75,9 +79,9 @@ public class WIPTech {
 	public void preInit(final FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		proxy.logLogicalSide();
-		ModWritingUtil.writeMod();
 		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 3);
 		new ModNetworkManager();
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
 //		WIPTechAPI.addMaterial("bauxite", new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0, false));
 
 	}
@@ -97,7 +101,6 @@ public class WIPTech {
 	 */
 	@EventHandler
 	public void postinit(final FMLPostInitializationEvent event) {
-		ModWritingUtil.writeMod();
 	}
 
 	/**
@@ -109,8 +112,17 @@ public class WIPTech {
 	 */
 	public static void info(final Object... messages) {
 		for (Object msg : messages) {
-			logger.info(msg);
+			getLogger().info(msg);
 		}
+	}
+
+	private static Logger getLogger() {
+		if (logger == null) {
+			Logger tempLogger = LogManager.getLogger();
+			tempLogger.error("[" + WIPTech.class.getSimpleName() + "]: getLogger called before logger has been initalised! Providing default logger");
+			return tempLogger;
+		}
+		return logger;
 	}
 
 	/**
@@ -122,7 +134,7 @@ public class WIPTech {
 	 */
 	public static void error(final Object... messages) {
 		for (Object msg : messages) {
-			logger.error(msg);
+			getLogger().error(msg);
 		}
 	}
 
@@ -135,7 +147,7 @@ public class WIPTech {
 	 */
 	public static void debug(final Object... messages) {
 		for (Object msg : messages) {
-			logger.debug(msg);
+			getLogger().debug(msg);
 		}
 	}
 
@@ -148,7 +160,7 @@ public class WIPTech {
 	 */
 	public static void fatal(final Object... messages) {
 		for (Object msg : messages) {
-			logger.fatal(msg);
+			getLogger().fatal(msg);
 		}
 	}
 

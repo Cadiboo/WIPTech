@@ -1,4 +1,3 @@
 {
-	"parent": "wiptech:entity/portable_generator"
+	"parent": "wiptech:entity/portable_generator_body"
 }
-
