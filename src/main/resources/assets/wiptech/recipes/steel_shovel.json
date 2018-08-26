@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"X",
+		"#",
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:stick"
+		},		"X": {
+ 			"item": "wiptech:steel_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:steel_shovel",
+		"count": 1
+	}
+}

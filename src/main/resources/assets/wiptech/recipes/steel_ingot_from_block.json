@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "steel_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:steel_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:steel_ingot",
+		"count": 9
+	}
+}

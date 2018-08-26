@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+ 			"item": "wiptech:iron_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:iron_nugget",
+		"count": 9
+	}
+}

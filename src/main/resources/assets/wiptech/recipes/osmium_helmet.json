@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XXX",
+		"X X"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:osmium_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:osmium_helmet",
+		"count": 1
+	}
+}

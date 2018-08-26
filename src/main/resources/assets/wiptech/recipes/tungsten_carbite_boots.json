@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XXX",
+		"X X"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:tungsten_carbite_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:tungsten_carbite_boots",
+		"count": 1
+	}
+}

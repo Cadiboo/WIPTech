@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "uranium_ingot",
+	"pattern": [
+		"###",
+		"###",
+		"###"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:uranium_nugget"
+		}
+	},
+	"result": {
+		"item": "wiptech:uranium_ingot",
+		"count": 1
+	}
+}

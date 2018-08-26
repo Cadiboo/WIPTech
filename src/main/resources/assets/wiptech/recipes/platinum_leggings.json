@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XXX",
+		"X X",
+		"X X"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:platinum_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:platinum_leggings",
+		"count": 1
+	}
+}

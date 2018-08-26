@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XX",
+		" #",
+		" #"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:stick"
+		},		"X": {
+ 			"item": "wiptech:thorium_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:thorium_hoe",
+		"count": 1
+	}
+}

@@ -34,12 +34,13 @@ import cadiboo.wiptech.item.ItemPortableGenerator;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.item.ItemRailgun;
 import cadiboo.wiptech.item.ItemSlug;
-import cadiboo.wiptech.item.ModItem;
+import cadiboo.wiptech.item.ItemSlugCasing;
 import cadiboo.wiptech.item.ModItemBlock;
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ModEnums.BlockItemTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.SlugCasingTypes;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModUtil;
@@ -149,9 +150,11 @@ public final class EventSubscriber {
 
 		registry.register(new ItemFlamethrower("flamethrower"));
 
-		registry.register(new ModItem("slug_casing"));
-
 		registry.register(new ItemRailgun("railgun"));
+
+		registry.register(new ItemSlugCasing("slug_casing", SlugCasingTypes.BACK));
+		registry.register(new ItemSlugCasing("slug_casing", SlugCasingTypes.TOP));
+		registry.register(new ItemSlugCasing("slug_casing", SlugCasingTypes.BOTTOM));
 
 		WIPTech.info("Registered items");
 
@@ -275,7 +278,9 @@ public final class EventSubscriber {
 		registerItemModel(ModItems.PORTABLE_GENERATOR);
 		registerItemModel(ModItems.FLAMETHROWER);
 		registerItemModel(ModItems.RAILGUN);
-		registerItemModel(ModItems.SLUG_CASING);
+		registerItemModel(ModItems.SLUG_CASING_BACK);
+		registerItemModel(ModItems.SLUG_CASING_TOP);
+		registerItemModel(ModItems.SLUG_CASING_BOTTOM);
 
 		WIPTech.info("Registered models");
 

@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+ 			"item": "wiptech:uranium_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:uranium_nugget",
+		"count": 9
+	}
+}

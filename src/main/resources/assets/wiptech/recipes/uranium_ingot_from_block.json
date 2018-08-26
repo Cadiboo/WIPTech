@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "uranium_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:uranium_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:uranium_ingot",
+		"count": 9
+	}
+}

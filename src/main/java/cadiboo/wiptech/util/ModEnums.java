@@ -392,15 +392,17 @@ public class ModEnums {
 		}
 	}
 
-	public static enum WireTypes implements IEnumNameFormattable, IStringSerializable {
+	public static enum SlugCasingTypes implements IEnumNameFormattable, IStringSerializable {
 
-		/* @formatter:off */
-		BARE(0), ENAMEL(1);
-		/* @formatter:on */
+		BACK(0),
+
+		TOP(1),
+
+		BOTTOM(2);
 
 		private final int id;
 
-		WireTypes(int idIn) {
+		SlugCasingTypes(int idIn) {
 			this.id = idIn;
 		}
 
@@ -413,7 +415,7 @@ public class ModEnums {
 			return this.id;
 		}
 
-		public static WireTypes byId(int id) {
+		public static SlugCasingTypes byId(int id) {
 			return values()[Math.min(Math.abs(id), values().length)];
 		}
 	}

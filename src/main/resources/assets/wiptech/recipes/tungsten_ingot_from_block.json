@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "tungsten_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:tungsten_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:tungsten_ingot",
+		"count": 9
+	}
+}

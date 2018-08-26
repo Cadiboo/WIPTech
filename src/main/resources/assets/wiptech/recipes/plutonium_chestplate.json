@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"X X",
+		"XXX",
+		"XXX"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:plutonium_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:plutonium_chestplate",
+		"count": 1
+	}
+}

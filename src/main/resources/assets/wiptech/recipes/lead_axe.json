@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XX",
+		"X#",
+		" #"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:stick"
+		},		"X": {
+ 			"item": "wiptech:lead_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:lead_axe",
+		"count": 1
+	}
+}

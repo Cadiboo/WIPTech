@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "thorium_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:thorium_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:thorium_ingot",
+		"count": 9
+	}
+}

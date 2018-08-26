@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "tin_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:tin_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:tin_ingot",
+		"count": 9
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XXX",
+		" # ",
+		" # "
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:stick"
+		},		"X": {
+ 			"item": "wiptech:copper_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:copper_pickaxe",
+		"count": 1
+	}
+}

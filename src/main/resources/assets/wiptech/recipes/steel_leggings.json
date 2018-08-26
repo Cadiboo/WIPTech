@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XXX",
+		"X X",
+		"X X"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:steel_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:steel_leggings",
+		"count": 1
+	}
+}

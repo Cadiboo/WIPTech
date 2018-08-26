@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XX",
+		" #",
+		" #"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:stick"
+		},		"X": {
+ 			"item": "wiptech:nickel_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:nickel_hoe",
+		"count": 1
+	}
+}

@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XXX",
+		"X#X",
+		"XXX"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:concrete",
+			"data": 32767,		},		"X": {
+ 			"item": "wiptech:osmium_wire"
+		}
+	},
+	"result": {
+		"item": "wiptech:osmium_enamel",
+		"count": 8
+	}
+}

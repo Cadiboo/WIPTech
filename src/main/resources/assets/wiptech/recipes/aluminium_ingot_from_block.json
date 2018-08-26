@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "aluminium_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:aluminium_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:aluminium_ingot",
+		"count": 9
+	}
+}

@@ -9,7 +9,6 @@ import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.util.IProxy;
 import cadiboo.wiptech.util.ModGuiHandler;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModUtil;
 import cadiboo.wiptech.world.gen.ModWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -58,10 +57,6 @@ public class WIPTech {
 	// TODO handheld PlasmaGun & mounted Plasma Cannon
 	// TODO Crushing & hammering
 	// TODO weapon modules :( scopes, chips, etc
-
-	static {
-		WIPTech.info(ModUtil.getRomanNumeralFor(1000000), ModUtil.getRomanNumeralFor(321231), ModUtil.getRomanNumeralFor(0), ModUtil.getRomanNumeralFor(4), ModUtil.getRomanNumeralFor(2134));
-	}
 
 	@Instance(ModReference.ID)
 	public static WIPTech instance;

@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "platinum_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:platinum_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:platinum_ingot",
+		"count": 9
+	}
+}

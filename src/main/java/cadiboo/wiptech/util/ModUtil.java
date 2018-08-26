@@ -140,60 +140,25 @@ public class ModUtil {
 		return localisedName;
 	}
 
-	public static final String getRomanNumeralFor(int number) {
-		String[] normal = { "I", "V", "X", "L", "C", "M" };
-		String[] thousands = { "I̅", "V̅", "X̅", "L̅", "C̅", "M̅" };
+	private enum Roman {
+		I(1), V(5), X(10), L(50), C(100), D(500), M(1000);
+		private final int value;
 
-		String roman = "";
-
-		if (number > 2000) {
-			String str = getRomanNumeralFor((int) (number / 1000f));
-			for (int i = 0; i < normal.length; i++) {
-				str.replaceAll(normal[i], thousands[i]);
-			}
-			roman += str;
-			number -= (int) (number / 1000f);
-		} else if (number > 1000) {
-			roman += normal[5];
-			number -= 1000;
-		}
-		if (number > 100) {
-			for (int i = 0; i < (int) (number / 100f); i++) {
-				roman += normal[4];
-				number -= (int) (number / 100f);
-			}
+		private Roman(int value) {
+			this.value = value;
 		}
 
-		if (number > 50) {
-			for (int i = 0; i < (int) (number / 50f); i++) {
-				roman += normal[3];
-				number -= (int) (number / 50f);
-			}
+		public int toInt() {
+			return value;
 		}
 
-		if (number > 10) {
-			for (int i = 0; i < (int) (number / 10f); i++) {
-				roman += normal[2];
-				number -= (int) (number / 10f);
-			}
+		public boolean shouldCombine(Roman next) {
+			return this.value < next.value;
 		}
 
-		if (number > 5) {
-			for (int i = 0; i < (int) (number / 5f); i++) {
-				roman += normal[1];
-				number -= (int) (number / 5f);
-			}
+		public int toInt(Roman next) {
+			return next.value - this.value;
 		}
-
-		if (number > 1) {
-			for (int i = 0; i < (int) (number / 1f); i++) {
-				roman += normal[0];
-				number -= (int) (number / 1f);
-			}
-		}
-
-		return roman;
-
 	}
 
 	/**

@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"X",
+		"X",
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:stick"
+		},		"X": {
+ 			"item": "wiptech:titanium_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:titanium_sword",
+		"count": 1
+	}
+}

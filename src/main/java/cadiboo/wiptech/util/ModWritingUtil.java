@@ -17,10 +17,12 @@ import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,14 +31,16 @@ public class ModWritingUtil {
 
 	public static String default_variant_name = "normal";
 	private static String assetDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
+	private static String dataDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
 	public static boolean debugOres = true;
 
 	public static void writeMod() {
 
+		boolean recipes = true;
 		boolean lang = true;
 		boolean json = true;
 
-		WIPTech.info("infoModMaterialsCode with options write lang: " + lang + ", write json: " + json);
+		WIPTech.info("infoModMaterialsCode with options write recipes: " + recipes + ", write lang: " + lang + ", write json: " + json);
 
 		ArrayList<Tuple<String, String>> blockstates = new ArrayList<Tuple<String, String>>();
 		ArrayList<Tuple<String, String>> blockModels = new ArrayList<Tuple<String, String>>();
@@ -246,7 +250,406 @@ public class ModWritingUtil {
 
 		if (lang) {
 
-			WIPTech.info("Writing lang");
+			WIPTech.info("Initialising recipes");
+
+			ArrayList<Tuple<String, String>> recipesObj = new ArrayList<Tuple<String, String>>();
+
+			for (ModMaterials material : ModMaterials.values()) {
+
+				if (material.getOre() != null)
+					GameRegistry.addSmelting(new ItemStack(material.getOre()), new ItemStack(material.getIngot()), 1);
+
+				if (material.getBlock() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getBlock().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" + 
+							"	\"pattern\": [\n" + 
+							"		\"###\",\n" + 
+							"		\"###\",\n" + 
+							"		\"###\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"#\": {\n" + 
+							"			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getBlock().getRegistryName().toString()+"\"\n" + 
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				if (material.getIngot() != null) {
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getIngot().getRegistryName().getResourcePath() + "_from_block", "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" + 
+							"	\"group\": \""+material.getIngot().getRegistryName().getResourcePath()+"\",\n" + 
+							"	\"pattern\": [\n" + 
+							"		\"#\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"#\": {\n" + 
+							"			\"item\": \""+material.getBlock().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getIngot().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 9\n" + 
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getIngot().getRegistryName().getResourcePath() + "_from_nuggets", "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"group\": \""+material.getIngot().getRegistryName().getResourcePath()+"\",\n" + 
+							"	\"pattern\": [\n" + 
+							"		\"###\",\n" + 
+							"		\"###\",\n" + 
+							"		\"###\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"#\": {\n" + 
+							"			\"item\": \""+material.getNugget().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getIngot().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+				}
+
+				if (material.getNugget() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getNugget().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"#\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"#\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getNugget().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 9\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				// armor
+
+				if (material.getHelmet() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getHelmet().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"XXX\",\n" + 
+							"		\"X X\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getHelmet().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				if (material.getChestplate() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getChestplate().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"X X\",\n" + 
+							"		\"XXX\",\n" + 
+							"		\"XXX\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getChestplate().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				if (material.getLeggings() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getLeggings().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"XXX\",\n" + 
+							"		\"X X\",\n" + 
+							"		\"X X\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getLeggings().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				if (material.getBoots() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getBoots().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"XXX\",\n" + 
+							"		\"X X\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getBoots().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				// tools
+
+				if (material.getAxe() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getAxe().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"XX\",\n" + 
+							"		\"X#\",\n" + 
+							"		\" #\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"#\": {\n" + 
+							"			\"item\": \"minecraft:stick\"\n" + 
+							"		}," +
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getAxe().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				if (material.getPickaxe() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getPickaxe().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"XXX\",\n" + 
+							"		\" # \",\n" + 
+							"		\" # \"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"#\": {\n" + 
+							"			\"item\": \"minecraft:stick\"\n" + 
+							"		}," +
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getPickaxe().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				if (material.getSword() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getSword().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"X\",\n" + 
+							"		\"X\",\n" + 
+							"		\"#\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"#\": {\n" + 
+							"			\"item\": \"minecraft:stick\"\n" + 
+							"		}," +
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getSword().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				if (material.getShovel() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getShovel().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"X\",\n" + 
+							"		\"#\",\n" + 
+							"		\"#\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"#\": {\n" + 
+							"			\"item\": \"minecraft:stick\"\n" + 
+							"		}," +
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getShovel().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				if (material.getHoe() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getHoe().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"XX\",\n" + 
+							"		\" #\",\n" + 
+							"		\" #\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"#\": {\n" + 
+							"			\"item\": \"minecraft:stick\"\n" + 
+							"		}," +
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getHoe().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				//
+
+//				if (material.getWire() != null)
+//					/*@formatter:off*/
+//					recipesObj.add(new Tuple<String, String>(material.getWire().getRegistryName().getResourcePath(), "{\n" + 
+//							"	\"type\": \"minecraft:crafting_shaped\",\n" + 
+//							"	\"pattern\": [\n" + 
+//							"		\"##\"\n" + 
+//							"	],\n" + 
+//							"	\"key\": {\n" + 
+//							"		\"#\": {\n" + 
+//							"			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+//							"		}\n" + 
+//							"	},\n" + 
+//							"	\"result\": {\n" + 
+//							"		\"item\": \""+material.getWire().getRegistryName().toString()+"\"\n" + 
+//							"	}\n" + 
+//							"}"));
+//					/*@formatter:on*/
+
+				if (material.getEnamel() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getEnamel().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\"XXX\",\n" + 
+							"		\"X#X\",\n" + 
+							"		\"XXX\"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"#\": {\n" + 
+							"			\"item\": \"minecraft:concrete\",\n" + 
+							"			\"data\": 32767," +
+							"		}," +
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getWire().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getEnamel().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 8\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+				if (material.getRail() != null)
+					;
+
+				if (material.getCoil() != null)
+					;
+
+				if (material.getSpool() != null)
+					;
+
+				if (material.getSlugItem() != null)
+					/*@formatter:off*/
+					recipesObj.add(new Tuple<String, String>(material.getPickaxe().getRegistryName().getResourcePath(), "{\n" + 
+							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
+							"	\"pattern\": [\n" + 
+							"		\" B \",\n" + 
+							"		\"AXX\",\n" + 
+							"		\" C \"\n" + 
+							"	],\n" + 
+							"	\"key\": {\n" + 
+							"		\"A\": {\n" + 
+							" 			\"item\": \""+ModItems.SLUG_CASING_BACK.getRegistryName().toString()+"\"\n" + 
+							"		}," +
+							"		\"B\": {\n" + 
+							" 			\"item\": \""+ModItems.SLUG_CASING_TOP.getRegistryName().toString()+"\"\n" + 
+							"		}," +
+							"		\"C\": {\n" + 
+							" 			\"item\": \""+ModItems.SLUG_CASING_BOTTOM.getRegistryName().toString()+"\"\n" + 
+							"		}," +
+							"		\"X\": {\n" + 
+							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							"		}\n" + 
+							"	},\n" + 
+							"	\"result\": {\n" + 
+							"		\"item\": \""+material.getPickaxe().getRegistryName().toString()+"\",\n" + 
+							"		\"count\": 1\n" +
+							"	}\n" + 
+							"}"));
+					/*@formatter:on*/
+
+			}
+
+			WIPTech.info("Writing recipes");
+			for (Tuple<String, String> recipe : recipesObj) {
+				String name = recipe.getFirst();
+				List<String> data = new ArrayList<String>();
+				data.add(recipe.getSecond());
+				// TODO dataDir for 1.13
+				Path file = Paths.get(assetDir + "recipes/" + name.toLowerCase() + ".json");
+				try {
+					Files.write(file, data, Charset.forName("UTF-8"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+
+		if (lang) {
+
+			WIPTech.info("Initialising lang");
 
 			ArrayList<Tuple<String, String>> langObj = new ArrayList<Tuple<String, String>>();
 
@@ -357,9 +760,9 @@ public class ModWritingUtil {
 
 			List<String> data = new ArrayList<String>();
 
-			for (Tuple<String, String> langEntity : langObj) {
-				String unlocalised = langEntity.getFirst();
-				String name = langEntity.getSecond();
+			for (Tuple<String, String> langEntry : langObj) {
+				String unlocalised = langEntry.getFirst();
+				String name = langEntry.getSecond();
 
 				if (Loader.MC_VERSION.contains("1.13"))
 					data.add("\"" + unlocalised + ".name" + "\"" + ": " + "\"" + name + "\"" + ",");
@@ -387,17 +790,12 @@ public class ModWritingUtil {
 				finalData.add("}");
 
 			Path file = Paths.get(assetDir + "lang/en_us." + (Loader.MC_VERSION.contains("1.13") ? "json" : "lang"));
+			WIPTech.info("Writing lang");
 			try {
 				Files.write(file, finalData, Charset.forName("UTF-8"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-//			{
-//				  "language.name": "English",
-//				  "language.region": "United States",
-//				  "language.code": "en_us",
-//				  "gui.done": "Done",
 
 		}
 

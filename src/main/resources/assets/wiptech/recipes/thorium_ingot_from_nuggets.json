@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "thorium_ingot",
+	"pattern": [
+		"###",
+		"###",
+		"###"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:thorium_nugget"
+		}
+	},
+	"result": {
+		"item": "wiptech:thorium_ingot",
+		"count": 1
+	}
+}

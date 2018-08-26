@@ -1,0 +1,19 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XX",
+		"X#",
+		" #"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:stick"
+		},		"X": {
+ 			"item": "wiptech:platinum_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:platinum_axe",
+		"count": 1
+	}
+}

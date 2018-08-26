@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"X X",
+		"XXX",
+		"XXX"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:nickel_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:nickel_chestplate",
+		"count": 1
+	}
+}

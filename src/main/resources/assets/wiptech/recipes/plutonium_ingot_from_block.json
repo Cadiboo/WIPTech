@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "plutonium_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:plutonium_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:plutonium_ingot",
+		"count": 9
+	}
+}

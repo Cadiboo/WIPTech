@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "copper_ingot",
+	"pattern": [
+		"###",
+		"###",
+		"###"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:copper_nugget"
+		}
+	},
+	"result": {
+		"item": "wiptech:copper_ingot",
+		"count": 1
+	}
+}

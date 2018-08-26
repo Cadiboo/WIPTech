@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XXX",
+		"X X"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:lead_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:lead_boots",
+		"count": 1
+	}
+}

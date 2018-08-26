@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "nickel_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:nickel_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:nickel_ingot",
+		"count": 9
+	}
+}

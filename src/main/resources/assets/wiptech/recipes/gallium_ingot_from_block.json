@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "gallium_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:gallium_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:gallium_ingot",
+		"count": 9
+	}
+}

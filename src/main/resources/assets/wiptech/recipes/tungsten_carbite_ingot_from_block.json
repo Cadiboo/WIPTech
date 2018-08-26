@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "tungsten_carbite_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:tungsten_carbite_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:tungsten_carbite_ingot",
+		"count": 9
+	}
+}

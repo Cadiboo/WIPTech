@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XXX",
+		"X X"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:gallium_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:gallium_helmet",
+		"count": 1
+	}
+}
