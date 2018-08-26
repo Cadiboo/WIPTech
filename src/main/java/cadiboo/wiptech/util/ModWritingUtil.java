@@ -259,7 +259,7 @@ public class ModWritingUtil {
 				if (material.getOre() != null)
 					GameRegistry.addSmelting(new ItemStack(material.getOre()), new ItemStack(material.getIngot()), 1);
 
-				if (material.getBlock() != null)
+				if (material.getBlock() != null && !material.getBlock().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getBlock().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" + 
@@ -279,7 +279,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getIngot() != null) {
+				if (material.getIngot() != null && !material.getIngot().getRegistryName().getResourceDomain().equals("minecraft")) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getIngot().getRegistryName().getResourcePath() + "_from_block", "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" + 
@@ -320,7 +320,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 				}
 
-				if (material.getNugget() != null)
+				if (material.getNugget() != null && !material.getNugget().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getNugget().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -341,7 +341,7 @@ public class ModWritingUtil {
 
 				// armor
 
-				if (material.getHelmet() != null)
+				if (material.getHelmet() != null && !material.getHelmet().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getHelmet().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -361,7 +361,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getChestplate() != null)
+				if (material.getChestplate() != null && !material.getChestplate().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getChestplate().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -382,7 +382,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getLeggings() != null)
+				if (material.getLeggings() != null && !material.getLeggings().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getLeggings().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -403,12 +403,12 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getBoots() != null)
+				if (material.getBoots() != null && !material.getBoots().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getBoots().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
 							"	\"pattern\": [\n" + 
-							"		\"XXX\",\n" + 
+							"		\"X X\",\n" + 
 							"		\"X X\"\n" + 
 							"	],\n" + 
 							"	\"key\": {\n" + 
@@ -425,7 +425,7 @@ public class ModWritingUtil {
 
 				// tools
 
-				if (material.getAxe() != null)
+				if (material.getAxe() != null && !material.getAxe().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getAxe().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -449,7 +449,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getPickaxe() != null)
+				if (material.getPickaxe() != null && !material.getPickaxe().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getPickaxe().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -473,7 +473,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getSword() != null)
+				if (material.getSword() != null && !material.getSword().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getSword().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -497,7 +497,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getShovel() != null)
+				if (material.getShovel() != null && !material.getShovel().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getShovel().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -521,7 +521,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getHoe() != null)
+				if (material.getHoe() != null && !material.getHoe().getRegistryName().getResourceDomain().equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getHoe().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -533,7 +533,7 @@ public class ModWritingUtil {
 							"	\"key\": {\n" + 
 							"		\"#\": {\n" + 
 							"			\"item\": \"minecraft:stick\"\n" + 
-							"		}," +
+							"		},\n" +
 							"		\"X\": {\n" + 
 							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
 							"		}\n" + 
@@ -577,8 +577,8 @@ public class ModWritingUtil {
 							"	\"key\": {\n" + 
 							"		\"#\": {\n" + 
 							"			\"item\": \"minecraft:concrete\",\n" + 
-							"			\"data\": 32767," +
-							"		}," +
+							"			\"data\": 32767\n" +
+							"		},\n" +
 							"		\"X\": {\n" + 
 							" 			\"item\": \""+material.getWire().getRegistryName().toString()+"\"\n" + 
 							"		}\n" + 

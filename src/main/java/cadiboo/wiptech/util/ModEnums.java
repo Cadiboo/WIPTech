@@ -89,20 +89,44 @@ public class ModEnums {
 	 */
 	public static enum ModMaterials implements IEnumNameFormattable {
 
-		/* @formatter:off */
 		/* ore block ingot armor tools hard cond */
-		URANIUM(0, new ModMaterialProperties(true, true, true, true, true, 6.00f, 24)), TUNGSTEN(1, new ModMaterialProperties(true, true, true, true, true, 7.50f, 173)), TUNGSTEN_CARBITE(2,
-				new ModMaterialProperties(false, true, true, true, true, 9.00f, 173)), TITANIUM(3, new ModMaterialProperties(true, true, true, true, true, 6.00f, 23)), TIN(4,
-						new ModMaterialProperties(true, true, true, true, true, 1.50f, 68)), THORIUM(5, new ModMaterialProperties(true, true, true, true, true, 3.00f, 42)), SILVER(6,
-								new ModMaterialProperties(true, true, true, true, true, 2.50f, 407)), PLATINUM(7, new ModMaterialProperties(true, true, true, true, true, 3.50f, 73)), PLUTONIUM(8,
-										new ModMaterialProperties(true, true, true, true, true, 0.01f, 8)), OSMIUM(9, new ModMaterialProperties(true, true, true, true, true, 7.00f, 61)), NICKEL(10,
-												new ModMaterialProperties(true, true, true, true, true, 4.00f, 90)), STEEL(11, new ModMaterialProperties(false, true, true, true, true, 4.50f, 54)),
-		ALUMINIUM(12, new ModMaterialProperties(true, true, true, true, true, 2.75f, 204)), COPPER(13, new ModMaterialProperties(true, true, true, true, true, 3.00f, 386)), GOLD(14,
-				new ModMaterialProperties(true, true, true, true, true, 2.50f, 315)), IRON(15, new ModMaterialProperties(true, true, true, true, true, 4.00f, 73)), LEAD(16, new ModMaterialProperties(
-						true, true, true, true, true, 1.50f, 35)), GALLIUM(17, new ModMaterialProperties(true, true, true, true, true, 1.50f, 29)), BAUXITE(18, new ModMaterialProperties(true, false,
-								false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0));
+		URANIUM(0, new ModMaterialProperties(true, true, true, true, true, 6.00f, 24)),
 
-		/* @formatter:on */
+		TUNGSTEN(1, new ModMaterialProperties(true, true, true, true, true, 7.50f, 173)),
+
+		TUNGSTEN_CARBITE(2, new ModMaterialProperties(false, true, true, true, true, 9.00f, 173)),
+
+		TITANIUM(3, new ModMaterialProperties(true, true, true, true, true, 6.00f, 23)),
+
+		TIN(4, new ModMaterialProperties(true, true, true, true, true, 1.50f, 68)),
+
+		THORIUM(5, new ModMaterialProperties(true, true, true, true, true, 3.00f, 42)),
+
+		SILVER(6, new ModMaterialProperties(true, true, true, true, true, 2.50f, 407)),
+
+		PLATINUM(7, new ModMaterialProperties(true, true, true, true, true, 3.50f, 73)),
+
+		PLUTONIUM(8, new ModMaterialProperties(true, true, true, true, true, 0.01f, 8)),
+
+		OSMIUM(9, new ModMaterialProperties(true, true, true, true, true, 7.00f, 61)),
+
+		NICKEL(10, new ModMaterialProperties(true, true, true, true, true, 4.00f, 90)),
+
+		STEEL(11, new ModMaterialProperties(false, true, true, true, true, 4.50f, 54)),
+
+		ALUMINIUM(12, new ModMaterialProperties(true, true, true, true, true, 2.75f, 204)),
+
+		COPPER(13, new ModMaterialProperties(true, true, true, true, true, 3.00f, 386)),
+
+		GOLD(14, new ModMaterialProperties(true, true, true, true, true, 2.50f, 315)),
+
+		IRON(15, new ModMaterialProperties(true, true, true, true, true, 4.00f, 73)),
+
+		LEAD(16, new ModMaterialProperties(true, true, true, true, true, 1.50f, 35)),
+
+		GALLIUM(17, new ModMaterialProperties(true, true, true, true, true, 1.50f, 29)),
+
+		BAUXITE(18, new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0));
 
 		private final int id;
 		private final ModMaterialProperties properties;

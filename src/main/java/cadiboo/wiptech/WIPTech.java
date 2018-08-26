@@ -41,10 +41,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class WIPTech {
 
 	/***** FOR 1.13 *****/
-	// TODO Recipes
 	// TODO Texture locations
+	// TODO vanilla recipes
 
 	/***** FOR ALL VERSIONS *****/
+	// TODO Armor textures
 	// TODO clean up JSONs
 	// TODO Wire & Enamel ItemBlock Models->Wire & Enamel Item Models (Code & JSON)
 	// TODO radioactivity
@@ -57,6 +58,7 @@ public class WIPTech {
 	// TODO handheld PlasmaGun & mounted Plasma Cannon
 	// TODO Crushing & hammering
 	// TODO weapon modules :( scopes, chips, etc
+	// TODO steel & tungsten carbite
 
 	@Instance(ModReference.ID)
 	public static WIPTech instance;

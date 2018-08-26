@@ -8,7 +8,8 @@
 	"key": {
 		"#": {
 			"item": "minecraft:stick"
-		},		"X": {
+		},
+		"X": {
  			"item": "wiptech:titanium_ingot"
 		}
 	},

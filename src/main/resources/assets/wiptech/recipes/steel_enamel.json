@@ -8,7 +8,9 @@
 	"key": {
 		"#": {
 			"item": "minecraft:concrete",
-			"data": 32767,		},		"X": {
+			"data": 32767
+		},
+		"X": {
  			"item": "wiptech:steel_wire"
 		}
 	},
