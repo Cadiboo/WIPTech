@@ -166,12 +166,14 @@ public class BlockWire extends ModMaterialBlock {
 	@Override
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 
+//		EnergyNetworkList.INSTANCE.getNetworks().clear();
+
 		if (worldIn != null) {
 			TileEntity tile = worldIn.getTileEntity(pos);
 			if (tile != null) {
 				if (tile instanceof TileEntityWire) {
 					TileEntityWire wire = (TileEntityWire) tile;
-					wire.getNetwork().remove(wire.getPos());
+					wire.getNetwork().remove(pos);
 				}
 			}
 		}

@@ -25,6 +25,7 @@ public enum EnergyNetworkList {
 
 	@Nullable
 	public EnergyNetwork getNetworkFor(World world, BlockPos position) {
+		refresh();
 		for (EnergyNetwork network : networks) {
 			if (network.getWorld() != world)
 				continue;
@@ -39,6 +40,7 @@ public enum EnergyNetworkList {
 
 	@Nonnull
 	public EnergyNetwork getOrCreateNetworkFor(World world, BlockPos position, ModEnergyStorage energy) {
+		refresh();
 		EnergyNetwork foundNetwork = getNetworkFor(world, position);
 		if (foundNetwork == null) {
 
@@ -60,9 +62,32 @@ public enum EnergyNetworkList {
 	}
 
 	private EnergyNetwork createNetwork(World world, BlockPos position, ModEnergyStorage energy) {
+		refresh();
 		EnergyNetwork network = new EnergyNetwork(world).add(position, energy);
-		getNetworks().add(network);
+		if (!world.isRemote)
+			getNetworks().add(network);
 		return network;
+	}
+
+	public void refresh() {
+//		getNetworks().clear();
+		for (int i = 0; i < getNetworks().size(); i++) {
+			if (getNetworks().get(i).getConnections().size() > 0)
+				continue;
+			getNetworks().remove(i);
+		}
+	}
+
+	public void reload() {
+		refresh();
+		final ArrayList<EnergyNetwork> networksCopy = new ArrayList<EnergyNetwork>(getNetworks());
+		getNetworks().clear();
+		for (EnergyNetwork network : networksCopy) {
+			for (BlockPos position : network.getPositions()) {
+				this.getOrCreateNetworkFor(network.getWorld(), position, network.getEnergyStorage(position));
+			}
+			network = null;
+		}
 	}
 
 }

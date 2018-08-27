@@ -1,13 +1,13 @@
 package cadiboo.wiptech;
 
-import org.lwjgl.opengl.GL11;
-
 import cadiboo.wiptech.block.BlockEnamel;
 import cadiboo.wiptech.block.BlockItem;
 import cadiboo.wiptech.block.BlockModOre;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.capability.energy.EnergyNetwork;
+import cadiboo.wiptech.capability.energy.EnergyNetworkList;
 import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.client.model.ModelsCache;
 import cadiboo.wiptech.client.render.block.model.WireModelLoader;
@@ -51,6 +51,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -59,6 +61,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -484,53 +487,32 @@ public final class EventSubscriber {
 	@SideOnly(Side.CLIENT)
 	public static final void onRenderWorldLast(final RenderWorldLastEvent event) {
 
-		Entity player = Minecraft.getMinecraft().getRenderViewEntity();
-		double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.getPartialTicks();
-		double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.getPartialTicks();
-		double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.getPartialTicks();
-
-		GL11.glPushMatrix();
-		GL11.glTranslated(-x, -y, -z);
-
-		GL11.glBegin(GL11.GL_LINES);
-
-		GL11.glColor4f(0f, 255f, 237f, 0.3f);
-
-		float mx = 0 + 0.5F;
-		float my = 66 + 0.5F;
-		float mz = 0 + 0.5F;
-
-		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz - 0.5F);
-
-		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz + 0.5F);
-		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz + 0.5F);
-		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz + 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz + 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz + 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz + 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz + 0.5F);
-		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz + 0.5F);
-
-		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz + 0.5F);
-		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz + 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz + 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz - 0.5F);
-		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz + 0.5F);
-
-		GL11.glEnd();
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glPopMatrix();
-
+		for (EnergyNetwork network : EnergyNetworkList.INSTANCE.getNetworks())
+			for (BlockPos pos : network.getPositions()) {
+				// your positions. You might want to shift them a bit too
+				int sX = pos.getX();
+				int sY = pos.getY();
+				int sZ = pos.getZ();
+				// Usually the player
+				Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+				// Interpolating everything back to 0,0,0. These are transforms you can find at
+				// RenderEntity class
+				double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * event.getPartialTicks();
+				double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * event.getPartialTicks();
+				double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * event.getPartialTicks();
+				// Apply 0-our transforms to set everything back to 0,0,0
+				Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
+//				Tessellator.getInstance().getBuffer().setTranslation(100, 0, 0);
+				// Your render function which renders boxes at a desired position. In this
+				// example I just copy-pasted the one on TileEntityStructureRenderer
+				Minecraft.getMinecraft().getTextureManager().bindTexture(new ModResourceLocation(ModReference.ID, "textures/block/uranium_block.png"));
+				GlStateManager.color(pos.getX(), pos.getY(), pos.getZ());
+				ClientUtil.drawCuboidAt(sX + 0.5, sY + 0.5, sZ + 0.5, 0, 1, 0, 1, 0.5, 0.5, 0.5, 1);
+//				renderBox(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), sX, sY, sZ, sX + 1, sY + 1, sZ + 1);
+				// When you are done rendering all your boxes reset the offsets. We do not want
+				// everything that renders next to still be at 0,0,0 :)
+				Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
+			}
 	}
 
 	@SubscribeEvent

@@ -4,7 +4,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import cadiboo.wiptech.WIPTech;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -84,6 +87,7 @@ public class EnergyNetwork {
 
 	public EnergyNetwork remove(BlockPos connectionPosition) {
 		getConnections().remove(connectionPosition);
+		EnergyNetworkList.INSTANCE.refresh();
 		return this;
 	}
 
@@ -110,6 +114,27 @@ public class EnergyNetwork {
 
 		}
 
+	}
+
+	@Nullable
+	public EnergyNetwork tryMerge(EnergyNetwork other) {
+		if (other.getWorld() != this.getWorld())
+			return null;
+		for (BlockPos myConnectionPosition : this.getPositions()) {
+			for (BlockPos otherConnectionPosition : other.getPositions()) {
+				for (EnumFacing facing : EnumFacing.VALUES) {
+					BlockPos pos = myConnectionPosition.offset(facing);
+					if (otherConnectionPosition.equals(pos)) {
+						EnergyNetwork newNetwork = new EnergyNetwork(getWorld());
+						newNetwork.getConnections().putAll(getConnections());
+						newNetwork.getConnections().putAll(other.getConnections());
+						return newNetwork;
+					}
+				}
+			}
+		}
+
+		return null;
 	}
 
 }

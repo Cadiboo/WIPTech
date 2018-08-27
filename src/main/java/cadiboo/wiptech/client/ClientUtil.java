@@ -444,57 +444,57 @@ public class ClientUtil {
 	 */
 	@SideOnly(Side.CLIENT)
 	public static final void drawCuboid(float minU, float maxU, float minV, float maxV, double x_size, double y_size, double z_size, double scale) {
+		drawCuboidAt(0, 0, 0, minU, maxU, minV, maxV, x_size, y_size, z_size, scale);
+	}
 
+	public static void drawCuboidAt(double x, double y, double z, float minU, float maxU, float minV, float maxV, double x_size, double y_size, double z_size, double scale) {
+
+		GlStateManager.pushMatrix();
 		GlStateManager.scale(scale, scale, scale);
-
-		double hlfU = minU + (maxU - minU) / 2;
-		double hlfV = minV + (maxV - minV) / 2;
-
-		double centre = 0d;
 
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		// UP
-		bufferbuilder.pos(-x_size, y_size, -z_size).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-x_size, y_size, z_size).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(x_size, y_size, z_size).tex(minU, minV).endVertex();
-		bufferbuilder.pos(x_size, y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, z_size + z).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, z_size + z).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, -z_size + z).tex(minU, maxV).endVertex();
 
 		// DOWN
-		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, z_size + z).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, -z_size + z).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, z_size + z).tex(maxU, minV).endVertex();
 
 		// LEFT
-		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(x_size, y_size, -z_size).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(x_size, y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, z_size + z).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, -z_size + z).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, z_size + z).tex(minU, minV).endVertex();
 
 		// RIGHT
-		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-x_size, y_size, z_size).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-x_size, y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, -z_size + z).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, z_size + z).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, z_size + z).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
 
 		// BACK
-		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-x_size, y_size, -z_size).tex(minU, minV).endVertex();
-		bufferbuilder.pos(x_size, y_size, -z_size).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, -z_size + z).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, -z_size + z).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, -z_size + z).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
 
 		// FRONT
-		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(x_size, y_size, z_size).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-x_size, y_size, z_size).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, z_size + z).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, z_size + z).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, z_size + z).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, z_size + z).tex(minU, minV).endVertex();
 
 		tessellator.draw();
 
-		GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
+		GlStateManager.popMatrix();
 	}
 
 	/**
@@ -516,7 +516,12 @@ public class ClientUtil {
 	 */
 	@SideOnly(Side.CLIENT)
 	public static final void drawSeamlessCuboid(float minU, float maxU, float minV, float maxV, double z_size, double y_size, double x_size, double scale) {
+		drawSeamlessCuboidAt(0, 0, 0, minU, maxU, minV, maxV, x_size, y_size, z_size, scale);
+	}
 
+	public static void drawSeamlessCuboidAt(double x, double y, double z, float minU, float maxU, float minV, float maxV, double x_size, double y_size, double z_size, double scale) {
+
+		GlStateManager.pushMatrix();
 		GlStateManager.scale(scale, scale, scale);
 
 		double hlfU = minU + (maxU - minU) / 2;
@@ -529,56 +534,56 @@ public class ClientUtil {
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		// UP
-		bufferbuilder.pos(-x_size, y_size, -z_size).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(-x_size, y_size, z_size).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(x_size, y_size, z_size).tex(minU, minV).endVertex();
-		bufferbuilder.pos(x_size, y_size, -z_size).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, z_size + z).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, z_size + z).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, -z_size + z).tex(minU, maxV).endVertex();
 
 		// DOWN
-		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, z_size + z).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, -z_size + z).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, z_size + z).tex(maxU, minV).endVertex();
 
 		// LEFT
-		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(x_size, y_size, -z_size).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(x_size, y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, z_size + z).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, -z_size + z).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, z_size + z).tex(minU, minV).endVertex();
 
 		// RIGHT
-		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-x_size, y_size, z_size).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-x_size, y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, -z_size + z).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, z_size + z).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, z_size + z).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
 
 		// BACK BOTTOM
-		bufferbuilder.pos(-x_size, -y_size, -z_size).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(-x_size, centre, -z_size).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos(x_size, centre, -z_size).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(x_size, -y_size, -z_size).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, -z_size + z).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(-x_size + x, centre, -z_size + z).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(x_size + x, centre, -z_size + z).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
 
 		// BACK TOP
-		bufferbuilder.pos(-x_size, centre, -z_size).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(-x_size, y_size, -z_size).tex(maxU, maxV).endVertex();
-		bufferbuilder.pos(x_size, y_size, -z_size).tex(minU, maxV).endVertex();
-		bufferbuilder.pos(x_size, centre, -z_size).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(-x_size + x, centre, -z_size + z).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, -z_size + z).tex(maxU, maxV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, -z_size + z).tex(minU, maxV).endVertex();
+		bufferbuilder.pos(x_size + x, centre, -z_size + z).tex(minU, hlfV).endVertex();
 
 		// FRONT BOTTOM
-		bufferbuilder.pos(x_size, -y_size, z_size).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(x_size, centre, z_size).tex(maxU, hlfV).endVertex();
-		bufferbuilder.pos(-x_size, centre, z_size).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos(-x_size, -y_size, z_size).tex(minU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, -y_size + y, z_size + z).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(x_size + x, centre, z_size + z).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(-x_size + x, centre, z_size + z).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(-x_size + x, -y_size + y, z_size + z).tex(minU, minV).endVertex();
 
 		// FRONT TOP
-		bufferbuilder.pos(x_size, centre, z_size).tex(minU, hlfV).endVertex();
-		bufferbuilder.pos(x_size, y_size, z_size).tex(minU, minV).endVertex();
-		bufferbuilder.pos(-x_size, y_size, z_size).tex(maxU, minV).endVertex();
-		bufferbuilder.pos(-x_size, centre, z_size).tex(maxU, hlfV).endVertex();
+		bufferbuilder.pos(x_size + x, centre, z_size + z).tex(minU, hlfV).endVertex();
+		bufferbuilder.pos(x_size + x, y_size + y, z_size + z).tex(minU, minV).endVertex();
+		bufferbuilder.pos(-x_size + x, y_size + y, z_size + z).tex(maxU, minV).endVertex();
+		bufferbuilder.pos(-x_size + x, centre, z_size + z).tex(maxU, hlfV).endVertex();
 
 		tessellator.draw();
 
-		GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
+		GlStateManager.popMatrix();
 	}
 
 	/**

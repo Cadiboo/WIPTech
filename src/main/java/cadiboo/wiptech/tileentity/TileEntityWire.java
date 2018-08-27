@@ -34,7 +34,7 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 	public void setPos(BlockPos posIn) {
 		if (this.network != null)
 			this.network.remove(getPos());
-		this.network = EnergyNetworkList.INSTANCE.getOrCreateNetworkFor(this.world, pos, energy);
+		this.network = EnergyNetworkList.INSTANCE.getOrCreateNetworkFor(this.world, posIn, energy);
 		super.setPos(posIn);
 	}
 
