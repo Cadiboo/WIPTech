@@ -7,7 +7,10 @@ import cadiboo.wiptech.util.ModResourceLocation;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class GuiPortableGenerator extends GuiContainer {
 
 	private final InventoryPlayer playerInventory;

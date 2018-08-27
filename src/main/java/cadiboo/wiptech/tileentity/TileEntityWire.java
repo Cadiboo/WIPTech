@@ -2,9 +2,10 @@ package cadiboo.wiptech.tileentity;
 
 import java.util.List;
 
-import cadiboo.wiptech.capability.IEnergyUser;
-import cadiboo.wiptech.capability.ModEnergyStorage;
-import cadiboo.wiptech.capability.SidedModEnergyStorage;
+import cadiboo.wiptech.capability.energy.EnergyNetwork;
+import cadiboo.wiptech.capability.energy.EnergyNetworkList;
+import cadiboo.wiptech.capability.energy.IEnergyUser;
+import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.util.ModDamageSource;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -21,10 +22,20 @@ import net.minecraftforge.energy.CapabilityEnergy;
 
 public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser, ITileEntitySyncable {
 
-	private final SidedModEnergyStorage energy;
+	private EnergyNetwork network;
+	private final ModEnergyStorage energy;
 
 	public TileEntityWire() {
-		this.energy = new SidedModEnergyStorage(10000, EnumFacing.VALUES);
+		super();
+		this.energy = new ModEnergyStorage(10000);
+	}
+
+	@Override
+	public void setPos(BlockPos posIn) {
+		if (this.network != null)
+			this.network.remove(getPos());
+		this.network = EnergyNetworkList.INSTANCE.getOrCreateNetworkFor(this.world, pos, energy);
+		super.setPos(posIn);
 	}
 
 	@Override
@@ -41,7 +52,7 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 
 				float damage = Math.min(getElectrocutionDamage(), entity.getHealth());
 
-				if (energy.extractEnergy(getElectrocutionEnergy(), true) == getElectrocutionEnergy()) {
+				if (getEnergy().extractEnergy(getElectrocutionEnergy(), true) == getElectrocutionEnergy()) {
 
 					entity.attackEntityFrom(ModDamageSource.ELECTRICITY, damage);
 					entity.setFire(1);
@@ -50,12 +61,13 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 			}
 		});
 		transferEnergyToAllAround();
+		network.update();
 	}
 
 	@Override
 	public int transferEnergyTo(EnumFacing side, int energyToTransfer, boolean simulate) {
-		if (IEnergyUser.super.transferEnergyTo(side, energyToTransfer, true) == energyToTransfer && (energy.getStorage(side) != energy.getLastRecieved() || world.getTotalWorldTime() % 10 == 0))
-			return IEnergyUser.super.transferEnergyTo(side, energyToTransfer, simulate);
+//		if (IEnergyUser.super.transferEnergyTo(side, energyToTransfer, true) == energyToTransfer && (getEnergy().getStorage(side) != energy.getLastRecieved() || world.getTotalWorldTime() % 10 == 0))
+//			return IEnergyUser.super.transferEnergyTo(side, energyToTransfer, simulate);
 		return 0;
 	}
 
@@ -68,7 +80,7 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 	}
 
 	public boolean shouldElectrocuteEntity(Entity entity) {
-		return entity instanceof EntityLivingBase && this.energy.getEnergyStored() >= getElectrocutionEnergy();
+		return entity instanceof EntityLivingBase && this.getEnergy().getEnergyStored() >= getElectrocutionEnergy();
 	}
 
 	public List<Entity> getElectrocutableEntities() {
@@ -109,7 +121,7 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 	@Override
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 		if (capability == CapabilityEnergy.ENERGY) {
-			return (T) energy.getStorage(facing);
+			return (T) getEnergy();
 		}
 		return super.getCapability(capability, facing);
 	}
@@ -130,12 +142,16 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 	@Override
 	public void readNBT(NBTTagCompound syncTag) {
 		if (syncTag.hasKey("energy"))
-			this.energy.setEnergy(syncTag.getInteger("energy"));
+			this.getEnergy().setEnergyStored(syncTag.getInteger("energy"));
 	}
 
 	@Override
 	public void writeNBT(NBTTagCompound syncTag) {
-		syncTag.setInteger("energy", energy.getEnergyStored());
+		syncTag.setInteger("energy", getEnergy().getEnergyStored());
+	}
+
+	public EnergyNetwork getNetwork() {
+		return network;
 	}
 
 }

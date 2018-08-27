@@ -22,6 +22,8 @@ import net.minecraftforge.client.resource.ISelectiveResourceReloadListener;
 import net.minecraftforge.common.model.IModelPart;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Information in <a href=
@@ -31,6 +33,7 @@ import net.minecraftforge.common.model.TRSRTransformation;
  * @author Elix_x (August 2016), modified by Draco18s (October 2016) and then
  *         Cadiboo (2018)
  */
+@SideOnly(Side.CLIENT)
 public enum ModelsCache implements ISelectiveResourceReloadListener {
 
 	INSTANCE;

@@ -9,6 +9,7 @@ import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.util.IProxy;
 import cadiboo.wiptech.util.ModGuiHandler;
 import cadiboo.wiptech.util.ModReference;
+import cadiboo.wiptech.util.ModWritingUtil;
 import cadiboo.wiptech.world.gen.ModWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -19,6 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * WIPTech Alpha
@@ -45,6 +47,7 @@ public class WIPTech {
 	// TODO vanilla recipes
 
 	/***** FOR ALL VERSIONS *****/
+	// TODO electrocution
 	// TODO Armor textures
 	// TODO clean up JSONs
 	// TODO Wire & Enamel ItemBlock Models->Wire & Enamel Item Models (Code & JSON)
@@ -89,7 +92,8 @@ public class WIPTech {
 	 */
 	@EventHandler
 	public void init(final FMLInitializationEvent event) {
-
+		if (proxy.getSide() == Side.CLIENT)
+			ModWritingUtil.writeMod();
 	}
 
 	/**
@@ -98,6 +102,28 @@ public class WIPTech {
 	 */
 	@EventHandler
 	public void postinit(final FMLPostInitializationEvent event) {
+	}
+
+	private static Logger getLogger() {
+		if (logger == null) {
+			Logger tempLogger = LogManager.getLogger();
+			tempLogger.error("[" + WIPTech.class.getSimpleName() + "]: getLogger called before logger has been initalised! Providing default logger");
+			return tempLogger;
+		}
+		return logger;
+	}
+
+	/**
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#DEBUG
+	 * DEBUG} level.
+	 * 
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
+	 */
+	public static void debug(final Object... messages) {
+		for (Object msg : messages) {
+			getLogger().debug(msg);
+		}
 	}
 
 	/**
@@ -113,13 +139,17 @@ public class WIPTech {
 		}
 	}
 
-	private static Logger getLogger() {
-		if (logger == null) {
-			Logger tempLogger = LogManager.getLogger();
-			tempLogger.error("[" + WIPTech.class.getSimpleName() + "]: getLogger called before logger has been initalised! Providing default logger");
-			return tempLogger;
+	/**
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#WARN
+	 * WARN} level.
+	 * 
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
+	 */
+	public static void warn(final Object... messages) {
+		for (Object msg : messages) {
+			getLogger().warn(msg);
 		}
-		return logger;
 	}
 
 	/**
@@ -132,19 +162,6 @@ public class WIPTech {
 	public static void error(final Object... messages) {
 		for (Object msg : messages) {
 			getLogger().error(msg);
-		}
-	}
-
-	/**
-	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#DEBUG
-	 * DEBUG} level.
-	 * 
-	 * @param messages the message objects to log.
-	 * @author Cadiboo
-	 */
-	public static void debug(final Object... messages) {
-		for (Object msg : messages) {
-			getLogger().debug(msg);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package cadiboo.wiptech.capability;
+package cadiboo.wiptech.capability.inventory;
 
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;

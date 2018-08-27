@@ -11,6 +11,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
@@ -26,14 +28,17 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+@ExistsForDebugging
 @SideOnly(Side.CLIENT)
 public class ModWritingUtil {
 
+	@VisibleForTesting
 	public static String default_variant_name = "normal";
 	private static String assetDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
 	private static String dataDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
-	public static boolean debugOres = true;
 
+	@ExistsForDebugging
+	@SideOnly(Side.CLIENT)
 	public static void writeMod() {
 
 		boolean recipes = true;
@@ -844,7 +849,7 @@ public class ModWritingUtil {
 
 	}
 
-	public static final String generateItemModelJSON(String name, ModResourceLocation parent) {
+	private static final String generateItemModelJSON(String name, ModResourceLocation parent) {
 
 		/* @formatter:off */
 		String ret = "{" + "\n\t" + "\"parent\": \"" + parent.toString() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"layer0\": \"" + ModReference.ID + ":item/" + name.toLowerCase()
@@ -854,11 +859,11 @@ public class ModWritingUtil {
 
 	}
 
-	public static final String generateItemModelJSON(String name) {
+	private static final String generateItemModelJSON(String name) {
 		return generateItemModelJSON(name, new ModResourceLocation("", "item/generated"));
 	}
 
-	public static final String generateBlockModelJSON(ModResourceLocation fullParentPath, String textureName, String texture) {
+	private static final String generateBlockModelJSON(ModResourceLocation fullParentPath, String textureName, String texture) {
 
 		/* @formatter:off */
 		String ret = "{" + "\n\t" + "\"parent\": \"" + fullParentPath.toString() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"" + textureName.toLowerCase() + "\": \"" + ModReference.ID
@@ -868,7 +873,7 @@ public class ModWritingUtil {
 
 	}
 
-	public static final String generateBlockItemModelJSON(ModMaterials material, String suffixLower) {
+	private static final String generateBlockItemModelJSON(ModMaterials material, String suffixLower) {
 
 		/* @formatter:off */
 		String ret = "{\n" + "	\"parent\": \"" + ModReference.ID + ":block/" + suffixLower + "\",\n" + "	\"textures\": {\n" + "		\"ingot\": \"" + material.getResouceLocationDomain("ingot",
@@ -879,7 +884,7 @@ public class ModWritingUtil {
 
 	}
 
-	public static final String generateBlockstateJSON(String name) {
+	private static final String generateBlockstateJSON(String name) {
 
 		/* @formatter:off */
 		String ret = "{" + "\n\t" + "\"variants\": {" + "\n\t\t" + "\"" + default_variant_name + "\": {" + "\n\t\t\t" + "\"model\": \"" + ModReference.ID + ":" + name.toLowerCase() + "\"" + "\n\t\t"

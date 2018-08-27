@@ -1,4 +1,4 @@
-package cadiboo.wiptech.capability;
+package cadiboo.wiptech.capability.inventory;
 
 import javax.annotation.Nonnull;
 

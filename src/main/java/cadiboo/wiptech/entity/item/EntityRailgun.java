@@ -6,16 +6,16 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.capability.IEnergyUser;
-import cadiboo.wiptech.capability.IInventoryUser;
-import cadiboo.wiptech.capability.ModEnergyStorage;
-import cadiboo.wiptech.capability.ModItemStackHandler;
+import cadiboo.wiptech.capability.energy.IEnergyUser;
+import cadiboo.wiptech.capability.energy.ModEnergyStorage;
+import cadiboo.wiptech.capability.inventory.IInventoryUser;
+import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
 import cadiboo.wiptech.entity.IEntitySyncable;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.ItemSlug;
-import cadiboo.wiptech.util.ModGuiHandler;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModGuiHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -308,7 +308,7 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		if (compound.hasKey("energy"))
-			energy.setEnergy(compound.getInteger("energy"));
+			energy.setEnergyStored(compound.getInteger("energy"));
 		if (compound.hasKey("inventory"))
 			getInventory().deserializeNBT(compound.getCompoundTag("inventory"));
 	}

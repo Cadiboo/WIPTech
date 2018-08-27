@@ -1,4 +1,4 @@
-package cadiboo.wiptech.capability;
+package cadiboo.wiptech.capability.energy;
 
 import java.util.ArrayList;
 
@@ -86,8 +86,8 @@ public class SidedModEnergyStorage extends ModEnergyStorage {
 				}
 
 				@Override
-				public int setEnergy(int energy) {
-					return SidedModEnergyStorage.this.setEnergy(energy);
+				public int setEnergyStored(int energy) {
+					return SidedModEnergyStorage.this.setEnergyStored(energy);
 				}
 			});
 		}

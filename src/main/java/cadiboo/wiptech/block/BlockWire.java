@@ -160,5 +160,22 @@ public class BlockWire extends ModMaterialBlock {
 			if (wire.isConnectedTo(EnumFacing.EAST))
 				addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
 		}
+
+	}
+
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+
+		if (worldIn != null) {
+			TileEntity tile = worldIn.getTileEntity(pos);
+			if (tile != null) {
+				if (tile instanceof TileEntityWire) {
+					TileEntityWire wire = (TileEntityWire) tile;
+					wire.getNetwork().remove(wire.getPos());
+				}
+			}
+		}
+
+		super.breakBlock(worldIn, pos, state);
 	}
 }

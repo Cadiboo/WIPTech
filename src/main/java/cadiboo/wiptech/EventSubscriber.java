@@ -1,5 +1,7 @@
 package cadiboo.wiptech;
 
+import org.lwjgl.opengl.GL11;
+
 import cadiboo.wiptech.block.BlockEnamel;
 import cadiboo.wiptech.block.BlockItem;
 import cadiboo.wiptech.block.BlockModOre;
@@ -62,6 +64,7 @@ import net.minecraft.util.registry.IRegistry;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -475,6 +478,59 @@ public final class EventSubscriber {
 				WIPTech.error("Error injecting model " + model.toString() + " into Model Registry");
 			}
 		}
+	}
+
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public static final void onRenderWorldLast(final RenderWorldLastEvent event) {
+
+		Entity player = Minecraft.getMinecraft().getRenderViewEntity();
+		double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * event.getPartialTicks();
+		double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * event.getPartialTicks();
+		double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * event.getPartialTicks();
+
+		GL11.glPushMatrix();
+		GL11.glTranslated(-x, -y, -z);
+
+		GL11.glBegin(GL11.GL_LINES);
+
+		GL11.glColor4f(0f, 255f, 237f, 0.3f);
+
+		float mx = 0 + 0.5F;
+		float my = 66 + 0.5F;
+		float mz = 0 + 0.5F;
+
+		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz - 0.5F);
+
+		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz + 0.5F);
+		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz + 0.5F);
+		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz + 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz + 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz + 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz + 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz + 0.5F);
+		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz + 0.5F);
+
+		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx + 0.5F, my + 0.5F, mz + 0.5F);
+		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx + 0.5F, my - 0.5F, mz + 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my - 0.5F, mz + 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz - 0.5F);
+		GL11.glVertex3f(mx - 0.5F, my + 0.5F, mz + 0.5F);
+
+		GL11.glEnd();
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glPopMatrix();
+
 	}
 
 	@SubscribeEvent

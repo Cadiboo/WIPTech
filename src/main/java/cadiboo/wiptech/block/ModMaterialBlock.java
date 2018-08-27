@@ -1,8 +1,8 @@
 package cadiboo.wiptech.block;
 
+import cadiboo.wiptech.util.ExistsForDebugging;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModUtil;
-import cadiboo.wiptech.util.ModWritingUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.ResourceLocation;
@@ -22,23 +22,28 @@ public abstract class ModMaterialBlock extends ModBlock {
 
 	@Override
 	public final int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-		if (ModWritingUtil.debugOres)
+		if (getDebugOres())
 			return 14;
 		return ModUtil.getMaterialLightValue(this.getModMaterial());
 	}
 
 	@Override
 	public int getLightOpacity(IBlockState state, IBlockAccess world, BlockPos pos) {
-		if (ModWritingUtil.debugOres)
+		if (getDebugOres())
 			return 1;
 		return ModUtil.getMaterialLightValue(this.getModMaterial());
 	}
 
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
-		if (ModWritingUtil.debugOres)
+		if (getDebugOres())
 			return false;
 		return super.isOpaqueCube(state);
+	}
+
+	@ExistsForDebugging
+	private boolean getDebugOres() {
+		return false;
 	}
 
 }

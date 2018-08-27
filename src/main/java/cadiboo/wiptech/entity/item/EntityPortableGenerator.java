@@ -5,10 +5,10 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.capability.IEnergyUser;
-import cadiboo.wiptech.capability.IInventoryUser;
-import cadiboo.wiptech.capability.ModEnergyStorage;
-import cadiboo.wiptech.capability.ModItemStackHandler;
+import cadiboo.wiptech.capability.energy.IEnergyUser;
+import cadiboo.wiptech.capability.energy.ModEnergyStorage;
+import cadiboo.wiptech.capability.inventory.IInventoryUser;
+import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
 import cadiboo.wiptech.entity.IEntitySyncable;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.util.ModGuiHandler;
@@ -66,7 +66,7 @@ public class EntityPortableGenerator extends Entity implements IWorldNameable, I
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		if (compound.hasKey("energy"))
-			this.getEnergy().setEnergy(compound.getInteger("energy"));
+			this.getEnergy().setEnergyStored(compound.getInteger("energy"));
 		if (compound.hasKey("inventory"))
 			this.getInventory().deserializeNBT(compound.getCompoundTag("inventory"));
 		if (compound.hasKey("handleHolderId"))
