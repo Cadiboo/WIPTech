@@ -13,11 +13,11 @@
 		},		"C": {
  			"item": "wiptech:slug_casing_bottom"
 		},		"X": {
- 			"item": "wiptech:nickel_ingot"
+ 			"item": "wiptech:tungsten_slug"
 		}
 	},
 	"result": {
-		"item": "wiptech:nickel_slug",
+		"item": "wiptech:tungsten_cased_slug",
 		"count": 1
 	}
 }

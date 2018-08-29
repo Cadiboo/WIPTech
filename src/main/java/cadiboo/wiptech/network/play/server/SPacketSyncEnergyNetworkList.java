@@ -8,7 +8,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -50,7 +49,7 @@ public class SPacketSyncEnergyNetworkList implements IMessage, IMessageHandler<S
 				if (Minecraft.getMinecraft().world == null)
 					return;
 
-				IEnergyNetworkList<TileEntity> list = Minecraft.getMinecraft().world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
+				IEnergyNetworkList list = Minecraft.getMinecraft().world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
 				if (list == null)
 					return;
 

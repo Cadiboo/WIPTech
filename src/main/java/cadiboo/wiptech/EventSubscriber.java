@@ -1,6 +1,6 @@
 package cadiboo.wiptech;
 
-import java.util.ArrayList;
+import java.util.Random;
 
 import cadiboo.wiptech.block.BlockEnamel;
 import cadiboo.wiptech.block.BlockItem;
@@ -9,7 +9,6 @@ import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
-import cadiboo.wiptech.capability.energy.network.EnergyNetwork;
 import cadiboo.wiptech.capability.energy.network.EnergyNetworkList;
 import cadiboo.wiptech.capability.energy.network.IEnergyNetworkList;
 import cadiboo.wiptech.client.ClientUtil;
@@ -28,6 +27,7 @@ import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.entity.projectile.EntitySlugCasing;
 import cadiboo.wiptech.init.ModItems;
+import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemModArmor;
@@ -90,6 +90,8 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -221,8 +223,10 @@ public final class EventSubscriber {
 			if (material.getProperties().hasRail())
 				registry.register(new ItemRail(material));
 
-			if (material.getProperties().hasRailgunSlug())
+			if (material.getProperties().hasRailgunSlug()) {
 				registry.register(new ItemSlug(material));
+				registry.register(new ItemCasedSlug(material));
+			}
 
 		}
 
@@ -408,9 +412,12 @@ public final class EventSubscriber {
 				if (material.getRail() != null)
 					registerItemModel(material.getRail());
 
-			if (material.getProperties().hasRailgunSlug())
+			if (material.getProperties().hasRailgunSlug()) {
 				if (material.getSlugItem() != null)
 					registerItemModel(material.getSlugItem());
+				if (material.getCasedSlug() != null)
+					registerItemModel(material.getCasedSlug());
+			}
 
 		}
 		WIPTech.debug("Registered models for materials");
@@ -493,40 +500,41 @@ public final class EventSubscriber {
 		World world = Minecraft.getMinecraft().world;
 		if (world == null)
 			return;
-		IEnergyNetworkList<TileEntity> list = world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
+		IEnergyNetworkList list = world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
 		if (list == null)
 			return;
 
-		ArrayList<EnergyNetwork> networks = list.getNetworks();
-		if (networks.size() <= 0)
-			return;
-
-		for (EnergyNetwork network : networks)
-			for (BlockPos pos : network.getPositions()) {
-				// your positions. You might want to shift them a bit too
-				int sX = pos.getX();
-				int sY = pos.getY();
-				int sZ = pos.getZ();
-				// Usually the player
-				Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-				// Interpolating everything back to 0,0,0. These are transforms you can find at
-				// RenderEntity class
-				double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * event.getPartialTicks();
-				double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * event.getPartialTicks();
-				double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * event.getPartialTicks();
-				// Apply 0-our transforms to set everything back to 0,0,0
-				Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
+		for (BlockPos pos : list.getConnections()) {
+			// your positions. You might want to shift them a bit too
+			int sX = pos.getX();
+			int sY = pos.getY();
+			int sZ = pos.getZ();
+			// Usually the player
+			Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+			// Interpolating everything back to 0,0,0. These are transforms you can find at
+			// RenderEntity class
+			double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * event.getPartialTicks();
+			double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * event.getPartialTicks();
+			double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * event.getPartialTicks();
+			// Apply 0-our transforms to set everything back to 0,0,0
+			Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
 //				Tessellator.getInstance().getBuffer().setTranslation(100, 0, 0);
-				// Your render function which renders boxes at a desired position. In this
-				// example I just copy-pasted the one on TileEntityStructureRenderer
-				Minecraft.getMinecraft().getTextureManager().bindTexture(new ModResourceLocation(ModReference.Version.getModId(), "textures/block/uranium_block.png"));
-				GlStateManager.color(pos.getX(), pos.getY(), pos.getZ());
-				ClientUtil.drawCuboidAt(sX + 0.5, sY + 0.5, sZ + 0.5, 0, 1, 0, 1, 0.5, 0.5, 0.5, 1);
+			// Your render function which renders boxes at a desired position. In this
+			// example I just copy-pasted the one on TileEntityStructureRenderer
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ModResourceLocation(ModReference.Version.getModId(), "textures/item/gallium_horse_armor.png"));
+
+			Random rand = new Random(world.getTotalWorldTime());
+
+			for (int i = 0; i < sX + sY + sZ; i++)
+				rand.nextFloat();
+
+			GlStateManager.color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
+			ClientUtil.drawCuboidAt(sX + 0.5, sY + 0.5, sZ + 0.5, 0, 1, 0, 1, 0.5, 0.5, 0.5, 1);
 //				renderBox(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), sX, sY, sZ, sX + 1, sY + 1, sZ + 1);
-				// When you are done rendering all your boxes reset the offsets. We do not want
-				// everything that renders next to still be at 0,0,0 :)
-				Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
-			}
+			// When you are done rendering all your boxes reset the offsets. We do not want
+			// everything that renders next to still be at 0,0,0 :)
+			Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
+		}
 	}
 
 	@SubscribeEvent
@@ -624,7 +632,7 @@ public final class EventSubscriber {
 	}
 
 	@SubscribeEvent
-	public static final void attachCapabilities(final AttachCapabilitiesEvent<World> event) {
+	public static final void onAttachCapabilities(final AttachCapabilitiesEvent<World> event) {
 		event.addCapability(new ModResourceLocation(ModReference.Version.getModId(), ModUtil.getRegistryNameForClass(CapabilityEnergyNetworkList.class, "Capability")), new ICapabilityProvider() {
 
 			private EnergyNetworkList energyNetworkList = new EnergyNetworkList(event.getObject());
@@ -641,6 +649,17 @@ public final class EventSubscriber {
 				return null;
 			}
 		});
+	}
+
+	@SubscribeEvent
+	public static final void onWorldTick(final WorldTickEvent event) {
+		if (event.phase != Phase.END)
+			return;
+
+		IEnergyNetworkList list = event.world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
+		if (list == null)
+			return;
+		list.update();
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

@@ -1,14 +1,8 @@
 package cadiboo.wiptech.capability.energy.network;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
-
-import cadiboo.wiptech.tileentity.TileEntityWire;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -25,24 +19,24 @@ public class CapabilityEnergyNetworkList {
 			@Override
 			public NBTTagCompound writeNBT(Capability<IEnergyNetworkList> capability, IEnergyNetworkList instance, EnumFacing side) {
 				NBTTagCompound compound = new NBTTagCompound();
-				compound.setInteger("networksSize", instance.getNetworks().size());
-
-				ArrayList<EnergyNetwork> networks = instance.getNetworks();
-
-				for (int i = 0; i < networks.size(); i++) {
-					NBTTagCompound networkCompound = new NBTTagCompound();
-					Set<BlockPos> positions = networks.get(i).getPositions();
-					networkCompound.setInteger("positionsSize", positions.size());
-					Iterator<BlockPos> it = positions.iterator();
-
-					int j = 0;
-					while (it.hasNext()) {
-						j++;
-						networkCompound.setString("" + j, "" + it.next().toLong());
-					}
-
-					compound.setTag("" + i, networkCompound);
-				}
+//				compound.setInteger("networksSize", instance.getNetworks().size());
+//
+//				ArrayList<EnergyNetwork> networks = instance.getNetworks();
+//
+//				for (int i = 0; i < networks.size(); i++) {
+//					NBTTagCompound networkCompound = new NBTTagCompound();
+//					Set<BlockPos> positions = networks.get(i).getPositions();
+//					networkCompound.setInteger("positionsSize", positions.size());
+//					Iterator<BlockPos> it = positions.iterator();
+//
+//					int j = 0;
+//					while (it.hasNext()) {
+//						j++;
+//						networkCompound.setString("" + j, "" + it.next().toLong());
+//					}
+//
+//					compound.setTag("" + i, networkCompound);
+//				}
 
 				return compound;
 			}
@@ -52,29 +46,28 @@ public class CapabilityEnergyNetworkList {
 				if (!(instance instanceof EnergyNetworkList))
 					throw new IllegalArgumentException("Can't deserialize to an instance that isn't the default implementation");
 
-				if (!(nbt instanceof NBTTagCompound))
-					throw new IllegalArgumentException("Can't deserialize from a NBT type that isn't a NBTTagCompound");
-
-				NBTTagCompound compound = (NBTTagCompound) nbt;
-
-				int networkSize = compound.getInteger("networksSize");
-
-				ArrayList<EnergyNetwork> networks = new ArrayList<>();
-
-				for (int i = 0; i < networkSize; i++) {
-					NBTTagCompound networkCompound = compound.getCompoundTag("" + i);
-					int positionsSize = networkCompound.getInteger("positionsSize");
-
-					EnergyNetwork network = new EnergyNetwork();
-
-					for (int j = 0; j < positionsSize; j++) {
-						network.add((TileEntityWire) instance.getWorld().getTileEntity(BlockPos.fromLong(Long.parseLong(networkCompound.getString("" + j)))));
-					}
-
-				}
-
-				instance.setNetworks(networks);
-//					((EnergyNetworkList) instance).energy = ((NBTTagInt) nbt).getInt();
+//				if (!(nbt instanceof NBTTagCompound))
+//					throw new IllegalArgumentException("Can't deserialize from a NBT type that isn't a NBTTagCompound");
+//
+//				NBTTagCompound compound = (NBTTagCompound) nbt;
+//
+//				int networkSize = compound.getInteger("networksSize");
+//
+//				ArrayList<EnergyNetwork> networks = new ArrayList<>();
+//
+//				for (int i = 0; i < networkSize; i++) {
+//					NBTTagCompound networkCompound = compound.getCompoundTag("" + i);
+//					int positionsSize = networkCompound.getInteger("positionsSize");
+//
+//					EnergyNetwork network = new EnergyNetwork();
+//
+//					for (int j = 0; j < positionsSize; j++) {
+//						network.add((TileEntityWire) instance.getWorld().getTileEntity(BlockPos.fromLong(Long.parseLong(networkCompound.getString("" + j)))));
+//					}
+//
+//				}
+//
+//				instance.setNetworks(networks);
 			}
 		}, () -> new EnergyNetworkList(null));
 	}

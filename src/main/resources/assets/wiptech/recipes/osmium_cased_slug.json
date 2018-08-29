@@ -13,11 +13,11 @@
 		},		"C": {
  			"item": "wiptech:slug_casing_bottom"
 		},		"X": {
- 			"item": "wiptech:osmium_ingot"
+ 			"item": "wiptech:osmium_slug"
 		}
 	},
 	"result": {
-		"item": "wiptech:osmium_slug",
+		"item": "wiptech:osmium_cased_slug",
 		"count": 1
 	}
 }

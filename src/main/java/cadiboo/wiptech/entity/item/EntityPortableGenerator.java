@@ -66,7 +66,7 @@ public class EntityPortableGenerator extends Entity implements IWorldNameable, I
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		if (compound.hasKey("energy"))
-			this.getEnergy().setEnergyStored(compound.getInteger("energy"));
+			this.getEnergy().setEnergyStored(compound.getInteger("energy"), false);
 		if (compound.hasKey("inventory"))
 			this.getInventory().deserializeNBT(compound.getCompoundTag("inventory"));
 		if (compound.hasKey("handleHolderId"))
@@ -142,10 +142,14 @@ public class EntityPortableGenerator extends Entity implements IWorldNameable, I
 
 		RayTraceResult rayTraceResult = world.rayTraceBlocks(new Vec3d(entity.posX, entity.posY, entity.posZ), new Vec3d(entity.posX, 0, entity.posZ), true, false, false);
 
-		if (rayTraceResult.hitVec == null)
-			rayTraceResult.hitVec = new Vec3d(entity.posX, 0, entity.posZ);
+		Vec3d hitVec;
 
-		boolean flag = entity.posY - rayTraceResult.hitVec.y > 2;
+		if (rayTraceResult == null)
+			hitVec = new Vec3d(entity.posX, 0, entity.posZ);
+		else
+			hitVec = rayTraceResult.hitVec;
+
+		boolean flag = entity.posY - hitVec.y > 2;
 
 		if (flag) {
 			this.motionY = entity.motionY;
@@ -268,12 +272,14 @@ public class EntityPortableGenerator extends Entity implements IWorldNameable, I
 
 	public void setHandleHolder(Entity handleHolder) {
 		this.handleHolder = handleHolder;
-		this.syncToTracking();
+		if (!world.isRemote)
+			this.syncToTracking();
 	}
 
 	public void clearHandleHolder() {
 		this.handleHolder = null;
-		this.syncToTracking();
+		if (!world.isRemote)
+			this.syncToTracking();
 	}
 
 	public Entity getHandleHolder() {

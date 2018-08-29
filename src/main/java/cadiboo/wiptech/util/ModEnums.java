@@ -13,6 +13,7 @@ import cadiboo.wiptech.block.BlockModOre;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemModArmor;
 import cadiboo.wiptech.item.ItemModAxe;
@@ -21,8 +22,8 @@ import cadiboo.wiptech.item.ItemModPickaxe;
 import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
 import cadiboo.wiptech.item.ItemRail;
+import cadiboo.wiptech.item.ItemSlug;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
@@ -361,10 +362,17 @@ public class ModEnums {
 		}
 
 		@Nullable
-		public Item getSlugItem() {
+		public ItemSlug getSlugItem() {
 			if (!this.getProperties().hasRailgunSlug())
 				return null;
-			return getRegistryValue(ForgeRegistries.ITEMS, "slug");
+			return (ItemSlug) getRegistryValue(ForgeRegistries.ITEMS, "slug");
+		}
+
+		@Nullable
+		public ItemCasedSlug getCasedSlug() {
+			if (!this.getProperties().hasRailgunSlug())
+				return null;
+			return (ItemCasedSlug) getRegistryValue(ForgeRegistries.ITEMS, "cased_slug");
 		}
 
 		@Nullable

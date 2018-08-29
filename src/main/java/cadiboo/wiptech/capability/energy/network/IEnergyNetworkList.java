@@ -1,30 +1,29 @@
 package cadiboo.wiptech.capability.energy.network;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public interface IEnergyNetworkList<T> {
+public interface IEnergyNetworkList extends ITickable {
 
 	public World getWorld();
 
-	public ArrayList<EnergyNetwork> getNetworks();
+	public HashSet<BlockPos> getConnections();
 
-	@Nullable
-	public EnergyNetwork getNetworkFor(T potentialConnection);
+//	@Nullable
+//	public EnergyNetwork getNetworkFor(T potentialConnection);
+//
+//	@Nonnull
+//	public EnergyNetwork getCreateOrMergeNetworkFor(T potentialConnection);
+//
+//	public void splitNetworks(T potentialConnection);
 
-	@Nonnull
-	public EnergyNetwork getCreateOrMergeNetworkFor(T potentialConnection);
+	public void addConnection(BlockPos pos);
 
-	public void splitNetworks(T potentialConnection);
+	public void removeConnection(BlockPos pos);
 
-	public void addConnection(T potentialConnection);
-
-	public void removeConnection(T potentialConnection);
-
-	public void setNetworks(ArrayList<EnergyNetwork> networks);
+//	public void setNetworks(ArrayList<EnergyNetwork> networks);
 
 }

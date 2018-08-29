@@ -13,11 +13,11 @@
 		},		"C": {
  			"item": "wiptech:slug_casing_bottom"
 		},		"X": {
- 			"item": "wiptech:steel_ingot"
+ 			"item": "wiptech:iron_slug"
 		}
 	},
 	"result": {
-		"item": "wiptech:steel_slug",
+		"item": "wiptech:iron_cased_slug",
 		"count": 1
 	}
 }

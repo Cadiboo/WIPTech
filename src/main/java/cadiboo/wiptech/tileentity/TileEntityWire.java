@@ -5,8 +5,6 @@ import java.util.List;
 import cadiboo.wiptech.capability.energy.IEnergyUser;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
-import cadiboo.wiptech.capability.energy.network.EnergyNetwork;
-import cadiboo.wiptech.capability.energy.network.IEnergyNetworkConnection;
 import cadiboo.wiptech.util.ModDamageSource;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -21,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser, ITileEntitySyncable, IEnergyNetworkConnection {
+public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser, ITileEntitySyncable {
 
 	private final ModEnergyStorage energy;
 
@@ -39,7 +37,7 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 	public void onLoad() {
 		if (world.hasCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null)) {
 			if (world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null) != null) {
-				world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).getCreateOrMergeNetworkFor(this);
+				world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).addConnection(pos);
 			}
 		}
 		super.onLoad();
@@ -148,23 +146,12 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 	@Override
 	public void readNBT(NBTTagCompound syncTag) {
 		if (syncTag.hasKey("energy"))
-			this.getEnergy().setEnergyStored(syncTag.getInteger("energy"));
+			this.getEnergy().setEnergyStored(syncTag.getInteger("energy"), false);
 	}
 
 	@Override
 	public void writeNBT(NBTTagCompound syncTag) {
 		syncTag.setInteger("energy", getEnergy().getEnergyStored());
-	}
-
-	@Override
-	public EnergyNetwork getNetwork() {
-		if (!world.hasCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null))
-			return null;
-
-		if (world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null) == null)
-			return null;
-
-		return world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).getNetworkFor(this);
 	}
 
 }

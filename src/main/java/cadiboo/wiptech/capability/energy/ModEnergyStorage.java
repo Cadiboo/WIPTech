@@ -54,7 +54,7 @@ public class ModEnergyStorage extends EnergyStorage {
 
 		int energyReceived = Math.min(getCapacity() - getEnergyStored(), Math.min(getMaxReceive(), maxReceive));
 		if (!simulate) {
-			setEnergyStored(getEnergyStored() + energyReceived);
+			setEnergyStored(getEnergyStored() + energyReceived, false);
 			onEnergyChanged();
 		}
 		return energyReceived;
@@ -67,7 +67,7 @@ public class ModEnergyStorage extends EnergyStorage {
 
 		int energyExtracted = Math.min(getEnergyStored(), Math.min(getMaxExtract(), maxExtract));
 		if (!simulate)
-			setEnergyStored(getEnergyStored() - energyExtracted);
+			setEnergyStored(getEnergyStored() - energyExtracted, false);
 		return energyExtracted;
 	}
 
@@ -94,13 +94,14 @@ public class ModEnergyStorage extends EnergyStorage {
 	// TODO
 	/**
 	 * @param energy the energy to set
-	 * @return the amount of energy that was? set
+	 * @return the amount of energy that was set
 	 */
-	public int setEnergyStored(int energy) {
+	public int setEnergyStored(int energy, boolean simulate) {
 		onEnergyChanged();
 		int toSet = Math.min(energy, getMaxReceive());
-		this.energy = toSet;
-		return toSet - getMaxReceive();
+		if (!simulate)
+			this.energy = toSet;
+		return toSet;
 	}
 
 	public void onEnergyChanged() {

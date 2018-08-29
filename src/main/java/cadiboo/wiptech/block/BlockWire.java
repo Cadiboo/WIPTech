@@ -171,8 +171,7 @@ public class BlockWire extends ModMaterialBlock {
 			if (tile != null) {
 				if (tile instanceof TileEntityWire) {
 					TileEntityWire wire = (TileEntityWire) tile;
-
-					worldIn.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).removeConnection(tile);
+					worldIn.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).removeConnection(tile.getPos());
 				}
 			}
 		}

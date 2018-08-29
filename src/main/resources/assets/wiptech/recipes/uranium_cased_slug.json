@@ -13,11 +13,11 @@
 		},		"C": {
  			"item": "wiptech:slug_casing_bottom"
 		},		"X": {
- 			"item": "wiptech:uranium_ingot"
+ 			"item": "wiptech:uranium_slug"
 		}
 	},
 	"result": {
-		"item": "wiptech:uranium_slug",
+		"item": "wiptech:uranium_cased_slug",
 		"count": 1
 	}
 }

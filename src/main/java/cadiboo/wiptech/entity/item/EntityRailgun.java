@@ -13,6 +13,7 @@ import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
 import cadiboo.wiptech.entity.IEntitySyncable;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.init.ModItems;
+import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemSlug;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModGuiHandler;
@@ -171,6 +172,8 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	@Override
 	public void onUpdate() {
 
+		shoot();
+
 		shootCooldown--;
 
 		this.prevPosX = this.posX;
@@ -308,7 +311,7 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound compound) {
 		if (compound.hasKey("energy"))
-			energy.setEnergyStored(compound.getInteger("energy"));
+			energy.setEnergyStored(compound.getInteger("energy"), false);
 		if (compound.hasKey("inventory"))
 			getInventory().deserializeNBT(compound.getCompoundTag("inventory"));
 	}
@@ -351,79 +354,57 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	}
 
 	protected boolean isAmmo(ItemStack stack) {
-		return stack.getItem() instanceof ItemSlug;
+		return stack.getItem() instanceof ItemCasedSlug;
 	}
 
 	public void shoot() {
-		if (getControllingPassenger() != null && getControllingPassenger() instanceof EntityPlayer) {
-			final EntityPlayer player = (EntityPlayer) getControllingPassenger();
+//		if (getControllingPassenger() != null && getControllingPassenger() instanceof EntityPlayer) {
+//			final EntityPlayer player = (EntityPlayer) getControllingPassenger();
 
-			if (world.isRemote)
-				return;// EnumActionResult.SUCCESS;
+		if (world.isRemote)
+			return;// EnumActionResult.SUCCESS;
 
-			if (getShootCooldown() > 0)
+		if (getShootCooldown() > 0)
+			return;
+
+		boolean shootAnyway = true;// player.isCreative();
+
+		if (!shootAnyway && (energy.getEnergyStored() < getShootEnergy() || energy.extractEnergy(getShootEnergy(), true) != getShootEnergy()))
+			return;
+
+		ItemStack ammo = this.findAmmo();
+
+		if (ammo.isEmpty())
+			if (shootAnyway)
+				ammo = new ItemStack(ModMaterials.IRON.getCasedSlug());
+			else
 				return;
 
-			if (energy.getEnergyStored() < getShootEnergy() || energy.extractEnergy(getShootEnergy(), true) != getShootEnergy())
-				return;
+		ItemStack projectile = new ItemStack(((ItemCasedSlug) ammo.getItem()).getModMaterial().getSlugItem());
 
-			ItemStack ammo = this.findAmmo();
+		energy.extractEnergy(getShootEnergy(), false);
 
-			if (ammo.isEmpty())
-				if (player.isCreative())
-					ammo = new ItemStack(ModMaterials.IRON.getSlugItem());
-				else
-					return;
+		float velocity = 4f;
 
-			energy.extractEnergy(getShootEnergy(), false);
+		Vec3d look = this.getLookVec();
 
-			float velocity = 4f;
+		EntitySlug slug = new EntitySlug(world, ((ItemSlug) projectile.getItem()).getModMaterial());
+		slug.setPosition(getPosition().getX() + 0.5, getPosition().getY() + getEyeHeight(), getPosition().getZ() + 0.5);
 
-			Vec3d look = this.getLookVec();
+		slug.prevRotationPitch = this.rotationPitch;
+		slug.prevRotationYaw = this.rotationYaw;
 
-			BlockPos pos = getPosition();
+//		slug.setThrower((EntityPlayer) getControllingPassenger());
 
-//			float dx = endX - startX;
-//			float dy = endY - startY;
-//			float scale = 100 / sqrt (dx * dx + dy * dy);
-//			CGPoint p1 = CGPointMake (startX, startY);
-//			CGPoint p2 = CGPointMake (startX + dx * scale, startY + dy * scale); 
+//		slug.shoot(getControllingPassenger(), this.rotationPitch, this.rotationYaw, 0, velocity, 0);
+		slug.shoot(this, this.rotationPitch, this.rotationYaw, 0, velocity, 0);
 
-			double startX = 0;
-			double startY = 0;
-			double startZ = 0;
+		world.spawnEntity(slug);
 
-			double endX = look.x;
-			double endY = look.y;
-			double endZ = look.z;
-
-			double dx = endX - startX;
-			double dy = endY - startY;
-			double dz = endZ - startZ;
-			double scale = 100 / Math.sqrt(dx * dx + dy * dy + dz * dz);
-//			double scale = 50;// 100 / Math.sqrt(dx * dx + dy * dy + dz * dz);
-//			CGPoint p1 = CGPointMake (startX, startY);
-			Vec3d p2 = new Vec3d(startX + dx * scale, startY + dy * scale, startZ + dz * scale);
-
-			EntitySlug slug = new EntitySlug(world, ((ItemSlug) ammo.getItem()).getModMaterial());
-			slug.setPosition(pos.getX() + 0.5, pos.getY() + getEyeHeight() - 1, pos.getZ() + 0.5);
-
-			slug.setThrower((EntityPlayer) getControllingPassenger());
-
-//			EntityArrow slug = new EntityTippedArrow(world, (EntityPlayer) getControllingPassenger());
-//
-//			slug.setPosition(pos.getX() + 0.5, pos.getY() + 2.5, pos.getZ() + 0.5);
-
-//			p2 = p2.addVector(pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5);
-
-			slug.shoot(p2.x, p2.y, p2.z, velocity, 0.0F);
-
-			world.spawnEntity(slug);
-
-			// TODO FIXME THIS IS BAD, FORGE DOCS SAYS EXPLICITLY "SERIOUSLY: DO NOT MODIFY
-			// THE RETURNED ITEMSTACK."
-			ammo.shrink(1);
-		}
+		// TODO FIXME THIS IS BAD, FORGE DOCS SAYS EXPLICITLY "SERIOUSLY: DO NOT MODIFY
+		// THE RETURNED ITEMSTACK."
+		ammo.shrink(1);
+//		}
 	}
 
 	public int getShootEnergy() {

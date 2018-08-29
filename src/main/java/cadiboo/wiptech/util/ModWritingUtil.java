@@ -609,7 +609,7 @@ public class ModWritingUtil {
 
 				if (material.getSlugItem() != null)
 					/*@formatter:off*/
-					recipesObj.add(new Tuple<String, String>(material.getSlugItem().getRegistryName().getResourcePath(), "{\n" + 
+					recipesObj.add(new Tuple<String, String>(material.getCasedSlug().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
 							"	\"pattern\": [\n" + 
 							"		\" B \",\n" + 
@@ -627,11 +627,11 @@ public class ModWritingUtil {
 							" 			\"item\": \""+ModItems.SLUG_CASING_BOTTOM.getRegistryName().toString()+"\"\n" + 
 							"		}," +
 							"		\"X\": {\n" + 
-							" 			\"item\": \""+material.getIngot().getRegistryName().toString()+"\"\n" + 
+							" 			\"item\": \""+material.getSlugItem().getRegistryName().toString()+"\"\n" + 
 							"		}\n" + 
 							"	},\n" + 
 							"	\"result\": {\n" + 
-							"		\"item\": \""+material.getSlugItem().getRegistryName().toString()+"\",\n" + 
+							"		\"item\": \""+material.getCasedSlug().getRegistryName().toString()+"\",\n" + 
 							"		\"count\": 1\n" +
 							"	}\n" + 
 							"}"));
