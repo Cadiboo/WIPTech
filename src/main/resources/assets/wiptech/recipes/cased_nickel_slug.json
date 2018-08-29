@@ -1,0 +1,23 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		" B ",
+		"AXX",
+		" C "
+	],
+	"key": {
+		"A": {
+ 			"item": "wiptech:slug_casing_back"
+		},		"B": {
+ 			"item": "wiptech:slug_casing_top"
+		},		"C": {
+ 			"item": "wiptech:slug_casing_bottom"
+		},		"X": {
+ 			"item": "wiptech:nickel_slug"
+		}
+	},
+	"result": {
+		"item": "wiptech:cased_nickel_slug",
+		"count": 1
+	}
+}
