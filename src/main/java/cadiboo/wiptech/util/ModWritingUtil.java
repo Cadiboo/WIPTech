@@ -220,8 +220,7 @@ public class ModWritingUtil {
 
 				String prefixLower = "cased";
 				nameUpper = prefixLower.toUpperCase() + "_" + material.getNameUppercase() + "_" + suffixLower.toUpperCase();
-				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation(ModReference.Version.getModId(), prefixLower + "_" + suffixLower
-						+ "_model")))); /* "cased_slug_model" */
+				itemModels.add(new Tuple<String, String>(nameUpper, "{\n" + "	\"parent\": \"wiptech:item/cased_slug_model/" + nameUpper.toLowerCase() + "\"\n" + "}\n"));
 			}
 
 			//

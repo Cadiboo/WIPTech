@@ -14,7 +14,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 
 public class CasedSlugModelLoader implements ICustomModelLoader {
 
-	public static final String CASED_SLUG_MODEL_RESOURCE_LOCATION = "models/block/cased_slug_model";
+	public static final String CASED_SLUG_MODEL_RESOURCE_LOCATION = "models/item/cased_slug_model";
 
 	@Override
 	public void onResourceManagerReload(IResourceManager resourceManager) {
@@ -28,9 +28,9 @@ public class CasedSlugModelLoader implements ICustomModelLoader {
 	@Override
 	public IModel loadModel(ResourceLocation modelLocation) throws Exception {
 		String resourcePath = modelLocation.getResourcePath();
-		if (!resourcePath.equals(CASED_SLUG_MODEL_RESOURCE_LOCATION)) {
-			assert false : "loadModel expected " + CASED_SLUG_MODEL_RESOURCE_LOCATION + " but found " + resourcePath;
-		}
+//		if (!resourcePath.equals(CASED_SLUG_MODEL_RESOURCE_LOCATION)) {
+//			assert false : "loadModel expected " + CASED_SLUG_MODEL_RESOURCE_LOCATION + " but found " + resourcePath;
+//		}
 
 		try {
 			ArrayList<String> modelName = new ArrayList<String>(Arrays.asList(resourcePath.substring(CASED_SLUG_MODEL_RESOURCE_LOCATION.length() + 1).split("_")));

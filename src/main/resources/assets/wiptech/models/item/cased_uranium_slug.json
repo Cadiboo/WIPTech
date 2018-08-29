@@ -1,7 +1,4 @@
 {
-	"parent": "wiptech:cased_slug_model",
-	"textures": {
-		"layer0": "wiptech:item/cased_uranium_slug"
-	}
+	"parent": "wiptech:item/cased_slug_model/cased_uranium_slug"
 }
 

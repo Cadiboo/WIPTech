@@ -372,7 +372,7 @@ public class ModEnums {
 		public ItemCasedSlug getCasedSlug() {
 			if (!this.getProperties().hasRailgunSlug())
 				return null;
-			return (ItemCasedSlug) getRegistryValue(ForgeRegistries.ITEMS, "cased_slug");
+			return (ItemCasedSlug) ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.Version.getModId(), "cased_" + this.getNameLowercase() + "_" + "slug"));
 		}
 
 		@Nullable

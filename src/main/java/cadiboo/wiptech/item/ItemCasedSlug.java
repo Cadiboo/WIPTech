@@ -7,7 +7,7 @@ public class ItemCasedSlug extends ModItem implements IItemModMaterial {
 	protected final ModMaterials material;
 
 	public ItemCasedSlug(ModMaterials materialIn) {
-		super(materialIn.getNameLowercase() + "_cased_slug");
+		super("cased_" + materialIn.getNameLowercase() + "_slug");
 		this.material = materialIn;
 	}
 

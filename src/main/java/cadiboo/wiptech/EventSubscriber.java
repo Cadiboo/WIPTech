@@ -357,7 +357,8 @@ public final class EventSubscriber {
 				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), new ItemMeshDefinition() {
 					@Override
 					public ModelResourceLocation getModelLocation(ItemStack stack) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.Version.getModId(), material.getNameLowercase() + "_cased_slug"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.Version.getModId(), "cased_" + material.getNameLowercase() + "_slug"),
+								ModWritingUtil.default_variant_name);
 					}
 				});
 			}
