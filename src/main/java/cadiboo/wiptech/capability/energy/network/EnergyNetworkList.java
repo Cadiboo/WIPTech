@@ -41,8 +41,58 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 
 	@Override
 	public void update() {
-		int networkEnergy = 0;
+		refreshConnections();
+		distributeEnergy();
+	}
+
+	private void distributeEnergy(BlockPos... dontDistribute) {
+		int networkEnergy = getNetworkEnergy();
+
 		HashSet<ModEnergyStorage> storages = new HashSet<>();
+		refreshConnections();
+		for (BlockPos pos : connections) {
+			try {
+				storages.add(((TileEntityWire) world.getTileEntity(pos)).getEnergy());
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+
+		int repetitions = 0;
+		while (networkEnergy > 0) {
+			repetitions++;
+
+			final int[] sets = splitIntoParts(networkEnergy, storages.size());
+
+			if (repetitions >= 5) {
+				WIPTech.info("repetitions went over 5. repetitions were", repetitions, networkEnergy, sets);
+				break;
+			}
+
+			for (int i = 0; i < storages.size(); i++) {
+				networkEnergy -= storages.toArray(new ModEnergyStorage[0])[i].setEnergyStored(sets[i], false);
+			}
+
+		}
+	}
+
+	private int getNetworkEnergy() {
+		refreshConnections();
+		int networkEnergy = 0;
+		for (BlockPos pos : connections) {
+			try {
+				TileEntity tile = world.getTileEntity(pos);
+				ModEnergyStorage energy = ((TileEntityWire) tile).getEnergy();
+				networkEnergy += energy.getEnergyStored();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+
+		return networkEnergy;
+	}
+
+	private void refreshConnections() {
 		for (BlockPos pos : connections) {
 			TileEntity tile = world.getTileEntity(pos);
 			if (tile == null) {
@@ -53,30 +103,6 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 				connections.remove(pos);
 				continue;
 			}
-
-			ModEnergyStorage energy = ((TileEntityWire) tile).getEnergy();
-			storages.add(energy);
-
-			networkEnergy += energy.getEnergyStored();
-		}
-
-		int repetitions = 0;
-
-		while (networkEnergy > 0) {
-
-			repetitions++;
-
-			final int[] sets = splitIntoParts(networkEnergy, storages.size());
-
-			if (repetitions >= 5) {
-				WIPTech.info("__", repetitions, networkEnergy, sets);
-				break;
-			}
-
-			for (int i = 0; i < storages.size(); i++) {
-				networkEnergy -= storages.toArray(new ModEnergyStorage[0])[i].setEnergyStored(sets[i], false);
-			}
-
 		}
 	}
 
