@@ -5,20 +5,26 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public interface IEnergyNetworkList {
+import net.minecraft.world.World;
+
+public interface IEnergyNetworkList<T> {
+
+	public World getWorld();
 
 	public ArrayList<EnergyNetwork> getNetworks();
 
 	@Nullable
-	public EnergyNetwork getNetworkFor(IEnergyNetworkConnection potentialConnection);
+	public EnergyNetwork getNetworkFor(T potentialConnection);
 
 	@Nonnull
-	public EnergyNetwork getCreateOrMergeNetworkFor(IEnergyNetworkConnection potentialConnection);
+	public EnergyNetwork getCreateOrMergeNetworkFor(T potentialConnection);
 
-	public void splitNetworks(IEnergyNetworkConnection potentialConnection);
+	public void splitNetworks(T potentialConnection);
 
-	public void addConnection(IEnergyNetworkConnection potentialConnection);
+	public void addConnection(T potentialConnection);
 
-	public void removeConnection(IEnergyNetworkConnection potentialConnection);
+	public void removeConnection(T potentialConnection);
+
+	public void setNetworks(ArrayList<EnergyNetwork> networks);
 
 }

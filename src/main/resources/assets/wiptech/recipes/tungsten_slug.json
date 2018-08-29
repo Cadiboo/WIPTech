@@ -13,11 +13,11 @@
 		},		"C": {
  			"item": "wiptech:slug_casing_bottom"
 		},		"X": {
- 			"item": "wiptech:iron_ingot"
+ 			"item": "wiptech:tungsten_ingot"
 		}
 	},
 	"result": {
-		"item": "minecraft:iron_pickaxe",
+		"item": "wiptech:tungsten_slug",
 		"count": 1
 	}
 }

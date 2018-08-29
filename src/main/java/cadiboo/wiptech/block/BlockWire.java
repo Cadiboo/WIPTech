@@ -2,7 +2,7 @@ package cadiboo.wiptech.block;
 
 import java.util.List;
 
-import cadiboo.wiptech.capability.energy.network.IEnergyNetworkConnection;
+import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import net.minecraft.block.properties.IProperty;
@@ -171,7 +171,8 @@ public class BlockWire extends ModMaterialBlock {
 			if (tile != null) {
 				if (tile instanceof TileEntityWire) {
 					TileEntityWire wire = (TileEntityWire) tile;
-					wire.getNetwork().remove((IEnergyNetworkConnection) tile);
+
+					worldIn.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).removeConnection(tile);
 				}
 			}
 		}

@@ -5,16 +5,23 @@ import java.util.ArrayList;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cadiboo.wiptech.network.ModNetworkManager;
+import cadiboo.wiptech.network.play.server.SPacketSyncEnergyNetworkList;
+import cadiboo.wiptech.tileentity.TileEntityWire;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
-public class EnergyNetworkList implements IEnergyNetworkList {
+public class EnergyNetworkList implements IEnergyNetworkList<TileEntityWire> {
 
-	private final ArrayList<EnergyNetwork> networks;
+	private volatile ArrayList<EnergyNetwork> networks;
+	private final World world;
 
-	public EnergyNetworkList() {
-		networks = new ArrayList<>(0);
+	public EnergyNetworkList(World world) {
+		this.networks = new ArrayList<>(0);
+		this.world = world;
 	}
 
 	@Override
@@ -24,11 +31,11 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 
 	@Override
 	@Nullable
-	public EnergyNetwork getNetworkFor(IEnergyNetworkConnection potentialConnection) {
+	public EnergyNetwork getNetworkFor(TileEntityWire potentialConnection) {
 		refresh();
 //		reload();
 		for (EnergyNetwork network : networks) {
-			for (IEnergyNetworkConnection connectionPosition : network.getConnections()) {
+			for (TileEntityWire connectionPosition : network.getConnections()) {
 				if (connectionPosition == potentialConnection)
 					return network;
 			}
@@ -39,22 +46,22 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 
 	@Override
 	@Nonnull
-	public EnergyNetwork getCreateOrMergeNetworkFor(IEnergyNetworkConnection potentialConnection) {
+	public EnergyNetwork getCreateOrMergeNetworkFor(TileEntityWire potentialConnection) {
 		EnergyNetwork foundNetwork = getNetworkFor(potentialConnection);
 		if (foundNetwork == null) {
 
 			for (EnergyNetwork network : networks) {
-				for (IEnergyNetworkConnection connection : network.getConnections()) {
+				for (TileEntityWire connection : network.getConnections()) {
 
 					for (EnumFacing facing : EnumFacing.VALUES) {
-						TileEntity tile = network.getWorld().getTileEntity(potentialConnection.getPosition().offset(facing));
+						TileEntity tile = world.getTileEntity(potentialConnection.getPosition().offset(facing));
 						if (tile == null)
 							continue;
 
-						if (!(tile instanceof IEnergyNetworkConnection))
+						if (!(tile instanceof TileEntityWire))
 							continue;
 
-						IEnergyNetworkConnection networkConnection = (IEnergyNetworkConnection) tile;
+						TileEntityWire networkConnection = (TileEntityWire) tile;
 
 						EnergyNetwork networkConnectionNetwork = networkConnection.getNetwork();
 						if (networkConnectionNetwork == null)
@@ -64,6 +71,8 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 							continue;
 
 						network.add(potentialConnection);
+						ModNetworkManager.NETWORK.sendToAll(new SPacketSyncEnergyNetworkList((NBTTagCompound) CapabilityEnergyNetworkList.NETWORK_LIST.getStorage().writeNBT(
+								CapabilityEnergyNetworkList.NETWORK_LIST, this, null)));
 						return network;
 					}
 				}
@@ -116,7 +125,7 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 //		return foundNetwork;
 //	}
 
-	private EnergyNetwork createNetwork(IEnergyNetworkConnection connection) {
+	private EnergyNetwork createNetwork(TileEntityWire connection) {
 		refresh();
 		EnergyNetwork network = new EnergyNetwork().add(connection);
 		getNetworks().add(network);
@@ -124,7 +133,7 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 	}
 
 	public void refresh() {
-		getNetworks().clear();
+//		getNetworks().clear();
 		for (int i = 0; i < getNetworks().size(); i++) {
 			if (getNetworks().get(i).getConnections().size() > 0)
 				continue;
@@ -142,6 +151,36 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 			}
 			network = null;
 		}
+	}
+
+	@Override
+	public void splitNetworks(TileEntityWire potentialConnection) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addConnection(TileEntityWire potentialConnection) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void removeConnection(TileEntityWire potentialConnection) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public World getWorld() {
+		return world;
+	}
+
+	@Override
+	public void setNetworks(ArrayList<EnergyNetwork> networksIn) {
+		getNetworks().clear();
+		getNetworks().addAll(networksIn);
+
 	}
 
 }

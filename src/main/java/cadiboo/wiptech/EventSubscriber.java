@@ -1,5 +1,7 @@
 package cadiboo.wiptech;
 
+import java.util.ArrayList;
+
 import cadiboo.wiptech.block.BlockEnamel;
 import cadiboo.wiptech.block.BlockItem;
 import cadiboo.wiptech.block.BlockModOre;
@@ -7,7 +9,9 @@ import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
+import cadiboo.wiptech.capability.energy.network.EnergyNetwork;
 import cadiboo.wiptech.capability.energy.network.EnergyNetworkList;
+import cadiboo.wiptech.capability.energy.network.IEnergyNetworkList;
 import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.client.model.ModelsCache;
 import cadiboo.wiptech.client.render.block.model.WireModelLoader;
@@ -52,6 +56,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -61,6 +67,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraft.world.World;
@@ -483,32 +490,43 @@ public final class EventSubscriber {
 	@SideOnly(Side.CLIENT)
 	public static final void onRenderWorldLast(final RenderWorldLastEvent event) {
 
-//		for (EnergyNetwork network : EnergyNetworkList.INSTANCE.getNetworks())
-//			for (BlockPos pos : network.getPositions()) {
-//				// your positions. You might want to shift them a bit too
-//				int sX = pos.getX();
-//				int sY = pos.getY();
-//				int sZ = pos.getZ();
-//				// Usually the player
-//				Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-//				// Interpolating everything back to 0,0,0. These are transforms you can find at
-//				// RenderEntity class
-//				double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * event.getPartialTicks();
-//				double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * event.getPartialTicks();
-//				double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * event.getPartialTicks();
-//				// Apply 0-our transforms to set everything back to 0,0,0
-//				Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
-////				Tessellator.getInstance().getBuffer().setTranslation(100, 0, 0);
-//				// Your render function which renders boxes at a desired position. In this
-//				// example I just copy-pasted the one on TileEntityStructureRenderer
-//				Minecraft.getMinecraft().getTextureManager().bindTexture(new ModResourceLocation(ModReference.Version.getModId(), "textures/block/uranium_block.png"));
-//				GlStateManager.color(pos.getX(), pos.getY(), pos.getZ());
-//				ClientUtil.drawCuboidAt(sX + 0.5, sY + 0.5, sZ + 0.5, 0, 1, 0, 1, 0.5, 0.5, 0.5, 1);
-////				renderBox(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), sX, sY, sZ, sX + 1, sY + 1, sZ + 1);
-//				// When you are done rendering all your boxes reset the offsets. We do not want
-//				// everything that renders next to still be at 0,0,0 :)
-//				Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
-//			}
+		World world = Minecraft.getMinecraft().world;
+		if (world == null)
+			return;
+		IEnergyNetworkList<TileEntity> list = world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
+		if (list == null)
+			return;
+
+		ArrayList<EnergyNetwork> networks = list.getNetworks();
+		if (networks.size() <= 0)
+			return;
+
+		for (EnergyNetwork network : networks)
+			for (BlockPos pos : network.getPositions()) {
+				// your positions. You might want to shift them a bit too
+				int sX = pos.getX();
+				int sY = pos.getY();
+				int sZ = pos.getZ();
+				// Usually the player
+				Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+				// Interpolating everything back to 0,0,0. These are transforms you can find at
+				// RenderEntity class
+				double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * event.getPartialTicks();
+				double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * event.getPartialTicks();
+				double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * event.getPartialTicks();
+				// Apply 0-our transforms to set everything back to 0,0,0
+				Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
+//				Tessellator.getInstance().getBuffer().setTranslation(100, 0, 0);
+				// Your render function which renders boxes at a desired position. In this
+				// example I just copy-pasted the one on TileEntityStructureRenderer
+				Minecraft.getMinecraft().getTextureManager().bindTexture(new ModResourceLocation(ModReference.Version.getModId(), "textures/block/uranium_block.png"));
+				GlStateManager.color(pos.getX(), pos.getY(), pos.getZ());
+				ClientUtil.drawCuboidAt(sX + 0.5, sY + 0.5, sZ + 0.5, 0, 1, 0, 1, 0.5, 0.5, 0.5, 1);
+//				renderBox(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), sX, sY, sZ, sX + 1, sY + 1, sZ + 1);
+				// When you are done rendering all your boxes reset the offsets. We do not want
+				// everything that renders next to still be at 0,0,0 :)
+				Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
+			}
 	}
 
 	@SubscribeEvent
@@ -609,7 +627,7 @@ public final class EventSubscriber {
 	public static final void attachCapabilities(final AttachCapabilitiesEvent<World> event) {
 		event.addCapability(new ModResourceLocation(ModReference.Version.getModId(), ModUtil.getRegistryNameForClass(CapabilityEnergyNetworkList.class, "Capability")), new ICapabilityProvider() {
 
-			private EnergyNetworkList energyNetworkList = new EnergyNetworkList();
+			private EnergyNetworkList energyNetworkList = new EnergyNetworkList(event.getObject());
 
 			@Override
 			public boolean hasCapability(Capability<?> capability, EnumFacing facing) {

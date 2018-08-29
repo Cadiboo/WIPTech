@@ -8,21 +8,15 @@ import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
+import cadiboo.wiptech.tileentity.TileEntityWire;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class EnergyNetwork {
 
 	private ModEnergyStorage energy;
-	private World world;
 
-	private HashSet<IEnergyNetworkConnection> connections;
-
-	public EnergyNetwork(World world) {
-		this();
-		this.world = world;
-	}
+	private HashSet<TileEntityWire> connections;
 
 	public EnergyNetwork() {
 		this.energy = new ModEnergyStorage(0) {
@@ -62,20 +56,20 @@ public class EnergyNetwork {
 				return maxReceive;
 			}
 		};
-		this.connections = new HashSet<IEnergyNetworkConnection>(0);
+		this.connections = new HashSet<TileEntityWire>(0);
 	}
 
 	public ModEnergyStorage getEnergy() {
 		return energy;
 	}
 
-	public HashSet<IEnergyNetworkConnection> getConnections() {
+	public HashSet<TileEntityWire> getConnections() {
 		return connections;
 	}
 
 	public Set<BlockPos> getPositions() {
 		HashSet<BlockPos> positions = new HashSet<>();
-		for (IEnergyNetworkConnection connection : connections) {
+		for (TileEntityWire connection : connections) {
 			positions.add(connection.getPosition());
 		}
 		return positions;
@@ -83,26 +77,20 @@ public class EnergyNetwork {
 
 	public Collection<ModEnergyStorage> getEnergyStorages() {
 		HashSet<ModEnergyStorage> storages = new HashSet<>();
-		for (IEnergyNetworkConnection connection : connections) {
+		for (TileEntityWire connection : connections) {
 			storages.add(connection.getEnergy());
 		}
 		return storages;
 	}
 
-	public EnergyNetwork add(IEnergyNetworkConnection connection) {
+	public EnergyNetwork add(TileEntityWire connection) {
 		getConnections().add(connection);
-		if (world == null)
-			world = connection.getWorld();
 		return this;
 	}
 
-	public EnergyNetwork remove(IEnergyNetworkConnection connection) {
+	public EnergyNetwork remove(TileEntityWire connection) {
 		getConnections().remove(connection);
 		return this;
-	}
-
-	public World getWorld() {
-		return world;
 	}
 
 	public void update() {
@@ -128,14 +116,12 @@ public class EnergyNetwork {
 
 	@Nullable
 	public EnergyNetwork tryMerge(EnergyNetwork other) {
-		if (other.getWorld() != this.getWorld())
-			return null;
 		for (BlockPos myConnectionPosition : this.getPositions()) {
 			for (BlockPos otherConnectionPosition : other.getPositions()) {
 				for (EnumFacing facing : EnumFacing.VALUES) {
 					BlockPos pos = myConnectionPosition.offset(facing);
 					if (otherConnectionPosition.equals(pos)) {
-						EnergyNetwork newNetwork = new EnergyNetwork(getWorld());
+						EnergyNetwork newNetwork = new EnergyNetwork();
 						newNetwork.getConnections().addAll(getConnections());
 						newNetwork.getConnections().addAll(other.getConnections());
 						return newNetwork;
@@ -150,6 +136,11 @@ public class EnergyNetwork {
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof EnergyNetwork && ((EnergyNetwork) obj).getConnections().equals(this.getConnections());
+	}
+
+	@Override
+	public int hashCode() {
+		return connections.hashCode();
 	}
 
 }

@@ -1,17 +1,13 @@
 {
 	"type": "minecraft:crafting_shaped",
 	"pattern": [
-		" B ",
-		"AXX",
-		" C "
+		"XXX",
+		" # ",
+		" # "
 	],
 	"key": {
-		"A": {
- 			"item": "wiptech:slug_casing_back"
-		},		"B": {
- 			"item": "wiptech:slug_casing_top"
-		},		"C": {
- 			"item": "wiptech:slug_casing_bottom"
+		"#": {
+			"item": "minecraft:stick"
 		},		"X": {
  			"item": "wiptech:osmium_ingot"
 		}

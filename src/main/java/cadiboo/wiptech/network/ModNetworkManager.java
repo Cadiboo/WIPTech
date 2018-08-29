@@ -2,6 +2,7 @@ package cadiboo.wiptech.network;
 
 import cadiboo.wiptech.network.play.client.CPacketSyncEntity;
 import cadiboo.wiptech.network.play.client.CPacketSyncTileEntity;
+import cadiboo.wiptech.network.play.server.SPacketSyncEnergyNetworkList;
 import cadiboo.wiptech.network.play.server.SPacketSyncEntity;
 import cadiboo.wiptech.network.play.server.SPacketSyncTileEntity;
 import cadiboo.wiptech.util.ModReference;
@@ -28,6 +29,9 @@ public class ModNetworkManager {
 		NETWORK.registerMessage(CPacketSyncEntity.class, CPacketSyncEntity.class, networkIds++, Side.SERVER);
 		/* Server -> Client */
 		NETWORK.registerMessage(SPacketSyncEntity.class, SPacketSyncEntity.class, networkIds++, Side.CLIENT);
+
+		/* Server -> Client */
+		NETWORK.registerMessage(SPacketSyncEnergyNetworkList.class, SPacketSyncEnergyNetworkList.class, networkIds++, Side.CLIENT);
 	}
 
 }
