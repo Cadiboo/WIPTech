@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:cased_slug_model",
+	"textures": {
+		"layer0": "wiptech:item/cased_steel_slug"
+	}
+}
+

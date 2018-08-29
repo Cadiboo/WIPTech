@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:wiremodel/iron_wire"
+			"model": "wiptech:wire_model/iron_wire"
 		}
 	}
 }

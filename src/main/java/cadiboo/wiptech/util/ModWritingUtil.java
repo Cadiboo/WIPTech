@@ -172,7 +172,7 @@ public class ModWritingUtil {
 
 				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation(ModReference.Version.getModId(), suffixLower))));
 
-				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
+				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wire_model/" + nameUpper)));
 //				blockModels.add(new Tuple<String, String>(nameUpper, "{\n" + "	\"parent\": \"wiptech:block/" + material.getNameLowercase() + "_" + suffixLower + "_core\",\n" + "}\n" + ""));
 				blockModels.add(new Tuple<String, String>(nameUpper + "_core", generateBlockItemModelJSON(material, suffixLower + "_core")));
 
@@ -192,7 +192,7 @@ public class ModWritingUtil {
 
 				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation(ModReference.Version.getModId(), suffixLower))));
 
-				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
+				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wire_model/" + nameUpper)));
 //				blockModels.add(new Tuple<String, String>(nameUpper, "{\n" + "	\"parent\": \"wiptech:block/" + material.getNameLowercase() + "_" + suffixLower + "_core\",\n" + "}\n" + ""));
 				blockModels.add(new Tuple<String, String>(nameUpper + "_core", generateBlockItemModelJSON(material, suffixLower + "_core")));
 
@@ -217,6 +217,11 @@ public class ModWritingUtil {
 						/* @formatter:on */
 
 				));
+
+				String prefixLower = "cased";
+				nameUpper = prefixLower.toUpperCase() + "_" + material.getNameUppercase() + "_" + suffixLower.toUpperCase();
+				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation(ModReference.Version.getModId(), prefixLower + "_" + suffixLower
+						+ "_model")))); /* "cased_slug_model" */
 			}
 
 			//

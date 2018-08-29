@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:wiremodel/osmium_wire"
+			"model": "wiptech:wire_model/osmium_wire"
 		}
 	}
 }

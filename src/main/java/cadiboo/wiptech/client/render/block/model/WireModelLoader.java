@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class WireModelLoader implements ICustomModelLoader {
 
-	public static final String WIRE_MODEL_RESOURCE_LOCATION = "models/block/wiremodel";
+	public static final String WIRE_MODEL_RESOURCE_LOCATION = "models/block/wire_model";
 
 	@Override
 	public void onResourceManagerReload(IResourceManager resourceManager) {
@@ -26,7 +26,6 @@ public class WireModelLoader implements ICustomModelLoader {
 
 	@Override
 	public boolean accepts(ResourceLocation modelLocation) {
-
 		return modelLocation.getResourceDomain().equals(ModReference.Version.getModId()) && modelLocation.getResourcePath().startsWith(WIRE_MODEL_RESOURCE_LOCATION);
 	}
 
@@ -37,16 +36,20 @@ public class WireModelLoader implements ICustomModelLoader {
 			assert false : "loadModel expected " + WIRE_MODEL_RESOURCE_LOCATION + " but found " + resourcePath;
 		}
 
-		ArrayList<String> modelName = new ArrayList<String>(Arrays.asList(resourcePath.substring(WIRE_MODEL_RESOURCE_LOCATION.length() + 1).split("_")));
-		String modelType = modelName.get(modelName.size() - 1);
-		modelName.remove(modelName.size() - 1);
-		String modelMaterial = String.join("_", modelName);
+		try {
+			ArrayList<String> modelName = new ArrayList<String>(Arrays.asList(resourcePath.substring(WIRE_MODEL_RESOURCE_LOCATION.length() + 1).split("_")));
+			String modelType = modelName.get(modelName.size() - 1);
+			modelName.remove(modelName.size() - 1);
+			String modelMaterial = String.join("_", modelName);
 
-		if (modelType.toLowerCase().equals("wire")) {
-			return new ModelWire(ModMaterials.valueOf(modelMaterial.toUpperCase()));
-		} else if (modelType.toLowerCase().equals("enamel")) {
-			return new ModelEnamel(ModMaterials.valueOf(modelMaterial.toUpperCase()));
-		} else {
+			if (modelType.toLowerCase().equals("wire")) {
+				return new ModelWire(ModMaterials.valueOf(modelMaterial.toUpperCase()));
+			} else if (modelType.toLowerCase().equals("enamel")) {
+				return new ModelEnamel(ModMaterials.valueOf(modelMaterial.toUpperCase()));
+			} else {
+				return ModelLoaderRegistry.getMissingModel();
+			}
+		} catch (Exception e) {
 			return ModelLoaderRegistry.getMissingModel();
 		}
 	}

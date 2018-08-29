@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:wiremodel/tin_enamel"
+			"model": "wiptech:wire_model/tin_enamel"
 		}
 	}
 }

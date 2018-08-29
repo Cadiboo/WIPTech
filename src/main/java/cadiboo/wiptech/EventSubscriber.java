@@ -19,6 +19,7 @@ import cadiboo.wiptech.client.render.entity.EntityPortableGeneratorRenderer;
 import cadiboo.wiptech.client.render.entity.EntityRailgunRenderer;
 import cadiboo.wiptech.client.render.entity.EntitySlugCasingRenderer;
 import cadiboo.wiptech.client.render.entity.EntitySlugRenderer;
+import cadiboo.wiptech.client.render.item.model.CasedSlugModelLoader;
 import cadiboo.wiptech.client.render.tileentity.TileEntityEnamelRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityWireRenderer;
 import cadiboo.wiptech.entity.item.EntityPortableGenerator;
@@ -57,6 +58,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -65,6 +67,7 @@ import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -253,7 +256,7 @@ public final class EventSubscriber {
 	}
 
 	private static final void registerEntitiesForMaterials(IForgeRegistry<EntityEntry> registry) {
-		// TODO AdditionalSpawnData
+		// TODO AdditionalSpawnData maybe?
 		for (final ModMaterials material : ModMaterials.values())
 			if (material.getProperties().hasRailgunSlug())
 				registry.register(buildEntityEntryFromClassWithName(EntitySlug.class, new ModResourceLocation(ModReference.Version.getModId(), material.getNameLowercase() + "_slug"), false, 128, 2,
@@ -337,7 +340,6 @@ public final class EventSubscriber {
 
 			if (material.getProperties().hasEnamel()) {
 				ModelLoader.setCustomStateMapper(material.getEnamel(), new StateMapperBase() {
-
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
 						return new ModelResourceLocation(new ModResourceLocation(ModReference.Version.getModId(), material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
@@ -347,7 +349,23 @@ public final class EventSubscriber {
 
 		}
 		ModelLoaderRegistry.registerLoader(new WireModelLoader());
-		WIPTech.debug("Registered custom State Mappers for wire and enamel with the Model Loader");
+		WIPTech.debug("Registered custom State Mappers for wires and enamels with the Model Loader");
+
+		for (ModMaterials material : ModMaterials.values()) {
+
+			if (material.getProperties().hasRailgunSlug()) {
+				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), new ItemMeshDefinition() {
+					@Override
+					public ModelResourceLocation getModelLocation(ItemStack stack) {
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.Version.getModId(), material.getNameLowercase() + "_cased_slug"), ModWritingUtil.default_variant_name);
+					}
+				});
+			}
+
+		}
+
+		ModelLoaderRegistry.registerLoader(new CasedSlugModelLoader());
+		WIPTech.debug("Registered custom Mesh Definitions for cased slugs with the Model Loader");
 
 		for (ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre())
@@ -453,8 +471,10 @@ public final class EventSubscriber {
 		final IRegistry<ModelResourceLocation, IBakedModel> registry = event.getModelRegistry();
 
 		injectModels(registry);
-
 		WIPTech.info("Injected models");
+
+//		replaceModels(registry); //TODO should I make this? do I need it?
+//		WIPTech.info("Replaced models");
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -521,7 +541,7 @@ public final class EventSubscriber {
 //				Tessellator.getInstance().getBuffer().setTranslation(100, 0, 0);
 			// Your render function which renders boxes at a desired position. In this
 			// example I just copy-pasted the one on TileEntityStructureRenderer
-			Minecraft.getMinecraft().getTextureManager().bindTexture(new ModResourceLocation(ModReference.Version.getModId(), "textures/item/gallium_horse_armor.png"));
+			Minecraft.getMinecraft().getTextureManager().bindTexture(new ModResourceLocation("minecraft", "textures/environment/clouds.png"));
 
 			Random rand = new Random(world.getTotalWorldTime());
 

@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:wiremodel/platinum_wire"
+			"model": "wiptech:wire_model/platinum_wire"
 		}
 	}
 }

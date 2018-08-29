@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:wiremodel/nickel_wire"
+			"model": "wiptech:wire_model/nickel_wire"
 		}
 	}
 }
