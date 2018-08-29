@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.annotations.VisibleForTesting;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.block.BlockItem;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
@@ -61,7 +62,7 @@ public class ModWritingUtil {
 					blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
 
 				if (material.getResouceLocationDomain("ore", ForgeRegistries.BLOCKS) != "minecraft")
-					blockModels.add(new Tuple<String, String>(nameUpper, generateBlockModelJSON(new ModResourceLocation(ModReference.ID, "block/ore"), suffixLower, nameUpper)));
+					blockModels.add(new Tuple<String, String>(nameUpper, generateBlockModelJSON(new ModResourceLocation(ModReference.Version.getModId(), "block/ore"), suffixLower, nameUpper)));
 
 			}
 
@@ -85,10 +86,10 @@ public class ModWritingUtil {
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
 				/* @formatter:off */
-				blockstates.add(new Tuple<String, String>(nameUpper, "{\n" + "    \"variants\": {\n" + "        \"facing=north\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase()
-						+ "\", \"y\": 0 },\n" + "        \"facing=south\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 180 },\n"
-						+ "        \"facing=west\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 },\n" + "        \"facing=east\":  { \"model\": \""
-						+ ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 }\n" + "    }\n" + "}\n"));
+				blockstates.add(new Tuple<String, String>(nameUpper, "{\n" + "    \"variants\": {\n" + "        \"facing=north\": { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase()
+						+ "\", \"y\": 0 },\n" + "        \"facing=south\": { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 180 },\n"
+						+ "        \"facing=west\":  { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 },\n" + "        \"facing=east\":  { \"model\": \""
+						+ ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 }\n" + "    }\n" + "}\n"));
 				/* @formatter:on */
 				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
 
@@ -100,17 +101,17 @@ public class ModWritingUtil {
 
 				if (material == ModMaterials.GOLD) /* gold is sideways */
 					/* @formatter:off */
-					blockstates.add(new Tuple<String, String>(nameUpper, "{\n" + "    \"variants\": {\n" + "        \"facing=north\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase()
-							+ "\", \"y\": 180},\n" + "        \"facing=south\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 0 },\n"
-							+ "        \"facing=west\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 },\n" + "        \"facing=east\":  { \"model\": \""
-							+ ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 }\n" + "    }\n" + "}\n"));
+					blockstates.add(new Tuple<String, String>(nameUpper, "{\n" + "    \"variants\": {\n" + "        \"facing=north\": { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase()
+							+ "\", \"y\": 180},\n" + "        \"facing=south\": { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 0 },\n"
+							+ "        \"facing=west\":  { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 },\n" + "        \"facing=east\":  { \"model\": \""
+							+ ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 }\n" + "    }\n" + "}\n"));
 				/* @formatter:on */
 				else
 					/* @formatter:off */
-					blockstates.add(new Tuple<String, String>(nameUpper, "{\n" + "    \"variants\": {\n" + "        \"facing=north\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase()
-							+ "\", \"y\": 90 },\n" + "        \"facing=south\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 },\n"
-							+ "        \"facing=west\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 0 },\n" + "        \"facing=east\":  { \"model\": \""
-							+ ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 180 }\n" + "    }\n" + "}\n"));
+					blockstates.add(new Tuple<String, String>(nameUpper, "{\n" + "    \"variants\": {\n" + "        \"facing=north\": { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase()
+							+ "\", \"y\": 90 },\n" + "        \"facing=south\": { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 },\n"
+							+ "        \"facing=west\":  { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 0 },\n" + "        \"facing=east\":  { \"model\": \""
+							+ ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 180 }\n" + "    }\n" + "}\n"));
 				/* @formatter:on */
 				blockModels.add(new Tuple<String, String>(nameUpper, generateBlockItemModelJSON(material, suffixLower)));
 
@@ -169,7 +170,7 @@ public class ModWritingUtil {
 				String suffixLower = "wire";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
-				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation(ModReference.ID, suffixLower))));
+				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation(ModReference.Version.getModId(), suffixLower))));
 
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
 //				blockModels.add(new Tuple<String, String>(nameUpper, "{\n" + "	\"parent\": \"wiptech:block/" + material.getNameLowercase() + "_" + suffixLower + "_core\",\n" + "}\n" + ""));
@@ -189,7 +190,7 @@ public class ModWritingUtil {
 				String suffixLower = "enamel";
 				String nameUpper = material.getNameUppercase() + "_" + suffixLower.toUpperCase();
 
-				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation(ModReference.ID, suffixLower))));
+				itemModels.add(new Tuple<String, String>(nameUpper, generateItemModelJSON(nameUpper, new ModResourceLocation(ModReference.Version.getModId(), suffixLower))));
 
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON("wiremodel/" + nameUpper)));
 //				blockModels.add(new Tuple<String, String>(nameUpper, "{\n" + "	\"parent\": \"wiptech:block/" + material.getNameLowercase() + "_" + suffixLower + "_core\",\n" + "}\n" + ""));
@@ -210,7 +211,7 @@ public class ModWritingUtil {
 				itemModels.add(new Tuple<String, String>(nameUpper,
 
 				/* @formatter:off */
-						"{\n" + "	\"parent\": \"" + ModReference.ID + ":entity/" + suffixLower + "\",\n" + "	\"textures\": {\n" + "		\"ingot\": \"" + material.getResouceLocationDomain("ingot",
+						"{\n" + "	\"parent\": \"" + ModReference.Version.getModId() + ":entity/" + suffixLower + "\",\n" + "	\"textures\": {\n" + "		\"ingot\": \"" + material.getResouceLocationDomain("ingot",
 								ForgeRegistries.ITEMS) + ":item" + (material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS) != "minecraft" || Loader.MC_VERSION.contains("1.13") ? "" : "s") + "/" + material
 										.getNameLowercase() + "_ingot\"\n" + "	}\n" + "}\n"
 						/* @formatter:on */
@@ -232,10 +233,10 @@ public class ModWritingUtil {
 //				/* @formatter:off */
 //				blockstates.add(new Tuple<String, String>(nameUpper,
 //						"{\n" + "    \"variants\": {\n" 
-//								+ "        \"facing=north\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\" },\n"
-//								+ "        \"facing=south\": { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 180 },\n"
-//								+ "        \"facing=west\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 },\n"
-//								+ "        \"facing=east\":  { \"model\": \"" + ModReference.ID + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 }\n" 
+//								+ "        \"facing=north\": { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\" },\n"
+//								+ "        \"facing=south\": { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 180 },\n"
+//								+ "        \"facing=west\":  { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 270 },\n"
+//								+ "        \"facing=east\":  { \"model\": \"" + ModReference.Version.getModId() + ":" + nameUpper.toLowerCase() + "\", \"y\": 90 }\n" 
 //						+ "    }\n" + "}\n"));
 //				/* @formatter:on */
 				blockstates.add(new Tuple<String, String>(nameUpper, generateBlockstateJSON(nameUpper)));
@@ -264,7 +265,7 @@ public class ModWritingUtil {
 				if (material.getOre() != null)
 					GameRegistry.addSmelting(new ItemStack(material.getOre()), new ItemStack(material.getIngot()), 1);
 
-				if (material.getBlock() != null && !material.getBlock().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getBlock() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getBlock().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" + 
@@ -284,7 +285,9 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getIngot() != null && !material.getIngot().getRegistryName().getResourceDomain().equals("minecraft")) {
+				BlockItem ingot = material.getIngot();
+
+				if (material.getIngot() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft")) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getIngot().getRegistryName().getResourcePath() + "_from_block", "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" + 
@@ -325,7 +328,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 				}
 
-				if (material.getNugget() != null && !material.getNugget().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getNugget() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getNugget().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -346,7 +349,7 @@ public class ModWritingUtil {
 
 				// armor
 
-				if (material.getHelmet() != null && !material.getHelmet().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getHelmet() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getHelmet().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -366,7 +369,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getChestplate() != null && !material.getChestplate().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getChestplate() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getChestplate().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -387,7 +390,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getLeggings() != null && !material.getLeggings().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getLeggings() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getLeggings().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -408,7 +411,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getBoots() != null && !material.getBoots().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getBoots() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getBoots().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -430,7 +433,7 @@ public class ModWritingUtil {
 
 				// tools
 
-				if (material.getAxe() != null && !material.getAxe().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getAxe() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getAxe().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -454,7 +457,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getPickaxe() != null && !material.getPickaxe().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getPickaxe() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getPickaxe().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -478,7 +481,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getSword() != null && !material.getSword().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getSword() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getSword().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -502,7 +505,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getShovel() != null && !material.getShovel().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getShovel() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getShovel().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -526,7 +529,7 @@ public class ModWritingUtil {
 							"}"));
 					/*@formatter:on*/
 
-				if (material.getHoe() != null && !material.getHoe().getRegistryName().getResourceDomain().equals("minecraft"))
+				if (material.getHoe() != null && !material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals("minecraft"))
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<String, String>(material.getHoe().getRegistryName().getResourcePath(), "{\n" + 
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +	
@@ -786,9 +789,9 @@ public class ModWritingUtil {
 				finalData.add("{");
 
 			if (Loader.MC_VERSION.contains("1.13"))
-				finalData.add("\"itemGroup." + ModReference.ID + "\"" + ": " + "\"" + ModReference.NAME + "\"" + ",");
+				finalData.add("\"itemGroup." + ModReference.Version.getModId() + "\"" + ": " + "\"" + ModReference.NAME + "\"" + ",");
 			else
-				finalData.add("itemGroup." + ModReference.ID + "=" + ModReference.NAME);
+				finalData.add("itemGroup." + ModReference.Version.getModId() + "=" + ModReference.NAME);
 
 			finalData.addAll(data);
 			if (Loader.MC_VERSION.contains("1.13"))
@@ -852,7 +855,7 @@ public class ModWritingUtil {
 	private static final String generateItemModelJSON(String name, ModResourceLocation parent) {
 
 		/* @formatter:off */
-		String ret = "{" + "\n\t" + "\"parent\": \"" + parent.toString() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"layer0\": \"" + ModReference.ID + ":item/" + name.toLowerCase()
+		String ret = "{" + "\n\t" + "\"parent\": \"" + parent.toString() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"layer0\": \"" + ModReference.Version.getModId() + ":item/" + name.toLowerCase()
 				+ "\"" + "\n\t" + "}" + "\n" + "}" + "\n";
 		/* @formatter:on */
 		return ret;
@@ -866,7 +869,7 @@ public class ModWritingUtil {
 	private static final String generateBlockModelJSON(ModResourceLocation fullParentPath, String textureName, String texture) {
 
 		/* @formatter:off */
-		String ret = "{" + "\n\t" + "\"parent\": \"" + fullParentPath.toString() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"" + textureName.toLowerCase() + "\": \"" + ModReference.ID
+		String ret = "{" + "\n\t" + "\"parent\": \"" + fullParentPath.toString() + "\"," + "\n\t" + "\"textures\": {" + "\n\t\t" + "\"" + textureName.toLowerCase() + "\": \"" + ModReference.Version.getModId()
 				+ ":block/" + texture.toLowerCase() + "\"" + "\n\t" + "}" + "\n" + "}\n";
 		/* @formatter:on */
 		return ret;
@@ -876,7 +879,7 @@ public class ModWritingUtil {
 	private static final String generateBlockItemModelJSON(ModMaterials material, String suffixLower) {
 
 		/* @formatter:off */
-		String ret = "{\n" + "	\"parent\": \"" + ModReference.ID + ":block/" + suffixLower + "\",\n" + "	\"textures\": {\n" + "		\"ingot\": \"" + material.getResouceLocationDomain("ingot",
+		String ret = "{\n" + "	\"parent\": \"" + ModReference.Version.getModId() + ":block/" + suffixLower + "\",\n" + "	\"textures\": {\n" + "		\"ingot\": \"" + material.getResouceLocationDomain("ingot",
 				ForgeRegistries.ITEMS) + ":item" + (material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS) != "minecraft" || Loader.MC_VERSION.contains("1.13") ? "" : "s") + "/" + material
 						.getNameLowercase() + "_ingot\"\n" + "	}\n" + "}\n";
 		/* @formatter:on */
@@ -887,7 +890,7 @@ public class ModWritingUtil {
 	private static final String generateBlockstateJSON(String name) {
 
 		/* @formatter:off */
-		String ret = "{" + "\n\t" + "\"variants\": {" + "\n\t\t" + "\"" + default_variant_name + "\": {" + "\n\t\t\t" + "\"model\": \"" + ModReference.ID + ":" + name.toLowerCase() + "\"" + "\n\t\t"
+		String ret = "{" + "\n\t" + "\"variants\": {" + "\n\t\t" + "\"" + default_variant_name + "\": {" + "\n\t\t\t" + "\"model\": \"" + ModReference.Version.getModId() + ":" + name.toLowerCase() + "\"" + "\n\t\t"
 				+ "}" + "\n\t" + "}\n" + "}\n";
 		/* @formatter:on */
 		return ret;

@@ -2,10 +2,11 @@ package cadiboo.wiptech.tileentity;
 
 import java.util.List;
 
-import cadiboo.wiptech.capability.energy.EnergyNetwork;
-import cadiboo.wiptech.capability.energy.EnergyNetworkList;
 import cadiboo.wiptech.capability.energy.IEnergyUser;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
+import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
+import cadiboo.wiptech.capability.energy.network.EnergyNetwork;
+import cadiboo.wiptech.capability.energy.network.IEnergyNetworkConnection;
 import cadiboo.wiptech.util.ModDamageSource;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -20,9 +21,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser, ITileEntitySyncable {
+public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser, ITileEntitySyncable, IEnergyNetworkConnection {
 
-	private EnergyNetwork network;
 	private final ModEnergyStorage energy;
 
 	public TileEntityWire() {
@@ -32,10 +32,17 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 
 	@Override
 	public void setPos(BlockPos posIn) {
-		if (this.network != null)
-			this.network.remove(getPos());
-		this.network = EnergyNetworkList.INSTANCE.getOrCreateNetworkFor(this.world, posIn, energy);
 		super.setPos(posIn);
+	}
+
+	@Override
+	public void onLoad() {
+		if (world.hasCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null)) {
+			if (world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null) != null) {
+				world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).getCreateOrMergeNetworkFor(this);
+			}
+		}
+		super.onLoad();
 	}
 
 	@Override
@@ -61,7 +68,6 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 			}
 		});
 		transferEnergyToAllAround();
-		network.update();
 	}
 
 	@Override
@@ -150,8 +156,15 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 		syncTag.setInteger("energy", getEnergy().getEnergyStored());
 	}
 
+	@Override
 	public EnergyNetwork getNetwork() {
-		return network;
+		if (!world.hasCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null))
+			return null;
+
+		if (world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null) == null)
+			return null;
+
+		return world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).getNetworkFor(this);
 	}
 
 }

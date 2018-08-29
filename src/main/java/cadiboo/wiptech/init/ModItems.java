@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
  * @author Cadiboo
  */
 
-@ObjectHolder(ModReference.ID)
+@ObjectHolder(ModReference.MOD_ID)
 public class ModItems {
 
 	public static final ItemPortableGenerator PORTABLE_GENERATOR = null;

@@ -9,7 +9,7 @@ import net.minecraft.util.ResourceLocation;
 public class ModItem extends Item {
 
 	public ModItem(String name) {
-		this.setRegistryName(new ResourceLocation(ModReference.ID, name));
+		this.setRegistryName(new ResourceLocation(ModReference.Version.getModId(), name));
 		this.setUnlocalizedName(name);
 		ModUtil.setCreativeTab(this);
 	}

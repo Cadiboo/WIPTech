@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 public class ModBlock extends Block {
 
 	public ModBlock(Material materialIn, String name) {
-		this(materialIn, new ResourceLocation(ModReference.ID, name));
+		this(materialIn, new ResourceLocation(ModReference.Version.getModId(), name));
 	}
 
 	public ModBlock(Material materialIn, ResourceLocation resourceLocation) {

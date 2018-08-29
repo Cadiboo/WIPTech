@@ -1,12 +1,13 @@
-package cadiboo.wiptech.capability.energy;
+package cadiboo.wiptech.capability.energy.network;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,10 +17,14 @@ public class EnergyNetwork {
 	private ModEnergyStorage energy;
 	private World world;
 
-	private HashMap<BlockPos, ModEnergyStorage> connections;
+	private HashSet<IEnergyNetworkConnection> connections;
 
 	public EnergyNetwork(World world) {
+		this();
 		this.world = world;
+	}
+
+	public EnergyNetwork() {
 		this.energy = new ModEnergyStorage(0) {
 			@Override
 			public int getCapacity() {
@@ -57,37 +62,42 @@ public class EnergyNetwork {
 				return maxReceive;
 			}
 		};
-		this.connections = new HashMap<BlockPos, ModEnergyStorage>(0);
+		this.connections = new HashSet<IEnergyNetworkConnection>(0);
 	}
 
 	public ModEnergyStorage getEnergy() {
 		return energy;
 	}
 
-	public HashMap<BlockPos, ModEnergyStorage> getConnections() {
+	public HashSet<IEnergyNetworkConnection> getConnections() {
 		return connections;
 	}
 
 	public Set<BlockPos> getPositions() {
-		return connections.keySet();
+		HashSet<BlockPos> positions = new HashSet<>();
+		for (IEnergyNetworkConnection connection : connections) {
+			positions.add(connection.getPosition());
+		}
+		return positions;
 	}
 
 	public Collection<ModEnergyStorage> getEnergyStorages() {
-		return connections.values();
+		HashSet<ModEnergyStorage> storages = new HashSet<>();
+		for (IEnergyNetworkConnection connection : connections) {
+			storages.add(connection.getEnergy());
+		}
+		return storages;
 	}
 
-	public ModEnergyStorage getEnergyStorage(BlockPos connectionPosition) {
-		return connections.get(connectionPosition);
-	}
-
-	public EnergyNetwork add(BlockPos connectionPosition, ModEnergyStorage connectionEnergy) {
-		getConnections().put(connectionPosition, connectionEnergy);
+	public EnergyNetwork add(IEnergyNetworkConnection connection) {
+		getConnections().add(connection);
+		if (world == null)
+			world = connection.getWorld();
 		return this;
 	}
 
-	public EnergyNetwork remove(BlockPos connectionPosition) {
-		getConnections().remove(connectionPosition);
-		EnergyNetworkList.INSTANCE.refresh();
+	public EnergyNetwork remove(IEnergyNetworkConnection connection) {
+		getConnections().remove(connection);
 		return this;
 	}
 
@@ -126,8 +136,8 @@ public class EnergyNetwork {
 					BlockPos pos = myConnectionPosition.offset(facing);
 					if (otherConnectionPosition.equals(pos)) {
 						EnergyNetwork newNetwork = new EnergyNetwork(getWorld());
-						newNetwork.getConnections().putAll(getConnections());
-						newNetwork.getConnections().putAll(other.getConnections());
+						newNetwork.getConnections().addAll(getConnections());
+						newNetwork.getConnections().addAll(other.getConnections());
 						return newNetwork;
 					}
 				}
@@ -135,6 +145,11 @@ public class EnergyNetwork {
 		}
 
 		return null;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof EnergyNetwork && ((EnergyNetwork) obj).getConnections().equals(this.getConnections());
 	}
 
 }

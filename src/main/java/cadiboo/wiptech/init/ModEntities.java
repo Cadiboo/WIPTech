@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
  * @author Cadiboo
  */
 
-@ObjectHolder(ModReference.ID)
+@ObjectHolder(ModReference.MOD_ID)
 public class ModEntities {
 
 	public static final EntityEntry PORTABLE_GENERATOR = null;

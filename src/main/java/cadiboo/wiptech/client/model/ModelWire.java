@@ -47,8 +47,8 @@ public class ModelWire implements IModel {
 
 	protected ResourceLocation getModelLocation(String string) {
 		if (string == "core")
-			return new ResourceLocation(ModReference.ID, "block/" + material.getNameLowercase() + "_wire_core");
-		return new ResourceLocation(ModReference.ID, "block/" + material.getNameLowercase() + "_wire_extension_" + string);
+			return new ResourceLocation(ModReference.Version.getModId(), "block/" + material.getNameLowercase() + "_wire_core");
+		return new ResourceLocation(ModReference.Version.getModId(), "block/" + material.getNameLowercase() + "_wire_extension_" + string);
 	}
 
 }

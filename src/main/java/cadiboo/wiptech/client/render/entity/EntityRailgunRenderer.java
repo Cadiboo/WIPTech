@@ -44,7 +44,7 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 			GlStateManager.scale(scale, scale, scale);
 			try {
 				GlStateManager.pushMatrix();
-				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.ID, "entity/railgun_base")));
+				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.Version.getModId(), "entity/railgun_base")));
 				GlStateManager.popMatrix();
 			} catch (Exception e) {
 				WIPTech.error("Error rendering railgun base");
@@ -54,7 +54,7 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 			try {
 				GlStateManager.pushMatrix();
 				GlStateManager.rotate(180 - entityYaw, 0, 1, 0);
-				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.ID, "entity/railgun_turret")));
+				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.Version.getModId(), "entity/railgun_turret")));
 				GlStateManager.popMatrix();
 			} catch (Exception e) {
 				WIPTech.error("Error rendering railgun turret");
@@ -66,7 +66,7 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 				GlStateManager.translate(0, -1f / scale, 0);
 				GlStateManager.rotate(180 - entityYaw, 0, 1, 0);
 				GlStateManager.rotate(90 - (float) ClientUtil.getPitch(new Vec3d(0, 0, 0), look), 1, 0, 0);
-				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.ID, "entity/railgun_gun")));
+				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.Version.getModId(), "entity/railgun_gun")));
 				GlStateManager.popMatrix();
 			} catch (Exception e) {
 				WIPTech.error("Error rendering railgun gun");

@@ -191,11 +191,11 @@ public class ModEnums {
 
 		public final String getResouceLocationDomain(String nameSuffix, IForgeRegistry registry) {
 			for (ModContainer mod : Loader.instance().getActiveModList()) {
-				if (mod.getModId() != ModReference.ID)
+				if (!mod.getModId().equals(ModReference.Version.getModId()))
 					if (registry.containsKey(new ResourceLocation(mod.getModId(), getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix)))
 						return mod.getModId();
 			}
-			return ModReference.ID;
+			return ModReference.Version.getModId();
 		}
 
 		public String getVanillaNameLowercase(String suffix) {

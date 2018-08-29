@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.util.IProxy;
 import cadiboo.wiptech.util.ModGuiHandler;
@@ -29,7 +30,7 @@ import net.minecraftforge.fml.relauncher.Side;
  */
 
 /*@formatter:off*/
-@Mod(modid = ModReference.ID,
+@Mod(modid = ModReference.MOD_ID,
 	name = ModReference.NAME,
 	version = ModReference.VERSION,
 	acceptedMinecraftVersions = ModReference.ACCEPTED_VERSIONS,
@@ -63,7 +64,7 @@ public class WIPTech {
 	// TODO weapon modules :( scopes, chips, etc
 	// TODO steel & tungsten carbite
 
-	@Instance(ModReference.ID)
+	@Instance(ModReference.MOD_ID)
 	public static WIPTech instance;
 
 	@SidedProxy(serverSide = ModReference.SERVER_PROXY_CLASS, clientSide = ModReference.CLIENT_PROXY_CLASS)
@@ -74,6 +75,9 @@ public class WIPTech {
 	/**
 	 * Run before anything else. <s>Read your config, create blocks, items, etc, and
 	 * register them with the GameRegistry</s>
+	 * 
+	 * @see {@link net.minecraftforge.common.ForgeModContainer#preInit(FMLPreInitializationEvent)
+	 *      ForgeModContainer.preInit}
 	 */
 	@EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
@@ -84,11 +88,14 @@ public class WIPTech {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
 //		WIPTechAPI.addMaterial("bauxite", new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0, false));
 
+		CapabilityEnergyNetworkList.register();
+
 	}
 
 	/**
 	 * Do your mod setup. Build whatever data structures you care about. Register
 	 * recipes, send FMLInterModComms messages to other mods.
+	 * 
 	 */
 	@EventHandler
 	public void init(final FMLInitializationEvent event) {
@@ -99,9 +106,12 @@ public class WIPTech {
 	/**
 	 * Mod compatibility, or anything which depends on other mods’ init phases being
 	 * finished.
+	 * 
+	 * @see {@link net.minecraftforge.common.ForgeModContainer#postInit(FMLPostInitializationEvent)
+	 *      ForgeModContainer.postInit}
 	 */
 	@EventHandler
-	public void postinit(final FMLPostInitializationEvent event) {
+	public void postInit(final FMLPostInitializationEvent event) {
 	}
 
 	private static Logger getLogger() {

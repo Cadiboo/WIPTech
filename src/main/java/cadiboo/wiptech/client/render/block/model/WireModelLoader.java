@@ -27,7 +27,7 @@ public class WireModelLoader implements ICustomModelLoader {
 	@Override
 	public boolean accepts(ResourceLocation modelLocation) {
 
-		return modelLocation.getResourceDomain().equals(ModReference.ID) && modelLocation.getResourcePath().startsWith(WIRE_MODEL_RESOURCE_LOCATION);
+		return modelLocation.getResourceDomain().equals(ModReference.Version.getModId()) && modelLocation.getResourcePath().startsWith(WIRE_MODEL_RESOURCE_LOCATION);
 	}
 
 	@Override

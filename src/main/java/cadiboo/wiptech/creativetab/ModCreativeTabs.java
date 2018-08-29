@@ -33,7 +33,7 @@ public class ModCreativeTabs {
 			// pass a string for the tab label, if you only have one it is common
 			// to pass the modid and then in your lang file you can put name of your mod.
 			// The unlocalized name of a tab automatically has "itemGroup." prepended.
-			super(ModReference.ID);
+			super(ModReference.Version.getModId());
 		}
 
 		/*
