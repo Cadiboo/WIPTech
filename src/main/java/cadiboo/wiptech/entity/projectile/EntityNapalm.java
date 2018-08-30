@@ -66,7 +66,7 @@ public class EntityNapalm extends EntityThrowable {
 		if (this.world.isRemote)
 			return;
 		BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
-		if (world.getBlockState(pos) != Blocks.AIR.getDefaultState())
+		if (world.getBlockState(pos) != Blocks.AIR.getDefaultState() && world.getBlockState(pos) != Blocks.SNOW_LAYER.getDefaultState())
 			return;
 
 		int radius = Math.min(3, Math.round(ticksExisted / 50f));
@@ -74,23 +74,11 @@ public class EntityNapalm extends EntityThrowable {
 			for (int y = -(radius); y <= radius; y++) {
 				for (int z = -(radius); z <= radius; z++) {
 					pos = new BlockPos(this.posX + x, this.posY + y, this.posZ + z);
-//					for (EnumFacing facing : EnumFacing.VALUES) {
-
-//						if (world.getBlockState(pos.offset(facing)) != Blocks.AIR.getDefaultState())
-//							if (world.getBlockState(pos.offset(facing)) != Blocks.FIRE.getDefaultState())
-////								if (world.getBlockState(pos.offset(facing)).getBlock().isFlammable(world,
-////										pos.offset(facing), facing.getOpposite()))
-//								if (world.getBlockState(pos.offset(facing)).isSideSolid(world, pos.offset(facing),
-//										facing.getOpposite()))
-//									if (world.getBlockState(pos).getBlock().isReplaceable(world, pos))
-//										if (!world.getBlockState(pos).getBlock().is)
-
-//						IBlockState offset = world.getBlockState(pos.offset(facing));
-//						IBlockState position = world.getBlockState(pos);
-
-					if (world.getBlockState(pos) == Blocks.AIR.getDefaultState())
+					if (world.getBlockState(pos) == Blocks.AIR.getDefaultState()) {
 						world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 11);
-//					}
+					} else if (world.getBlockState(pos) == Blocks.SNOW_LAYER.getDefaultState()) {
+						world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+					}
 				}
 			}
 		}
