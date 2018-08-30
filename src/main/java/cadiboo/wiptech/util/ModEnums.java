@@ -424,7 +424,7 @@ public class ModEnums {
 		}
 	}
 
-	public static enum SlugCasingTypes implements IEnumNameFormattable, IStringSerializable {
+	public static enum SlugCasingParts implements IEnumNameFormattable, IStringSerializable {
 
 		BACK(0),
 
@@ -434,7 +434,7 @@ public class ModEnums {
 
 		private final int id;
 
-		SlugCasingTypes(int idIn) {
+		SlugCasingParts(int idIn) {
 			this.id = idIn;
 		}
 
@@ -447,7 +447,7 @@ public class ModEnums {
 			return this.id;
 		}
 
-		public static SlugCasingTypes byId(int id) {
+		public static SlugCasingParts byId(int id) {
 			return values()[Math.min(Math.abs(id), values().length)];
 		}
 	}

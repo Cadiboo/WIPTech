@@ -3,8 +3,9 @@ package cadiboo.wiptech.client.model;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
-import cadiboo.wiptech.util.ModEnums.SlugCasingTypes;
+import cadiboo.wiptech.util.ModEnums.SlugCasingParts;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -33,19 +34,20 @@ public class ModelCasedSlug implements IModel {
 
 			ArrayList<IBakedModel> bakedCasingModels = new ArrayList<IBakedModel>();
 
-			for (SlugCasingTypes type : SlugCasingTypes.values()) {
-				bakedCasingModels.add(type.getId(), ModelLoaderRegistry.getModel(new ModelResourceLocation(ModReference.Version.getModId(), "item/" + "slug_casing_" + type.getNameLowercase())).bake(
+			for (SlugCasingParts part : SlugCasingParts.values()) {
+				bakedCasingModels.add(part.getId(), ModelLoaderRegistry.getModel(new ModelResourceLocation(ModReference.Version.getModId(), "item/" + "slug_casing_" + part.getNameLowercase())).bake(
 						state, format, bakedTextureGetter));
 			}
 
 			IBakedModel bakedModelSlug = ModelLoaderRegistry.getModel(new ModelResourceLocation(ModReference.Version.getModId(), "item/" + material.getNameLowercase() + "_slug")).bake(state, format,
 					bakedTextureGetter);
 
-			return new BakedModelCasedSlug(bakedModelSlug, bakedCasingModels.get(SlugCasingTypes.BACK.getId()), bakedCasingModels.get(SlugCasingTypes.TOP.getId()), bakedCasingModels.get(
-					SlugCasingTypes.BOTTOM.getId()));
+			return new BakedModelCasedSlug(bakedModelSlug, bakedCasingModels.get(SlugCasingParts.BACK.getId()), bakedCasingModels.get(SlugCasingParts.TOP.getId()), bakedCasingModels.get(
+					SlugCasingParts.BOTTOM.getId()));
 		} catch (Exception exception) {
-			System.err.println(this.getClass().getName() + ".bake() failed due to exception:" + exception);
+			WIPTech.error(this.getClass().getName() + ".bake() failed due to exception:" + exception);
 			return ModelLoaderRegistry.getMissingModel().bake(state, format, bakedTextureGetter);
 		}
 	}
+
 }

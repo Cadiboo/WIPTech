@@ -3,6 +3,7 @@ package cadiboo.wiptech.client.model;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -40,7 +41,7 @@ public class ModelWire implements IModel {
 			return new BakedModelWire(bakedModelCore, bakedModels.get(EnumFacing.DOWN.getIndex()), bakedModels.get(EnumFacing.UP.getIndex()), bakedModels.get(EnumFacing.NORTH.getIndex()), bakedModels
 					.get(EnumFacing.SOUTH.getIndex()), bakedModels.get(EnumFacing.WEST.getIndex()), bakedModels.get(EnumFacing.EAST.getIndex()));
 		} catch (Exception exception) {
-			System.err.println(this.getClass().getName() + ".bake() failed due to exception:" + exception);
+			WIPTech.error(this.getClass().getName() + ".bake() failed due to exception:" + exception);
 			return ModelLoaderRegistry.getMissingModel().bake(state, format, bakedTextureGetter);
 		}
 	}

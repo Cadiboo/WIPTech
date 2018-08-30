@@ -48,7 +48,7 @@ import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ExistsForDebugging;
 import cadiboo.wiptech.util.ModEnums.BlockItemTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
-import cadiboo.wiptech.util.ModEnums.SlugCasingTypes;
+import cadiboo.wiptech.util.ModEnums.SlugCasingParts;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModUtil;
@@ -173,9 +173,9 @@ public final class EventSubscriber {
 
 		registry.register(new ItemRailgun("railgun"));
 
-		registry.register(new ItemSlugCasing("slug_casing", SlugCasingTypes.BACK));
-		registry.register(new ItemSlugCasing("slug_casing", SlugCasingTypes.TOP));
-		registry.register(new ItemSlugCasing("slug_casing", SlugCasingTypes.BOTTOM));
+		registry.register(new ItemSlugCasing("slug_casing_back", SlugCasingParts.BACK));
+		registry.register(new ItemSlugCasing("slug_casing_top", SlugCasingParts.TOP));
+		registry.register(new ItemSlugCasing("slug_casing_bottom", SlugCasingParts.BOTTOM));
 
 		WIPTech.info("Registered items");
 

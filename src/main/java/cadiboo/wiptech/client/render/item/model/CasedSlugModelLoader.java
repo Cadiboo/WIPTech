@@ -28,9 +28,10 @@ public class CasedSlugModelLoader implements ICustomModelLoader {
 	@Override
 	public IModel loadModel(ResourceLocation modelLocation) throws Exception {
 		String resourcePath = modelLocation.getResourcePath();
-//		if (!resourcePath.equals(CASED_SLUG_MODEL_RESOURCE_LOCATION)) {
+		if (!resourcePath.equals(CASED_SLUG_MODEL_RESOURCE_LOCATION)) {
 //			assert false : "loadModel expected " + CASED_SLUG_MODEL_RESOURCE_LOCATION + " but found " + resourcePath;
-//		}
+			this.getClass();
+		}
 
 		try {
 			ArrayList<String> modelName = new ArrayList<String>(Arrays.asList(resourcePath.substring(CASED_SLUG_MODEL_RESOURCE_LOCATION.length() + 1).split("_")));
