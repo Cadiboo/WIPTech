@@ -10,7 +10,7 @@ public class ItemSlugCasing extends Item {
 	private SlugCasingParts part;
 
 	public ItemSlugCasing(String name, SlugCasingParts part) {
-		this.setRegistryName(new ResourceLocation(ModReference.Version.getModId(), name));
+		this.setRegistryName(new ResourceLocation(ModReference.MOD_ID, name));
 		this.setUnlocalizedName(name);
 		this.part = part;
 	}

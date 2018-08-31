@@ -17,8 +17,8 @@ public class ModelEnamel extends ModelWire implements IModel {
 	@Override
 	protected ResourceLocation getModelLocation(String string) {
 		if (string == "core")
-			return new ResourceLocation(ModReference.Version.getModId(), "block/" + material.getNameLowercase() + "_enamel_core");
-		return new ResourceLocation(ModReference.Version.getModId(), "block/" + material.getNameLowercase() + "_enamel_extension_" + string);
+			return new ResourceLocation(ModReference.MOD_ID, "block/" + material.getNameLowercase() + "_enamel_core");
+		return new ResourceLocation(ModReference.MOD_ID, "block/" + material.getNameLowercase() + "_enamel_extension_" + string);
 	}
 
 }

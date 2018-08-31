@@ -154,7 +154,7 @@ public final class EventSubscriber {
 
 	private static final void registerTileEntity(final Class<? extends TileEntity> clazz) {
 		try {
-			GameRegistry.registerTileEntity(clazz, new ModResourceLocation(ModReference.Version.getModId(), ModUtil.getRegistryNameForClass(clazz, "TileEntity")));
+			GameRegistry.registerTileEntity(clazz, new ModResourceLocation(ModReference.MOD_ID, ModUtil.getRegistryNameForClass(clazz, "TileEntity")));
 		} catch (Exception e) {
 			WIPTech.error("Error registering Tile Entity " + clazz.getSimpleName());
 			e.printStackTrace();
@@ -259,14 +259,13 @@ public final class EventSubscriber {
 		// TODO AdditionalSpawnData maybe?
 		for (final ModMaterials material : ModMaterials.values())
 			if (material.getProperties().hasRailgunSlug())
-				registry.register(buildEntityEntryFromClassWithName(EntitySlug.class, new ModResourceLocation(ModReference.Version.getModId(), material.getNameLowercase() + "_slug"), false, 128, 2,
-						true));
+				registry.register(buildEntityEntryFromClassWithName(EntitySlug.class, new ModResourceLocation(ModReference.MOD_ID, material.getNameLowercase() + "_slug"), false, 128, 2, true));
 		WIPTech.debug("Registered entities for materials");
 	}
 
 	private static final EntityEntry buildEntityEntryFromClass(final Class<? extends Entity> clazz, final boolean hasEgg, final int range, final int updateFrequency,
 			final boolean sendVelocityUpdates) {
-		return buildEntityEntryFromClassWithName(clazz, new ModResourceLocation(ModReference.Version.getModId(), ModUtil.getRegistryNameForClass(clazz, "Entity")), hasEgg, range, updateFrequency,
+		return buildEntityEntryFromClassWithName(clazz, new ModResourceLocation(ModReference.MOD_ID, ModUtil.getRegistryNameForClass(clazz, "Entity")), hasEgg, range, updateFrequency,
 				sendVelocityUpdates);
 	}
 
@@ -333,7 +332,7 @@ public final class EventSubscriber {
 				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.Version.getModId(), material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name);
 					}
 				});
 			}
@@ -342,7 +341,7 @@ public final class EventSubscriber {
 				ModelLoader.setCustomStateMapper(material.getEnamel(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.Version.getModId(), material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
 					}
 				});
 			}
@@ -357,8 +356,7 @@ public final class EventSubscriber {
 				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), new ItemMeshDefinition() {
 					@Override
 					public ModelResourceLocation getModelLocation(ItemStack stack) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.Version.getModId(), "cased_" + material.getNameLowercase() + "_slug"),
-								ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "cased_" + material.getNameLowercase() + "_slug"), ModWritingUtil.default_variant_name);
 					}
 				});
 			}
@@ -379,9 +377,9 @@ public final class EventSubscriber {
 
 			if (material.getProperties().hasIngotAndNugget()) {
 
-				if (material.getIngot() != null && material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals(ModReference.Version.getModId()))
+				if (material.getIngot() != null && material.getResouceLocationDomain("ingot", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))
 					registerItemBlockModel(material.getIngot());
-				if (material.getNugget() != null && material.getResouceLocationDomain("nugget", ForgeRegistries.ITEMS).equals(ModReference.Version.getModId()))
+				if (material.getNugget() != null && material.getResouceLocationDomain("nugget", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))
 					registerItemBlockModel(material.getNugget());
 
 			}
@@ -474,29 +472,27 @@ public final class EventSubscriber {
 		injectModels(registry);
 		WIPTech.info("Injected models");
 
-//		replaceModels(registry); //TODO should I make this? do I need it?
-//		WIPTech.info("Replaced models");
 	}
 
 	@SideOnly(Side.CLIENT)
 	private static final void injectModels(final IRegistry<ModelResourceLocation, IBakedModel> registry) {
 		final ModResourceLocation[] models = {
 
-				new ModResourceLocation(ModReference.Version.getModId(), "entity/portable_generator_handle"),
+				new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_handle"),
 
-				new ModResourceLocation(ModReference.Version.getModId(), "entity/portable_generator_wheel"),
+				new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_wheel"),
 
-				new ModResourceLocation(ModReference.Version.getModId(), "entity/railgun_base"),
+				new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_base"),
 
-				new ModResourceLocation(ModReference.Version.getModId(), "entity/railgun_turret"),
+				new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_turret"),
 
-				new ModResourceLocation(ModReference.Version.getModId(), "entity/railgun_gun"),
+				new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_gun"),
 
-//				new ModResourceLocation(ModReference.Version.getModId(), "entity/slug_casing_back"),
+//				new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_back"),
 //
-//				new ModResourceLocation(ModReference.Version.getModId(), "entity/slug_casing_top"),
+//				new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_top"),
 //
-//				new ModResourceLocation(ModReference.Version.getModId(), "entity/slug_casing_bottom"),
+//				new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_bottom"),
 
 		};
 
@@ -594,7 +590,7 @@ public final class EventSubscriber {
 		int Width = Scaled.getScaledWidth() - 10;
 		int Height = Scaled.getScaledHeight() - 54;
 
-		mc.getTextureManager().bindTexture(new ModResourceLocation(ModReference.Version.getModId(), "textures/gui/energy.png"));
+		mc.getTextureManager().bindTexture(new ModResourceLocation(ModReference.MOD_ID, "textures/gui/energy.png"));
 
 		ClientUtil.drawNonStandardTexturedRect(Width, Height, 0, 0, 10, 54, 256, 256);
 		ClientUtil.drawNonStandardTexturedRect(Width + 1, Height + 1 + scaled_height, 10, 0, 8, 52 - scaled_height, 256, 256);
@@ -611,7 +607,7 @@ public final class EventSubscriber {
 
 		Item item = event.getItemStack().getItem();
 
-		if (!item.getRegistryName().getResourceDomain().equals(ModReference.Version.getModId()))
+		if (!item.getRegistryName().getResourceDomain().equals(ModReference.MOD_ID))
 			return;
 
 		if (item instanceof ItemCoil)
@@ -654,7 +650,7 @@ public final class EventSubscriber {
 
 	@SubscribeEvent
 	public static final void onAttachCapabilities(final AttachCapabilitiesEvent<World> event) {
-		event.addCapability(new ModResourceLocation(ModReference.Version.getModId(), ModUtil.getRegistryNameForClass(CapabilityEnergyNetworkList.class, "Capability")), new ICapabilityProvider() {
+		event.addCapability(new ModResourceLocation(ModReference.MOD_ID, ModUtil.getRegistryNameForClass(CapabilityEnergyNetworkList.class, "Capability")), new ICapabilityProvider() {
 
 			private EnergyNetworkList energyNetworkList = new EnergyNetworkList(event.getObject());
 

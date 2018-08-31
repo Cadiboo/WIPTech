@@ -192,11 +192,11 @@ public class ModEnums {
 
 		public final String getResouceLocationDomain(String nameSuffix, IForgeRegistry registry) {
 			for (ModContainer mod : Loader.instance().getActiveModList()) {
-				if (!mod.getModId().equals(ModReference.Version.getModId()))
+				if (!mod.getModId().equals(ModReference.MOD_ID))
 					if (registry.containsKey(new ResourceLocation(mod.getModId(), getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix)))
 						return mod.getModId();
 			}
-			return ModReference.Version.getModId();
+			return ModReference.MOD_ID;
 		}
 
 		public String getVanillaNameLowercase(String suffix) {
@@ -372,7 +372,7 @@ public class ModEnums {
 		public ItemCasedSlug getCasedSlug() {
 			if (!this.getProperties().hasRailgunSlug())
 				return null;
-			return (ItemCasedSlug) ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.Version.getModId(), "cased_" + this.getNameLowercase() + "_" + "slug"));
+			return (ItemCasedSlug) ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.MOD_ID, "cased_" + this.getNameLowercase() + "_" + "slug"));
 		}
 
 		@Nullable

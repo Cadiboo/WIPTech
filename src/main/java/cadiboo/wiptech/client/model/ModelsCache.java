@@ -34,9 +34,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *         Cadiboo (2018)
  */
 @SideOnly(Side.CLIENT)
-public enum ModelsCache implements ISelectiveResourceReloadListener {
+public class ModelsCache implements ISelectiveResourceReloadListener {
 
-	INSTANCE;
+	public static final ModelsCache INSTANCE = new ModelsCache();
+
+	private ModelsCache() {
+	}
 
 	public static final IModelState DEFAULTMODELSTATE = new IModelState() {
 

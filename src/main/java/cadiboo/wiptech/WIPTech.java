@@ -31,8 +31,8 @@ import net.minecraftforge.fml.relauncher.Side;
 
 /*@formatter:off*/
 @Mod(modid = ModReference.MOD_ID,
-	name = ModReference.NAME,
-	version = ModReference.VERSION,
+	name = ModReference.MOD_NAME,
+	version = ModReference.Version.VERSION,
 	acceptedMinecraftVersions = ModReference.ACCEPTED_VERSIONS,
 	dependencies = ModReference.DEPENDENCIES,
 	canBeDeactivated = ModReference.CAN_BE_DEACTIVATED,

@@ -15,7 +15,7 @@ public class ModNetworkManager {
 	/**
 	 * CANT BE LONGER THAN 20 CHARS
 	 */
-	public static final String CHANNEL = ModReference.Version.getModId() + "_chanel";
+	public static final String CHANNEL = ModReference.MOD_ID + "_chanel";
 	public static final SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(CHANNEL);
 
 	public ModNetworkManager() {

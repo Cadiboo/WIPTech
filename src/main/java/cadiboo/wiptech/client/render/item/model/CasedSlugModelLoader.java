@@ -14,7 +14,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 
 public class CasedSlugModelLoader implements ICustomModelLoader {
 
-	public static final String CASED_SLUG_MODEL_RESOURCE_LOCATION = "models/item/cased_slug_model";
+	public static final String CASED_SLUG_MODEL_RESOURCE_LOCATION = "item/cased_slug_model";
 
 	@Override
 	public void onResourceManagerReload(IResourceManager resourceManager) {
@@ -22,7 +22,7 @@ public class CasedSlugModelLoader implements ICustomModelLoader {
 
 	@Override
 	public boolean accepts(ResourceLocation modelLocation) {
-		return modelLocation.getResourceDomain().equals(ModReference.Version.getModId()) && modelLocation.getResourcePath().startsWith(CASED_SLUG_MODEL_RESOURCE_LOCATION);
+		return modelLocation.getResourceDomain().equals(ModReference.MOD_ID) && modelLocation.getResourcePath().startsWith(CASED_SLUG_MODEL_RESOURCE_LOCATION);
 	}
 
 	@Override

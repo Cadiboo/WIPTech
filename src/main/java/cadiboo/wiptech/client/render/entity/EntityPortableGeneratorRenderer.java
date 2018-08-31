@@ -38,7 +38,7 @@ public class EntityPortableGeneratorRenderer extends Render<EntityPortableGenera
 
 			try {
 				GlStateManager.pushMatrix();
-				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.Version.getModId(), "entity/portable_generator_body")));
+				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_body")));
 				GlStateManager.popMatrix();
 			} catch (Exception e) {
 				WIPTech.error("Error rendering portable generator body");
@@ -52,7 +52,7 @@ public class EntityPortableGeneratorRenderer extends Render<EntityPortableGenera
 					GlStateManager.rotate(180, 0, 1, 0);
 					GlStateManager.translate(0, -0.5, 0);
 				}
-				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.Version.getModId(), "entity/portable_generator_handle")));
+				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_handle")));
 				GlStateManager.popMatrix();
 			} catch (Exception e) {
 				WIPTech.error("Error rendering portable generator handle");
@@ -71,7 +71,7 @@ public class EntityPortableGeneratorRenderer extends Render<EntityPortableGenera
 					GlStateManager.rotate((wheelIndex % 2 == 0 ? 1 : -1) * 90, 0, 1, 0);
 					GlStateManager.rotate((wheelIndex % 2 == 0 ? 1 : -1) * -(float) ((entity.prevPosX - entity.posX) + (entity.prevPosZ - entity.posZ) * 1000), 0, 0, 1);
 
-					ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.Version.getModId(), "entity/portable_generator_wheel")));
+					ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_wheel")));
 					GlStateManager.popMatrix();
 				}
 			} catch (Exception e) {

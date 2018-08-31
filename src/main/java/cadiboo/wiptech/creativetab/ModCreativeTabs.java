@@ -1,6 +1,6 @@
 package cadiboo.wiptech.creativetab;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -16,8 +16,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModCreativeTabs {
 
-	// instantiate creative tabs
-	public static final CustomCreativeTab CREATIVE_TAB = new CustomCreativeTab();
+	/** instantiate creative tabs */
+	public static final CustomCreativeTab CREATIVE_TAB = new CustomCreativeTab(ModReference.MOD_ID, new ItemStack(ModItems.FLAMETHROWER), true);
 
 	/**
 	 * This class is used for an extra tab in the creative inventory. Many mods like
@@ -26,38 +26,48 @@ public class ModCreativeTabs {
 	 * sense.
 	 */
 	public static class CustomCreativeTab extends CreativeTabs {
-		/**
-		 * Instantiates a new custom creative tab.
-		 */
-		public CustomCreativeTab() {
-			// pass a string for the tab label, if you only have one it is common
-			// to pass the modid and then in your lang file you can put name of your mod.
-			// The unlocalized name of a tab automatically has "itemGroup." prepended.
-			super(ModReference.Version.getModId());
+
+		private final ItemStack iconStack;
+		private final boolean hasSearchBar;
+
+		public CustomCreativeTab(final String name, final ItemStack iconStack, final boolean hasSearchBar) {
+			super(name);
+			this.iconStack = iconStack;
+			this.hasSearchBar = hasSearchBar;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see net.minecraft.creativetab.CreativeTabs#getTabIconItem()
+		/**
+		 * gets the {@link net.minecraft.item.ItemStack ItemStack} to display for the
+		 * tab's icon
 		 */
 		@SideOnly(Side.CLIENT)
 		@Override
 		public ItemStack getTabIconItem() {
-			return new ItemStack(ModMaterials.COPPER.getSpool());
+			return iconStack;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * net.minecraft.creativetab.CreativeTabs#displayAllRelevantItems(net.minecraft.
-		 * util.NonNullList)
+		/**
+		 * Useful for adding extra items such as full variants of energy related items
 		 */
 		@SideOnly(Side.CLIENT)
 		@Override
 		public void displayAllRelevantItems(final NonNullList<ItemStack> items) {
 			super.displayAllRelevantItems(items);
 		}
+
+		@Override
+		public boolean hasSearchBar() {
+			return hasSearchBar;
+		}
+
+		@Override
+		public String getBackgroundImageName() {
+			if (hasSearchBar) {
+				return "item_search.png";
+			} else {
+				return super.getBackgroundImageName();
+			}
+		}
+
 	}
 }
