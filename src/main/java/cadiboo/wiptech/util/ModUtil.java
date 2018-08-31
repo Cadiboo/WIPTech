@@ -15,15 +15,40 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
+/**
+ * Utility Methods
+ *
+ * @author Cadiboo
+ */
 public final class ModUtil {
 
-	public static void setRegistryNames(final Block block, final ModMaterials materialIn, final String nameSuffix) {
-		final ModResourceLocation registryName = new ModResourceLocation(materialIn.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.BLOCKS), materialIn.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
+	/**
+	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.block.Block#setUnlocalizedName() Unlocalised Name} for the block taking vanilla overriding into account
+	 *
+	 * @param block
+	 *            the block to set registry names for
+	 * @param material
+	 *            the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material} to get the names based on
+	 * @param nameSuffix
+	 *            the string to be appended to the names (for example "ore" or "block")
+	 */
+	public static void setRegistryNames(final Block block, final ModMaterials material, final String nameSuffix) {
+		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.BLOCKS), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
 		setRegistryNames(block, registryName);
 	}
 
-	public static void setRegistryNames(final Item item, final ModMaterials materialIn, final String nameSuffix) {
-		final ModResourceLocation registryName = new ModResourceLocation(materialIn.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.ITEMS), materialIn.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
+	/**
+	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.item.Item#setUnlocalizedName() Unlocalised Name} for the item taking vanilla overriding and vanilla name quirks into account
+	 *
+	 * @param item
+	 *            the item to set registry names for
+	 * @param material
+	 *            the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material} to get the names based on
+	 * @param nameSuffix
+	 *            the string to be appended to the names (for example "shovel" or "helmet")
+	 */
+	public static void setRegistryNames(final Item item, final ModMaterials material, final String nameSuffix) {
+		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.ITEMS), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
 		setRegistryNames(item, registryName);
 
 		final Item overriddenItem = ForgeRegistries.ITEMS.getValue(registryName);
@@ -32,14 +57,40 @@ public final class ModUtil {
 		}
 	}
 
+	/**
+	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.item.Item#setUnlocalizedName() Unlocalised Name} (if applicable) for the entry
+	 *
+	 * @param entry
+	 *            the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
+	 * @param name
+	 *            the name for the entry that the registry name is derived from
+	 */
 	public static void setRegistryNames(final IForgeRegistryEntry.Impl<?> entry, final String name) {
 		setRegistryNames(entry, new ModResourceLocation(ModReference.MOD_ID, name));
 	}
 
+	/**
+	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.item.Item#setUnlocalizedName() Unlocalised Name} (if applicable) for the entry
+	 *
+	 * @param entry
+	 *            the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
+	 * @param registryName
+	 *            the registry name for the entry that the unlocalised name is also gotten from
+	 */
 	public static void setRegistryNames(final IForgeRegistryEntry.Impl<?> entry, final ModResourceLocation registryName) {
 		setRegistryNames(entry, registryName, registryName.getResourcePath());
 	}
 
+	/**
+	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.item.Item#setUnlocalizedName() Unlocalised Name} (if applicable) for the entry
+	 *
+	 * @param entry
+	 *            the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
+	 * @param registryName
+	 *            the registry name for the entry
+	 * @param unlocalizedName
+	 *            the unlocalized name for the entry
+	 */
 	public static void setRegistryNames(final IForgeRegistryEntry.Impl<?> entry, final ModResourceLocation registryName, final String unlocalizedName) {
 		entry.setRegistryName(registryName);
 		if (entry instanceof Block) {
@@ -52,7 +103,12 @@ public final class ModUtil {
 	}
 
 	/**
-	 * gets the game name in uppercase
+	 * Gets the game name from a slot<br>
+	 * For example {@link net.minecraft.inventory.EntityEquipmentSlot.CHEST EntityEquipmentSlot.CHEST} -> "CHESTPLATE"
+	 *
+	 * @param slotIn
+	 *            the {@link net.minecraft.inventory.EntityEquipmentSlot EntityEquipmentSlot} to get the name for
+	 * @return the game name for the slot
 	 */
 	public static String getSlotGameNameUppercase(final EntityEquipmentSlot slotIn) {
 		switch (slotIn) {
@@ -65,7 +121,7 @@ public final class ModUtil {
 			case LEGS :
 				return "LEGGINGS";
 			default :
-				return slotIn.name();
+				return slotIn.name().toUpperCase();
 		}
 	}
 
@@ -83,16 +139,36 @@ public final class ModUtil {
 		return StringUtils.capitalize(getSlotGameNameLowercase(slotIn));
 	}
 
+	/**
+	 * Utility method to make sure that all our items appear on our creative tab, the search tab and any other tab they specify
+	 *
+	 * @param item
+	 *            the {@link net.minecraft.item.Item Item}
+	 * @return an array of all tabs that this item is on.
+	 */
 	public static CreativeTabs[] getCreativeTabs(final Item item) {
 		return new CreativeTabs[]{item.getCreativeTab(), ModCreativeTabs.CREATIVE_TAB, CreativeTabs.SEARCH};
 	}
 
+	/**
+	 * Utility method to make sure that all our items appear on our creative tab
+	 *
+	 * @param item
+	 *            the {@link net.minecraft.item.Item Item}
+	 */
 	public static void setCreativeTab(final Item item) {
 		if (item.getCreativeTab() == null) {
 			item.setCreativeTab(ModCreativeTabs.CREATIVE_TAB);
 		}
 	}
 
+	/**
+	 * Utility method allowing centralized control of glowing material ores, blocks etc. Helpful for debugging
+	 *
+	 * @param material
+	 *            the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
+	 * @return a light value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
+	 */
 	public static int getMaterialLightValue(final ModMaterials material) {
 		if (ModReference.Debug.debugOres()) {
 			return 14;
@@ -107,6 +183,13 @@ public final class ModUtil {
 		}
 	}
 
+	/**
+	 * Utility method allowing centralized control of glowing material ores, blocks etc. Helpful for debugging
+	 *
+	 * @param material
+	 *            the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
+	 * @return a light opacity value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
+	 */
 	public static int getMaterialLightOpacity(final ModMaterials material) {
 		if (ModReference.Debug.debugOres()) {
 			return 1;
