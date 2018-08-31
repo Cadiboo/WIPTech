@@ -19,11 +19,22 @@ import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * Handles the opening (creation) of Guis for both the server and client
+ *
+ * @author Cadiboo
+ */
 public class ModGuiHandler implements IGuiHandler {
 
 	public static final int RAILGUN = 0;
 	public static final int PORTABLE_GENERATOR = 1;
 
+	/**
+	 * gets the server's part of a Gui
+	 *
+	 * @return a {@link net.minecraft.inventory.Container Container} for the
+	 *         server
+	 */
 	@Override
 	public Container getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		switch (ID) {
@@ -48,6 +59,12 @@ public class ModGuiHandler implements IGuiHandler {
 		}
 	}
 
+	/**
+	 * gets the client's part of a Gui
+	 * 
+	 * @return a {@link net.minecraft.client.gui.GuiScreen GuiScreen} for the
+	 *         client
+	 */
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Gui getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {

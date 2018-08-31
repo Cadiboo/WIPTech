@@ -8,7 +8,6 @@ import net.minecraftforge.fml.relauncher.Side;
  * 
  * @author Cadiboo
  */
-
 public interface IProxy {
 
 	public String localize(String unlocalized);

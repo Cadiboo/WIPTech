@@ -23,6 +23,7 @@ import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.item.ItemSlug;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -39,52 +40,44 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
- * 
+ *
  * @author Cadiboo
  *
  */
-
-public class ModEnums {
+public final class ModEnums {
 
 	public interface IEnumNameFormattable {
 
 		/**
-		 * Converts the name to lowercase as per {@link java.lang.String#toLowerCase()
-		 * String.toLowerCase}.
+		 * Converts the name to lowercase as per {@link java.lang.String#toLowerCase() String.toLowerCase}.
 		 */
-		public default String getNameLowercase() {
+		default String getNameLowercase() {
 			return this.name().toLowerCase();
 		}
 
 		/**
-		 * Converts the name to uppercase as per {@link java.lang.String#toUpperCase()
-		 * String.toUpperCase}.
+		 * Converts the name to uppercase as per {@link java.lang.String#toUpperCase() String.toUpperCase}.
 		 */
-		public default String getNameUppercase() {
+		default String getNameUppercase() {
 			return this.getNameLowercase().toUpperCase();
 		}
 
 		/**
-		 * Capitalizes the name of the material as per
-		 * {@link org.apache.commons.lang3.StringUtils#capitalize(String)
-		 * StringUtils.capitalize}.
+		 * Capitalizes the name of the material as per {@link org.apache.commons.lang3.StringUtils#capitalize(String) StringUtils.capitalize}.
 		 */
-		public default String getNameFormatted() {
+		default String getNameFormatted() {
 			return StringUtils.capitalize(this.getNameLowercase());
 		}
 
-		public String name(); /* not exactly hacky, but this method is provided by enum */
+		String name(); /* not exactly hacky, but this method is provided by enum */
 
 	}
 
 	/**
-	 * 
-	 * 
-	 * MOHS Hardness from <a href=
-	 * "https://en.wikipedia.org/wiki/Mohs_scale_of_mineral_hardness">Wikipedia</a>
-	 * and <a href=
-	 * "http://periodictable.com/Properties/A/MohsHardness.v.html">Periodictable</a>
-	 * 
+	 *
+	 *
+	 * MOHS Hardness from <a href= "https://en.wikipedia.org/wiki/Mohs_scale_of_mineral_hardness">Wikipedia</a> and <a href= "http://periodictable.com/Properties/A/MohsHardness.v.html">Periodictable</a>
+	 *
 	 * @author Cadiboo
 	 *
 	 */
@@ -139,266 +132,298 @@ public class ModEnums {
 			this.properties = propertiesIn;
 
 			if (this.getProperties().hasArmor()) {
-				String name = this.getNameUppercase();
+				final String name = this.getNameUppercase();
 
-				String textureName = new ResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), getNameLowercase()).toString();
+				final String textureName = new ResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), this.getNameLowercase()).toString();
 
-				int durability = Math.round(this.getProperties().getHardness() * ModReference.ARMOR_MATERIAL_HARDNESS_MULTIPLIER);
+				final int durability = Math.round(this.getProperties().getHardness() * ModReference.ARMOR_MATERIAL_HARDNESS_MULTIPLIER);
 
-				int[] reductionAmounts = new int[4];
+				final int[] reductionAmounts = new int[4];
 				Arrays.fill(reductionAmounts, Math.round(this.getProperties().getHardness() / 2f));
 
-				int enchantability = Math.round(this.getProperties().getConductivity() / 10f);
+				final int enchantability = Math.round(this.getProperties().getConductivity() / 10f);
 
-				SoundEvent soundOnEquip = SoundEvents.ITEM_ARMOR_EQUIP_IRON;
+				final SoundEvent soundOnEquip = SoundEvents.ITEM_ARMOR_EQUIP_IRON;
 
-				float toughness = Math.round(this.getProperties().getHardness() / 5f);
+				final float toughness = Math.round(this.getProperties().getHardness() / 5f);
 
 				this.armorMaterial = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability, soundOnEquip, toughness);
-				this.armorMaterial.setRepairItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS),
-						getNameLowercase()))));
-			} else
+				this.armorMaterial.setRepairItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), this.getNameLowercase()))));
+			} else {
 				this.armorMaterial = null;
+			}
 
 			if (this.getProperties().hasTools()) {
 
-				String name = this.getNameUppercase();
-				int harvestLevel = Math.min(3, Math.round(this.getProperties().getHardness() / 3f));
-				int maxUses = Math.round(this.getProperties().getHardness() * 150f);
-				float efficiency = this.getProperties().getHardness();
-				float damageVsEntity = this.getProperties().getHardness();
-				int enchantability = Math.round(this.getProperties().getConductivity() / 10f);
+				final String name = this.getNameUppercase();
+				final int harvestLevel = Math.min(3, Math.round(this.getProperties().getHardness() / 3f));
+				final int maxUses = Math.round(this.getProperties().getHardness() * 150f);
+				final float efficiency = this.getProperties().getHardness();
+				final float damageVsEntity = this.getProperties().getHardness();
+				final int enchantability = Math.round(this.getProperties().getConductivity() / 10f);
 
 				this.toolMaterial = EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damageVsEntity, enchantability);
-			} else
+			} else {
 				this.toolMaterial = null;
+			}
 		}
 
-		public final int getId() {
+		public int getId() {
 			return this.id;
 		}
 
-		public final ModMaterialProperties getProperties() {
-			return properties;
+		public ModMaterialProperties getProperties() {
+			return this.properties;
 		}
 
-		public final ArmorMaterial getArmorMaterial() {
+		public ArmorMaterial getArmorMaterial() {
 			return this.armorMaterial;
 		}
 
-		public final ToolMaterial getToolMaterial() {
+		public ToolMaterial getToolMaterial() {
 			return this.toolMaterial;
 		}
 
-		public final String getResouceLocationDomain(String nameSuffix, IForgeRegistry registry) {
-			for (ModContainer mod : Loader.instance().getActiveModList()) {
-				if (!mod.getModId().equals(ModReference.MOD_ID))
-					if (registry.containsKey(new ResourceLocation(mod.getModId(), getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix)))
+		public String getResouceLocationDomain(final String nameSuffix, final IForgeRegistry registry) {
+			for (final ModContainer mod : Loader.instance().getActiveModList()) {
+				if (!mod.getModId().equals(ModReference.MOD_ID)) {
+					if (registry.containsKey(new ResourceLocation(mod.getModId(), this.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix))) {
 						return mod.getModId();
+					}
+				}
 			}
 			return ModReference.MOD_ID;
 		}
 
-		public String getVanillaNameLowercase(String suffix) {
+		public String getVanillaNameLowercase(final String suffix) {
 			switch (suffix.toLowerCase()) {
-			case "sword":
-			case "shovel":
-			case "pickaxe":
-			case "axe":
-			case "hoe":
-			case "helmet":
-			case "chestplate":
-			case "leggings":
-			case "boots":
-			case "apple":
-			case "carrot":
-			case "horse_armor":
-				return getNameLowercase() + (getNameLowercase().contains("gold") ? "en" : "");
-			default:
-				return getNameLowercase();
+				case "sword" :
+				case "shovel" :
+				case "pickaxe" :
+				case "axe" :
+				case "hoe" :
+				case "helmet" :
+				case "chestplate" :
+				case "leggings" :
+				case "boots" :
+				case "apple" :
+				case "carrot" :
+				case "horse_armor" :
+					return this.getNameLowercase() + (this.getNameLowercase().contains("gold") ? "en" : "");
+				default :
+					return this.getNameLowercase();
 			}
 
 		}
 
-		public String getVanillaNameUppercase(String suffix) {
-			return getVanillaNameLowercase(suffix).toUpperCase();
+		public String getVanillaNameUppercase(final String suffix) {
+			return this.getVanillaNameLowercase(suffix).toUpperCase();
 		}
 
-		public String getVanillaNameFormatted(String suffix) {
-			return StringUtils.capitalize(getVanillaNameLowercase(suffix));
-		}
-
-		@Nullable
-		public final BlockModOre getOre() {
-			if (!this.getProperties().hasOre())
-				return null;
-			return (BlockModOre) getRegistryValue(ForgeRegistries.BLOCKS, "ore");
+		public String getVanillaNameFormatted(final String suffix) {
+			return StringUtils.capitalize(this.getVanillaNameLowercase(suffix));
 		}
 
 		@Nullable
-		public final BlockResource getBlock() {
-			if (!this.getProperties().hasBlock())
+		public BlockModOre getOre() {
+			if (!this.getProperties().hasOre()) {
 				return null;
-			return (BlockResource) getRegistryValue(ForgeRegistries.BLOCKS, "block");
+			}
+			return (BlockModOre) this.getRegistryValue(ForgeRegistries.BLOCKS, "ore");
 		}
 
 		@Nullable
-		public final BlockItem getIngot() {
-			if (!this.getProperties().hasIngotAndNugget())
+		public BlockResource getBlock() {
+			if (!this.getProperties().hasBlock()) {
 				return null;
-			return (BlockItem) getRegistryValue(ForgeRegistries.BLOCKS, "ingot");
+			}
+			return (BlockResource) this.getRegistryValue(ForgeRegistries.BLOCKS, "block");
 		}
 
 		@Nullable
-		public final BlockItem getNugget() {
-			if (!this.getProperties().hasIngotAndNugget())
+		public BlockItem getIngot() {
+			if (!this.getProperties().hasIngotAndNugget()) {
 				return null;
-			return (BlockItem) getRegistryValue(ForgeRegistries.BLOCKS, "nugget");
+			}
+			return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, "ingot");
+		}
+
+		@Nullable
+		public BlockItem getNugget() {
+			if (!this.getProperties().hasIngotAndNugget()) {
+				return null;
+			}
+			return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, "nugget");
 		}
 
 		@Nullable
 		public BlockWire getWire() {
-			if (!this.getProperties().hasWire())
+			if (!this.getProperties().hasWire()) {
 				return null;
-			return (BlockWire) getRegistryValue(ForgeRegistries.BLOCKS, "wire");
+			}
+			return (BlockWire) this.getRegistryValue(ForgeRegistries.BLOCKS, "wire");
 		}
 
 		@Nullable
 		public BlockSpool getSpool() {
-			if (!this.getProperties().hasWire())
+			if (!this.getProperties().hasWire()) {
 				return null;
-			return (BlockSpool) getRegistryValue(ForgeRegistries.BLOCKS, "spool");
+			}
+			return (BlockSpool) this.getRegistryValue(ForgeRegistries.BLOCKS, "spool");
 		}
 
 		@Nullable
 		public BlockEnamel getEnamel() {
-			if (!this.getProperties().hasEnamel())
+			if (!this.getProperties().hasEnamel()) {
 				return null;
-			return (BlockEnamel) getRegistryValue(ForgeRegistries.BLOCKS, "enamel");
+			}
+			return (BlockEnamel) this.getRegistryValue(ForgeRegistries.BLOCKS, "enamel");
 		}
 
 		@Nullable
 		public ItemModArmor getHelmet() {
-			if (!this.getProperties().hasArmor())
+			if (!this.getProperties().hasArmor()) {
 				return null;
-			return (ItemModArmor) getRegistryValue(ForgeRegistries.ITEMS, "helmet");
+			}
+			return (ItemModArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "helmet");
 		}
 
 		@Nullable
 		public ItemModArmor getChestplate() {
-			if (!this.getProperties().hasArmor())
+			if (!this.getProperties().hasArmor()) {
 				return null;
-			return (ItemModArmor) getRegistryValue(ForgeRegistries.ITEMS, "chestplate");
+			}
+			return (ItemModArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "chestplate");
 		}
 
 		@Nullable
 		public ItemModArmor getLeggings() {
-			if (!this.getProperties().hasArmor())
+			if (!this.getProperties().hasArmor()) {
 				return null;
-			return (ItemModArmor) getRegistryValue(ForgeRegistries.ITEMS, "leggings");
+			}
+			return (ItemModArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "leggings");
 		}
 
 		@Nullable
 		public ItemModArmor getBoots() {
-			if (!this.getProperties().hasArmor())
+			if (!this.getProperties().hasArmor()) {
 				return null;
-			return (ItemModArmor) getRegistryValue(ForgeRegistries.ITEMS, "boots");
+			}
+			return (ItemModArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "boots");
 		}
 
 		@Nullable
 		public ItemModPickaxe getPickaxe() {
-			if (!this.getProperties().hasTools())
+			if (!this.getProperties().hasTools()) {
 				return null;
-			return (ItemModPickaxe) getRegistryValue(ForgeRegistries.ITEMS, "pickaxe");
+			}
+			return (ItemModPickaxe) this.getRegistryValue(ForgeRegistries.ITEMS, "pickaxe");
 		}
 
 		@Nullable
 		public ItemModAxe getAxe() {
-			if (!this.getProperties().hasTools())
+			if (!this.getProperties().hasTools()) {
 				return null;
-			return (ItemModAxe) getRegistryValue(ForgeRegistries.ITEMS, "axe");
+			}
+			return (ItemModAxe) this.getRegistryValue(ForgeRegistries.ITEMS, "axe");
 		}
 
 		@Nullable
 		public ItemModSword getSword() {
-			if (!this.getProperties().hasTools())
+			if (!this.getProperties().hasTools()) {
 				return null;
-			return (ItemModSword) getRegistryValue(ForgeRegistries.ITEMS, "sword");
+			}
+			return (ItemModSword) this.getRegistryValue(ForgeRegistries.ITEMS, "sword");
 		}
 
 		@Nullable
 		public ItemModShovel getShovel() {
-			if (!this.getProperties().hasTools())
+			if (!this.getProperties().hasTools()) {
 				return null;
-			return (ItemModShovel) getRegistryValue(ForgeRegistries.ITEMS, "shovel");
+			}
+			return (ItemModShovel) this.getRegistryValue(ForgeRegistries.ITEMS, "shovel");
 		}
 
 		@Nullable
 		public ItemModHoe getHoe() {
-			if (!this.getProperties().hasTools())
+			if (!this.getProperties().hasTools()) {
 				return null;
-			return (ItemModHoe) getRegistryValue(ForgeRegistries.ITEMS, "hoe");
+			}
+			return (ItemModHoe) this.getRegistryValue(ForgeRegistries.ITEMS, "hoe");
 		}
 
 		@Nullable
 		public ItemCoil getCoil() {
-			if (!this.getProperties().hasCoil())
+			if (!this.getProperties().hasCoil()) {
 				return null;
-			return (ItemCoil) getRegistryValue(ForgeRegistries.ITEMS, "coil");
+			}
+			return (ItemCoil) this.getRegistryValue(ForgeRegistries.ITEMS, "coil");
 		}
 
 		@Nullable
 		public ItemRail getRail() {
-			if (!this.getProperties().hasRail())
+			if (!this.getProperties().hasRail()) {
 				return null;
-			return (ItemRail) getRegistryValue(ForgeRegistries.ITEMS, "rail");
+			}
+			return (ItemRail) this.getRegistryValue(ForgeRegistries.ITEMS, "rail");
 		}
 
 		@Nullable
 		public EntityEntry getSlugEntity() {
-			if (!this.getProperties().hasRailgunSlug())
+			if (!this.getProperties().hasRailgunSlug()) {
 				return null;
-			return getRegistryValue(ForgeRegistries.ENTITIES, "slug");
+			}
+			return this.getRegistryValue(ForgeRegistries.ENTITIES, "slug");
 		}
 
 		@Nullable
 		public ItemSlug getSlugItem() {
-			if (!this.getProperties().hasRailgunSlug())
+			if (!this.getProperties().hasRailgunSlug()) {
 				return null;
-			return (ItemSlug) getRegistryValue(ForgeRegistries.ITEMS, "slug");
+			}
+			return (ItemSlug) this.getRegistryValue(ForgeRegistries.ITEMS, "slug");
 		}
 
 		@Nullable
 		public ItemCasedSlug getCasedSlug() {
-			if (!this.getProperties().hasRailgunSlug())
+			if (!this.getProperties().hasRailgunSlug()) {
 				return null;
+			}
 			return (ItemCasedSlug) ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.MOD_ID, "cased_" + this.getNameLowercase() + "_" + "slug"));
 		}
 
 		@Nullable
-		private <T> T getRegistryValue(@Nonnull IForgeRegistry<? extends IForgeRegistryEntry<T>> registry, @Nonnull String nameSuffix) {
+		private <T> T getRegistryValue(@Nonnull final IForgeRegistry<? extends IForgeRegistryEntry<T>> registry, @Nonnull String nameSuffix) {
 			nameSuffix = nameSuffix.toLowerCase();
 			return (T) registry.getValue(new ResourceLocation(this.getResouceLocationDomain(nameSuffix, registry), this.getNameLowercase() + "_" + nameSuffix));
 		}
 
-		public static ModMaterials byId(int id) {
-			return values()[Math.min(Math.abs(id), values().length)];
-		}
-
-		public static final float getHighestHardness() {
+		public static float getHighestHardness() {
 			float ret = 0;
-			for (ModMaterials material : ModMaterials.values())
-				if (material.getProperties().getHardness() > ret)
+			for (final ModMaterials material : ModMaterials.values()) {
+				if (material.getProperties().getHardness() > ret) {
 					ret = material.getProperties().getHardness();
+				}
+			}
 			return ret;
 		}
 
 		public static double getHighestConductivity() {
 			float ret = 0;
-			for (ModMaterials material : ModMaterials.values())
-				if (material.getProperties().getConductivity() > ret)
+			for (final ModMaterials material : ModMaterials.values()) {
+				if (material.getProperties().getConductivity() > ret) {
 					ret = material.getProperties().getConductivity();
+				}
+			}
 			return ret;
+		}
+
+		public Material getVanillaMaterial() {
+			return Material.IRON;
+		}
+
+		public static ModMaterials byId(final int id) {
+			return values()[Math.min(Math.abs(id), values().length)];
 		}
 
 	}
@@ -411,7 +436,7 @@ public class ModEnums {
 
 		private final int id;
 
-		BlockItemTypes(int idIn) {
+		BlockItemTypes(final int idIn) {
 			this.id = idIn;
 		}
 
@@ -419,7 +444,7 @@ public class ModEnums {
 			return this.id;
 		}
 
-		public static BlockItemTypes byId(int id) {
+		public static BlockItemTypes byId(final int id) {
 			return values()[Math.min(Math.abs(id), values().length)];
 		}
 	}
@@ -434,20 +459,20 @@ public class ModEnums {
 
 		private final int id;
 
-		SlugCasingParts(int idIn) {
+		SlugCasingParts(final int idIn) {
 			this.id = idIn;
 		}
 
 		@Override
 		public String getName() {
-			return getNameFormatted();
+			return this.getNameFormatted();
 		}
 
 		public int getId() {
 			return this.id;
 		}
 
-		public static SlugCasingParts byId(int id) {
+		public static SlugCasingParts byId(final int id) {
 			return values()[Math.min(Math.abs(id), values().length)];
 		}
 	}

@@ -7,25 +7,22 @@ import net.minecraft.item.ItemSpade;
 
 public class ItemModShovel extends ItemSpade implements IItemModMaterial {
 
-    protected final ModMaterials material;
+	protected final ModMaterials material;
 
-    public ItemModShovel(ModMaterials materialIn) {
+	public ItemModShovel(final ModMaterials materialIn) {
+		super(materialIn.getToolMaterial());
+		ModUtil.setRegistryNames(this, materialIn, "shovel");
+		this.material = materialIn;
+	}
 
-	super(materialIn.getToolMaterial());
-	ModUtil.setNameForMaterialItem(this, materialIn, "shovel");
-	ModUtil.setCreativeTab(this);
-	this.material = materialIn;
+	@Override
+	public ModMaterials getModMaterial() {
+		return this.material;
+	}
 
-    }
-
-    @Override
-    public CreativeTabs[] getCreativeTabs() {
-	return ModUtil.getCreativeTabs(this);
-    }
-
-    @Override
-    public ModMaterials getModMaterial() {
-	return material;
-    }
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return ModUtil.getCreativeTabs(this);
+	}
 
 }

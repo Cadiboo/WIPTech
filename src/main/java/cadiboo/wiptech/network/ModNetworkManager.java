@@ -10,10 +10,17 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class ModNetworkManager {
+/**
+ * Manages the registry of the of network packets (it does more than this but
+ * everythings handled automagically by forge)
+ *
+ * @author Cadiboo
+ */
+public final class ModNetworkManager {
 
 	/**
-	 * CANT BE LONGER THAN 20 CHARS
+	 * CHANEL CAN'T be longer than 20 characters due to Minecraft & forge's
+	 * packet system
 	 */
 	public static final String CHANNEL = ModReference.MOD_ID + "_chanel";
 	public static final SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(CHANNEL);

@@ -1,32 +1,27 @@
 package cadiboo.wiptech.item;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import cadiboo.wiptech.creativetab.ModCreativeTabs;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 
-public class ItemRail extends ModItem implements IItemModMaterial {
+public class ItemRail extends Item implements IItemModMaterial {
 
-    protected final ModMaterials material;
+	protected final ModMaterials material;
 
-    public ItemRail(ModMaterials materialIn) {
-	super(materialIn.getNameLowercase() + "_rail");
-	this.material = materialIn;
-    }
+	public ItemRail(final ModMaterials materialIn) {
+		ModUtil.setRegistryNames(this, materialIn, "rail");
+		this.material = materialIn;
+	}
 
-    @Override
-    public final ModMaterials getModMaterial() {
-	return this.material;
-    }
+	@Override
+	public final ModMaterials getModMaterial() {
+		return this.material;
+	}
 
-    @Override
-    public CreativeTabs[] getCreativeTabs() {
-	List<CreativeTabs> tabs = new ArrayList<CreativeTabs>(Arrays.asList(super.getCreativeTabs()));
-	tabs.add(ModCreativeTabs.CREATIVE_TAB);
-	return tabs.toArray(new CreativeTabs[0]);
-    }
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return ModUtil.getCreativeTabs(this);
+	}
 
 }

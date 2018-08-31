@@ -7,25 +7,22 @@ import net.minecraft.item.ItemPickaxe;
 
 public class ItemModPickaxe extends ItemPickaxe implements IItemModMaterial {
 
-    protected final ModMaterials material;
+	protected final ModMaterials material;
 
-    public ItemModPickaxe(ModMaterials materialIn) {
+	public ItemModPickaxe(final ModMaterials materialIn) {
+		super(materialIn.getToolMaterial());
+		ModUtil.setRegistryNames(this, materialIn, "pickaxe");
+		this.material = materialIn;
+	}
 
-	super(materialIn.getToolMaterial());
-	ModUtil.setNameForMaterialItem(this, materialIn, "pickaxe");
-	ModUtil.setCreativeTab(this);
-	this.material = materialIn;
+	@Override
+	public ModMaterials getModMaterial() {
+		return this.material;
+	}
 
-    }
-
-    @Override
-    public CreativeTabs[] getCreativeTabs() {
-	return ModUtil.getCreativeTabs(this);
-    }
-
-    @Override
-    public ModMaterials getModMaterial() {
-	return material;
-    }
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return ModUtil.getCreativeTabs(this);
+	}
 
 }

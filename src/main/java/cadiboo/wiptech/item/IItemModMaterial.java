@@ -4,9 +4,9 @@ import javax.annotation.Nonnull;
 
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 
-public interface IItemModMaterial {
+public interface IItemModMaterial extends IModItem {
 
-    @Nonnull
-    public ModMaterials getModMaterial();
+	@Nonnull
+	ModMaterials getModMaterial();
 
 }

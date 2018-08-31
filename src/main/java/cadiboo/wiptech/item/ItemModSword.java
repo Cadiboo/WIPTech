@@ -7,24 +7,22 @@ import net.minecraft.item.ItemSword;
 
 public class ItemModSword extends ItemSword implements IItemModMaterial {
 
-    protected final ModMaterials material;
+	protected final ModMaterials material;
 
-    public ItemModSword(ModMaterials materialIn) {
-	super(materialIn.getToolMaterial());
-	ModUtil.setNameForMaterialItem(this, materialIn, "sword");
-	ModUtil.setCreativeTab(this);
-	this.material = materialIn;
+	public ItemModSword(final ModMaterials materialIn) {
+		super(materialIn.getToolMaterial());
+		ModUtil.setRegistryNames(this, materialIn, "sword");
+		this.material = materialIn;
+	}
 
-    }
+	@Override
+	public final ModMaterials getModMaterial() {
+		return this.material;
+	}
 
-    @Override
-    public CreativeTabs[] getCreativeTabs() {
-	return ModUtil.getCreativeTabs(this);
-    }
-
-    @Override
-    public final ModMaterials getModMaterial() {
-	return material;
-    }
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return ModUtil.getCreativeTabs(this);
+	}
 
 }

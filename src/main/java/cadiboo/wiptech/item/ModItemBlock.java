@@ -1,23 +1,20 @@
 package cadiboo.wiptech.item;
 
+import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.util.ResourceLocation;
 
 public class ModItemBlock extends ItemBlock {
 
-	public ModItemBlock(Block block) {
-
-		this(block, block.getRegistryName());
-
+	public ModItemBlock(final Block block) {
+		this(block, new ModResourceLocation(block.getRegistryName()));
 	}
 
-	public ModItemBlock(Block block, ResourceLocation registryName) {
+	public ModItemBlock(final Block block, final ModResourceLocation registryName) {
 		super(block);
-		this.setRegistryName(registryName);
-		ModUtil.setCreativeTab(this);
+		ModUtil.setRegistryNames(this, registryName);
 	}
 
 	@Override

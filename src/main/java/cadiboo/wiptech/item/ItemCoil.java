@@ -1,19 +1,27 @@
 package cadiboo.wiptech.item;
 
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModUtil;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 
-public class ItemCoil extends ModItem implements IItemModMaterial {
+public class ItemCoil extends Item implements IItemModMaterial {
 
-    protected final ModMaterials material;
+	private final ModMaterials material;
 
-    public ItemCoil(ModMaterials materialIn) {
-	super(materialIn.getNameLowercase() + "_coil");
-	this.material = materialIn;
-    }
+	public ItemCoil(final ModMaterials materialIn) {
+		ModUtil.setRegistryNames(this, materialIn, "coil");
+		this.material = materialIn;
+	}
 
-    @Override
-    public final ModMaterials getModMaterial() {
-	return this.material;
-    }
+	@Override
+	public final ModMaterials getModMaterial() {
+		return this.material;
+	}
+
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return ModUtil.getCreativeTabs(this);
+	}
 
 }

@@ -28,7 +28,6 @@ import net.minecraftforge.fml.relauncher.Side;
  * 
  * @author Cadiboo
  */
-
 /*@formatter:off*/
 @Mod(modid = ModReference.MOD_ID,
 	name = ModReference.MOD_NAME,
@@ -73,11 +72,9 @@ public class WIPTech {
 	private static Logger logger;
 
 	/**
-	 * Run before anything else. <s>Read your config, create blocks, items, etc, and
-	 * register them with the GameRegistry</s>
+	 * Run before anything else. <s>Read your config, create blocks, items, etc, and register them with the GameRegistry</s>
 	 * 
-	 * @see {@link net.minecraftforge.common.ForgeModContainer#preInit(FMLPreInitializationEvent)
-	 *      ForgeModContainer.preInit}
+	 * @see {@link net.minecraftforge.common.ForgeModContainer#preInit(FMLPreInitializationEvent) ForgeModContainer.preInit}
 	 */
 	@EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
@@ -86,15 +83,14 @@ public class WIPTech {
 		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 3);
 		new ModNetworkManager();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
-//		WIPTechAPI.addMaterial("bauxite", new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0, false));
+		// WIPTechAPI.addMaterial("bauxite", new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0, false));
 
 		CapabilityEnergyNetworkList.register();
 
 	}
 
 	/**
-	 * Do your mod setup. Build whatever data structures you care about. Register
-	 * recipes, send FMLInterModComms messages to other mods.
+	 * Do your mod setup. Build whatever data structures you care about. Register recipes, send FMLInterModComms messages to other mods.
 	 * 
 	 */
 	@EventHandler
@@ -104,11 +100,9 @@ public class WIPTech {
 	}
 
 	/**
-	 * Mod compatibility, or anything which depends on other mods’ init phases being
-	 * finished.
+	 * Mod compatibility, or anything which depends on other mods’ init phases being finished.
 	 * 
-	 * @see {@link net.minecraftforge.common.ForgeModContainer#postInit(FMLPostInitializationEvent)
-	 *      ForgeModContainer.postInit}
+	 * @see {@link net.minecraftforge.common.ForgeModContainer#postInit(FMLPostInitializationEvent) ForgeModContainer.postInit}
 	 */
 	@EventHandler
 	public void postInit(final FMLPostInitializationEvent event) {
@@ -124,10 +118,10 @@ public class WIPTech {
 	}
 
 	/**
-	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#DEBUG
-	 * DEBUG} level.
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#DEBUG DEBUG} level.
 	 * 
-	 * @param messages the message objects to log.
+	 * @param messages
+	 *            the message objects to log.
 	 * @author Cadiboo
 	 */
 	public static void debug(final Object... messages) {
@@ -137,10 +131,10 @@ public class WIPTech {
 	}
 
 	/**
-	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#INFO
-	 * ERROR} INFO.
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#INFO ERROR} INFO.
 	 * 
-	 * @param messages the message objects to log.
+	 * @param messages
+	 *            the message objects to log.
 	 * @author Cadiboo
 	 */
 	public static void info(final Object... messages) {
@@ -150,10 +144,10 @@ public class WIPTech {
 	}
 
 	/**
-	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#WARN
-	 * WARN} level.
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#WARN WARN} level.
 	 * 
-	 * @param messages the message objects to log.
+	 * @param messages
+	 *            the message objects to log.
 	 * @author Cadiboo
 	 */
 	public static void warn(final Object... messages) {
@@ -163,10 +157,10 @@ public class WIPTech {
 	}
 
 	/**
-	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#ERROR
-	 * ERROR} level.
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#ERROR ERROR} level.
 	 * 
-	 * @param messages the message objects to log.
+	 * @param messages
+	 *            the message objects to log.
 	 * @author Cadiboo
 	 */
 	public static void error(final Object... messages) {
@@ -176,10 +170,10 @@ public class WIPTech {
 	}
 
 	/**
-	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#FATAL
-	 * FATAL} level.
+	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#FATAL FATAL} level.
 	 * 
-	 * @param messages the message objects to log.
+	 * @param messages
+	 *            the message objects to log.
 	 * @author Cadiboo
 	 */
 	public static void fatal(final Object... messages) {
@@ -189,10 +183,10 @@ public class WIPTech {
 	}
 
 	/**
-	 * Logs all {@link java.lang.reflect.Field Field}s and their values of an object
-	 * with the {@link org.apache.logging.log4j.Level#INFO INFO} level.
+	 * Logs all {@link java.lang.reflect.Field Field}s and their values of an object with the {@link org.apache.logging.log4j.Level#INFO INFO} level.
 	 * 
-	 * @param objects the objects to dump.
+	 * @param objects
+	 *            the objects to dump.
 	 * @author Cadiboo
 	 */
 	public static void dump(final Object... objects) {

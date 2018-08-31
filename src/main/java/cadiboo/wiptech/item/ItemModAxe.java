@@ -7,26 +7,22 @@ import net.minecraft.item.ItemAxe;
 
 public class ItemModAxe extends ItemAxe implements IItemModMaterial {
 
-    protected final ModMaterials material;
+	protected final ModMaterials material;
 
-    public ItemModAxe(ModMaterials materialIn) {
+	public ItemModAxe(final ModMaterials materialIn) {
+		super(materialIn.getToolMaterial(), materialIn.getToolMaterial().getAttackDamage(), materialIn.getToolMaterial().getEfficiency());
+		ModUtil.setRegistryNames(this, materialIn, "axe");
+		this.material = materialIn;
+	}
 
-	super(materialIn.getToolMaterial(), materialIn.getToolMaterial().getAttackDamage(),
-		materialIn.getToolMaterial().getEfficiency());
-	ModUtil.setNameForMaterialItem(this, materialIn, "axe");
-	ModUtil.setCreativeTab(this);
-	this.material = materialIn;
+	@Override
+	public ModMaterials getModMaterial() {
+		return this.material;
+	}
 
-    }
-
-    @Override
-    public CreativeTabs[] getCreativeTabs() {
-	return ModUtil.getCreativeTabs(this);
-    }
-
-    @Override
-    public ModMaterials getModMaterial() {
-	return material;
-    }
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return ModUtil.getCreativeTabs(this);
+	}
 
 }

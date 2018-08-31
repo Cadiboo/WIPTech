@@ -13,6 +13,11 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+/**
+ * Basic world generator that generates ores
+ * 
+ * @author Cadiboo
+ */
 public class ModWorldGenerator implements IWorldGenerator {
 
 	@Override
@@ -44,7 +49,7 @@ public class ModWorldGenerator implements IWorldGenerator {
 	}
 
 	private int getMinY(ModMaterials material) {
-		return 4;
+		return 5;
 	}
 
 	private int getMaxY(ModMaterials material) {
@@ -77,7 +82,6 @@ public class ModWorldGenerator implements IWorldGenerator {
 
 	private int getChance(ModMaterials material) {
 		int chance = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 1, 5, maxHardnessMinusMaterialHardness(material))));
-//		chance += 3;
 		return chance;
 	}
 
