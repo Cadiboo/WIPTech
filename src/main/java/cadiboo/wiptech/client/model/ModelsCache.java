@@ -26,7 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
- * Information in <a href=
+ * modified from code made by Draco18s. Information in <a href=
  * "http://www.minecraftforge.net/forum/topic/42318-1102-water-liquid-block-model/?tab=comments#comment-228067">this
  * thread</a>
  * 

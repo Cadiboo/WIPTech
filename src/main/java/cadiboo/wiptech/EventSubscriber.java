@@ -461,9 +461,6 @@ public final class EventSubscriber {
 				.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
-	/**
-	 * taken from Draco18s
-	 */
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static final void onModelBakeEvent(final ModelBakeEvent event) {
@@ -498,6 +495,7 @@ public final class EventSubscriber {
 
 		for (ModResourceLocation model : models) {
 			try {
+				/* modified from code made by Draco18s */
 				ModelResourceLocation location = new ModelResourceLocation(model.toString());
 
 				IBakedModel bakedModel = ModelsCache.INSTANCE.getBakedModel(model);
