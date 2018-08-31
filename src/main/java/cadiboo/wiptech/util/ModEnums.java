@@ -29,7 +29,6 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
@@ -40,9 +39,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
- *
  * @author Cadiboo
- *
  */
 public final class ModEnums {
 
@@ -74,12 +71,8 @@ public final class ModEnums {
 	}
 
 	/**
-	 *
-	 *
 	 * MOHS Hardness from <a href= "https://en.wikipedia.org/wiki/Mohs_scale_of_mineral_hardness">Wikipedia</a> and <a href= "http://periodictable.com/Properties/A/MohsHardness.v.html">Periodictable</a>
-	 *
 	 * @author Cadiboo
-	 *
 	 */
 	public static enum ModMaterials implements IEnumNameFormattable {
 
@@ -134,7 +127,7 @@ public final class ModEnums {
 			if (this.getProperties().hasArmor()) {
 				final String name = this.getNameUppercase();
 
-				final String textureName = new ResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), this.getNameLowercase()).toString();
+				final String textureName = new ModResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), this.getNameLowercase()).toString();
 
 				final int durability = Math.round(this.getProperties().getHardness() * ModReference.ARMOR_MATERIAL_HARDNESS_MULTIPLIER);
 
@@ -148,7 +141,8 @@ public final class ModEnums {
 				final float toughness = Math.round(this.getProperties().getHardness() / 5f);
 
 				this.armorMaterial = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability, soundOnEquip, toughness);
-				this.armorMaterial.setRepairItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), this.getNameLowercase()))));
+				// TODO TEST THIS!!
+				this.armorMaterial.setRepairItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ModResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), this.getNameLowercase()))));
 			} else {
 				this.armorMaterial = null;
 			}
@@ -187,7 +181,7 @@ public final class ModEnums {
 		public String getResouceLocationDomain(final String nameSuffix, final IForgeRegistry registry) {
 			for (final ModContainer mod : Loader.instance().getActiveModList()) {
 				if (!mod.getModId().equals(ModReference.MOD_ID)) {
-					if (registry.containsKey(new ResourceLocation(mod.getModId(), this.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix))) {
+					if (registry.containsKey(new ModResourceLocation(mod.getModId(), this.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix))) {
 						return mod.getModId();
 					}
 				}
@@ -389,13 +383,13 @@ public final class ModEnums {
 			if (!this.getProperties().hasRailgunSlug()) {
 				return null;
 			}
-			return (ItemCasedSlug) ForgeRegistries.ITEMS.getValue(new ResourceLocation(ModReference.MOD_ID, "cased_" + this.getNameLowercase() + "_" + "slug"));
+			return (ItemCasedSlug) ForgeRegistries.ITEMS.getValue(new ModResourceLocation(ModReference.MOD_ID, "cased_" + this.getNameLowercase() + "_" + "slug"));
 		}
 
 		@Nullable
 		private <T> T getRegistryValue(@Nonnull final IForgeRegistry<? extends IForgeRegistryEntry<T>> registry, @Nonnull String nameSuffix) {
 			nameSuffix = nameSuffix.toLowerCase();
-			return (T) registry.getValue(new ResourceLocation(this.getResouceLocationDomain(nameSuffix, registry), this.getNameLowercase() + "_" + nameSuffix));
+			return (T) registry.getValue(new ModResourceLocation(this.getResouceLocationDomain(nameSuffix, registry), this.getNameLowercase() + "_" + nameSuffix));
 		}
 
 		public static float getHighestHardness() {

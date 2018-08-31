@@ -17,20 +17,15 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
  * Utility Methods
- *
  * @author Cadiboo
  */
 public final class ModUtil {
 
 	/**
 	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.block.Block#setUnlocalizedName() Unlocalised Name} for the block taking vanilla overriding into account
-	 *
-	 * @param block
-	 *            the block to set registry names for
-	 * @param material
-	 *            the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material} to get the names based on
-	 * @param nameSuffix
-	 *            the string to be appended to the names (for example "ore" or "block")
+	 * @param block      the block to set registry names for
+	 * @param material   the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material} to get the names based on
+	 * @param nameSuffix the string to be appended to the names (for example "ore" or "block")
 	 */
 	public static void setRegistryNames(final Block block, final ModMaterials material, final String nameSuffix) {
 		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.BLOCKS), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
@@ -39,13 +34,9 @@ public final class ModUtil {
 
 	/**
 	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.item.Item#setUnlocalizedName() Unlocalised Name} for the item taking vanilla overriding and vanilla name quirks into account
-	 *
-	 * @param item
-	 *            the item to set registry names for
-	 * @param material
-	 *            the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material} to get the names based on
-	 * @param nameSuffix
-	 *            the string to be appended to the names (for example "shovel" or "helmet")
+	 * @param item       the item to set registry names for
+	 * @param material   the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material} to get the names based on
+	 * @param nameSuffix the string to be appended to the names (for example "shovel" or "helmet")
 	 */
 	public static void setRegistryNames(final Item item, final ModMaterials material, final String nameSuffix) {
 		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.ITEMS), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
@@ -59,11 +50,8 @@ public final class ModUtil {
 
 	/**
 	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.item.Item#setUnlocalizedName() Unlocalised Name} (if applicable) for the entry
-	 *
-	 * @param entry
-	 *            the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
-	 * @param name
-	 *            the name for the entry that the registry name is derived from
+	 * @param entry the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
+	 * @param name  the name for the entry that the registry name is derived from
 	 */
 	public static void setRegistryNames(final IForgeRegistryEntry.Impl<?> entry, final String name) {
 		setRegistryNames(entry, new ModResourceLocation(ModReference.MOD_ID, name));
@@ -71,11 +59,8 @@ public final class ModUtil {
 
 	/**
 	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.item.Item#setUnlocalizedName() Unlocalised Name} (if applicable) for the entry
-	 *
-	 * @param entry
-	 *            the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
-	 * @param registryName
-	 *            the registry name for the entry that the unlocalised name is also gotten from
+	 * @param entry        the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
+	 * @param registryName the registry name for the entry that the unlocalised name is also gotten from
 	 */
 	public static void setRegistryNames(final IForgeRegistryEntry.Impl<?> entry, final ModResourceLocation registryName) {
 		setRegistryNames(entry, registryName, registryName.getResourcePath());
@@ -83,13 +68,9 @@ public final class ModUtil {
 
 	/**
 	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.item.Item#setUnlocalizedName() Unlocalised Name} (if applicable) for the entry
-	 *
-	 * @param entry
-	 *            the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
-	 * @param registryName
-	 *            the registry name for the entry
-	 * @param unlocalizedName
-	 *            the unlocalized name for the entry
+	 * @param entry           the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
+	 * @param registryName    the registry name for the entry
+	 * @param unlocalizedName the unlocalized name for the entry
 	 */
 	public static void setRegistryNames(final IForgeRegistryEntry.Impl<?> entry, final ModResourceLocation registryName, final String unlocalizedName) {
 		entry.setRegistryName(registryName);
@@ -105,10 +86,8 @@ public final class ModUtil {
 	/**
 	 * Gets the game name from a slot<br>
 	 * For example {@link net.minecraft.inventory.EntityEquipmentSlot.CHEST EntityEquipmentSlot.CHEST} -> "CHESTPLATE"
-	 *
-	 * @param slotIn
-	 *            the {@link net.minecraft.inventory.EntityEquipmentSlot EntityEquipmentSlot} to get the name for
-	 * @return the game name for the slot
+	 * @param  slotIn the {@link net.minecraft.inventory.EntityEquipmentSlot EntityEquipmentSlot} to get the name for
+	 * @return        the game name for the slot
 	 */
 	public static String getSlotGameNameUppercase(final EntityEquipmentSlot slotIn) {
 		switch (slotIn) {
@@ -141,10 +120,8 @@ public final class ModUtil {
 
 	/**
 	 * Utility method to make sure that all our items appear on our creative tab, the search tab and any other tab they specify
-	 *
-	 * @param item
-	 *            the {@link net.minecraft.item.Item Item}
-	 * @return an array of all tabs that this item is on.
+	 * @param  item the {@link net.minecraft.item.Item Item}
+	 * @return      an array of all tabs that this item is on.
 	 */
 	public static CreativeTabs[] getCreativeTabs(final Item item) {
 		return new CreativeTabs[]{item.getCreativeTab(), ModCreativeTabs.CREATIVE_TAB, CreativeTabs.SEARCH};
@@ -152,9 +129,7 @@ public final class ModUtil {
 
 	/**
 	 * Utility method to make sure that all our items appear on our creative tab
-	 *
-	 * @param item
-	 *            the {@link net.minecraft.item.Item Item}
+	 * @param item the {@link net.minecraft.item.Item Item}
 	 */
 	public static void setCreativeTab(final Item item) {
 		if (item.getCreativeTab() == null) {
@@ -164,10 +139,8 @@ public final class ModUtil {
 
 	/**
 	 * Utility method allowing centralized control of glowing material ores, blocks etc. Helpful for debugging
-	 *
-	 * @param material
-	 *            the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
-	 * @return a light value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
+	 * @param  material the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
+	 * @return          a light value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
 	 */
 	public static int getMaterialLightValue(final ModMaterials material) {
 		if (ModReference.Debug.debugOres()) {
@@ -185,10 +158,8 @@ public final class ModUtil {
 
 	/**
 	 * Utility method allowing centralized control of glowing material ores, blocks etc. Helpful for debugging
-	 *
-	 * @param material
-	 *            the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
-	 * @return a light opacity value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
+	 * @param  material the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
+	 * @return          a light opacity value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
 	 */
 	public static int getMaterialLightOpacity(final ModMaterials material) {
 		if (ModReference.Debug.debugOres()) {
@@ -206,12 +177,11 @@ public final class ModUtil {
 
 	/**
 	 * https://stackoverflow.com/a/5732117
-	 *
-	 * @param input_start
-	 * @param input_end
-	 * @param output_start
-	 * @param output_end
-	 * @param input
+	 * @param  input_start
+	 * @param  input_end
+	 * @param  output_start
+	 * @param  output_end
+	 * @param  input
 	 * @return
 	 */
 	public static double map(final double input_start, final double input_end, final double output_start, final double output_end, final double input) {
@@ -227,12 +197,9 @@ public final class ModUtil {
 	 * (EntityPortableGenerator, "Entity") -> portable_generator<br>
 	 * (TileEntityPortableGenerator, "Entity") -> tile_portable_generator<br>
 	 * (EntityPortableEntityGeneratorEntity, "Entity") -> portable_generator<br>
-	 *
-	 * @param clazz
-	 *            the class
-	 * @param removeType
-	 *            the string to be removed from the class's name
-	 * @return the recommended registry name for the class
+	 * @param  clazz      the class
+	 * @param  removeType the string to be removed from the class's name
+	 * @return            the recommended registry name for the class
 	 */
 	public static String getRegistryNameForClass(final Class clazz, final String removeType) {
 		return org.apache.commons.lang3.StringUtils.uncapitalize(clazz.getSimpleName().replace(removeType, "")).replaceAll("([A-Z])", "_$1").toLowerCase();
@@ -243,10 +210,8 @@ public final class ModUtil {
 	 * super_advanced_furnace -> Super Advanced Furnace<br>
 	 * portable_generator -> Portable Generator<br>
 	 * tile_portable_generator -> Tile Portable Generator <br>
-	 *
-	 * @param unlocalised
-	 *            the unlocalised name in
-	 * @return the recommended localised name for the class
+	 * @param  unlocalised the unlocalised name in
+	 * @return             the recommended localised name for the class
 	 */
 	public static String getLocalisedName(final String unlocalised) {
 		final String[] strs = unlocalised.split("_");
@@ -260,11 +225,9 @@ public final class ModUtil {
 	/**
 	 * Generic & dynamic version of {@link Container#transferStackInSlot(EntityPlayer, int)}<br>
 	 * Handle when the stack in slot {@code index} is shift-clicked. Normally this moves the stack between the player inventory and the other inventory(s).
-	 *
-	 * @param player
-	 * @param index
-	 * @param container
-	 *            the container to apply the transfer to
+	 * @param  player
+	 * @param  index
+	 * @param  container the container to apply the transfer to
 	 * @return
 	 */
 	public static ItemStack transferStackInSlot(final EntityPlayer player, final int index, final Container container) {
@@ -297,16 +260,13 @@ public final class ModUtil {
 
 	/**
 	 * Exact copy of {@link net.minecraft.inventory.Container#mergeItemStack} with the same javadoc (improved for readability)<br>
-	 * Merges provided ItemStack with the first avaliable one in the container/player inventor between startIndex (included) and endIndex (excluded).<br>
+	 * Merges provided ItemStack with the first available one in the container/player inventor between startIndex (included) and endIndex (excluded).<br>
 	 * <font color="#FDCA42"> ⚠WARNING⚠: The Container implementation does not check if the item is valid for the slot! </font>
-	 *
-	 * @param stack
-	 *            the stack to merge
+	 * @param stack            the stack to merge
 	 * @param startIndex
 	 * @param endIndex
 	 * @param reverseDirection
-	 * @param container
-	 *            the container to apply the merge to
+	 * @param container        the container to apply the merge to
 	 */
 	public static boolean mergeItemStack(final ItemStack stack, final int startIndex, final int endIndex, final boolean reverseDirection, final Container container) {
 		boolean flag = false;

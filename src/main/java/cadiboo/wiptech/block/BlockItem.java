@@ -57,7 +57,7 @@ public class BlockItem extends Block implements IBlockModMaterial {
 
 	@Override
 	public int getLightOpacity(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
-		return ModUtil.getMaterialLightOpacity(this.material);
+		return ModUtil.getMaterialLightOpacity(this.getModMaterial());
 	}
 
 	@Override
