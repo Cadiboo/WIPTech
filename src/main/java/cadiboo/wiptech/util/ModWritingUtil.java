@@ -38,6 +38,8 @@ public class ModWritingUtil {
 	private static String assetDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
 	private static String dataDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
 
+	private static String langFileName = "en_us";
+
 	@ExistsForDebugging
 	@SideOnly(Side.CLIENT)
 	public static void writeMod() {
@@ -692,86 +694,86 @@ public class ModWritingUtil {
 			for (final ModMaterials material : ModMaterials.values()) {
 
 				if (material.getOre() != null) {
-					langObj.add(new Tuple<>(material.getOre().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Ore"));
+					langObj.add(new Tuple<>(material.getOre().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Ore"));
 				}
 
 				if (material.getBlock() != null) {
-					langObj.add(new Tuple<>(material.getBlock().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Block"));
+					langObj.add(new Tuple<>(material.getBlock().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Block"));
 				}
 
 				if (material.getIngot() != null) {
-					langObj.add(new Tuple<>(material.getIngot().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Ingot"));
+					langObj.add(new Tuple<>(material.getIngot().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Ingot"));
 				}
 
 				if (material.getNugget() != null) {
-					langObj.add(new Tuple<>(material.getNugget().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Nugget"));
+					langObj.add(new Tuple<>(material.getNugget().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Nugget"));
 				}
 
 				// armor
 
 				if (material.getHelmet() != null) {
-					langObj.add(new Tuple<>(material.getHelmet().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Helmet"));
+					langObj.add(new Tuple<>(material.getHelmet().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Helmet"));
 				}
 
 				if (material.getChestplate() != null) {
-					langObj.add(new Tuple<>(material.getChestplate().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Chestplate"));
+					langObj.add(new Tuple<>(material.getChestplate().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Chestplate"));
 				}
 
 				if (material.getLeggings() != null) {
-					langObj.add(new Tuple<>(material.getLeggings().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Leggings"));
+					langObj.add(new Tuple<>(material.getLeggings().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Leggings"));
 				}
 
 				if (material.getBoots() != null) {
-					langObj.add(new Tuple<>(material.getBoots().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Boots"));
+					langObj.add(new Tuple<>(material.getBoots().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Boots"));
 				}
 
 				// tools
 
 				if (material.getAxe() != null) {
-					langObj.add(new Tuple<>(material.getAxe().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Axe"));
+					langObj.add(new Tuple<>(material.getAxe().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Axe"));
 				}
 
 				if (material.getPickaxe() != null) {
-					langObj.add(new Tuple<>(material.getPickaxe().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Pickaxe"));
+					langObj.add(new Tuple<>(material.getPickaxe().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Pickaxe"));
 				}
 
 				if (material.getSword() != null) {
-					langObj.add(new Tuple<>(material.getSword().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Sword"));
+					langObj.add(new Tuple<>(material.getSword().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Sword"));
 				}
 
 				if (material.getShovel() != null) {
-					langObj.add(new Tuple<>(material.getShovel().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Shovel"));
+					langObj.add(new Tuple<>(material.getShovel().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Shovel"));
 				}
 
 				if (material.getHoe() != null) {
-					langObj.add(new Tuple<>(material.getHoe().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Hoe"));
+					langObj.add(new Tuple<>(material.getHoe().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Hoe"));
 				}
 
 				//
 
 				if (material.getWire() != null) {
-					langObj.add(new Tuple<>(material.getWire().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Wire"));
+					langObj.add(new Tuple<>(material.getWire().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Wire"));
 				}
 
 				if (material.getEnamel() != null) {
-					langObj.add(new Tuple<>(material.getEnamel().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Enamel"));
+					langObj.add(new Tuple<>(material.getEnamel().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Enamel"));
 				}
 
 				if (material.getRail() != null) {
-					langObj.add(new Tuple<>(material.getRail().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Rail"));
+					langObj.add(new Tuple<>(material.getRail().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Rail"));
 				}
 
 				if (material.getCoil() != null) {
-					langObj.add(new Tuple<>(material.getCoil().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Coil"));
+					langObj.add(new Tuple<>(material.getCoil().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Coil"));
 				}
 
 				if (material.getSpool() != null) {
-					langObj.add(new Tuple<>(material.getSpool().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Spool"));
+					langObj.add(new Tuple<>(material.getSpool().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Spool"));
 				}
 
 				if (material.getSlugItem() != null) {
-					langObj.add(new Tuple<>(material.getSlugItem().getUnlocalizedName(), ModUtil.getLocalisedName(material.getNameLowercase()) + " Slug"));
-					langObj.add(new Tuple<>(material.getCasedSlug().getUnlocalizedName(), "Cased " + ModUtil.getLocalisedName(material.getNameLowercase()) + " Slug"));
+					langObj.add(new Tuple<>(material.getSlugItem().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Slug"));
+					langObj.add(new Tuple<>(material.getCasedSlug().getUnlocalizedName(), "Cased " + getLocalisedName(material.getNameLowercase()) + " Slug"));
 				}
 			}
 
@@ -787,7 +789,7 @@ public class ModWritingUtil {
 					final Item item = (Item) value;
 
 					if (item != null) {
-						langObj.add(new Tuple<>(item.getUnlocalizedName(), ModUtil.getLocalisedName(item.getRegistryName().getResourcePath())));
+						langObj.add(new Tuple<>(item.getUnlocalizedName(), getLocalisedName(item.getRegistryName().getResourcePath())));
 					}
 
 				} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -808,7 +810,7 @@ public class ModWritingUtil {
 					final Block block = (Block) value;
 
 					if (block != null) {
-						langObj.add(new Tuple<>(block.getUnlocalizedName(), ModUtil.getLocalisedName(block.getRegistryName().getResourcePath())));
+						langObj.add(new Tuple<>(block.getUnlocalizedName(), getLocalisedName(block.getRegistryName().getResourcePath())));
 					}
 
 				} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -905,6 +907,13 @@ public class ModWritingUtil {
 
 		}
 
+	}
+
+	private static String getLocalisedName(String unlocalised) {
+		if (langFileName.toLowerCase().equals("en_us")) {
+			unlocalised = unlocalised.replace("aluminium", "aluminum");
+		}
+		return ModUtil.getLocalisedName(unlocalised);
 	}
 
 	private static final String generateItemModelJSON(final String name, final ModResourceLocation parent) {

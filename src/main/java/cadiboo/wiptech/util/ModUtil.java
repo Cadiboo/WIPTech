@@ -166,7 +166,6 @@ public final class ModUtil {
 	 * @return the recommended localised name for the class
 	 */
 	public static String getLocalisedName(final String unlocalised) {
-		unlocalised.replace("aluminium", "aluminum");
 		final String[] strs = unlocalised.split("_");
 		for (int i = 0; i < strs.length; i++) {
 			strs[i] = org.apache.commons.lang3.StringUtils.capitalize(strs[i]);
