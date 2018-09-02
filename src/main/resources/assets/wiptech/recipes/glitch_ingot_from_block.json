@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "glitch_ingot",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:glitch_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:glitch_ingot",
+		"count": 9
+	}
+}

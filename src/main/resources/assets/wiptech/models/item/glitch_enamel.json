@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:enamel",
+	"textures": {
+		"layer0": "wiptech:item/glitch_enamel"
+	}
+}
+

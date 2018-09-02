@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:wire",
+	"textures": {
+		"layer0": "wiptech:item/glitch_wire"
+	}
+}
+
