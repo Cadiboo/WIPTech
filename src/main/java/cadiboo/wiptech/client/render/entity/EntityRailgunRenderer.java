@@ -88,8 +88,8 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 		GlStateManager.translate(x, y, z);
 		GlStateManager.translate(0, 1.5, 0);
 
-		ClientUtil.rotateTowardsPos(new Vec3d(0, 0, 0), look);
-		GlStateManager.translate(0, 32, 0);
+		ClientUtil.rotateZAxisTowardsPos(new Vec3d(0, 0, 0), look);
+		GlStateManager.translate(32, 0, 0);
 
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
@@ -98,7 +98,7 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 		final TextureAtlasSprite beam = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/redstone_block");
 
 		ClientUtil.enableMaxLighting();
-		ClientUtil.drawSeamlessCuboid(beam.getMinU(), beam.getMaxU(), beam.getMinV(), beam.getMaxV(), 0.05, 32, 0.05, 1);
+		ClientUtil.drawSeamlessCuboid(beam.getMinU(), beam.getMaxU(), beam.getMinV(), beam.getMaxV(), 0.05, 0.05, 32, 1);
 
 		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();

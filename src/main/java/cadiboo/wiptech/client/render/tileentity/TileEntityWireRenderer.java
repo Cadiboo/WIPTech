@@ -30,7 +30,7 @@ public class TileEntityWireRenderer extends ModTileEntitySpecialRenderer<TileEnt
 
 				final Vec3d relativeEntityPos = tilePos.subtract(entityPos);
 
-				ClientUtil.rotateTowardsPos(new Vec3d(0, 0, 0), relativeEntityPos);
+				ClientUtil.rotateYAxisTowardsPos(new Vec3d(0, 0, 0), relativeEntityPos);
 
 				final double scale = 0.125 * Math.sqrt(Math.pow(relativeEntityPos.x, 2) + Math.pow(relativeEntityPos.y, 2) + Math.pow(relativeEntityPos.z, 2));
 

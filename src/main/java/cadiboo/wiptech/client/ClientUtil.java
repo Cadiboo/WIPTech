@@ -243,15 +243,41 @@ public final class ClientUtil {
 		return new Vec3d(dX, dY, dZ);
 	}
 
+	// TODO
 	/**
-	 * @param  source      The position to rotate from (I think that I've messed up the maths, currently only works with 0, 0, 0 i.e. the Origin)
+	 * Rotates the X axis directly towards a {@link net.minecraft.util.math.Vec3d Vec3d} position
+	 * @param  source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
 	 * @param  destination The position to rotate towards
 	 * @author             Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static void rotateTowardsPos(final Vec3d source, final Vec3d destination) {
+	public static void rotateXAxisTowardsPos(final Vec3d source, final Vec3d destination) {
+		GlStateManager.rotate(90 + (float) getYaw(source, destination), 0, 1, 0);
+		GlStateManager.rotate(270 - (float) getPitch(source, destination), 1, 0, 0);
+	}
+
+	/**
+	 * Rotates the Y axis directly towards a {@link net.minecraft.util.math.Vec3d Vec3d} position
+	 * @param  source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
+	 * @param  destination The position to rotate towards
+	 * @author             Cadiboo
+	 */
+	@SideOnly(Side.CLIENT)
+	public static void rotateYAxisTowardsPos(final Vec3d source, final Vec3d destination) {
 		GlStateManager.rotate((float) getYaw(source, destination), 0, 1, 0);
 		GlStateManager.rotate((float) getPitch(source, destination), 0, 0, 1);
+	}
+
+	/**
+	 * Rotates the Z axis directly towards a {@link net.minecraft.util.math.Vec3d Vec3d} position
+	 * @param  source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
+	 * @param  destination The position to rotate towards
+	 * @author             Cadiboo
+	 */
+	@SideOnly(Side.CLIENT)
+	public static void rotateZAxisTowardsPos(final Vec3d source, final Vec3d destination) {
+		GlStateManager.rotate(180 + (float) getYaw(source, destination), 0, 1, 0);
+		GlStateManager.rotate(90 - (float) getPitch(source, destination), 0, 0, 1);
 	}
 
 	/**
