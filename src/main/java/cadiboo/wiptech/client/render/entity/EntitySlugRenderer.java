@@ -14,12 +14,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class EntitySlugRenderer extends Render<EntitySlug> {
 
-	public EntitySlugRenderer(RenderManager renderManager) {
+	public EntitySlugRenderer(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntitySlug entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntitySlug entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
 		GlStateManager.pushMatrix();
@@ -38,7 +38,7 @@ public class EntitySlugRenderer extends Render<EntitySlug> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySlug entity) {
+	protected ResourceLocation getEntityTexture(final EntitySlug entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

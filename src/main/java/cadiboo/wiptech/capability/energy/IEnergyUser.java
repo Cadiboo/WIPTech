@@ -15,11 +15,12 @@ import net.minecraftforge.energy.IEnergyStorage;
 public interface IEnergyUser extends ICapabilityProvider {
 
 	@Nonnull
-	public ModEnergyStorage getEnergy();
+	ModEnergyStorage getEnergy();
 
-	default public void transferEnergyToAllAround() {
-		if (!canTransferEnergyToAllAround())
+	default void transferEnergyToAllAround() {
+		if (!canTransferEnergyToAllAround()) {
 			return;
+		}
 
 		getConnectedSides().forEach(side -> {
 			transferEnergyTo(side, (int) ((float) getEnergy().getEnergyStored() / (float) getConnectedSides().size()), false);
@@ -27,71 +28,85 @@ public interface IEnergyUser extends ICapabilityProvider {
 
 	}
 
-	public default boolean canTransferEnergyToAllAround() {
-		if (getWorld().isRemote)
+	default boolean canTransferEnergyToAllAround() {
+		if (getWorld().isRemote) {
 			return false;
+		}
 
-		if (!getEnergy().canExtract())
+		if (!getEnergy().canExtract()) {
 			return false;
+		}
 
-		if (getEnergy().getEnergyStored() <= 0)
+		if (getEnergy().getEnergyStored() <= 0) {
 			return false;
+		}
 		return true;
 	}
 
-	default public ArrayList<EnumFacing> getConnectedSides() {
-		ArrayList<EnumFacing> connectedSides = new ArrayList<>();
+	default ArrayList<EnumFacing> getConnectedSides() {
+		final ArrayList<EnumFacing> connectedSides = new ArrayList<>();
 
-		for (EnumFacing side : EnumFacing.VALUES)
-			if (isConnectedTo(side))
+		for (final EnumFacing side : EnumFacing.VALUES) {
+			if (isConnectedTo(side)) {
 				connectedSides.add(side);
+			}
+		}
 
 		return connectedSides;
 	}
 
-	default public int transferEnergyTo(EnumFacing side, int energyToTransfer, boolean simulate) {
-		if (!canTransferEnergyTo(side, energyToTransfer))
+	default int transferEnergyTo(final EnumFacing side, final int energyToTransfer, final boolean simulate) {
+		if (!canTransferEnergyTo(side, energyToTransfer)) {
 			return 0;
-		IEnergyStorage storage = getWorld().getTileEntity(getPosition().offset(side)).getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		}
+		final IEnergyStorage storage = getWorld().getTileEntity(getPosition().offset(side)).getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
 		return getEnergy().extractEnergy(storage.receiveEnergy(energyToTransfer, simulate), simulate);
 	}
 
-	public default boolean canTransferEnergyTo(EnumFacing side, int energyToTransfer) {
-		if (!getEnergy().canExtract())
+	default boolean canTransferEnergyTo(final EnumFacing side, final int energyToTransfer) {
+		if (!getEnergy().canExtract()) {
 			return false;
+		}
 
-		if (getWorld() == null)
+		if (getWorld() == null) {
 			return false;
+		}
 
-		if (getWorld().isRemote)
+		if (getWorld().isRemote) {
 			return false;
+		}
 
-		if (getWorld().getTileEntity(getPosition().offset(side)) == null)
+		if (getWorld().getTileEntity(getPosition().offset(side)) == null) {
 			return false;
+		}
 
-		IEnergyStorage storage = getWorld().getTileEntity(getPosition().offset(side)).getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+		final IEnergyStorage storage = getWorld().getTileEntity(getPosition().offset(side)).getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
 
-		if (storage == null)
+		if (storage == null) {
 			return false;
+		}
 
-		if (!storage.canReceive())
+		if (!storage.canReceive()) {
 			return false;
+		}
 
 		return true;
 	}
 
-	public BlockPos getPosition();
+	BlockPos getPosition();
 
-	public World getWorld();
+	World getWorld();
 
-	default public boolean isConnectedTo(EnumFacing side) {
-		if (getWorld() == null)
+	default boolean isConnectedTo(final EnumFacing side) {
+		if (getWorld() == null) {
 			return false;
+		}
 
-		TileEntity tile = this.getWorld().getTileEntity(getPosition().offset(side));
+		final TileEntity tile = this.getWorld().getTileEntity(getPosition().offset(side));
 
-		if (tile == null)
+		if (tile == null) {
 			return false;
+		}
 
 		return tile.getCapability(CapabilityEnergy.ENERGY, side.getOpposite()) != null;
 	}

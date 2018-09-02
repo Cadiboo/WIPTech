@@ -9,13 +9,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class Proxy implements IProxy {
 
 	@Override
-	public String localizeAndFormat(String unlocalized, Object... args) {
+	public String localizeAndFormat(final String unlocalized, final Object... args) {
 		return I18n.format(unlocalized, args);
 	}
 
 	@Override
-	public String localize(String unlocalized) {
-		return localizeAndFormat(unlocalized, new Object[0]);
+	public String localize(final String unlocalized) {
+		return this.localizeAndFormat(unlocalized, new Object[0]);
 	}
 
 	@Override

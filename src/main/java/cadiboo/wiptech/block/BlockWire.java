@@ -45,14 +45,14 @@ public class BlockWire extends Block implements IBlockModMaterial {
 
 	protected final ModMaterials material;
 
-	public BlockWire(final ModMaterials materialIn) {
-		this(materialIn, "wire");
+	public BlockWire(final ModMaterials material) {
+		this(material, "wire");
 	}
 
-	protected BlockWire(final ModMaterials materialIn, final String nameSuffix) {
-		super(materialIn.getVanillaMaterial());
-		ModUtil.setRegistryNames(this, materialIn, nameSuffix);
-		this.material = materialIn;
+	protected BlockWire(final ModMaterials material, final String nameSuffix) {
+		super(material.getVanillaMaterial());
+		ModUtil.setRegistryNames(this, material, nameSuffix);
+		this.material = material;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class BlockWire extends Block implements IBlockModMaterial {
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(final IBlockAccess worldIn, final IBlockState state, final BlockPos pos, final EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(final IBlockAccess world, final IBlockState state, final BlockPos pos, final EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 
@@ -162,8 +162,8 @@ public class BlockWire extends Block implements IBlockModMaterial {
 	}
 
 	@Override
-	public void addCollisionBoxToList(final IBlockState state, final World worldIn, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, final Entity entityIn, final boolean isActualState) {
-		final TileEntity tile = worldIn.getTileEntity(pos);
+	public void addCollisionBoxToList(final IBlockState state, final World world, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, final Entity entity, final boolean isActualState) {
+		final TileEntity tile = world.getTileEntity(pos);
 		this.addCollisionBoxToList(pos, entityBox, collidingBoxes, CORE_AABB);
 		if ((tile != null) && (tile instanceof TileEntityWire)) {
 			final TileEntityWire wire = (TileEntityWire) tile;
@@ -191,17 +191,17 @@ public class BlockWire extends Block implements IBlockModMaterial {
 	}
 
 	@Override
-	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
-		if (worldIn != null) {
-			final TileEntity tile = worldIn.getTileEntity(pos);
+	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
+		if (world != null) {
+			final TileEntity tile = world.getTileEntity(pos);
 			if (tile != null) {
 				if (tile instanceof TileEntityWire) {
 					final TileEntityWire wire = (TileEntityWire) tile;
-					worldIn.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).removeConnection(tile.getPos());
+					world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).removeConnection(tile.getPos());
 				}
 			}
 		}
 
-		super.breakBlock(worldIn, pos, state);
+		super.breakBlock(world, pos, state);
 	}
 }

@@ -15,51 +15,50 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 /**
  * Basic world generator that generates ores
- * 
  * @author Cadiboo
  */
 public class ModWorldGenerator implements IWorldGenerator {
 
 	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+	public void generate(final Random random, final int chunkX, final int chunkZ, final World world, final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
 		switch (world.provider.getDimensionType()) {
-		case NETHER:
-			break;
-		case OVERWORLD:
-			generateOverworld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-			break;
-		case THE_END:
-			break;
-		default:
-			break;
+			case NETHER :
+				break;
+			case OVERWORLD :
+				this.generateOverworld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+				break;
+			case THE_END :
+				break;
+			default :
+				break;
 
 		}
 
 	}
 
-	private void generateOverworld(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-		for (ModMaterials material : ModMaterials.values()) {
+	private void generateOverworld(final Random random, final int chunkX, final int chunkZ, final World world, final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
+		for (final ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre()) {
-				Block ore = material.getOre();
+				final Block ore = material.getOre();
 				if (ore != null) {
-					generateOre(ore.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, getMinY(material), getMaxY(material), getSize(material), getChance(material));
+					this.generateOre(ore.getDefaultState(), world, random, chunkX * 16, chunkZ * 16, this.getMinY(material), this.getMaxY(material), this.getSize(material), this.getChance(material));
 				}
 			}
 		}
 	}
 
-	private int getMinY(ModMaterials material) {
+	private int getMinY(final ModMaterials material) {
 		return 5;
 	}
 
-	private int getMaxY(ModMaterials material) {
-		return Math.max(1 + getMinY(material), Math.round(
+	private int getMaxY(final ModMaterials material) {
+		return Math.max(1 + this.getMinY(material), Math.round(
 
 				Math.round(128 * ModUtil.map(0,
 
 						ModMaterials.getHighestHardness(), 0, 1,
 
-						maxHardnessMinusMaterialHardness(material)
+						this.maxHardnessMinusMaterialHardness(material)
 
 								* ModUtil.map(0,
 
@@ -80,31 +79,32 @@ public class ModWorldGenerator implements IWorldGenerator {
 		);
 	}
 
-	private int getChance(ModMaterials material) {
-		int chance = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 1, 5, maxHardnessMinusMaterialHardness(material))));
+	private int getChance(final ModMaterials material) {
+		final int chance = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 1, 5, this.maxHardnessMinusMaterialHardness(material))));
 		return chance;
 	}
 
-	private int getSize(ModMaterials material) {
-		int size = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 3, 8, maxHardnessMinusMaterialHardness(material))));
+	private int getSize(final ModMaterials material) {
+		final int size = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 3, 8, this.maxHardnessMinusMaterialHardness(material))));
 		return size;
 	}
 
-	private int maxHardnessMinusMaterialHardness(ModMaterials material) {
-		float highest = ModMaterials.getHighestHardness();
-		float hardness = material.getProperties().getHardness();
+	private int maxHardnessMinusMaterialHardness(final ModMaterials material) {
+		final float highest = ModMaterials.getHighestHardness();
+		final float hardness = material.getProperties().getHardness();
 
-		if (hardness == highest)
+		if (hardness == highest) {
 			return 1;
+		}
 
 		return Math.round(ModMaterials.getHighestHardness()) - Math.round(material.getProperties().getHardness());
 	}
 
-	private void generateOre(IBlockState ore, World world, Random random, int x, int z, int minY, int maxY, int size, int chances) {
-		int deltaY = maxY - minY;
+	private void generateOre(final IBlockState ore, final World world, final Random random, final int x, final int z, final int minY, final int maxY, final int size, final int chances) {
+		final int deltaY = maxY - minY;
 		for (int i = 0; i < chances; i++) {
-			BlockPos pos = new BlockPos(x + random.nextInt(16), minY + random.nextInt(deltaY), z + random.nextInt(16));
-			WorldGenMinable generator = new WorldGenMinable(ore, size);
+			final BlockPos pos = new BlockPos(x + random.nextInt(16), minY + random.nextInt(deltaY), z + random.nextInt(16));
+			final WorldGenMinable generator = new WorldGenMinable(ore, size);
 			generator.generate(world, random, pos);
 		}
 	}

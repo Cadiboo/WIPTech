@@ -9,9 +9,9 @@ public class ItemCoil extends Item implements IItemModMaterial {
 
 	private final ModMaterials material;
 
-	public ItemCoil(final ModMaterials materialIn) {
-		ModUtil.setRegistryNames(this, materialIn, "coil");
-		this.material = materialIn;
+	public ItemCoil(final ModMaterials material) {
+		ModUtil.setRegistryNames(this, material, "coil");
+		this.material = material;
 	}
 
 	@Override

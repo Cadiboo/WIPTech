@@ -22,34 +22,34 @@ public class ModelWire implements IModel {
 
 	protected final ModMaterials material;
 
-	public ModelWire(ModMaterials materialIn) {
-		this.material = materialIn;
+	public ModelWire(final ModMaterials material) {
+		this.material = material;
 	}
 
 	@Override
-	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+	public IBakedModel bake(final IModelState state, final VertexFormat format, final Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
 		try {
 
-			ArrayList<IBakedModel> bakedModels = new ArrayList<IBakedModel>();
+			final ArrayList<IBakedModel> bakedModels = new ArrayList<>();
 
-			IBakedModel bakedModelCore = ModelLoaderRegistry.getModel(getModelLocation("core")).bake(state, format, bakedTextureGetter);
+			final IBakedModel bakedModelCore = ModelLoaderRegistry.getModel(this.getModelLocation("core")).bake(state, format, bakedTextureGetter);
 
-			for (EnumFacing connection : EnumFacing.VALUES) {
-				bakedModels.add(ModelLoaderRegistry.getModel(getModelLocation(connection.name().toLowerCase())).bake(state, format, bakedTextureGetter));
+			for (final EnumFacing connection : EnumFacing.VALUES) {
+				bakedModels.add(ModelLoaderRegistry.getModel(this.getModelLocation(connection.name().toLowerCase())).bake(state, format, bakedTextureGetter));
 			}
 
-			return new BakedModelWire(bakedModelCore, bakedModels.get(EnumFacing.DOWN.getIndex()), bakedModels.get(EnumFacing.UP.getIndex()), bakedModels.get(EnumFacing.NORTH.getIndex()), bakedModels
-					.get(EnumFacing.SOUTH.getIndex()), bakedModels.get(EnumFacing.WEST.getIndex()), bakedModels.get(EnumFacing.EAST.getIndex()));
-		} catch (Exception exception) {
+			return new BakedModelWire(bakedModelCore, bakedModels.get(EnumFacing.DOWN.getIndex()), bakedModels.get(EnumFacing.UP.getIndex()), bakedModels.get(EnumFacing.NORTH.getIndex()), bakedModels.get(EnumFacing.SOUTH.getIndex()), bakedModels.get(EnumFacing.WEST.getIndex()), bakedModels.get(EnumFacing.EAST.getIndex()));
+		} catch (final Exception exception) {
 			WIPTech.error(this.getClass().getName() + ".bake() failed due to exception:" + exception);
 			return ModelLoaderRegistry.getMissingModel().bake(state, format, bakedTextureGetter);
 		}
 	}
 
-	protected ResourceLocation getModelLocation(String string) {
-		if (string == "core")
-			return new ResourceLocation(ModReference.MOD_ID, "block/" + material.getNameLowercase() + "_wire_core");
-		return new ResourceLocation(ModReference.MOD_ID, "block/" + material.getNameLowercase() + "_wire_extension_" + string);
+	protected ResourceLocation getModelLocation(final String string) {
+		if (string == "core") {
+			return new ResourceLocation(ModReference.MOD_ID, "block/" + this.material.getNameLowercase() + "_wire_core");
+		}
+		return new ResourceLocation(ModReference.MOD_ID, "block/" + this.material.getNameLowercase() + "_wire_extension_" + string);
 	}
 
 }

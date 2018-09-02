@@ -15,12 +15,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class EntityNapalmRenderer extends Render<EntityNapalm> {
 
-	public EntityNapalmRenderer(RenderManager renderManager) {
+	public EntityNapalmRenderer(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntityNapalm entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntityNapalm entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
 		GlStateManager.disableLighting();
@@ -33,15 +33,15 @@ public class EntityNapalmRenderer extends Render<EntityNapalm> {
 
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+			this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-			TextureMap texturemap = Minecraft.getMinecraft().getTextureMapBlocks();
+			final TextureMap texturemap = Minecraft.getMinecraft().getTextureMapBlocks();
 
-			TextureAtlasSprite lava = texturemap.getAtlasSprite("minecraft:blocks/lava_flow");
+			final TextureAtlasSprite lava = texturemap.getAtlasSprite("minecraft:blocks/lava_flow");
 
 			ClientUtil.drawSeamlessCuboid(lava.getMinU(), lava.getMaxU(), lava.getMinV(), lava.getMaxV(), 0.125, 0.125, 0.125, 1);
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// TODO: handle exception
 		}
 
@@ -52,7 +52,7 @@ public class EntityNapalmRenderer extends Render<EntityNapalm> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityNapalm entity) {
+	protected ResourceLocation getEntityTexture(final EntityNapalm entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

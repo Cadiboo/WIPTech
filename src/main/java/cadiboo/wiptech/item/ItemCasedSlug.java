@@ -11,10 +11,10 @@ public class ItemCasedSlug extends Item implements IItemModMaterial {
 
 	private final ModMaterials material;
 
-	public ItemCasedSlug(final ModMaterials materialIn) {
-		final ModResourceLocation registryName = new ModResourceLocation(ModReference.MOD_ID, "cased_" + materialIn.getNameLowercase() + "_slug");
+	public ItemCasedSlug(final ModMaterials material) {
+		final ModResourceLocation registryName = new ModResourceLocation(ModReference.MOD_ID, "cased_" + material.getNameLowercase() + "_slug");
 		ModUtil.setRegistryNames(this, registryName);
-		this.material = materialIn;
+		this.material = material;
 	}
 
 	@Override

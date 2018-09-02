@@ -7,6 +7,6 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 public interface IInventoryUser extends ICapabilityProvider {
 
 	@Nonnull
-	public ModItemStackHandler getInventory();
+	ModItemStackHandler getInventory();
 
 }

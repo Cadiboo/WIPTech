@@ -15,12 +15,13 @@ public class TileEntityWireRenderer extends ModTileEntitySpecialRenderer<TileEnt
 	protected static final ItemStack stack = new ItemStack(net.minecraft.init.Items.IRON_INGOT);
 
 	@Override
-	public void renderAtCentre(TileEntityWire te, float partialTicks, int destroyStage, float alpha) {
+	public void renderAtCentre(final TileEntityWire te, final float partialTicks, final int destroyStage, final float alpha) {
 
 		te.getElectrocutableEntities().forEach(entity -> {
 
-			if (!te.shouldElectrocuteEntity(entity))
+			if (!te.shouldElectrocuteEntity(entity)) {
 				return;
+			}
 
 			GlStateManager.pushMatrix();
 			try {
@@ -39,7 +40,7 @@ public class TileEntityWireRenderer extends ModTileEntitySpecialRenderer<TileEnt
 					ClientUtil.renderElectricity((int) (te.getWorld().getTotalWorldTime() + tilePos.x + tilePos.y + tilePos.z + i), 1, scale);
 				}
 
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				WIPTech.error(e.getLocalizedMessage());
 				e.printStackTrace();
 			}

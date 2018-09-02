@@ -25,7 +25,6 @@ import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * WIPTech Alpha
- * 
  * @author Cadiboo
  */
 /*@formatter:off*/
@@ -73,7 +72,6 @@ public class WIPTech {
 
 	/**
 	 * Run before anything else. <s>Read your config, create blocks, items, etc, and register them with the GameRegistry</s>
-	 * 
 	 * @see {@link net.minecraftforge.common.ForgeModContainer#preInit(FMLPreInitializationEvent) ForgeModContainer.preInit}
 	 */
 	@EventHandler
@@ -91,17 +89,16 @@ public class WIPTech {
 
 	/**
 	 * Do your mod setup. Build whatever data structures you care about. Register recipes, send FMLInterModComms messages to other mods.
-	 * 
 	 */
 	@EventHandler
 	public void init(final FMLInitializationEvent event) {
-		if (proxy.getSide() == Side.CLIENT)
+		if (proxy.getSide() == Side.CLIENT) {
 			ModWritingUtil.writeMod();
+		}
 	}
 
 	/**
 	 * Mod compatibility, or anything which depends on other mods’ init phases being finished.
-	 * 
 	 * @see {@link net.minecraftforge.common.ForgeModContainer#postInit(FMLPostInitializationEvent) ForgeModContainer.postInit}
 	 */
 	@EventHandler
@@ -110,7 +107,7 @@ public class WIPTech {
 
 	private static Logger getLogger() {
 		if (logger == null) {
-			Logger tempLogger = LogManager.getLogger();
+			final Logger tempLogger = LogManager.getLogger();
 			tempLogger.error("[" + WIPTech.class.getSimpleName() + "]: getLogger called before logger has been initalised! Providing default logger");
 			return tempLogger;
 		}
@@ -119,79 +116,67 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#DEBUG DEBUG} level.
-	 * 
-	 * @param messages
-	 *            the message objects to log.
-	 * @author Cadiboo
+	 * @param  messages the message objects to log.
+	 * @author          Cadiboo
 	 */
 	public static void debug(final Object... messages) {
-		for (Object msg : messages) {
+		for (final Object msg : messages) {
 			getLogger().debug(msg);
 		}
 	}
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#INFO ERROR} INFO.
-	 * 
-	 * @param messages
-	 *            the message objects to log.
-	 * @author Cadiboo
+	 * @param  messages the message objects to log.
+	 * @author          Cadiboo
 	 */
 	public static void info(final Object... messages) {
-		for (Object msg : messages) {
+		for (final Object msg : messages) {
 			getLogger().info(msg);
 		}
 	}
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#WARN WARN} level.
-	 * 
-	 * @param messages
-	 *            the message objects to log.
-	 * @author Cadiboo
+	 * @param  messages the message objects to log.
+	 * @author          Cadiboo
 	 */
 	public static void warn(final Object... messages) {
-		for (Object msg : messages) {
+		for (final Object msg : messages) {
 			getLogger().warn(msg);
 		}
 	}
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#ERROR ERROR} level.
-	 * 
-	 * @param messages
-	 *            the message objects to log.
-	 * @author Cadiboo
+	 * @param  messages the message objects to log.
+	 * @author          Cadiboo
 	 */
 	public static void error(final Object... messages) {
-		for (Object msg : messages) {
+		for (final Object msg : messages) {
 			getLogger().error(msg);
 		}
 	}
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#FATAL FATAL} level.
-	 * 
-	 * @param messages
-	 *            the message objects to log.
-	 * @author Cadiboo
+	 * @param  messages the message objects to log.
+	 * @author          Cadiboo
 	 */
 	public static void fatal(final Object... messages) {
-		for (Object msg : messages) {
+		for (final Object msg : messages) {
 			getLogger().fatal(msg);
 		}
 	}
 
 	/**
 	 * Logs all {@link java.lang.reflect.Field Field}s and their values of an object with the {@link org.apache.logging.log4j.Level#INFO INFO} level.
-	 * 
-	 * @param objects
-	 *            the objects to dump.
-	 * @author Cadiboo
+	 * @param  objects the objects to dump.
+	 * @author         Cadiboo
 	 */
 	public static void dump(final Object... objects) {
-		for (Object obj : objects) {
-			Field[] fields = obj.getClass().getDeclaredFields();
+		for (final Object obj : objects) {
+			final Field[] fields = obj.getClass().getDeclaredFields();
 			info("Dump of " + obj + ":");
 			for (int i = 0; i < fields.length; i++) {
 				try {

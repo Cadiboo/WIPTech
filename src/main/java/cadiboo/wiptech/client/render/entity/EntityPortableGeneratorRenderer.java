@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class EntityPortableGeneratorRenderer extends Render<EntityPortableGenerator> {
 
-	public EntityPortableGeneratorRenderer(RenderManager renderManager) {
+	public EntityPortableGeneratorRenderer(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
@@ -40,7 +40,7 @@ public class EntityPortableGeneratorRenderer extends Render<EntityPortableGenera
 				GlStateManager.pushMatrix();
 				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_body")));
 				GlStateManager.popMatrix();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				WIPTech.error("Error rendering portable generator body");
 				e.printStackTrace();
 			}
@@ -54,7 +54,7 @@ public class EntityPortableGeneratorRenderer extends Render<EntityPortableGenera
 				}
 				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_handle")));
 				GlStateManager.popMatrix();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				WIPTech.error("Error rendering portable generator handle");
 				e.printStackTrace();
 			}
@@ -67,19 +67,19 @@ public class EntityPortableGeneratorRenderer extends Render<EntityPortableGenera
 					final float yOffset = -5.5f / 16f;
 					final float zOffset = 5.5f / 16f;
 
-					GlStateManager.translate(xOffset * (wheelIndex % 2 == 0 ? 1 : -1), yOffset, zOffset * (wheelIndex / 2 == 0 ? 1 : -1));
-					GlStateManager.rotate((wheelIndex % 2 == 0 ? 1 : -1) * 90, 0, 1, 0);
-					GlStateManager.rotate((wheelIndex % 2 == 0 ? 1 : -1) * -(float) ((entity.prevPosX - entity.posX) + (entity.prevPosZ - entity.posZ) * 1000), 0, 0, 1);
+					GlStateManager.translate(xOffset * ((wheelIndex % 2) == 0 ? 1 : -1), yOffset, zOffset * ((wheelIndex / 2) == 0 ? 1 : -1));
+					GlStateManager.rotate(((wheelIndex % 2) == 0 ? 1 : -1) * 90, 0, 1, 0);
+					GlStateManager.rotate(((wheelIndex % 2) == 0 ? 1 : -1) * -(float) ((entity.prevPosX - entity.posX) + ((entity.prevPosZ - entity.posZ) * 1000)), 0, 0, 1);
 
 					ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_wheel")));
 					GlStateManager.popMatrix();
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				WIPTech.error("Error rendering portable generator wheels");
 				e.printStackTrace();
 			}
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			WIPTech.error("Error rendering portable generator parts");
 			e.printStackTrace();
 		}
@@ -91,7 +91,7 @@ public class EntityPortableGeneratorRenderer extends Render<EntityPortableGenera
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityPortableGenerator entity) {
+	protected ResourceLocation getEntityTexture(final EntityPortableGenerator entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

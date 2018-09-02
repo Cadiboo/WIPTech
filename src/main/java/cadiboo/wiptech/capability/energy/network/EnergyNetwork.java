@@ -23,7 +23,7 @@ public class EnergyNetwork {
 			@Override
 			public int getCapacity() {
 				int capacity = 0;
-				for (ModEnergyStorage energy : getEnergyStorages()) {
+				for (final ModEnergyStorage energy : EnergyNetwork.this.getEnergyStorages()) {
 					capacity += energy.getCapacity();
 				}
 				return capacity;
@@ -32,7 +32,7 @@ public class EnergyNetwork {
 			@Override
 			public int getEnergyStored() {
 				int energyStored = 0;
-				for (ModEnergyStorage energy : getEnergyStorages()) {
+				for (final ModEnergyStorage energy : EnergyNetwork.this.getEnergyStorages()) {
 					energyStored += energy.getEnergyStored();
 				}
 				return energyStored;
@@ -41,7 +41,7 @@ public class EnergyNetwork {
 			@Override
 			public int getMaxExtract() {
 				int maxExtract = 0;
-				for (ModEnergyStorage energy : getEnergyStorages()) {
+				for (final ModEnergyStorage energy : EnergyNetwork.this.getEnergyStorages()) {
 					maxExtract += energy.getMaxExtract();
 				}
 				return maxExtract;
@@ -50,52 +50,52 @@ public class EnergyNetwork {
 			@Override
 			public int getMaxReceive() {
 				int maxReceive = 0;
-				for (ModEnergyStorage energy : getEnergyStorages()) {
+				for (final ModEnergyStorage energy : EnergyNetwork.this.getEnergyStorages()) {
 					maxReceive += energy.getMaxReceive();
 				}
 				return maxReceive;
 			}
 		};
-		this.connections = new HashSet<TileEntityWire>(0);
+		this.connections = new HashSet<>(0);
 	}
 
 	public ModEnergyStorage getEnergy() {
-		return energy;
+		return this.energy;
 	}
 
 	public HashSet<TileEntityWire> getConnections() {
-		return connections;
+		return this.connections;
 	}
 
 	public Set<BlockPos> getPositions() {
-		HashSet<BlockPos> positions = new HashSet<>();
-		for (TileEntityWire connection : connections) {
+		final HashSet<BlockPos> positions = new HashSet<>();
+		for (final TileEntityWire connection : this.connections) {
 			positions.add(connection.getPosition());
 		}
 		return positions;
 	}
 
 	public Collection<ModEnergyStorage> getEnergyStorages() {
-		HashSet<ModEnergyStorage> storages = new HashSet<>();
-		for (TileEntityWire connection : connections) {
+		final HashSet<ModEnergyStorage> storages = new HashSet<>();
+		for (final TileEntityWire connection : this.connections) {
 			storages.add(connection.getEnergy());
 		}
 		return storages;
 	}
 
-	public EnergyNetwork add(TileEntityWire connection) {
-		getConnections().add(connection);
+	public EnergyNetwork add(final TileEntityWire connection) {
+		this.getConnections().add(connection);
 		return this;
 	}
 
-	public EnergyNetwork remove(TileEntityWire connection) {
-		getConnections().remove(connection);
+	public EnergyNetwork remove(final TileEntityWire connection) {
+		this.getConnections().remove(connection);
 		return this;
 	}
 
 	public void update() {
-		final int eachEnergy = (int) ((float) getEnergy().getEnergyStored() / (float) getConnections().size());
-		int energyRemaining = getEnergy().getEnergyStored();
+		final int eachEnergy = (int) ((float) this.getEnergy().getEnergyStored() / (float) this.getConnections().size());
+		int energyRemaining = this.getEnergy().getEnergyStored();
 
 		int repetitions = 0;
 
@@ -106,7 +106,7 @@ public class EnergyNetwork {
 				new Exception().printStackTrace();
 				break;
 			}
-			for (ModEnergyStorage energy : getEnergyStorages()) {
+			for (final ModEnergyStorage energy : this.getEnergyStorages()) {
 				energyRemaining -= energy.extractEnergy(eachEnergy, false);
 			}
 
@@ -115,14 +115,14 @@ public class EnergyNetwork {
 	}
 
 	@Nullable
-	public EnergyNetwork tryMerge(EnergyNetwork other) {
-		for (BlockPos myConnectionPosition : this.getPositions()) {
-			for (BlockPos otherConnectionPosition : other.getPositions()) {
-				for (EnumFacing facing : EnumFacing.VALUES) {
-					BlockPos pos = myConnectionPosition.offset(facing);
+	public EnergyNetwork tryMerge(final EnergyNetwork other) {
+		for (final BlockPos myConnectionPosition : this.getPositions()) {
+			for (final BlockPos otherConnectionPosition : other.getPositions()) {
+				for (final EnumFacing facing : EnumFacing.VALUES) {
+					final BlockPos pos = myConnectionPosition.offset(facing);
 					if (otherConnectionPosition.equals(pos)) {
-						EnergyNetwork newNetwork = new EnergyNetwork();
-						newNetwork.getConnections().addAll(getConnections());
+						final EnergyNetwork newNetwork = new EnergyNetwork();
+						newNetwork.getConnections().addAll(this.getConnections());
 						newNetwork.getConnections().addAll(other.getConnections());
 						return newNetwork;
 					}
@@ -134,13 +134,13 @@ public class EnergyNetwork {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof EnergyNetwork && ((EnergyNetwork) obj).getConnections().equals(this.getConnections());
+	public boolean equals(final Object obj) {
+		return (obj instanceof EnergyNetwork) && ((EnergyNetwork) obj).getConnections().equals(this.getConnections());
 	}
 
 	@Override
 	public int hashCode() {
-		return connections.hashCode();
+		return this.connections.hashCode();
 	}
 
 }

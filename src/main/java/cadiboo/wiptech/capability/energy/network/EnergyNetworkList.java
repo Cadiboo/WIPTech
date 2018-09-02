@@ -14,46 +14,46 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 	private final HashSet<BlockPos> connections;
 	private final World world;
 
-	public EnergyNetworkList(World world) {
+	public EnergyNetworkList(final World world) {
 		this.connections = new HashSet<>(0);
 		this.world = world;
 	}
 
 	@Override
 	public HashSet<BlockPos> getConnections() {
-		return connections;
+		return this.connections;
 	}
 
 	@Override
 	public World getWorld() {
-		return world;
+		return this.world;
 	}
 
 	@Override
-	public void addConnection(BlockPos pos) {
-		getConnections().add(pos);
+	public void addConnection(final BlockPos pos) {
+		this.getConnections().add(pos);
 	}
 
 	@Override
-	public void removeConnection(BlockPos pos) {
-		getConnections().remove(pos);
+	public void removeConnection(final BlockPos pos) {
+		this.getConnections().remove(pos);
 	}
 
 	@Override
 	public void update() {
-		refreshConnections();
-		distributeEnergy();
+		this.refreshConnections();
+		this.distributeEnergy();
 	}
 
-	private void distributeEnergy(BlockPos... dontDistribute) {
-		int networkEnergy = getNetworkEnergy();
+	private void distributeEnergy(final BlockPos... dontDistribute) {
+		int networkEnergy = this.getNetworkEnergy();
 
-		HashSet<ModEnergyStorage> storages = new HashSet<>();
-		refreshConnections();
-		for (BlockPos pos : connections) {
+		final HashSet<ModEnergyStorage> storages = new HashSet<>();
+		this.refreshConnections();
+		for (final BlockPos pos : this.connections) {
 			try {
-				storages.add(((TileEntityWire) world.getTileEntity(pos)).getEnergy());
-			} catch (Exception e) {
+				storages.add(((TileEntityWire) this.world.getTileEntity(pos)).getEnergy());
+			} catch (final Exception e) {
 				// TODO: handle exception
 			}
 		}
@@ -77,14 +77,14 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 	}
 
 	private int getNetworkEnergy() {
-		refreshConnections();
+		this.refreshConnections();
 		int networkEnergy = 0;
-		for (BlockPos pos : connections) {
+		for (final BlockPos pos : this.connections) {
 			try {
-				TileEntity tile = world.getTileEntity(pos);
-				ModEnergyStorage energy = ((TileEntityWire) tile).getEnergy();
+				final TileEntity tile = this.world.getTileEntity(pos);
+				final ModEnergyStorage energy = ((TileEntityWire) tile).getEnergy();
 				networkEnergy += energy.getEnergyStored();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				// TODO: handle exception
 			}
 		}
@@ -93,25 +93,25 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 	}
 
 	private void refreshConnections() {
-		for (BlockPos pos : connections) {
-			TileEntity tile = world.getTileEntity(pos);
+		for (final BlockPos pos : this.connections) {
+			final TileEntity tile = this.world.getTileEntity(pos);
 			if (tile == null) {
-				connections.remove(pos);
+				this.connections.remove(pos);
 				continue;
 			}
 			if (!(tile instanceof TileEntity)) {
-				connections.remove(pos);
+				this.connections.remove(pos);
 				continue;
 			}
 		}
 	}
 
-	private static int[] splitIntoParts(int whole, int parts) {
-		int[] arr = new int[parts];
+	private static int[] splitIntoParts(final int whole, final int parts) {
+		final int[] arr = new int[parts];
 		int remain = whole;
 		int partsLeft = parts;
 		for (int i = 0; partsLeft > 0; i++) {
-			int size = (remain + partsLeft - 1) / partsLeft; // rounded up, aka ceiling
+			final int size = ((remain + partsLeft) - 1) / partsLeft; // rounded up, aka ceiling
 			arr[i] = size;
 			remain -= size;
 			partsLeft--;

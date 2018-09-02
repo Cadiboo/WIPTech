@@ -17,31 +17,31 @@ public class CasedSlugModelLoader implements ICustomModelLoader {
 	public static final String CASED_SLUG_MODEL_RESOURCE_LOCATION = "item/cased_slug_model";
 
 	@Override
-	public void onResourceManagerReload(IResourceManager resourceManager) {
+	public void onResourceManagerReload(final IResourceManager resourceManager) {
 	}
 
 	@Override
-	public boolean accepts(ResourceLocation modelLocation) {
+	public boolean accepts(final ResourceLocation modelLocation) {
 		return modelLocation.getResourceDomain().equals(ModReference.MOD_ID) && modelLocation.getResourcePath().startsWith(CASED_SLUG_MODEL_RESOURCE_LOCATION);
 	}
 
 	@Override
-	public IModel loadModel(ResourceLocation modelLocation) throws Exception {
-		String resourcePath = modelLocation.getResourcePath();
+	public IModel loadModel(final ResourceLocation modelLocation) throws Exception {
+		final String resourcePath = modelLocation.getResourcePath();
 		if (!resourcePath.equals(CASED_SLUG_MODEL_RESOURCE_LOCATION)) {
-//			assert false : "loadModel expected " + CASED_SLUG_MODEL_RESOURCE_LOCATION + " but found " + resourcePath;
+			// assert false : "loadModel expected " + CASED_SLUG_MODEL_RESOURCE_LOCATION + " but found " + resourcePath;
 			this.getClass();
 		}
 
 		try {
-			ArrayList<String> modelName = new ArrayList<String>(Arrays.asList(resourcePath.substring(CASED_SLUG_MODEL_RESOURCE_LOCATION.length() + 1).split("_")));
+			final ArrayList<String> modelName = new ArrayList<>(Arrays.asList(resourcePath.substring(CASED_SLUG_MODEL_RESOURCE_LOCATION.length() + 1).split("_")));
 			modelName.remove(modelName.size() - 1);
 			modelName.remove(0);
-			String modelMaterial = String.join("_", modelName);
+			final String modelMaterial = String.join("_", modelName);
 
 			return new ModelCasedSlug(ModMaterials.valueOf(modelMaterial.toUpperCase()));
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return ModelLoaderRegistry.getMissingModel();
 		}
 	}

@@ -9,10 +9,10 @@ public class ItemModHoe extends ItemHoe implements IItemModMaterial {
 
 	protected final ModMaterials material;
 
-	public ItemModHoe(final ModMaterials materialIn) {
-		super(materialIn.getToolMaterial());
-		ModUtil.setRegistryNames(this, materialIn, "hoe");
-		this.material = materialIn;
+	public ItemModHoe(final ModMaterials material) {
+		super(material.getToolMaterial());
+		ModUtil.setRegistryNames(this, material, "hoe");
+		this.material = material;
 	}
 
 	@Override

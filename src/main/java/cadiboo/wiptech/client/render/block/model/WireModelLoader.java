@@ -21,26 +21,26 @@ public class WireModelLoader implements ICustomModelLoader {
 	public static final String WIRE_MODEL_RESOURCE_LOCATION = "models/block/wire_model";
 
 	@Override
-	public void onResourceManagerReload(IResourceManager resourceManager) {
+	public void onResourceManagerReload(final IResourceManager resourceManager) {
 	}
 
 	@Override
-	public boolean accepts(ResourceLocation modelLocation) {
+	public boolean accepts(final ResourceLocation modelLocation) {
 		return modelLocation.getResourceDomain().equals(ModReference.MOD_ID) && modelLocation.getResourcePath().startsWith(WIRE_MODEL_RESOURCE_LOCATION);
 	}
 
 	@Override
-	public IModel loadModel(ResourceLocation modelLocation) throws Exception {
-		String resourcePath = modelLocation.getResourcePath();
+	public IModel loadModel(final ResourceLocation modelLocation) throws Exception {
+		final String resourcePath = modelLocation.getResourcePath();
 		if (!resourcePath.equals(WIRE_MODEL_RESOURCE_LOCATION)) {
 			assert false : "loadModel expected " + WIRE_MODEL_RESOURCE_LOCATION + " but found " + resourcePath;
 		}
 
 		try {
-			ArrayList<String> modelName = new ArrayList<String>(Arrays.asList(resourcePath.substring(WIRE_MODEL_RESOURCE_LOCATION.length() + 1).split("_")));
-			String modelType = modelName.get(modelName.size() - 1);
+			final ArrayList<String> modelName = new ArrayList<>(Arrays.asList(resourcePath.substring(WIRE_MODEL_RESOURCE_LOCATION.length() + 1).split("_")));
+			final String modelType = modelName.get(modelName.size() - 1);
 			modelName.remove(modelName.size() - 1);
-			String modelMaterial = String.join("_", modelName);
+			final String modelMaterial = String.join("_", modelName);
 
 			if (modelType.toLowerCase().equals("wire")) {
 				return new ModelWire(ModMaterials.valueOf(modelMaterial.toUpperCase()));
@@ -49,7 +49,7 @@ public class WireModelLoader implements ICustomModelLoader {
 			} else {
 				return ModelLoaderRegistry.getMissingModel();
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			return ModelLoaderRegistry.getMissingModel();
 		}
 	}

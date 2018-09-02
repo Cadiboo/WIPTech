@@ -4,103 +4,107 @@ import net.minecraftforge.energy.EnergyStorage;
 
 public class ModEnergyStorage extends EnergyStorage {
 
-	public ModEnergyStorage(int capacity) {
+	public ModEnergyStorage(final int capacity) {
 		super(capacity);
 	}
 
-	public ModEnergyStorage(int capacity, int maxTransfer) {
+	public ModEnergyStorage(final int capacity, final int maxTransfer) {
 		super(capacity, maxTransfer);
 	}
 
-	public ModEnergyStorage(int capacity, int maxReceive, int maxExtract) {
+	public ModEnergyStorage(final int capacity, final int maxReceive, final int maxExtract) {
 		super(capacity, maxReceive, maxExtract);
 	}
 
-	public ModEnergyStorage(int capacity, int maxReceive, int maxExtract, int energy) {
+	public ModEnergyStorage(final int capacity, final int maxReceive, final int maxExtract, final int energy) {
 		super(capacity, maxReceive, maxExtract, energy);
 	}
 
 	public int getMaxReceive() {
-		return maxReceive;
+		return this.maxReceive;
 	}
 
-	public void setMaxReceive(int maxReceive) {
+	public void setMaxReceive(final int maxReceive) {
 		this.maxReceive = maxReceive;
 		this.onEnergyChanged();
 	}
 
 	public int getMaxExtract() {
-		return maxExtract;
+		return this.maxExtract;
 	}
 
-	public void setMaxExtract(int maxExtract) {
+	public void setMaxExtract(final int maxExtract) {
 		this.maxExtract = maxExtract;
 		this.onEnergyChanged();
 	}
 
 	public int getCapacity() {
-		return capacity;
+		return this.capacity;
 	}
 
-	public void setCapacity(int capacity) {
+	public void setCapacity(final int capacity) {
 		this.capacity = capacity;
 		this.onEnergyChanged();
 	}
 
 	@Override
-	public int receiveEnergy(int maxReceive, boolean simulate) {
-		if (!canReceive())
+	public int receiveEnergy(final int maxReceive, final boolean simulate) {
+		if (!this.canReceive()) {
 			return 0;
+		}
 
-		int energyReceived = Math.min(getCapacity() - getEnergyStored(), Math.min(getMaxReceive(), maxReceive));
+		final int energyReceived = Math.min(this.getCapacity() - this.getEnergyStored(), Math.min(this.getMaxReceive(), maxReceive));
 		if (!simulate) {
-			setEnergyStored(getEnergyStored() + energyReceived, false);
-			onEnergyChanged();
+			this.setEnergyStored(this.getEnergyStored() + energyReceived, false);
+			this.onEnergyChanged();
 		}
 		return energyReceived;
 	}
 
 	@Override
-	public int extractEnergy(int maxExtract, boolean simulate) {
-		if (!canExtract())
+	public int extractEnergy(final int maxExtract, final boolean simulate) {
+		if (!this.canExtract()) {
 			return 0;
+		}
 
-		int energyExtracted = Math.min(getEnergyStored(), Math.min(getMaxExtract(), maxExtract));
-		if (!simulate)
-			setEnergyStored(getEnergyStored() - energyExtracted, false);
+		final int energyExtracted = Math.min(this.getEnergyStored(), Math.min(this.getMaxExtract(), maxExtract));
+		if (!simulate) {
+			this.setEnergyStored(this.getEnergyStored() - energyExtracted, false);
+		}
 		return energyExtracted;
 	}
 
 	@Override
 	public int getMaxEnergyStored() {
-		return getCapacity();
+		return this.getCapacity();
 	}
 
 	@Override
 	public boolean canExtract() {
-		return getMaxExtract() > 0;
+		return this.getMaxExtract() > 0;
 	}
 
 	@Override
 	public boolean canReceive() {
-		return getMaxReceive() > 0;
+		return this.getMaxReceive() > 0;
 	}
 
 	@Override
 	public int getEnergyStored() {
-		return energy;
+		return this.energy;
 	}
 
 	// TODO
 	/**
-	 * @param energy the energy to set
-	 * @return the amount of energy that was set
+	 * @param  energy the energy to set
+	 * @return        the amount of energy that was set
 	 */
-	public int setEnergyStored(int energy, boolean simulate) {
-		onEnergyChanged();
-		int toSet = Math.min(energy, getMaxReceive());
-		if (!simulate)
+	public int setEnergyStored(final int energy, final boolean simulate) {
+		this.onEnergyChanged();
+		final int toSet = Math.min(energy, this.getMaxReceive());
+		if (!simulate) {
 			this.energy = toSet;
+		}
 		return toSet;
 	}
 

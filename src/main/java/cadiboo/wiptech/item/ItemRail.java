@@ -9,9 +9,9 @@ public class ItemRail extends Item implements IItemModMaterial {
 
 	protected final ModMaterials material;
 
-	public ItemRail(final ModMaterials materialIn) {
-		ModUtil.setRegistryNames(this, materialIn, "rail");
-		this.material = materialIn;
+	public ItemRail(final ModMaterials material) {
+		ModUtil.setRegistryNames(this, material, "rail");
+		this.material = material;
 	}
 
 	@Override

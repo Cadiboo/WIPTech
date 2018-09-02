@@ -9,10 +9,10 @@ public class ItemModShovel extends ItemSpade implements IItemModMaterial {
 
 	protected final ModMaterials material;
 
-	public ItemModShovel(final ModMaterials materialIn) {
-		super(materialIn.getToolMaterial());
-		ModUtil.setRegistryNames(this, materialIn, "shovel");
-		this.material = materialIn;
+	public ItemModShovel(final ModMaterials material) {
+		super(material.getToolMaterial());
+		ModUtil.setRegistryNames(this, material, "shovel");
+		this.material = material;
 	}
 
 	@Override

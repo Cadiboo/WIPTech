@@ -8,22 +8,22 @@ import net.minecraft.world.World;
 
 public interface IEnergyNetworkList extends ITickable {
 
-	public World getWorld();
+	World getWorld();
 
-	public HashSet<BlockPos> getConnections();
+	HashSet<BlockPos> getConnections();
 
-//	@Nullable
-//	public EnergyNetwork getNetworkFor(T potentialConnection);
-//
-//	@Nonnull
-//	public EnergyNetwork getCreateOrMergeNetworkFor(T potentialConnection);
-//
-//	public void splitNetworks(T potentialConnection);
+	// @Nullable
+	// public EnergyNetwork getNetworkFor(T potentialConnection);
+	//
+	// @Nonnull
+	// public EnergyNetwork getCreateOrMergeNetworkFor(T potentialConnection);
+	//
+	// public void splitNetworks(T potentialConnection);
 
-	public void addConnection(BlockPos pos);
+	void addConnection(BlockPos pos);
 
-	public void removeConnection(BlockPos pos);
+	void removeConnection(BlockPos pos);
 
-//	public void setNetworks(ArrayList<EnergyNetwork> networks);
+	// public void setNetworks(ArrayList<EnergyNetwork> networks);
 
 }

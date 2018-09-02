@@ -12,28 +12,29 @@ public class ModItemStackHandler extends ItemStackHandler {
 		this(1);
 	}
 
-	public ModItemStackHandler(int size) {
-		stacks = NonNullList.withSize(size, ItemStack.EMPTY);
+	public ModItemStackHandler(final int size) {
+		this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
 	}
 
-	public ModItemStackHandler(NonNullList<ItemStack> stacks) {
+	public ModItemStackHandler(final NonNullList<ItemStack> stacks) {
 		this.stacks = stacks;
 	}
 
-	public void dropItems(World world, double x, double y, double z) {
-		for (int i = 0; i < stacks.size(); i++) {
-			if (stacks.get(i).isEmpty())
+	public void dropItems(final World world, final double x, final double y, final double z) {
+		for (int i = 0; i < this.stacks.size(); i++) {
+			if (this.stacks.get(i).isEmpty()) {
 				return;
+			}
 
-			EntityItem entityitem = new EntityItem(world, x, y, z, stacks.get(i));
+			final EntityItem entityitem = new EntityItem(world, x, y, z, this.stacks.get(i));
 			entityitem.setDefaultPickupDelay();
 
-			stacks.set(i, ItemStack.EMPTY);
+			this.stacks.set(i, ItemStack.EMPTY);
 		}
 	}
 
 	public NonNullList<ItemStack> getStacks() {
-		return stacks;
+		return this.stacks;
 	}
 
 }

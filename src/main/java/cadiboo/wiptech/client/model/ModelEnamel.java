@@ -10,15 +10,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelEnamel extends ModelWire implements IModel {
 
-	public ModelEnamel(ModMaterials materialIn) {
-		super(materialIn);
+	public ModelEnamel(final ModMaterials material) {
+		super(material);
 	}
 
 	@Override
-	protected ResourceLocation getModelLocation(String string) {
-		if (string == "core")
-			return new ResourceLocation(ModReference.MOD_ID, "block/" + material.getNameLowercase() + "_enamel_core");
-		return new ResourceLocation(ModReference.MOD_ID, "block/" + material.getNameLowercase() + "_enamel_extension_" + string);
+	protected ResourceLocation getModelLocation(final String string) {
+		if (string == "core") {
+			return new ResourceLocation(ModReference.MOD_ID, "block/" + this.material.getNameLowercase() + "_enamel_core");
+		}
+		return new ResourceLocation(ModReference.MOD_ID, "block/" + this.material.getNameLowercase() + "_enamel_extension_" + string);
 	}
 
 }

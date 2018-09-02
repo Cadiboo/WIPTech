@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class EntityRailgunRenderer extends Render<EntityRailgun> {
 
-	public EntityRailgunRenderer(RenderManager renderManager) {
+	public EntityRailgunRenderer(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
@@ -46,7 +46,7 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 				GlStateManager.pushMatrix();
 				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_base")));
 				GlStateManager.popMatrix();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				WIPTech.error("Error rendering railgun base");
 				e.printStackTrace();
 			}
@@ -56,7 +56,7 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 				GlStateManager.rotate(180 - entityYaw, 0, 1, 0);
 				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_turret")));
 				GlStateManager.popMatrix();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				WIPTech.error("Error rendering railgun turret");
 				e.printStackTrace();
 			}
@@ -68,14 +68,14 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 				GlStateManager.rotate(90 - (float) ClientUtil.getPitch(new Vec3d(0, 0, 0), look), 1, 0, 0);
 				ClientUtil.renderModel(ModelsCache.INSTANCE.getBakedModel(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_gun")));
 				GlStateManager.popMatrix();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				WIPTech.error("Error rendering railgun gun");
 				e.printStackTrace();
 			}
 
-//			throw new Exception();
+			// throw new Exception();
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			WIPTech.error("Error rendering railgun parts");
 			e.printStackTrace();
 		}
@@ -91,10 +91,10 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 		ClientUtil.rotateTowardsPos(new Vec3d(0, 0, 0), look);
 		GlStateManager.translate(0, 32, 0);
 
-		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-//		TextureAtlasSprite beam = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:entity/end_crystal/end_crystal_beam");
-//		TextureAtlasSprite beam = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:entity/endercrystal/endercrystal_beam.png");
+		// TextureAtlasSprite beam = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:entity/end_crystal/end_crystal_beam");
+		// TextureAtlasSprite beam = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:entity/endercrystal/endercrystal_beam.png");
 		final TextureAtlasSprite beam = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/redstone_block");
 
 		ClientUtil.enableMaxLighting();
@@ -106,21 +106,23 @@ public class EntityRailgunRenderer extends Render<EntityRailgun> {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(look.x, look.y, look.z);
 		int size = 0;
-		for (int i = 0; i < entity.getInventory().getSlots(); i++)
+		for (int i = 0; i < entity.getInventory().getSlots(); i++) {
 			size += entity.getInventory().getStackInSlot(i).getCount();
+		}
 		int maxSize = 0;
-		for (int i = 0; i < entity.getInventory().getSlots(); i++)
+		for (int i = 0; i < entity.getInventory().getSlots(); i++) {
 			maxSize += entity.getInventory().getStackInSlot(i).getMaxStackSize();
+		}
 		// TODO color doesnt work rn, fix it
 		final float color = (float) ModUtil.map(0, maxSize, 0, 1, size);
 		GlStateManager.color(1 - color, color, 0);
-		renderLivingLabel(entity, size + "/" + maxSize, x, y, z, 64);
+		this.renderLivingLabel(entity, size + "/" + maxSize, x, y, z, 64);
 		GlStateManager.popMatrix();
 
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntityRailgun entity) {
+	protected ResourceLocation getEntityTexture(final EntityRailgun entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

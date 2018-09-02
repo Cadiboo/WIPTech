@@ -9,10 +9,10 @@ public class ItemModSword extends ItemSword implements IItemModMaterial {
 
 	protected final ModMaterials material;
 
-	public ItemModSword(final ModMaterials materialIn) {
-		super(materialIn.getToolMaterial());
-		ModUtil.setRegistryNames(this, materialIn, "sword");
-		this.material = materialIn;
+	public ItemModSword(final ModMaterials material) {
+		super(material.getToolMaterial());
+		ModUtil.setRegistryNames(this, material, "sword");
+		this.material = material;
 	}
 
 	@Override

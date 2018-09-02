@@ -21,8 +21,8 @@ public class BlockEnamel extends BlockWire {
 	protected static final AxisAlignedBB EAST_AABB = BlockWire.EAST_AABB.grow(0, 1d / 16d, 1d / 16d);
 	protected static final AxisAlignedBB WEST_AABB = BlockWire.WEST_AABB.grow(0, 1d / 16d, 1d / 16d);
 
-	public BlockEnamel(final ModMaterials materialIn) {
-		super(materialIn, "enamel");
+	public BlockEnamel(final ModMaterials material) {
+		super(material, "enamel");
 	}
 
 	@Override

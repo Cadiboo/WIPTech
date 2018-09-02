@@ -9,10 +9,10 @@ public class ItemModPickaxe extends ItemPickaxe implements IItemModMaterial {
 
 	protected final ModMaterials material;
 
-	public ItemModPickaxe(final ModMaterials materialIn) {
-		super(materialIn.getToolMaterial());
-		ModUtil.setRegistryNames(this, materialIn, "pickaxe");
-		this.material = materialIn;
+	public ItemModPickaxe(final ModMaterials material) {
+		super(material.getToolMaterial());
+		ModUtil.setRegistryNames(this, material, "pickaxe");
+		this.material = material;
 	}
 
 	@Override

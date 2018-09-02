@@ -51,12 +51,12 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	private double lerpYaw;
 	private double lerpPitch;
 
-	private ModEnergyStorage energy;
-	private ModItemStackHandler inventory;
+	private final ModEnergyStorage energy;
+	private final ModItemStackHandler inventory;
 	private int shootCooldown;
 
-	public EntityRailgun(World worldIn) {
-		super(worldIn);
+	public EntityRailgun(final World world) {
+		super(world);
 		this.preventEntitySpawning = true;
 		this.setSize(3, 2);
 
@@ -64,21 +64,22 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 			@Override
 			public void onEnergyChanged() {
 				super.onEnergyChanged();
-				if (!world.isRemote)
-					syncToTracking();
+				if (!world.isRemote) {
+					EntityRailgun.this.syncToTracking();
+				}
 			}
 		};
 		this.inventory = new ModItemStackHandler(3) {
 			@Override
-			protected void onContentsChanged(int slot) {
+			protected void onContentsChanged(final int slot) {
 				super.onContentsChanged(slot);
 				/* we trust vanilla/forge to do inventory syncing */
 			}
 		};
 	}
 
-	public EntityRailgun(World worldIn, double x, double y, double z) {
-		this(worldIn);
+	public EntityRailgun(final World world, final double x, final double y, final double z) {
+		this(world);
 		this.setPosition(x, y, z);
 		this.motionX = 0.0D;
 		this.motionY = 0.0D;
@@ -94,7 +95,7 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	}
 
 	public int getShootCooldown() {
-		return shootCooldown;
+		return this.shootCooldown;
 	}
 
 	@Override
@@ -103,8 +104,8 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 
 	@Override
 	@Nullable
-	public AxisAlignedBB getCollisionBox(Entity entityIn) {
-		return entityIn.getEntityBoundingBox();
+	public AxisAlignedBB getCollisionBox(final Entity entity) {
+		return entity.getEntityBoundingBox();
 	}
 
 	@Override
@@ -124,19 +125,19 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean attackEntityFrom(final DamageSource source, final float amount) {
 		if (this.isEntityInvulnerable(source)) {
 			return false;
 		} else if (!this.world.isRemote && !this.isDead) {
-			if (source instanceof EntityDamageSourceIndirect && source.getTrueSource() != null && this.isPassenger(source.getTrueSource())) {
+			if ((source instanceof EntityDamageSourceIndirect) && (source.getTrueSource() != null) && this.isPassenger(source.getTrueSource())) {
 				return false;
 			} else {
 				this.markVelocityChanged();
-				boolean flag = source.getTrueSource() instanceof EntityPlayer && ((EntityPlayer) source.getTrueSource()).capabilities.isCreativeMode;
+				final boolean flag = (source.getTrueSource() instanceof EntityPlayer) && ((EntityPlayer) source.getTrueSource()).capabilities.isCreativeMode;
 
 				if (!flag && this.world.getGameRules().getBoolean("doEntityDrops")) {
 					this.dropItemWithOffset(ModItems.RAILGUN, 1, 0.0F);
-					inventory.dropItems(world, posX, posY, posZ);
+					this.inventory.dropItems(this.world, this.posX, this.posY, this.posZ);
 				}
 
 				this.setDead();
@@ -155,7 +156,7 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+	public void setPositionAndRotationDirect(final double x, final double y, final double z, final float yaw, final float pitch, final int posRotationIncrements, final boolean teleport) {
 		this.lerpX = x;
 		this.lerpY = y;
 		this.lerpZ = z;
@@ -172,9 +173,9 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	@Override
 	public void onUpdate() {
 
-		shoot();
+		this.shoot();
 
-		shootCooldown--;
+		this.shootCooldown--;
 
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -194,25 +195,31 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 
 		this.doBlockCollisions();
 
-		int width = Math.round(this.width / 2);
-		int height = Math.round(this.height / 2);
-		int length = width;
+		final int width = Math.round(this.width / 2);
+		final int height = Math.round(this.height / 2);
+		final int length = width;
 		for (int x = -(width); x <= width; x++) {
 			for (int y = -(height); y <= height; y++) {
 				for (int z = -(length); z <= length; z++) {
-					BlockPos pos = new BlockPos(this.posX + x, this.posY + y, this.posZ + z);
-					if (world.getTileEntity(pos) != null)
-						if (world.getTileEntity(pos).hasCapability(CapabilityEnergy.ENERGY, null))
-							if (world.getTileEntity(pos).getCapability(CapabilityEnergy.ENERGY, null) != null)
-								if (world.getTileEntity(pos).getCapability(CapabilityEnergy.ENERGY, null).canExtract())
-									energy.receiveEnergy(world.getTileEntity(pos).getCapability(CapabilityEnergy.ENERGY, null).extractEnergy(energy.receiveEnergy(Integer.MAX_VALUE, true), false),
-											false);
-					for (Entity entity : world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos))) {
-						if (entity == null)
+					final BlockPos pos = new BlockPos(this.posX + x, this.posY + y, this.posZ + z);
+					if (this.world.getTileEntity(pos) != null) {
+						if (this.world.getTileEntity(pos).hasCapability(CapabilityEnergy.ENERGY, null)) {
+							if (this.world.getTileEntity(pos).getCapability(CapabilityEnergy.ENERGY, null) != null) {
+								if (this.world.getTileEntity(pos).getCapability(CapabilityEnergy.ENERGY, null).canExtract()) {
+									this.energy.receiveEnergy(this.world.getTileEntity(pos).getCapability(CapabilityEnergy.ENERGY, null).extractEnergy(this.energy.receiveEnergy(Integer.MAX_VALUE, true), false), false);
+								}
+							}
+						}
+					}
+					for (final Entity entity : this.world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos))) {
+						if (entity == null) {
 							continue;
-						if (entity.getCapability(CapabilityEnergy.ENERGY, null) != null)
-							if (entity.getCapability(CapabilityEnergy.ENERGY, null).canExtract())
-								energy.receiveEnergy(entity.getCapability(CapabilityEnergy.ENERGY, null).extractEnergy(energy.receiveEnergy(Integer.MAX_VALUE, true), false), false);
+						}
+						if (entity.getCapability(CapabilityEnergy.ENERGY, null) != null) {
+							if (entity.getCapability(CapabilityEnergy.ENERGY, null).canExtract()) {
+								this.energy.receiveEnergy(entity.getCapability(CapabilityEnergy.ENERGY, null).extractEnergy(this.energy.receiveEnergy(Integer.MAX_VALUE, true), false), false);
+							}
+						}
 					}
 
 				}
@@ -222,13 +229,13 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	}
 
 	private void tickLerp() {
-		if (this.lerpSteps > 0 && !this.canPassengerSteer()) {
-			double d0 = this.posX + (this.lerpX - this.posX) / this.lerpSteps;
-			double d1 = this.posY + (this.lerpY - this.posY) / this.lerpSteps;
-			double d2 = this.posZ + (this.lerpZ - this.posZ) / this.lerpSteps;
-			double d3 = MathHelper.wrapDegrees(this.lerpYaw - this.rotationYaw);
-			this.rotationYaw = (float) (this.rotationYaw + d3 / this.lerpSteps);
-			this.rotationPitch = (float) (this.rotationPitch + (this.lerpPitch - this.rotationPitch) / this.lerpSteps);
+		if ((this.lerpSteps > 0) && !this.canPassengerSteer()) {
+			final double d0 = this.posX + ((this.lerpX - this.posX) / this.lerpSteps);
+			final double d1 = this.posY + ((this.lerpY - this.posY) / this.lerpSteps);
+			final double d2 = this.posZ + ((this.lerpZ - this.posZ) / this.lerpSteps);
+			final double d3 = MathHelper.wrapDegrees(this.lerpYaw - this.rotationYaw);
+			this.rotationYaw = (float) (this.rotationYaw + (d3 / this.lerpSteps));
+			this.rotationPitch = (float) (this.rotationPitch + ((this.lerpPitch - this.rotationPitch) / this.lerpSteps));
 			--this.lerpSteps;
 			this.setPosition(d0, d1, d2);
 			this.setRotation(this.rotationYaw, this.rotationPitch);
@@ -236,16 +243,16 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	}
 
 	private void updateMotion() {
-		double d1 = this.hasNoGravity() ? 0.0D : -0.03999999910593033D;
+		final double d1 = this.hasNoGravity() ? 0.0D : -0.03999999910593033D;
 		this.motionY += d1;
 	}
 
 	private void controlRailgun() {
 		if (this.isBeingRidden()) {
-			float pitch = getControllingPassenger().rotationPitch;
-			pitch = Math.max(-getMaxPitch(), pitch);
-			pitch = Math.min(getMaxPitch(), pitch);
-			setRotation(getControllingPassenger().rotationYaw, pitch);
+			float pitch = this.getControllingPassenger().rotationPitch;
+			pitch = Math.max(-this.getMaxPitch(), pitch);
+			pitch = Math.min(this.getMaxPitch(), pitch);
+			this.setRotation(this.getControllingPassenger().rotationYaw, pitch);
 		}
 	}
 
@@ -254,13 +261,13 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	}
 
 	@Override
-	public void updatePassenger(Entity passenger) {
+	public void updatePassenger(final Entity passenger) {
 		if (this.isPassenger(passenger)) {
 			float f = 0.0F;
-			float f1 = (float) ((this.isDead ? 0.009999999776482582D : this.getMountedYOffset()) + passenger.getYOffset());
+			final float f1 = (float) ((this.isDead ? 0.009999999776482582D : this.getMountedYOffset()) + passenger.getYOffset());
 
 			if (this.getPassengers().size() > 1) {
-				int i = this.getPassengers().indexOf(passenger);
+				final int i = this.getPassengers().indexOf(passenger);
 
 				if (i == 0) {
 					f = 0.2F;
@@ -273,24 +280,24 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 				}
 			}
 
-			Vec3d vec3d = (new Vec3d(f, 0.0D, 0.0D)).rotateYaw(-this.rotationYaw * 0.017453292F - ((float) Math.PI / 2F));
+			final Vec3d vec3d = (new Vec3d(f, 0.0D, 0.0D)).rotateYaw((-this.rotationYaw * 0.017453292F) - ((float) Math.PI / 2F));
 			passenger.setPosition(this.posX + vec3d.x, this.posY + f1, this.posZ + vec3d.z);
 			passenger.rotationYaw += this.deltaRotation;
 			passenger.setRotationYawHead(passenger.getRotationYawHead() + this.deltaRotation);
 			this.applyYawToEntity(passenger);
 
-			if (passenger instanceof EntityAnimal && this.getPassengers().size() > 1) {
-				int j = passenger.getEntityId() % 2 == 0 ? 90 : 270;
+			if ((passenger instanceof EntityAnimal) && (this.getPassengers().size() > 1)) {
+				final int j = (passenger.getEntityId() % 2) == 0 ? 90 : 270;
 				passenger.setRenderYawOffset(((EntityAnimal) passenger).renderYawOffset + j);
 				passenger.setRotationYawHead(passenger.getRotationYawHead() + j);
 			}
 		}
 	}
 
-	protected void applyYawToEntity(Entity entityToUpdate) {
+	protected void applyYawToEntity(final Entity entityToUpdate) {
 		entityToUpdate.setRenderYawOffset(this.rotationYaw);
-		float f = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
-		float f1 = MathHelper.clamp(f, -105.0F, 105.0F);
+		final float f = MathHelper.wrapDegrees(entityToUpdate.rotationYaw - this.rotationYaw);
+		final float f1 = MathHelper.clamp(f, -105.0F, 105.0F);
 		entityToUpdate.prevRotationYaw += f1 - f;
 		entityToUpdate.rotationYaw += f1 - f;
 		entityToUpdate.setRotationYawHead(entityToUpdate.rotationYaw);
@@ -298,32 +305,35 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void applyOrientationToEntity(Entity entityToUpdate) {
+	public void applyOrientationToEntity(final Entity entityToUpdate) {
 		this.applyYawToEntity(entityToUpdate);
 	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound compound) {
-		compound.setInteger("energy", energy.getEnergyStored());
-		compound.setTag("inventory", getInventory().serializeNBT());
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
+		compound.setInteger("energy", this.energy.getEnergyStored());
+		compound.setTag("inventory", this.getInventory().serializeNBT());
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound compound) {
-		if (compound.hasKey("energy"))
-			energy.setEnergyStored(compound.getInteger("energy"), false);
-		if (compound.hasKey("inventory"))
-			getInventory().deserializeNBT(compound.getCompoundTag("inventory"));
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
+		if (compound.hasKey("energy")) {
+			this.energy.setEnergyStored(compound.getInteger("energy"), false);
+		}
+		if (compound.hasKey("inventory")) {
+			this.getInventory().deserializeNBT(compound.getCompoundTag("inventory"));
+		}
 	}
 
 	@Override
-	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
-		if (super.processInitialInteract(player, hand))
+	public boolean processInitialInteract(final EntityPlayer player, final EnumHand hand) {
+		if (super.processInitialInteract(player, hand)) {
 			return true;
+		}
 
-		if (!world.isRemote) {
+		if (!this.world.isRemote) {
 			if (player.isSneaking()) {
-				player.openGui(WIPTech.instance, ModGuiHandler.RAILGUN, world, getPosition().getX(), getPosition().getY(), getPosition().getZ());
+				player.openGui(WIPTech.instance, ModGuiHandler.RAILGUN, this.world, this.getPosition().getX(), this.getPosition().getY(), this.getPosition().getZ());
 				return true;
 			} else {
 				player.startRiding(this);
@@ -339,72 +349,125 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	}
 
 	@Override
-	public EnumActionResult applyPlayerInteraction(EntityPlayer player, Vec3d vec, EnumHand hand) {
+	public EnumActionResult applyPlayerInteraction(final EntityPlayer player, final Vec3d vec, final EnumHand hand) {
 
 		return super.applyPlayerInteraction(player, vec, hand);
 	}
 
 	private ItemStack findAmmo() {
-		Iterator<ItemStack> it = getInventory().getStacks().iterator();
+		final Iterator<ItemStack> it = this.getInventory().getStacks().iterator();
 		while (it.hasNext()) {
-			if (isAmmo(it.next()))
+			if (this.isAmmo(it.next())) {
 				return it.next();
+			}
 		}
 		return ItemStack.EMPTY;
 	}
 
-	protected boolean isAmmo(ItemStack stack) {
+	protected boolean isAmmo(final ItemStack stack) {
 		return stack.getItem() instanceof ItemCasedSlug;
 	}
 
 	public void shoot() {
-//		if (getControllingPassenger() != null && getControllingPassenger() instanceof EntityPlayer) {
-//			final EntityPlayer player = (EntityPlayer) getControllingPassenger();
+		if ((this.getControllingPassenger() != null) && (this.getControllingPassenger() instanceof EntityPlayer)) {
+			final EntityPlayer player = (EntityPlayer) this.getControllingPassenger();
 
-		if (world.isRemote)
-			return;// EnumActionResult.SUCCESS;
+			if (this.world.isRemote) {
+				return;
+			}
 
-		if (getShootCooldown() > 0)
+			if (this.getShootCooldown() > 0) {
+				return;
+			}
+
+			final boolean shootAnyway = player.isCreative();
+
+			if (!shootAnyway && ((this.energy.getEnergyStored() < this.getShootEnergy()) || (this.energy.extractEnergy(this.getShootEnergy(), true) != this.getShootEnergy()))) {
+				return;
+			}
+
+			ItemStack ammo = this.findAmmo();
+
+			if (ammo.isEmpty()) {
+				if (shootAnyway) {
+					ammo = new ItemStack(ModMaterials.IRON.getCasedSlug());
+				} else {
+					return;
+				}
+			}
+
+			final ItemStack projectile = new ItemStack(((ItemCasedSlug) ammo.getItem()).getModMaterial().getSlugItem());
+
+			this.energy.extractEnergy(this.getShootEnergy(), false);
+
+			final float velocity = 4f;
+
+			final Vec3d look = this.getLookVec();
+
+			final EntitySlug slug = new EntitySlug(this.world, ((ItemSlug) projectile.getItem()).getModMaterial());
+			slug.setPosition(this.getPosition().getX() + 0.5, this.getPosition().getY() + this.getEyeHeight(), this.getPosition().getZ() + 0.5);
+
+			slug.prevRotationPitch = this.rotationPitch;
+			slug.prevRotationYaw = this.rotationYaw;
+
+			slug.setThrower(player);
+
+			slug.shoot(this.getControllingPassenger(), this.rotationPitch, this.rotationYaw, 0, velocity, 0);
+			this.world.spawnEntity(slug);
+
+			// TODO FIXME THIS IS BAD, FORGE DOCS SAYS EXPLICITLY "SERIOUSLY: DO NOT MODIFY
+			// THE RETURNED ITEMSTACK."
+			ammo.shrink(1);
+		}
+	}
+
+	public void shootInternal() {
+		if (this.world.isRemote) {
 			return;
+		}
 
-		boolean shootAnyway = true;// player.isCreative();
-
-		if (!shootAnyway && (energy.getEnergyStored() < getShootEnergy() || energy.extractEnergy(getShootEnergy(), true) != getShootEnergy()))
+		if (this.getShootCooldown() > 0) {
 			return;
+		}
+
+		final boolean shootAnyway = Boolean.valueOf(true);
+
+		if (!shootAnyway && ((this.energy.getEnergyStored() < this.getShootEnergy()) || (this.energy.extractEnergy(this.getShootEnergy(), true) != this.getShootEnergy()))) {
+			return;
+		}
 
 		ItemStack ammo = this.findAmmo();
 
-		if (ammo.isEmpty())
-			if (shootAnyway)
+		if (ammo.isEmpty()) {
+			if (shootAnyway) {
 				ammo = new ItemStack(ModMaterials.IRON.getCasedSlug());
-			else
+			} else {
 				return;
+			}
+		}
 
-		ItemStack projectile = new ItemStack(((ItemCasedSlug) ammo.getItem()).getModMaterial().getSlugItem());
+		final ItemStack projectile = new ItemStack(((ItemCasedSlug) ammo.getItem()).getModMaterial().getSlugItem());
 
-		energy.extractEnergy(getShootEnergy(), false);
+		this.energy.extractEnergy(this.getShootEnergy(), false);
 
-		float velocity = 4f;
+		final float velocity = 4f;
 
-		Vec3d look = this.getLookVec();
+		final Vec3d look = this.getLookVec();
 
-		EntitySlug slug = new EntitySlug(world, ((ItemSlug) projectile.getItem()).getModMaterial());
-		slug.setPosition(getPosition().getX() + 0.5, getPosition().getY() + getEyeHeight(), getPosition().getZ() + 0.5);
+		final EntitySlug slug = new EntitySlug(this.world, ((ItemSlug) projectile.getItem()).getModMaterial());
+		slug.setPosition(this.getPosition().getX() + 0.5, this.getPosition().getY() + this.getEyeHeight(), this.getPosition().getZ() + 0.5);
 
 		slug.prevRotationPitch = this.rotationPitch;
 		slug.prevRotationYaw = this.rotationYaw;
 
-//		slug.setThrower((EntityPlayer) getControllingPassenger());
-
-//		slug.shoot(getControllingPassenger(), this.rotationPitch, this.rotationYaw, 0, velocity, 0);
 		slug.shoot(this, this.rotationPitch, this.rotationYaw, 0, velocity, 0);
 
-		world.spawnEntity(slug);
+		this.world.spawnEntity(slug);
 
 		// TODO FIXME THIS IS BAD, FORGE DOCS SAYS EXPLICITLY "SERIOUSLY: DO NOT MODIFY
 		// THE RETURNED ITEMSTACK."
 		ammo.shrink(1);
-//		}
+
 	}
 
 	public int getShootEnergy() {
@@ -412,23 +475,23 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	}
 
 	@Override
-	protected boolean canFitPassenger(Entity passenger) {
+	protected boolean canFitPassenger(final Entity passenger) {
 		return this.getPassengers().size() < 1;
 	}
 
 	@Override
 	@Nullable
 	public Entity getControllingPassenger() {
-		List<Entity> list = this.getPassengers();
+		final List<Entity> list = this.getPassengers();
 		return list.isEmpty() ? null : (Entity) list.get(0);
 	}
 
 	// Forge: Fix MC-119811 by instantly completing lerp on board
 	@Override
-	protected void addPassenger(Entity passenger) {
+	protected void addPassenger(final Entity passenger) {
 		super.addPassenger(passenger);
 		this.shootCooldown = 10;
-		if (this.canPassengerSteer() && this.lerpSteps > 0) {
+		if (this.canPassengerSteer() && (this.lerpSteps > 0)) {
 			this.lerpSteps = 0;
 			this.posX = this.lerpX;
 			this.posY = this.lerpY;
@@ -440,35 +503,39 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 
 	@Override
 	public World getWorld() {
-		return world;
+		return this.world;
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CapabilityEnergy.ENERGY)
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY) {
 			return true;
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+		}
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return true;
+		}
 		return super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if (capability == CapabilityEnergy.ENERGY)
-			return (T) energy;
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return (T) inventory;
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY) {
+			return (T) this.energy;
+		}
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return (T) this.inventory;
+		}
 		return super.getCapability(capability, facing);
 	}
 
 	@Override
 	public ModEnergyStorage getEnergy() {
-		return energy;
+		return this.energy;
 	}
 
 	@Override
 	public ModItemStackHandler getInventory() {
-		return inventory;
+		return this.inventory;
 	}
 
 	@Override
@@ -482,13 +549,13 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	}
 
 	@Override
-	public void writeSyncTag(NBTTagCompound compound) {
-		writeEntityToNBT(compound);
+	public void writeSyncTag(final NBTTagCompound compound) {
+		this.writeEntityToNBT(compound);
 	}
 
 	@Override
-	public void readSyncTag(NBTTagCompound compound) {
-		readEntityFromNBT(compound);
+	public void readSyncTag(final NBTTagCompound compound) {
+		this.readEntityFromNBT(compound);
 	}
 
 }

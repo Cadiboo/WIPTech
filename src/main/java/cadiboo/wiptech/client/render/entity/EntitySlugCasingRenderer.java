@@ -18,12 +18,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class EntitySlugCasingRenderer extends Render<EntitySlugCasing> {
 
-	public EntitySlugCasingRenderer(RenderManager renderManager) {
+	public EntitySlugCasingRenderer(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(EntitySlugCasing entity, double x, double y, double z, float entityYaw, float partialTicks) {
+	public void doRender(final EntitySlugCasing entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
 		try {
@@ -33,24 +33,24 @@ public class EntitySlugCasingRenderer extends Render<EntitySlugCasing> {
 
 			GlStateManager.translate(0, -0.56f, 0);
 
-			ItemStack stack = new ItemStack(Blocks.IRON_BLOCK);
+			final ItemStack stack = new ItemStack(Blocks.IRON_BLOCK);
 
 			IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, entity.getEntityWorld(), null);
 			model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
 
-			bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+			this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 			Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
 
 			GlStateManager.popMatrix();
 
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(EntitySlugCasing entity) {
+	protected ResourceLocation getEntityTexture(final EntitySlugCasing entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 }

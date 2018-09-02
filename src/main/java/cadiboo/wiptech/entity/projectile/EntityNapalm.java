@@ -12,12 +12,12 @@ import net.minecraft.world.World;
 
 public class EntityNapalm extends EntityThrowable {
 
-	public EntityNapalm(World worldIn) {
-		super(worldIn);
+	public EntityNapalm(final World world) {
+		super(world);
 	}
 
-	public EntityNapalm(World worldIn, EntityLivingBase throwerIn) {
-		super(worldIn, throwerIn);
+	public EntityNapalm(final World world, final EntityLivingBase thrower) {
+		super(world, thrower);
 	}
 
 	@Override
@@ -26,58 +26,58 @@ public class EntityNapalm extends EntityThrowable {
 
 		this.igniteBlocks();
 
-		if (this.ticksExisted <= 2)
+		if (this.ticksExisted <= 2) {
 			return;
-
-		for (int i = 0; i < Math.min(50, ticksExisted); i++) {
-			double randX = new Random().nextGaussian() * 0.0025 * ticksExisted;
-			double randY = new Random().nextDouble() * 0.025 * Math.min(25, ticksExisted);
-			double randZ = new Random().nextGaussian() * 0.0025 * ticksExisted;
-
-//			randX = randY = randZ = 0;
-
-			world.spawnParticle(EnumParticleTypes.FLAME, true, posX, posY, posZ, randX, randY, randZ);
 		}
 
-//		if (this.ticksExisted > 2)
-//			for (int i = 0; i < this.ticksExisted; i++)
-//				world.spawnParticle(EnumParticleTypes.FLAME, posX, posY, posZ, (new Random().nextInt(3) - 1) * 0.025,
-//						(new Random().nextInt(2)) * 0.2, (new Random().nextInt(3) - 1) * 0.025);
+		for (int i = 0; i < Math.min(50, this.ticksExisted); i++) {
+			final double randX = new Random().nextGaussian() * 0.0025 * this.ticksExisted;
+			final double randY = new Random().nextDouble() * 0.025 * Math.min(25, this.ticksExisted);
+			final double randZ = new Random().nextGaussian() * 0.0025 * this.ticksExisted;
+
+			this.world.spawnParticle(EnumParticleTypes.FLAME, true, this.posX, this.posY, this.posZ, randX, randY, randZ);
+		}
+
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result) {
-		if (result == null)
+	protected void onImpact(final RayTraceResult result) {
+		if (result == null) {
 			return;
+		}
 
-		if (this.world.isRemote)
+		if (this.world.isRemote) {
 			return;
+		}
 
-		if (result.entityHit != null)
-			if ((result.entityHit != getThrower()) || (this.ticksExisted > 5))
+		if (result.entityHit != null) {
+			if ((result.entityHit != this.getThrower()) || (this.ticksExisted > 5)) {
 				result.entityHit.setFire(100);
+			}
+		}
 
 		this.igniteBlocks();
-//		world.newExplosion(this, this.posX, posY, posZ, 10, false, false);
 		this.setDead();
 	}
 
 	protected void igniteBlocks() {
-		if (this.world.isRemote)
+		if (this.world.isRemote) {
 			return;
+		}
 		BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
-		if (world.getBlockState(pos) != Blocks.AIR.getDefaultState() && world.getBlockState(pos) != Blocks.SNOW_LAYER.getDefaultState())
+		if ((this.world.getBlockState(pos) != Blocks.AIR.getDefaultState()) && (this.world.getBlockState(pos) != Blocks.SNOW_LAYER.getDefaultState())) {
 			return;
+		}
 
-		int radius = Math.min(3, Math.round(ticksExisted / 50f));
+		final int radius = Math.min(3, Math.round(this.ticksExisted / 50f));
 		for (int x = -(radius); x <= radius; x++) {
 			for (int y = -(radius); y <= radius; y++) {
 				for (int z = -(radius); z <= radius; z++) {
 					pos = new BlockPos(this.posX + x, this.posY + y, this.posZ + z);
-					if (world.getBlockState(pos) == Blocks.AIR.getDefaultState()) {
-						world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 11);
-					} else if (world.getBlockState(pos) == Blocks.SNOW_LAYER.getDefaultState()) {
-						world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
+					if (this.world.getBlockState(pos) == Blocks.AIR.getDefaultState()) {
+						this.world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 11);
+					} else if (this.world.getBlockState(pos) == Blocks.SNOW_LAYER.getDefaultState()) {
+						this.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
 					}
 				}
 			}

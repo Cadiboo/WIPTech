@@ -48,9 +48,9 @@ public class ItemFlamethrower extends Item implements IModItem {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(final World worldIn, final EntityPlayer playerIn, final EnumHand handIn) {
-		final ItemStack itemstack = playerIn.getHeldItem(handIn);
-		playerIn.setActiveHand(handIn);
+	public ActionResult<ItemStack> onItemRightClick(final World world, final EntityPlayer player, final EnumHand hand) {
+		final ItemStack itemstack = player.getHeldItem(hand);
+		player.setActiveHand(hand);
 		return new ActionResult(EnumActionResult.SUCCESS, itemstack);
 	}
 

@@ -30,83 +30,72 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Util that is only used on the client i.e. Rendering code
- * 
  * @author Cadiboo
  */
 @SideOnly(Side.CLIENT)
-public class ClientUtil {
+public final class ClientUtil {
 
 	/**
-	 * Rotation algorithm Taken off Max_the_Technomancer from <a href=
-	 * "https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2772267-tesr-getting-darker-and-lighter-as-it-rotates">here</a>
-	 * 
-	 * @param face the {@link net.minecraft.util.EnumFacing face} to rotate for
-	 * 
-	 * @author Cadiboo
+	 * Rotation algorithm Taken off Max_the_Technomancer from <a href= "https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2772267-tesr-getting-darker-and-lighter-as-it-rotates">here</a>
+	 * @param  face the {@link net.minecraft.util.EnumFacing face} to rotate for
+	 * @author      Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void rotateForFace(EnumFacing face) {
-		GlStateManager.rotate(face == EnumFacing.DOWN ? 0 : face == EnumFacing.UP ? 180F : face == EnumFacing.NORTH || face == EnumFacing.EAST ? 90F : -90F, face.getAxis() == EnumFacing.Axis.Z ? 1
-				: 0, 0, face.getAxis() == EnumFacing.Axis.Z ? 0 : 1);
+	public static void rotateForFace(final EnumFacing face) {
+		GlStateManager.rotate(face == EnumFacing.DOWN ? 0 : face == EnumFacing.UP ? 180F : (face == EnumFacing.NORTH) || (face == EnumFacing.EAST) ? 90F : -90F, face.getAxis() == EnumFacing.Axis.Z ? 1 : 0, 0, face.getAxis() == EnumFacing.Axis.Z ? 0 : 1);
 		GlStateManager.rotate(-90, 0, 0, 1);
 	}
 
 	/**
 	 * All Light methods I can remember
-	 * 
 	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	private static final void allLightMethods() {
+	private static void allLightMethods() {
 
-//	GlStateManager.disableLighting();
-//	GlStateManager.enableLighting();
-//
-//	RenderHelper.disableStandardItemLighting();
-//	RenderHelper.enableStandardItemLighting();
-//
-//	RenderHelper.enableGUIStandardItemLighting();
-//
-//	net.minecraftforge.client.model.pipeline.LightUtil.diffuseLight(EnumFacing side);
-//	net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(BufferBuilder wr, BakedQuad quad, int auxColor);
-//	
-//	Tessellator.getInstance().getBuffer().lightmap(p_187314_1_, p_187314_2_);
-//	
-//	OpenGlHelper.setLightmapTextureCoords(int target, float p_77475_1_, float t)
+		// GlStateManager.disableLighting();
+		// GlStateManager.enableLighting();
+		//
+		// RenderHelper.disableStandardItemLighting();
+		// RenderHelper.enableStandardItemLighting();
+		//
+		// RenderHelper.enableGUIStandardItemLighting();
+		//
+		// net.minecraftforge.client.model.pipeline.LightUtil.diffuseLight(EnumFacing side);
+		// net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(BufferBuilder wr, BakedQuad quad, int auxColor);
+		//
+		// Tessellator.getInstance().getBuffer().lightmap(p_187314_1_, p_187314_2_);
+		//
+		// OpenGlHelper.setLightmapTextureCoords(int target, float p_77475_1_, float t)
 
 	}
 
 	/**
-	 * Modifed by Cadiboo, based on Notch?'s lightning code. Cleaned it up, made it
-	 * readable & used pushMatrix, popMatrix & translate instead of drawing it
-	 * straight onto the screen
-	 * 
-	 * @param number                      The seed for the randoms that are used
-	 * @param NumberOfBranches            The number of main (full length) branches
-	 * @param NumberOfPossibleSubBranches The number Sub branches for each main
-	 *                                    branch
-	 * @param scale                       How large/small it will render
-	 * 
-	 * @author Cadiboo
+	 * Modifed by Cadiboo, based on Notch?'s lightning code. Cleaned it up, made it readable & used pushMatrix, popMatrix & translate instead of drawing it straight onto the screen
+	 * @param  number                      The seed for the randoms that are used
+	 * @param  NumberOfBranches            The number of main (full length) branches
+	 * @param  NumberOfPossibleSubBranches The number Sub branches for each main branch
+	 * @param  scale                       How large/small it will render
+	 * @author                             Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void renderLightning(final int number, final int NumberOfBranches, final int NumberOfPossibleSubBranches, final double scale) {
+	public static void renderLightning(final int number, final int NumberOfBranches, final int NumberOfPossibleSubBranches, final double scale) {
 		GlStateManager.depthMask(true);
 		GlStateManager.disableTexture2D();
 		GlStateManager.disableLighting();
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder bufferbuilder = tessellator.getBuffer();
 
 		final double scale16 = scale / 16;
 
-		double[] translateXArray = new double[8];
-		double[] translateZArray = new double[8];
+		final double[] translateXArray = new double[8];
+		final double[] translateZArray = new double[8];
 		double tempX = 0.0D;
 		double tempZ = 0.0D;
-		Random random = new Random(number);
+		final Random random = new Random(number);
 
 		for (int counter_ = 7; counter_ >= 0; --counter_) {
 			translateXArray[counter_] = tempX;
@@ -116,9 +105,9 @@ public class ClientUtil {
 		}
 
 		for (int shells = 0; shells < 4; ++shells) {
-			Random random1 = new Random(number);
+			final Random random1 = new Random(number);
 			for (int branches = 0; branches < NumberOfBranches; branches++) {
-				for (int possibleSubBranches = 0; possibleSubBranches < NumberOfPossibleSubBranches + 1; ++possibleSubBranches) {
+				for (int possibleSubBranches = 0; possibleSubBranches < (NumberOfPossibleSubBranches + 1); ++possibleSubBranches) {
 					int position = 7;
 					int decendingHeight = 0;
 
@@ -134,8 +123,8 @@ public class ClientUtil {
 					double topTranslateZ = translateZArray[position];
 
 					for (int yPos = position; yPos >= decendingHeight; --yPos) {
-						double bottomTranslateX = topTranslateX;
-						double bottomTranslateZ = topTranslateZ;
+						final double bottomTranslateX = topTranslateX;
+						final double bottomTranslateZ = topTranslateZ;
 
 						if (possibleSubBranches == 0) { // Main branch
 							topTranslateX += random1.nextInt(11) - 5;
@@ -146,16 +135,16 @@ public class ClientUtil {
 						}
 
 						bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
-						double topWidth = 0.1D + shells * 0.2D;
+						double topWidth = 0.1D + (shells * 0.2D);
 
 						if (yPos == 0) {
-							topWidth *= yPos * 0.1D + 1.0D;
+							topWidth *= (yPos * 0.1D) + 1.0D;
 						}
 
-						double bottomWidth = 0.1D + shells * 0.2D;
+						double bottomWidth = 0.1D + (shells * 0.2D);
 
 						if (yPos == 0) {
-							bottomWidth *= (yPos - 1) * 0.1D + 1.0D;
+							bottomWidth *= ((yPos - 1) * 0.1D) + 1.0D;
 						}
 
 						topWidth *= (scale / 16);
@@ -165,27 +154,27 @@ public class ClientUtil {
 							double topOffsetX = -topWidth;
 							double topOffsetZ = -topWidth;
 
-							if (side == 1 || side == 2) {
+							if ((side == 1) || (side == 2)) {
 								topOffsetX += topWidth * 2.0D;
 							}
 
-							if (side == 2 || side == 3) {
+							if ((side == 2) || (side == 3)) {
 								topOffsetZ += topWidth * 2.0D;
 							}
 
 							double bottomOffsetX = -bottomWidth;
 							double bottomOffsetZ = -bottomWidth;
 
-							if (side == 1 || side == 2) {
+							if ((side == 1) || (side == 2)) {
 								bottomOffsetX += bottomWidth * 2.0D;
 							}
 
-							if (side == 2 || side == 3) {
+							if ((side == 2) || (side == 3)) {
 								bottomOffsetZ += bottomWidth * 2.0D;
 							}
 
-							bufferbuilder.pos(bottomOffsetX + topTranslateX * scale16, yPos * scale, bottomOffsetZ + topTranslateZ * scale16).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
-							bufferbuilder.pos(topOffsetX + bottomTranslateX * scale16, (yPos + 1) * scale, topOffsetZ + bottomTranslateZ * scale16).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
+							bufferbuilder.pos(bottomOffsetX + (topTranslateX * scale16), yPos * scale, bottomOffsetZ + (topTranslateZ * scale16)).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
+							bufferbuilder.pos(topOffsetX + (bottomTranslateX * scale16), (yPos + 1) * scale, topOffsetZ + (bottomTranslateZ * scale16)).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
 						}
 
 						tessellator.draw();
@@ -202,34 +191,29 @@ public class ClientUtil {
 	}
 
 	/**
-	 * Put a lot of effort into this, it gets the entities exact (really, really
-	 * exact) position
-	 * 
-	 * @param entity       The entity to calculate the position of
-	 * @param partialTicks The multiplier used to predict where the entity is/will
-	 *                     be
-	 * 
-	 * @return The position of the entity as a Vec3d
-	 * 
-	 * @author Cadiboo
+	 * Put a lot of effort into this, it gets the entities exact (really, really exact) position
+	 * @param  entity       The entity to calculate the position of
+	 * @param  partialTicks The multiplier used to predict where the entity is/will be
+	 * @return              The position of the entity as a Vec3d
+	 * @author              Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final Vec3d getEntityRenderPos(final Entity entity, final double partialTicks) {
+	public static Vec3d getEntityRenderPos(final Entity entity, final double partialTicks) {
 		double flyingMultiplier = 1.825;
 		double yFlying = 1.02;
 		double yAdd = 0.0784000015258789;
 
-		if (entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isFlying) {
+		if ((entity instanceof EntityPlayer) && ((EntityPlayer) entity).capabilities.isFlying) {
 			flyingMultiplier = 1.1;
 			yFlying = 1.67;
 			yAdd = 0;
 		}
 
-		double yGround = entity.motionY + yAdd == 0 && entity.prevPosY > entity.posY ? entity.posY - entity.prevPosY : 0;
+		final double yGround = ((entity.motionY + yAdd) == 0) && (entity.prevPosY > entity.posY) ? entity.posY - entity.prevPosY : 0;
 		double xFall = 1;
-		if (flyingMultiplier == 1.825)
+		if (flyingMultiplier == 1.825) {
 			if (entity.motionX != 0) {
-				if (entity.motionY + yAdd != 0) {
+				if ((entity.motionY + yAdd) != 0) {
 					xFall = 0.6;
 				} else if (yGround != 0) {
 					xFall = 0.6;
@@ -237,11 +221,12 @@ public class ClientUtil {
 			} else {
 				xFall = 0.6;
 			}
+		}
 
 		double zFall = 1;
-		if (flyingMultiplier == 1.825)
+		if (flyingMultiplier == 1.825) {
 			if (entity.motionZ != 0) {
-				if (entity.motionY + yAdd != 0) {
+				if ((entity.motionY + yAdd) != 0) {
 					zFall = 0.6;
 				} else if (yGround != 0) {
 					zFall = 0.6;
@@ -249,73 +234,64 @@ public class ClientUtil {
 			} else {
 				zFall = 0.6;
 			}
+		}
 
-		double dX = entity.posX - (entity.prevPosX - entity.posX) * partialTicks - (entity.motionX * xFall) * flyingMultiplier;
-		double dY = entity.posY - yGround - (entity.prevPosY - entity.posY) * partialTicks - (entity.motionY + yAdd) * yFlying;
-		double dZ = entity.posZ - (entity.prevPosZ - entity.posZ) * partialTicks - (entity.motionZ * zFall) * flyingMultiplier;
+		final double dX = entity.posX - ((entity.prevPosX - entity.posX) * partialTicks) - ((entity.motionX * xFall) * flyingMultiplier);
+		final double dY = entity.posY - yGround - ((entity.prevPosY - entity.posY) * partialTicks) - ((entity.motionY + yAdd) * yFlying);
+		final double dZ = entity.posZ - ((entity.prevPosZ - entity.posZ) * partialTicks) - ((entity.motionZ * zFall) * flyingMultiplier);
 
 		return new Vec3d(dX, dY, dZ);
 	}
 
 	/**
-	 * 
-	 * @param source      The position to rotate from (I think that I've messed up
-	 *                    the maths, currently only works with 0, 0, 0 i.e. the
-	 *                    Origin)
-	 * @param destination The position to rotate towards
-	 * @author Cadiboo
+	 * @param  source      The position to rotate from (I think that I've messed up the maths, currently only works with 0, 0, 0 i.e. the Origin)
+	 * @param  destination The position to rotate towards
+	 * @author             Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void rotateTowardsPos(Vec3d source, Vec3d destination) {
+	public static void rotateTowardsPos(final Vec3d source, final Vec3d destination) {
 		GlStateManager.rotate((float) getYaw(source, destination), 0, 1, 0);
 		GlStateManager.rotate((float) getPitch(source, destination), 0, 0, 1);
 	}
 
 	/**
-	 * Rotates around X axis based on Pitch input and around Y axis based on Yaw
-	 * input
-	 * 
+	 * Rotates around X axis based on Pitch input and around Y axis based on Yaw input
 	 * @param pitch
 	 * @param yaw
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void rotateForPitchYaw(double pitch, double yaw) {
+	public static void rotateForPitchYaw(final double pitch, final double yaw) {
 		GlStateManager.rotate((float) yaw, 0, 1, 0);
 		GlStateManager.rotate((float) pitch, 1, 0, 0);
 	}
 
 	/**
-	 * 
-	 * Modified version of {@link ClientUtil#renderLightning(int, int, int, double)
-	 * renderLightning} that looks more electricity-arcy
-	 * 
-	 * @param number           The seed for the randoms that are used
-	 * @param NumberOfBranches The number of main (full length) branches
-	 * @param scale            How large/small/long it will be
-	 * 
-	 * 
-	 * @author Cadiboo
+	 * Modified version of {@link ClientUtil#renderLightning(int, int, int, double) renderLightning} that looks more electricity-arcy
+	 * @param  number           The seed for the randoms that are used
+	 * @param  NumberOfBranches The number of main (full length) branches
+	 * @param  scale            How large/small/long it will be
+	 * @author                  Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void renderElectricity(final int number, final int NumberOfBranches, double scale) {
+	public static void renderElectricity(final int number, final int NumberOfBranches, final double scale) {
 		GlStateManager.depthMask(true);
 		GlStateManager.disableTexture2D();
 		GlStateManager.disableLighting();
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder bufferbuilder = tessellator.getBuffer();
 
 		final double scale16 = scale / 16;
 
-		int NumberOfPossibleSubBranches = 3;
+		final int NumberOfPossibleSubBranches = 3;
 
-		double[] translateXArray = new double[8];
-		double[] translateZArray = new double[8];
+		final double[] translateXArray = new double[8];
+		final double[] translateZArray = new double[8];
 		double tempX = 0.0D;
 		double tempZ = 0.0D;
-		Random random = new Random(number);
+		final Random random = new Random(number);
 
 		for (int counter_ = 7; counter_ >= 0; --counter_) {
 			translateXArray[counter_] = tempX;
@@ -333,9 +309,9 @@ public class ClientUtil {
 		}
 
 		for (int shells = 0; shells < 4; ++shells) {
-			Random random1 = new Random(number);
+			final Random random1 = new Random(number);
 			for (int branches = 0; branches < NumberOfBranches; branches++) {
-				for (int possibleSubBranches = 0; possibleSubBranches < NumberOfPossibleSubBranches + 1; ++possibleSubBranches) {
+				for (int possibleSubBranches = 0; possibleSubBranches < (NumberOfPossibleSubBranches + 1); ++possibleSubBranches) {
 					int position = 7;
 					int decendingHeight = 0;
 
@@ -351,10 +327,10 @@ public class ClientUtil {
 					double topTranslateZ = translateZArray[position];
 
 					for (int yPos = position; yPos >= decendingHeight; --yPos) {
-						double bottomTranslateX = topTranslateX;
-						double bottomTranslateZ = topTranslateZ;
+						final double bottomTranslateX = topTranslateX;
+						final double bottomTranslateZ = topTranslateZ;
 
-//						if (possibleSubBranches == 0) { // Main branch
+						// if (possibleSubBranches == 0) { // Main branch
 						topTranslateX += random1.nextInt(10) * 0.1;
 						topTranslateZ += random1.nextInt(10) * 0.1;
 						topTranslateX *= -3 * yPos * 0.11;
@@ -371,16 +347,16 @@ public class ClientUtil {
 						}
 
 						bufferbuilder.begin(5, DefaultVertexFormats.POSITION_COLOR);
-						double topWidth = 0.1D + shells * 0.2D;
+						double topWidth = 0.1D + (shells * 0.2D);
 
 						if (yPos == 0) {
-							topWidth *= yPos * 0.1D + 1.0D;
+							topWidth *= (yPos * 0.1D) + 1.0D;
 						}
 
-						double bottomWidth = 0.1D + shells * 0.2D;
+						double bottomWidth = 0.1D + (shells * 0.2D);
 
 						if (yPos == 0) {
-							bottomWidth *= (yPos - 1) * 0.1D + 1.0D;
+							bottomWidth *= ((yPos - 1) * 0.1D) + 1.0D;
 						}
 
 						topWidth *= (scale / 16);
@@ -390,27 +366,27 @@ public class ClientUtil {
 							double topOffsetX = -topWidth;
 							double topOffsetZ = -topWidth;
 
-							if (side == 1 || side == 2) {
+							if ((side == 1) || (side == 2)) {
 								topOffsetX += topWidth * 2.0D;
 							}
 
-							if (side == 2 || side == 3) {
+							if ((side == 2) || (side == 3)) {
 								topOffsetZ += topWidth * 2.0D;
 							}
 
 							double bottomOffsetX = -bottomWidth;
 							double bottomOffsetZ = -bottomWidth;
 
-							if (side == 1 || side == 2) {
+							if ((side == 1) || (side == 2)) {
 								bottomOffsetX += bottomWidth * 2.0D;
 							}
 
-							if (side == 2 || side == 3) {
+							if ((side == 2) || (side == 3)) {
 								bottomOffsetZ += bottomWidth * 2.0D;
 							}
 
-							bufferbuilder.pos(bottomOffsetX + topTranslateX * scale16, yPos * scale, bottomOffsetZ + topTranslateZ * scale16).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
-							bufferbuilder.pos(topOffsetX + bottomTranslateX * scale16, (yPos + 1) * scale, topOffsetZ + bottomTranslateZ * scale16).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
+							bufferbuilder.pos(bottomOffsetX + (topTranslateX * scale16), yPos * scale, bottomOffsetZ + (topTranslateZ * scale16)).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
+							bufferbuilder.pos(topOffsetX + (bottomTranslateX * scale16), (yPos + 1) * scale, topOffsetZ + (bottomTranslateZ * scale16)).color(0.45F, 0.45F, 0.5F, 0.3F).endVertex();
 						}
 
 						tessellator.draw();
@@ -428,32 +404,28 @@ public class ClientUtil {
 
 	/**
 	 * Draws a cuboid similar to the way blocks are drawn
-	 * 
-	 * 
-	 * @param minU   Minimum texture U (x) to draw from (between 0 and 1)
-	 * @param maxU   Maximum texture U (x) to draw from (between 0 and 1)
-	 * @param minV   Minimum texture V (y) to draw from (between 0 and 1)
-	 * @param maxV   Maximum texture V (y) to draw from (between 0 and 1)
-	 * @param x_size The size of the cuboid on the X plane
-	 * @param y_size The size of the cuboid on the Y plane
-	 * @param z_size The size of the cuboid on the Z plane
-	 * @param scale  How much to scale in
-	 *               {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double)
-	 *               GLStateManager.scale}
-	 * @author Cadiboo
+	 * @param  minU   Minimum texture U (x) to draw from (between 0 and 1)
+	 * @param  maxU   Maximum texture U (x) to draw from (between 0 and 1)
+	 * @param  minV   Minimum texture V (y) to draw from (between 0 and 1)
+	 * @param  maxV   Maximum texture V (y) to draw from (between 0 and 1)
+	 * @param  x_size The size of the cuboid on the X plane
+	 * @param  y_size The size of the cuboid on the Y plane
+	 * @param  z_size The size of the cuboid on the Z plane
+	 * @param  scale  How much to scale in {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double) GLStateManager.scale}
+	 * @author        Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void drawCuboid(float minU, float maxU, float minV, float maxV, double x_size, double y_size, double z_size, double scale) {
+	public static void drawCuboid(final float minU, final float maxU, final float minV, final float maxV, final double x_size, final double y_size, final double z_size, final double scale) {
 		drawCuboidAt(0, 0, 0, minU, maxU, minV, maxV, x_size, y_size, z_size, scale);
 	}
 
-	public static void drawCuboidAt(double x, double y, double z, float minU, float maxU, float minV, float maxV, double x_size, double y_size, double z_size, double scale) {
+	public static void drawCuboidAt(final double x, final double y, final double z, final float minU, final float maxU, final float minV, final float maxV, final double x_size, final double y_size, final double z_size, final double scale) {
 
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(scale, scale, scale);
 
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		// UP
@@ -498,39 +470,34 @@ public class ClientUtil {
 	}
 
 	/**
-	 * 
 	 * Draws a cuboid that has its texture always be "seamless"
-	 * 
-	 * 
-	 * @param minU   Minimum texture U (x) to draw from (between 0 and 1)
-	 * @param maxU   Maximum texture U (x) to draw from (between 0 and 1)
-	 * @param minV   Minimum texture V (y) to draw from (between 0 and 1)
-	 * @param maxV   Maximum texture V (y) to draw from (between 0 and 1)
-	 * @param x_size The size of the cuboid on the X plane
-	 * @param y_size The size of the cuboid on the Y plane
-	 * @param z_size The size of the cuboid on the Z plane
-	 * @param scale  How much to scale in
-	 *               {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double)
-	 *               GLStateManager.scale}
-	 * @author Cadiboo
+	 * @param  minU   Minimum texture U (x) to draw from (between 0 and 1)
+	 * @param  maxU   Maximum texture U (x) to draw from (between 0 and 1)
+	 * @param  minV   Minimum texture V (y) to draw from (between 0 and 1)
+	 * @param  maxV   Maximum texture V (y) to draw from (between 0 and 1)
+	 * @param  x_size The size of the cuboid on the X plane
+	 * @param  y_size The size of the cuboid on the Y plane
+	 * @param  z_size The size of the cuboid on the Z plane
+	 * @param  scale  How much to scale in {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double) GLStateManager.scale}
+	 * @author        Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void drawSeamlessCuboid(float minU, float maxU, float minV, float maxV, double z_size, double y_size, double x_size, double scale) {
+	public static void drawSeamlessCuboid(final float minU, final float maxU, final float minV, final float maxV, final double z_size, final double y_size, final double x_size, final double scale) {
 		drawSeamlessCuboidAt(0, 0, 0, minU, maxU, minV, maxV, x_size, y_size, z_size, scale);
 	}
 
-	public static void drawSeamlessCuboidAt(double x, double y, double z, float minU, float maxU, float minV, float maxV, double x_size, double y_size, double z_size, double scale) {
+	public static void drawSeamlessCuboidAt(final double x, final double y, final double z, final float minU, final float maxU, final float minV, final float maxV, final double x_size, final double y_size, final double z_size, final double scale) {
 
 		GlStateManager.pushMatrix();
 		GlStateManager.scale(scale, scale, scale);
 
-		double hlfU = minU + (maxU - minU) / 2;
-		double hlfV = minV + (maxV - minV) / 2;
+		final double hlfU = minU + ((maxU - minU) / 2);
+		final double hlfV = minV + ((maxV - minV) / 2);
 
-		double centre = 0d;
+		final double centre = 0d;
 
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		// UP
@@ -588,29 +555,26 @@ public class ClientUtil {
 
 	/**
 	 * Draws a part of a texture
-	 * 
-	 * @param minU   Minimum texture U (x) to draw from (between 0 and 1)
-	 * @param maxU   Maximum texture U (x) to draw from (between 0 and 1)
-	 * @param minV   Minimum texture V (y) to draw from (between 0 and 1)
-	 * @param maxV   Maximum texture V (y) to draw from (between 0 and 1)
-	 * @param x_size The size of the cuboid on the X plane
-	 * @param y_size The size of the cuboid on the Y plane
-	 * @param scale  How much to scale in
-	 *               {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double)
-	 *               GLStateManager.scale}
-	 * @author Cadiboo
+	 * @param  minU   Minimum texture U (x) to draw from (between 0 and 1)
+	 * @param  maxU   Maximum texture U (x) to draw from (between 0 and 1)
+	 * @param  minV   Minimum texture V (y) to draw from (between 0 and 1)
+	 * @param  maxV   Maximum texture V (y) to draw from (between 0 and 1)
+	 * @param  x_size The size of the cuboid on the X plane
+	 * @param  y_size The size of the cuboid on the Y plane
+	 * @param  scale  How much to scale in {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double) GLStateManager.scale}
+	 * @author        Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void drawQuad(float minU, float maxU, float minV, float maxV, double x_size, double y_size, double scale) {
+	public static void drawQuad(final float minU, final float maxU, final float minV, final float maxV, final double x_size, final double y_size, final double scale) {
 		GlStateManager.scale(scale, scale, scale);
 
-		double hlfU = minU + (maxU - minU) / 2;
-		double hlfV = minV + (maxV - minV) / 2;
+		final double hlfU = minU + ((maxU - minU) / 2);
+		final double hlfV = minV + ((maxV - minV) / 2);
 
-		double centre = 0d;
+		final double centre = 0d;
 
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 		// BACK
@@ -626,13 +590,12 @@ public class ClientUtil {
 
 	/**
 	 * Renders an {@link ItemStack} with the ground camera transform
-	 * 
-	 * @param stack
-	 * @param world
-	 * @author Cadiboo
+	 * @param  stack
+	 * @param  world
+	 * @author       Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void renderStack(ItemStack stack, World world) {
+	public static void renderStack(final ItemStack stack, final World world) {
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
 		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.GROUND, false);
 
@@ -642,13 +605,12 @@ public class ClientUtil {
 
 	/**
 	 * Renders an {@link ItemStack} without any camera transforms
-	 * 
-	 * @param stack
-	 * @param world
-	 * @author Cadiboo
+	 * @param  stack
+	 * @param  world
+	 * @author       Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void renderStackWithoutTransforms(ItemStack stack, World world) {
+	public static void renderStackWithoutTransforms(final ItemStack stack, final World world) {
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
 		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
 
@@ -657,49 +619,45 @@ public class ClientUtil {
 	}
 
 	/**
-	 * Renders an {@link ItemStack} with the specified {@link IBakedModel} with the
-	 * specified color
-	 * 
-	 * @param stack
-	 * @param model
-	 * @param color
-	 * @author Cadiboo
+	 * Renders an {@link ItemStack} with the specified {@link IBakedModel} with the specified color
+	 * @param  stack
+	 * @param  model
+	 * @param  color
+	 * @author       Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void renderStackWithColor(ItemStack stack, World world, int color) {
-		IBakedModel model = getModelFromStack(stack, world);
+	public static void renderStackWithColor(final ItemStack stack, final World world, final int color) {
+		final IBakedModel model = getModelFromStack(stack, world);
 		renderModelWithColor(model, color);
 
 	}
 
 	/**
 	 * Renders a baked model
-	 * 
 	 * @param model
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void renderModel(IBakedModel model) {
+	public static void renderModel(final IBakedModel model) {
 		renderModelWithColor(model, -1);
 	}
 
 	/**
 	 * renders a baked model with the specified color
-	 * 
 	 * @param model
 	 * @param color
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void renderModelWithColor(IBakedModel model, int color) {
+	public static void renderModelWithColor(final IBakedModel model, final int color) {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(-0.5F, -0.5F, -0.5F);
 
 		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(7, DefaultVertexFormats.ITEM);
 
-		for (EnumFacing enumfacing : EnumFacing.values()) {
+		for (final EnumFacing enumfacing : EnumFacing.values()) {
 			renderQuadsColor(bufferbuilder, model.getQuads((IBlockState) null, enumfacing, 0L), color);
 		}
 
@@ -711,21 +669,20 @@ public class ClientUtil {
 
 	/**
 	 * Renders a list of quads with the specified color
-	 * 
-	 * @param bufferbuilder
-	 * @param quads
-	 * @param color
-	 * @param stack
-	 * @author Cadiboo
+	 * @param  bufferbuilder
+	 * @param  quads
+	 * @param  color
+	 * @param  stack
+	 * @author               Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	private static final void renderQuadsColor(BufferBuilder bufferbuilder, List<BakedQuad> quads, int color) {
+	private static void renderQuadsColor(final BufferBuilder bufferbuilder, final List<BakedQuad> quads, int color) {
 
 		int i = 0;
-		for (int j = quads.size(); i < j; ++i) {
-			BakedQuad bakedquad = quads.get(i);
+		for (final int j = quads.size(); i < j; ++i) {
+			final BakedQuad bakedquad = quads.get(i);
 
-			if (color == -1 && bakedquad.hasTintIndex()) {
+			if ((color == -1) && bakedquad.hasTintIndex()) {
 				if (EntityRenderer.anaglyphEnable) {
 					color = TextureUtil.anaglyphColor(color);
 				}
@@ -739,15 +696,13 @@ public class ClientUtil {
 
 	/**
 	 * gets the model from a stack with overrides
-	 * 
-	 * @param stack
-	 * @param world
-	 * @return The stack's model
-	 * 
-	 * @author Cadiboo
+	 * @param  stack
+	 * @param  world
+	 * @return       The stack's model
+	 * @author       Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final IBakedModel getModelFromStack(ItemStack stack, World world) {
+	public static IBakedModel getModelFromStack(final ItemStack stack, final World world) {
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, world, null);
 		model = ForgeHooksClient.handleCameraTransforms(model, ItemCameraTransforms.TransformType.NONE, false);
 		return model;
@@ -757,19 +712,18 @@ public class ClientUtil {
 	 * Sets lightmap texture coords to brightest possbile
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void enableMaxLighting() {
+	public static void enableMaxLighting() {
 		GlStateManager.disableLighting();
-		int i = 15728880;
+		final int i = 15728880;
 
-		int j = i % 65536;
-		int k = i / 65536;
+		final int j = i % 65536;
+		final int k = i / 65536;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j, k);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	/**
 	 * draws a texture that doesn't have to be 256x256, used in GUIs
-	 * 
 	 * @param x
 	 * @param y
 	 * @param u
@@ -780,11 +734,11 @@ public class ClientUtil {
 	 * @param textureHeight
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final void drawNonStandardTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
-		double f = 1F / (double) textureWidth;
-		double f1 = 1F / (double) textureHeight;
-		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferbuilder = tessellator.getBuffer();
+	public static void drawNonStandardTexturedRect(final int x, final int y, final int u, final int v, final int width, final int height, final int textureWidth, final int textureHeight) {
+		final double f = 1F / (double) textureWidth;
+		final double f1 = 1F / (double) textureHeight;
+		final Tessellator tessellator = Tessellator.getInstance();
+		final BufferBuilder bufferbuilder = tessellator.getBuffer();
 		bufferbuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		bufferbuilder.pos(x, y + height, 0).tex(u * f, (v + height) * f1).endVertex();
 		bufferbuilder.pos(x + width, y + height, 0).tex((u + width) * f, (v + height) * f1).endVertex();
@@ -795,14 +749,13 @@ public class ClientUtil {
 
 	/**
 	 * Gets the pitch rotation between two vectors
-	 * 
-	 * @param source
-	 * @param destination
-	 * @return the pitch rotation
+	 * @param  source
+	 * @param  destination
+	 * @return             the pitch rotation
 	 */
 	@SideOnly(Side.CLIENT)
-	public static final double getPitch(Vec3d source, Vec3d destination) {
-		double pitch = Math.atan2(destination.y, Math.sqrt(destination.x * destination.x + destination.z * destination.z));
+	public static double getPitch(final Vec3d source, final Vec3d destination) {
+		double pitch = Math.atan2(destination.y, Math.sqrt((destination.x * destination.x) + (destination.z * destination.z)));
 		pitch = pitch * (180 / Math.PI);
 		pitch = pitch < 0 ? 360 - (-pitch) : pitch;
 		return 90 - pitch;
@@ -810,12 +763,11 @@ public class ClientUtil {
 
 	/**
 	 * Gets the yaw rotation between two vectors
-	 * 
-	 * @param source
-	 * @param destination
-	 * @return the yaw rotation
+	 * @param  source
+	 * @param  destination
+	 * @return             the yaw rotation
 	 */
-	public static final double getYaw(Vec3d source, Vec3d destination) {
+	public static double getYaw(final Vec3d source, final Vec3d destination) {
 		double yaw = Math.atan2(destination.x - source.x, destination.z - source.z);
 		yaw = yaw * (180 / Math.PI);
 		yaw = yaw < 0 ? 360 - (-yaw) : yaw;

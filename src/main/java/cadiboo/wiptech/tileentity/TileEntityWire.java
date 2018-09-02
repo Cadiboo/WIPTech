@@ -29,15 +29,15 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 	}
 
 	@Override
-	public void setPos(BlockPos posIn) {
-		super.setPos(posIn);
+	public void setPos(final BlockPos pos) {
+		super.setPos(pos);
 	}
 
 	@Override
 	public void onLoad() {
-		if (world.hasCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null)) {
-			if (world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null) != null) {
-				world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).addConnection(pos);
+		if (this.world.hasCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null)) {
+			if (this.world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null) != null) {
+				this.world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).addConnection(this.pos);
 			}
 		}
 		super.onLoad();
@@ -45,50 +45,51 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 
 	@Override
 	public final void update() {
-		handleSync();
-		getElectrocutableEntities().forEach((entityIn) -> {
+		this.handleSync();
+		this.getElectrocutableEntities().forEach((entity) -> {
 
-			if (!(entityIn instanceof EntityLivingBase))
+			if (!(entity instanceof EntityLivingBase)) {
 				return;
+			}
 
-			EntityLivingBase entity = (EntityLivingBase) entityIn;
+			final EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
 
-			if (shouldElectrocuteEntity(entity) && !entity.isDead) {
+			if (this.shouldElectrocuteEntity(entityLivingBase) && !entityLivingBase.isDead) {
 
-				float damage = Math.min(getElectrocutionDamage(), entity.getHealth());
+				final float damage = Math.min(this.getElectrocutionDamage(), entityLivingBase.getHealth());
 
-				if (getEnergy().extractEnergy(getElectrocutionEnergy(), true) == getElectrocutionEnergy()) {
+				if (this.getEnergy().extractEnergy(this.getElectrocutionEnergy(), true) == this.getElectrocutionEnergy()) {
 
-					entity.attackEntityFrom(ModDamageSource.ELECTRICITY, damage);
-					entity.setFire(1);
+					entityLivingBase.attackEntityFrom(ModDamageSource.ELECTRICITY, damage);
+					entityLivingBase.setFire(1);
 				}
 
 			}
 		});
-		transferEnergyToAllAround();
+		this.transferEnergyToAllAround();
 	}
 
 	@Override
-	public int transferEnergyTo(EnumFacing side, int energyToTransfer, boolean simulate) {
-//		if (IEnergyUser.super.transferEnergyTo(side, energyToTransfer, true) == energyToTransfer && (getEnergy().getStorage(side) != energy.getLastRecieved() || world.getTotalWorldTime() % 10 == 0))
-//			return IEnergyUser.super.transferEnergyTo(side, energyToTransfer, simulate);
+	public int transferEnergyTo(final EnumFacing side, final int energyToTransfer, final boolean simulate) {
+		// if (IEnergyUser.super.transferEnergyTo(side, energyToTransfer, true) == energyToTransfer && (getEnergy().getStorage(side) != energy.getLastRecieved() || world.getTotalWorldTime() % 10 == 0))
+		// return IEnergyUser.super.transferEnergyTo(side, energyToTransfer, simulate);
 		return 0;
 	}
 
 	private float getElectrocutionDamage() {
-		return getElectrocutionEnergy() / 0.0001f;
+		return this.getElectrocutionEnergy() / 0.0001f;
 	}
 
 	private int getElectrocutionEnergy() {
 		return 1;
 	}
 
-	public boolean shouldElectrocuteEntity(Entity entity) {
-		return entity instanceof EntityLivingBase && this.getEnergy().getEnergyStored() >= getElectrocutionEnergy();
+	public boolean shouldElectrocuteEntity(final Entity entity) {
+		return (entity instanceof EntityLivingBase) && (this.getEnergy().getEnergyStored() >= this.getElectrocutionEnergy());
 	}
 
 	public List<Entity> getElectrocutableEntities() {
-		return this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(getPos()).grow(getElectrocutionRage()), EntitySelectors.CAN_AI_TARGET);
+		return this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos()).grow(this.getElectrocutionRage()), EntitySelectors.CAN_AI_TARGET);
 	}
 
 	@Override
@@ -98,12 +99,12 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 
 	@Override
 	public ModEnergyStorage getEnergy() {
-		return energy;
+		return this.energy;
 	}
 
 	@Override
 	public double getMaxRenderDistanceSquared() {
-		return Math.pow(getElectrocutionRage(), 2);
+		return Math.pow(this.getElectrocutionRage(), 2);
 	}
 
 	private int getElectrocutionRage() {
@@ -112,46 +113,48 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 
 	@Override
 	public BlockPos getPosition() {
-		return getPos();
+		return this.getPos();
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if (capability == CapabilityEnergy.ENERGY)
+	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
+		if (capability == CapabilityEnergy.ENERGY) {
 			return true;
+		}
 		return super.hasCapability(capability, facing);
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
 		if (capability == CapabilityEnergy.ENERGY) {
-			return (T) getEnergy();
+			return (T) this.getEnergy();
 		}
 		return super.getCapability(capability, facing);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound compound) {
+	public void readFromNBT(final NBTTagCompound compound) {
 		super.readFromNBT(compound);
 		this.readNBT(compound);
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		super.writeToNBT(compound);
 		this.writeNBT(compound);
 		return compound;
 	}
 
 	@Override
-	public void readNBT(NBTTagCompound syncTag) {
-		if (syncTag.hasKey("energy"))
+	public void readNBT(final NBTTagCompound syncTag) {
+		if (syncTag.hasKey("energy")) {
 			this.getEnergy().setEnergyStored(syncTag.getInteger("energy"), false);
+		}
 	}
 
 	@Override
-	public void writeNBT(NBTTagCompound syncTag) {
-		syncTag.setInteger("energy", getEnergy().getEnergyStored());
+	public void writeNBT(final NBTTagCompound syncTag) {
+		syncTag.setInteger("energy", this.getEnergy().getEnergyStored());
 	}
 
 }

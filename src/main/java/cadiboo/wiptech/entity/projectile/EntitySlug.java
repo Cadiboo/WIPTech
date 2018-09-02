@@ -25,45 +25,47 @@ public class EntitySlug extends EntityThrowable implements IEntityAdditionalSpaw
 	private ModMaterials material;
 	private static final DataParameter<Integer> MATERIAL = EntityDataManager.<Integer>createKey(EntitySlug.class, DataSerializers.VARINT);
 
-	public EntitySlug(World worldIn) {
-		this(worldIn, ModMaterials.IRON);
+	public EntitySlug(final World world) {
+		this(world, ModMaterials.IRON);
 	}
 
-	public EntitySlug(World worldIn, ModMaterials materialIn) {
-		super(worldIn);
-//		this.material = materialIn;
-		if (!world.isRemote)
-			this.dataManager.set(MATERIAL, materialIn.getId());
+	public EntitySlug(final World world, final ModMaterials material) {
+		super(world);
+		// this.material = material;
+		if (!world.isRemote) {
+			this.dataManager.set(MATERIAL, material.getId());
+		}
 		this.setSize(0.25f, 0.25f);
 	}
 
 	public ModMaterials getMaterial() {
-//		return material;
+		// return material;
 		return ModMaterials.byId(this.dataManager.get(MATERIAL).intValue());
 
 	}
 
 	@Override
 	protected void entityInit() {
-//		this.dataManager.register(MATERIAL, material.getId());
+		// this.dataManager.register(MATERIAL, material.getId());
 		this.dataManager.register(MATERIAL, 0);
 	}
 
 	@Override
-	public void readEntityFromNBT(NBTTagCompound compound) {
-//		if(compound.hasKey("material"))
-//			this.material = ModMaterials.byId(compound.getInteger("material"));
-//		getMaterial();
+	public void readEntityFromNBT(final NBTTagCompound compound) {
+		// if(compound.hasKey("material"))
+		// this.material = ModMaterials.byId(compound.getInteger("material"));
+		// getMaterial();
 
-		if (compound.hasKey("material"))
+		if (compound.hasKey("material")) {
 			this.dataManager.set(MATERIAL, compound.getInteger("material"));
+		}
 
 	}
 
 	@Override
-	public void writeEntityToNBT(NBTTagCompound compound) {
-//		compound.setInteger("material", material.getId());
-//		getMaterial();
+	public void writeEntityToNBT(final NBTTagCompound compound) {
+		// compound.setInteger("material", material.getId());
+		// getMaterial();
 
 		compound.setInteger("material", this.dataManager.get(MATERIAL).intValue());
 
@@ -72,8 +74,9 @@ public class EntitySlug extends EntityThrowable implements IEntityAdditionalSpaw
 	@Override
 	public void onUpdate() {
 		// TODO Auto-generated method stub
-		if (!this.hasNoGravity() && this.ticksExisted < 20)
-			this.motionY += getGravityVelocity() / 1.1f;
+		if (!this.hasNoGravity() && (this.ticksExisted < 20)) {
+			this.motionY += this.getGravityVelocity() / 1.1f;
+		}
 		super.onUpdate();
 	}
 
@@ -83,9 +86,9 @@ public class EntitySlug extends EntityThrowable implements IEntityAdditionalSpaw
 	}
 
 	@Override
-	public void onCollideWithPlayer(EntityPlayer entityIn) {
-		entityIn.attackEntityFrom(DamageSource.ANVIL, 1);
-		super.onCollideWithPlayer(entityIn);
+	public void onCollideWithPlayer(final EntityPlayer entity) {
+		entity.attackEntityFrom(DamageSource.ANVIL, 1);
+		super.onCollideWithPlayer(entity);
 	}
 
 	@Override
@@ -95,38 +98,40 @@ public class EntitySlug extends EntityThrowable implements IEntityAdditionalSpaw
 	}
 
 	@Override
-	public void writeSpawnData(ByteBuf buffer) {
+	public void writeSpawnData(final ByteBuf buffer) {
 		WIPTech.info("writeSpawnData", buffer);
 	}
 
 	@Override
-	public void readSpawnData(ByteBuf additionalData) {
+	public void readSpawnData(final ByteBuf additionalData) {
 		WIPTech.info("readSpawnData", additionalData);
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result) {
-		if (ticksExisted > 5)
+	protected void onImpact(final RayTraceResult result) {
+		if (this.ticksExisted > 5) {
 			if (result.entityHit != this.getThrower()) {
 				this.motionX = 0;
 				this.motionY = 0;
 				this.motionZ = 0;
 			}
+		}
 	}
 
-	public void setThrower(EntityLivingBase entityThrower) {
+	public void setThrower(final EntityLivingBase entityThrower) {
 		this.thrower = entityThrower;
 	}
 
 	@Override
-	public boolean isInRangeToRenderDist(double distance) {
-		if (distance < 256)
+	public boolean isInRangeToRenderDist(final double distance) {
+		if (distance < 256) {
 			return true;
+		}
 		return super.isInRangeToRenderDist(distance);
 	}
 
 	@Override
-	public boolean isInRangeToRender3d(double x, double y, double z) {
+	public boolean isInRangeToRender3d(final double x, final double y, final double z) {
 		// TODO Auto-generated method stub
 		return super.isInRangeToRender3d(x, y, z);
 	}

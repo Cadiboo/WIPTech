@@ -11,10 +11,10 @@ public class ItemModArmor extends ItemArmor implements IItemModMaterial {
 
 	protected final ModMaterials material;
 
-	public ItemModArmor(final ModMaterials materialIn, final EntityEquipmentSlot slotIn) {
-		super(materialIn.getArmorMaterial(), materialIn.getId() + 5, slotIn);
-		ModUtil.setRegistryNames(this, materialIn, ModUtil.getSlotGameNameLowercase(slotIn));
-		this.material = materialIn;
+	public ItemModArmor(final ModMaterials material, final EntityEquipmentSlot slot) {
+		super(material.getArmorMaterial(), material.getId() + 5, slot);
+		ModUtil.setRegistryNames(this, material, ModUtil.getSlotGameNameLowercase(slot));
+		this.material = material;
 	}
 
 	@Override

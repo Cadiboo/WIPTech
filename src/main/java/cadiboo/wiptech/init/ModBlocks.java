@@ -5,7 +5,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 /**
  * Block Instances class
- * 
  * @author Cadiboo
  */
 

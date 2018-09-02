@@ -10,7 +10,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Modified by Cadiboo
- * 
  * @author jabelar
  */
 
@@ -20,10 +19,7 @@ public class ModCreativeTabs {
 	public static final CustomCreativeTab CREATIVE_TAB = new CustomCreativeTab(ModReference.MOD_ID, new ItemStack(ModItems.FLAMETHROWER), true);
 
 	/**
-	 * This class is used for an extra tab in the creative inventory. Many mods like
-	 * to group their special items and blocks in a dedicated tab although it is
-	 * also perfectly acceptable to put them in the vanilla tabs where it makes
-	 * sense.
+	 * This class is used for an extra tab in the creative inventory. Many mods like to group their special items and blocks in a dedicated tab although it is also perfectly acceptable to put them in the vanilla tabs where it makes sense.
 	 */
 	public static class CustomCreativeTab extends CreativeTabs {
 
@@ -37,13 +33,12 @@ public class ModCreativeTabs {
 		}
 
 		/**
-		 * gets the {@link net.minecraft.item.ItemStack ItemStack} to display for the
-		 * tab's icon
+		 * gets the {@link net.minecraft.item.ItemStack ItemStack} to display for the tab's icon
 		 */
 		@SideOnly(Side.CLIENT)
 		@Override
 		public ItemStack getTabIconItem() {
-			return iconStack;
+			return this.iconStack;
 		}
 
 		/**
@@ -57,12 +52,12 @@ public class ModCreativeTabs {
 
 		@Override
 		public boolean hasSearchBar() {
-			return hasSearchBar;
+			return this.hasSearchBar;
 		}
 
 		@Override
 		public String getBackgroundImageName() {
-			if (hasSearchBar) {
+			if (this.hasSearchBar) {
 				return "item_search.png";
 			} else {
 				return super.getBackgroundImageName();

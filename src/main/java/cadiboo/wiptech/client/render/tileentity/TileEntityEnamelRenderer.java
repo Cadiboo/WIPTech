@@ -12,7 +12,7 @@ public class TileEntityEnamelRenderer extends ModTileEntitySpecialRenderer<TileE
 	protected final ItemStack stack = new ItemStack(Items.IRON_INGOT);
 
 	@Override
-	public void renderAtCentre(TileEntityEnamel te, float partialTicks, int destroyStage, float alpha) {
+	public void renderAtCentre(final TileEntityEnamel te, final float partialTicks, final int destroyStage, final float alpha) {
 	}
 
 }

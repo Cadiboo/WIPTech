@@ -27,48 +27,55 @@ public class BakedModelWire implements IBakedModel {
 	private final IBakedModel modelWest;
 	private final IBakedModel modelEast;
 
-	public BakedModelWire(final IBakedModel modelCoreIn, final IBakedModel modelDownIn, final IBakedModel modelUpIn, final IBakedModel modelNorthIn, final IBakedModel modelSouthIn,
-			final IBakedModel modelWestIn, final IBakedModel modelEastIn) {
-
-		modelCore = modelCoreIn;
-		modelDown = modelDownIn;
-		modelUp = modelUpIn;
-		modelNorth = modelNorthIn;
-		modelSouth = modelSouthIn;
-		modelWest = modelWestIn;
-		modelEast = modelEastIn;
-
+	public BakedModelWire(final IBakedModel modelCore, final IBakedModel modelDown, final IBakedModel modelUp, final IBakedModel modelNorth, final IBakedModel modelSouth, final IBakedModel modelWest, final IBakedModel modelEast) {
+		this.modelCore = modelCore;
+		this.modelDown = modelDown;
+		this.modelUp = modelUp;
+		this.modelNorth = modelNorth;
+		this.modelSouth = modelSouth;
+		this.modelWest = modelWest;
+		this.modelEast = modelEast;
 	}
 
 	@Override
 	public List<BakedQuad> getQuads(final IBlockState state, final EnumFacing side, final long rand) {
 
-		List<BakedQuad> quads = new ArrayList<BakedQuad>();
-		quads.addAll(modelCore.getQuads(state, side, rand));
+		final List<BakedQuad> quads = new ArrayList<>();
+		quads.addAll(this.modelCore.getQuads(state, side, rand));
 
-		if (!(state instanceof IExtendedBlockState))
+		if (!(state instanceof IExtendedBlockState)) {
 			return quads;
+		}
 
-		IExtendedBlockState EBState = (IExtendedBlockState) state;
+		final IExtendedBlockState EBState = (IExtendedBlockState) state;
 
-		if (isConnectedTo(EBState, BlockWire.CONNECTED_DOWN))
-			quads.addAll(modelDown.getQuads(EBState, side, rand));
-		if (isConnectedTo(EBState, BlockWire.CONNECTED_UP))
-			quads.addAll(modelUp.getQuads(EBState, side, rand));
-		if (isConnectedTo(EBState, BlockWire.CONNECTED_NORTH))
-			quads.addAll(modelNorth.getQuads(EBState, side, rand));
-		if (isConnectedTo(EBState, BlockWire.CONNECTED_SOUTH))
-			quads.addAll(modelSouth.getQuads(EBState, side, rand));
-		if (isConnectedTo(EBState, BlockWire.CONNECTED_WEST))
-			quads.addAll(modelWest.getQuads(EBState, side, rand));
-		if (isConnectedTo(EBState, BlockWire.CONNECTED_EAST))
-			quads.addAll(modelEast.getQuads(EBState, side, rand));
+		if (this.isConnectedTo(EBState, BlockWire.CONNECTED_DOWN)) {
+			quads.addAll(this.modelDown.getQuads(EBState, side, rand));
+		}
+		if (this.isConnectedTo(EBState, BlockWire.CONNECTED_UP)) {
+			quads.addAll(this.modelUp.getQuads(EBState, side, rand));
+		}
+		if (this.isConnectedTo(EBState, BlockWire.CONNECTED_NORTH)) {
+			quads.addAll(this.modelNorth.getQuads(EBState, side, rand));
+		}
+		if (this.isConnectedTo(EBState, BlockWire.CONNECTED_SOUTH)) {
+			quads.addAll(this.modelSouth.getQuads(EBState, side, rand));
+		}
+		if (this.isConnectedTo(EBState, BlockWire.CONNECTED_WEST)) {
+			quads.addAll(this.modelWest.getQuads(EBState, side, rand));
+		}
+		if (this.isConnectedTo(EBState, BlockWire.CONNECTED_EAST)) {
+			quads.addAll(this.modelEast.getQuads(EBState, side, rand));
+		}
 
 		return quads;
 
 	}
 
 	private boolean isConnectedTo(final IExtendedBlockState state, final IUnlistedProperty<Boolean> side) {
+		if ((state == null) || (side == null) || (state.getValue(side) == null)) {
+			return false;
+		}
 		return state.getValue(side) == true;
 	}
 
@@ -79,12 +86,12 @@ public class BakedModelWire implements IBakedModel {
 
 	@Override
 	public boolean isAmbientOcclusion() {
-		return modelCore.isAmbientOcclusion();
+		return this.modelCore.isAmbientOcclusion();
 	}
 
 	@Override
 	public boolean isGui3d() {
-		return modelCore.isGui3d();
+		return this.modelCore.isGui3d();
 	}
 
 	@Override
@@ -94,7 +101,7 @@ public class BakedModelWire implements IBakedModel {
 
 	@Override
 	public TextureAtlasSprite getParticleTexture() {
-		return modelCore.getParticleTexture();
+		return this.modelCore.getParticleTexture();
 	}
 
 }

@@ -30,12 +30,12 @@ public class BakedModelCasedSlug implements IBakedModel {
 	@Override
 	public List<BakedQuad> getQuads(final IBlockState state, final EnumFacing side, final long rand) {
 
-		List<BakedQuad> quads = new ArrayList<BakedQuad>();
-		quads.addAll(modelSlug.getQuads(state, side, rand));
+		final List<BakedQuad> quads = new ArrayList<>();
+		quads.addAll(this.modelSlug.getQuads(state, side, rand));
 
-		quads.addAll(modelCasingBack.getQuads(state, side, rand));
-		quads.addAll(modelCasingTop.getQuads(state, side, rand));
-		quads.addAll(modelCasingBottom.getQuads(state, side, rand));
+		quads.addAll(this.modelCasingBack.getQuads(state, side, rand));
+		quads.addAll(this.modelCasingTop.getQuads(state, side, rand));
+		quads.addAll(this.modelCasingBottom.getQuads(state, side, rand));
 
 		return quads;
 
@@ -62,13 +62,13 @@ public class BakedModelCasedSlug implements IBakedModel {
 	@Override
 	public TextureAtlasSprite getParticleTexture() {
 		// TODO Auto-generated method stub
-		return modelSlug.getParticleTexture();
+		return this.modelSlug.getParticleTexture();
 	}
 
 	@Override
 	public ItemOverrideList getOverrides() {
 		// TODO Auto-generated method stub
-		return modelSlug.getOverrides();
+		return this.modelSlug.getOverrides();
 	}
 
 }

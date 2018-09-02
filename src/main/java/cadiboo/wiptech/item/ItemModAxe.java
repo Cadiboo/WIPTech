@@ -9,10 +9,10 @@ public class ItemModAxe extends ItemAxe implements IItemModMaterial {
 
 	protected final ModMaterials material;
 
-	public ItemModAxe(final ModMaterials materialIn) {
-		super(materialIn.getToolMaterial(), materialIn.getToolMaterial().getAttackDamage(), materialIn.getToolMaterial().getEfficiency());
-		ModUtil.setRegistryNames(this, materialIn, "axe");
-		this.material = materialIn;
+	public ItemModAxe(final ModMaterials material) {
+		super(material.getToolMaterial(), material.getToolMaterial().getAttackDamage(), material.getToolMaterial().getEfficiency());
+		ModUtil.setRegistryNames(this, material, "axe");
+		this.material = material;
 	}
 
 	@Override

@@ -86,11 +86,11 @@ public final class ModUtil {
 	/**
 	 * Gets the game name from a slot<br>
 	 * For example {@link net.minecraft.inventory.EntityEquipmentSlot.CHEST EntityEquipmentSlot.CHEST} -> "CHESTPLATE"
-	 * @param  slotIn the {@link net.minecraft.inventory.EntityEquipmentSlot EntityEquipmentSlot} to get the name for
-	 * @return        the game name for the slot
+	 * @param  slot the {@link net.minecraft.inventory.EntityEquipmentSlot EntityEquipmentSlot} to get the name for
+	 * @return      the game name for the slot
 	 */
-	public static String getSlotGameNameUppercase(final EntityEquipmentSlot slotIn) {
-		switch (slotIn) {
+	public static String getSlotGameNameUppercase(final EntityEquipmentSlot slot) {
+		switch (slot) {
 			case CHEST :
 				return "CHESTPLATE";
 			case FEET :
@@ -100,22 +100,22 @@ public final class ModUtil {
 			case LEGS :
 				return "LEGGINGS";
 			default :
-				return slotIn.name().toUpperCase();
+				return slot.name().toUpperCase();
 		}
 	}
 
 	/**
 	 * Converts the game name to lowercase as per {@link java.lang.String#toLowerCase() String.toLowerCase}.
 	 */
-	public static String getSlotGameNameLowercase(final EntityEquipmentSlot slotIn) {
-		return getSlotGameNameUppercase(slotIn).toLowerCase();
+	public static String getSlotGameNameLowercase(final EntityEquipmentSlot slot) {
+		return getSlotGameNameUppercase(slot).toLowerCase();
 	}
 
 	/**
 	 * Capitalizes the game name as per {@link org.apache.commons.lang3.StringUtils#capitalize(String) StringUtils.capitalize}.
 	 */
-	public static String getSlotGameNameFormatted(final EntityEquipmentSlot slotIn) {
-		return StringUtils.capitalize(getSlotGameNameLowercase(slotIn));
+	public static String getSlotGameNameFormatted(final EntityEquipmentSlot slot) {
+		return StringUtils.capitalize(getSlotGameNameLowercase(slot));
 	}
 
 	/**

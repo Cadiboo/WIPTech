@@ -14,11 +14,12 @@ public class ContainerPortableGenerator extends Container {
 	public ContainerPortableGenerator(final InventoryPlayer playerInv, final EntityPortableGenerator portableGenerator) {
 
 		for (int i = 0; i < portableGenerator.getInventory().getSlots(); i++) {
-			addSlotToContainer(new SlotItemHandler(portableGenerator.getInventory(), i, 62 + i * 18, 20) {
+			this.addSlotToContainer(new SlotItemHandler(portableGenerator.getInventory(), i, 62 + (i * 18), 20) {
 				@Override
-				public boolean isItemValid(ItemStack stack) {
-					if (portableGenerator.isFuel(stack))
+				public boolean isItemValid(final ItemStack stack) {
+					if (portableGenerator.isFuel(stack)) {
 						return super.isItemValid(stack);
+					}
 					return false;
 				}
 			});
@@ -26,22 +27,22 @@ public class ContainerPortableGenerator extends Container {
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(playerInv, j + i * 9 + 9, 8 + j * 18, 51 + i * 18));
+				this.addSlotToContainer(new Slot(playerInv, j + (i * 9) + 9, 8 + (j * 18), 51 + (i * 18)));
 			}
 		}
 		for (int k = 0; k < 9; k++) {
-			addSlotToContainer(new Slot(playerInv, k, 8 + k * 18, 109));
+			this.addSlotToContainer(new Slot(playerInv, k, 8 + (k * 18), 109));
 		}
 
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer playerIn) {
+	public boolean canInteractWith(final EntityPlayer player) {
 		return true;
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+	public ItemStack transferStackInSlot(final EntityPlayer player, final int index) {
 		return ModUtil.transferStackInSlot(player, index, this);
 	}
 

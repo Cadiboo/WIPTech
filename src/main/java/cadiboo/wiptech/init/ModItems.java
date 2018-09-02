@@ -9,7 +9,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 /**
  * Item Instances class
- *
  * @author Cadiboo
  */
 

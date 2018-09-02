@@ -11,10 +11,10 @@ public class BlockResource extends Block implements IBlockModMaterial {
 
 	protected final ModMaterials material;
 
-	public BlockResource(final ModMaterials materialIn) {
-		super(materialIn.getVanillaMaterial());
-		ModUtil.setRegistryNames(this, materialIn, "block");
-		this.material = materialIn;
+	public BlockResource(final ModMaterials material) {
+		super(material.getVanillaMaterial());
+		ModUtil.setRegistryNames(this, material, "block");
+		this.material = material;
 	}
 
 	@Override

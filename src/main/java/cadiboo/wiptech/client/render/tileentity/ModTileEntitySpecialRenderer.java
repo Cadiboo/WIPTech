@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class ModTileEntitySpecialRenderer<T extends TileEntity> extends TileEntitySpecialRenderer<T> {
 
 	@Override
-	public final void render(T te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
+	public final void render(final T te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {
 		if (te == null) {
 			WIPTech.error("Error rendering tile entity! te is null");
 			new Exception().printStackTrace();
@@ -22,11 +22,11 @@ public abstract class ModTileEntitySpecialRenderer<T extends TileEntity> extends
 		super.render(te, x, y, z, partialTicks, destroyStage, alpha);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x + 0.5, y + 0.5, z + 0.5);
-		bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
 		try {
 			this.renderAtCentre(te, partialTicks, destroyStage, alpha);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 

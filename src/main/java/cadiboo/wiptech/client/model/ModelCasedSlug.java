@@ -21,27 +21,24 @@ public class ModelCasedSlug implements IModel {
 
 	protected final ModMaterials material;
 
-	public ModelCasedSlug(ModMaterials materialIn) {
-		this.material = materialIn;
+	public ModelCasedSlug(final ModMaterials material) {
+		this.material = material;
 	}
 
 	@Override
-	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+	public IBakedModel bake(final IModelState state, final VertexFormat format, final Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
 		try {
 
-			ArrayList<IBakedModel> bakedCasingModels = new ArrayList<IBakedModel>();
+			final ArrayList<IBakedModel> bakedCasingModels = new ArrayList<>();
 
-			for (SlugCasingParts part : SlugCasingParts.values()) {
-				bakedCasingModels.add(part.getId(), ModelLoaderRegistry.getModel(new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "item/" + "slug_casing_" + part
-						.getNameLowercase()).toString())).bake(state, format, bakedTextureGetter));
+			for (final SlugCasingParts part : SlugCasingParts.values()) {
+				bakedCasingModels.add(part.getId(), ModelLoaderRegistry.getModel(new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "item/" + "slug_casing_" + part.getNameLowercase()).toString())).bake(state, format, bakedTextureGetter));
 			}
 
-			IBakedModel bakedModelSlug = ModelLoaderRegistry.getModel(new ModelResourceLocation(ModReference.MOD_ID, "item/" + material.getNameLowercase() + "_slug")).bake(state, format,
-					bakedTextureGetter);
+			final IBakedModel bakedModelSlug = ModelLoaderRegistry.getModel(new ModelResourceLocation(ModReference.MOD_ID, "item/" + this.material.getNameLowercase() + "_slug")).bake(state, format, bakedTextureGetter);
 
-			return new BakedModelCasedSlug(bakedModelSlug, bakedCasingModels.get(SlugCasingParts.BACK.getId()), bakedCasingModels.get(SlugCasingParts.TOP.getId()), bakedCasingModels.get(
-					SlugCasingParts.BOTTOM.getId()));
-		} catch (Exception exception) {
+			return new BakedModelCasedSlug(bakedModelSlug, bakedCasingModels.get(SlugCasingParts.BACK.getId()), bakedCasingModels.get(SlugCasingParts.TOP.getId()), bakedCasingModels.get(SlugCasingParts.BOTTOM.getId()));
+		} catch (final Exception exception) {
 			WIPTech.error(this.getClass().getName() + ".bake() failed due to exception:" + exception);
 			return ModelLoaderRegistry.getMissingModel().bake(state, format, bakedTextureGetter);
 		}

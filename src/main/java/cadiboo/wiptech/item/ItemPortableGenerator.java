@@ -61,11 +61,11 @@ public class ItemPortableGenerator extends Item implements IModItem {
 	 * Called when a Block is right-clicked with this Item
 	 */
 	@Override
-	public EnumActionResult onItemUse(final EntityPlayer player, final World worldIn, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
+	public EnumActionResult onItemUse(final EntityPlayer player, final World world, final BlockPos pos, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 
 		final ItemStack stack = player.getHeldItem(hand);
 
-		if (worldIn.isRemote) {
+		if (world.isRemote) {
 			return EnumActionResult.SUCCESS;
 		}
 		if (!player.canPlayerEdit(pos.offset(facing), facing, stack)) {
@@ -73,14 +73,14 @@ public class ItemPortableGenerator extends Item implements IModItem {
 		}
 
 		final BlockPos blockpos = pos.offset(facing);
-		final EntityPortableGenerator generator = new EntityPortableGenerator(worldIn);
+		final EntityPortableGenerator generator = new EntityPortableGenerator(world);
 		generator.setPosition(blockpos.getX() + 0.5, blockpos.getY(), blockpos.getZ() + 0.5);
 
 		if (stack.hasDisplayName()) {
 			generator.setCustomNameTag(stack.getDisplayName());
 		}
 
-		worldIn.spawnEntity(generator);
+		world.spawnEntity(generator);
 
 		return EnumActionResult.SUCCESS;
 	}

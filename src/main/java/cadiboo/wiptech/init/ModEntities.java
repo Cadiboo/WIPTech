@@ -6,7 +6,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 /**
  * Entity Instances class
- * 
  * @author Cadiboo
  */
 

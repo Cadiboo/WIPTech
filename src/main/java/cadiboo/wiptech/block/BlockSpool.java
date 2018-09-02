@@ -12,10 +12,10 @@ public class BlockSpool extends Block implements IBlockModMaterial {
 
 	protected final ModMaterials material;
 
-	public BlockSpool(final ModMaterials materialIn) {
-		super(materialIn.getVanillaMaterial());
-		ModUtil.setRegistryNames(this, materialIn, "spool");
-		this.material = materialIn;
+	public BlockSpool(final ModMaterials material) {
+		super(material.getVanillaMaterial());
+		ModUtil.setRegistryNames(this, material, "spool");
+		this.material = material;
 	}
 
 	@Override
