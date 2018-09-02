@@ -683,8 +683,7 @@ public final class EventSubscriber {
 	@SideOnly(Side.CLIENT)
 	private static void setTooltip(final ItemTooltipEvent event, final String tooltip) {
 		for (int i = 0; i < event.getToolTip().size(); i++) {
-			if (net.minecraft.util.StringUtils.stripControlCodes(event.getToolTip().get(i)).equals(event.getItemStack().getItem().getRegistryName().toString())) { // TODO why? and what does
-				// this do???
+			if (net.minecraft.util.StringUtils.stripControlCodes(event.getToolTip().get(i)).equals(event.getItemStack().getItem().getRegistryName().toString())) { // TODO why? and what does this do???
 				event.getToolTip().add(i, tooltip);
 				return;
 			}

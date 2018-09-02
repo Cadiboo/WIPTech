@@ -94,7 +94,6 @@ public class ModEnergyStorage extends EnergyStorage {
 		return this.energy;
 	}
 
-	// TODO
 	/**
 	 * @param  energy the energy to set
 	 * @return        the amount of energy that was set

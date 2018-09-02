@@ -47,25 +47,24 @@ import net.minecraftforge.fml.relauncher.Side;
 public class WIPTech {
 
 	/***** FOR 1.13 *****/
-	// TODO Texture locations
-	// TODO vanilla recipes
+	// TODO: Texture locations
 
 	/***** FOR ALL VERSIONS *****/
-	// TODO electrocution
-	// TODO Armor textures
-	// TODO clean up JSONs
-	// TODO Wire & Enamel ItemBlock Models->Wire & Enamel Item Models (Code & JSON)
-	// TODO radioactivity
-	// TODO Slugs & SlugCasings
-	// TODO world gen to subscriber
-	// TODO NetworkManager to subscriber
-	// TODO generators
-	// TODO handheld coilgun
-	// TODO Gauss cannon (mounted coilgun)
-	// TODO handheld PlasmaGun & mounted Plasma Cannon
-	// TODO Crushing & hammering
-	// TODO weapon modules :( scopes, chips, etc
-	// TODO steel & tungsten carbite
+	// TODO: Material Texture locations
+	// TODO: electrocution
+	// TODO: Wire & Enamel ItemBlock Models->Wire & Enamel Item Models (Code & JSON)
+	// TODO: radioactivity
+	// TODO: Slugs & SlugCasings
+	// TODO: world gen to subscriber
+	// TODO: NetworkManager to subscriber
+	// TODO: generators
+	// TODO: handheld coilgun
+	// TODO: Gauss cannon (mounted coilgun)
+	// TODO: handheld PlasmaGun & mounted Plasma Cannon
+	// TODO: Crushing & hammering
+	// TODO: weapon modules :( scopes, chips, etc
+	// TODO: steel & tungsten carbite - alloying -> custom furnace | craftable raw alloy?
+	// TODO: Glitch models
 
 	@Instance(ModReference.MOD_ID)
 	public static WIPTech instance;
