@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "test_material_gttttf_gem",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:test_material_gttttf_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:test_material_gttttf_gem",
+		"count": 9
+	}
+}

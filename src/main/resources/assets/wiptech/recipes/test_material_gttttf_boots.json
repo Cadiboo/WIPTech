@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"X X",
+		"X X"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:test_material_gttttf_gem"
+		}
+	},
+	"result": {
+		"item": "wiptech:test_material_gttttf_boots",
+		"count": 1
+	}
+}

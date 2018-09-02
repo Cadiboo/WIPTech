@@ -28,8 +28,10 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
@@ -39,10 +41,15 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
+ * Holds all enums and enum-related stuff for this mod
  * @author Cadiboo
  */
 public final class ModEnums {
 
+	/**
+	 * provides some default methods for formatting enum names
+	 * @author Cadiboo
+	 */
 	public interface IEnumNameFormattable {
 
 		/**
@@ -77,54 +84,122 @@ public final class ModEnums {
 	public static enum ModMaterials implements IEnumNameFormattable {
 
 		/* ore block ingot armor tools hard cond */
-		URANIUM(0, new ModMaterialProperties(true, true, true, true, true, 6.00f, 24)),
+		URANIUM(0, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 6.00f, 24)),
 
-		TUNGSTEN(1, new ModMaterialProperties(true, true, true, true, true, 7.50f, 173)),
+		TUNGSTEN(1, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 7.50f, 173)),
 
-		TUNGSTEN_CARBITE(2, new ModMaterialProperties(false, true, true, true, true, 9.00f, 173)),
+		TUNGSTEN_CARBITE(2, ModMaterialTypes.METAL, new ModMaterialProperties(false, true, true, true, true, 9.00f, 173)),
 
-		TITANIUM(3, new ModMaterialProperties(true, true, true, true, true, 6.00f, 23)),
+		TITANIUM(3, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 6.00f, 23)),
 
-		TIN(4, new ModMaterialProperties(true, true, true, true, true, 1.50f, 68)),
+		TIN(4, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 1.50f, 68)),
 
-		THORIUM(5, new ModMaterialProperties(true, true, true, true, true, 3.00f, 42)),
+		THORIUM(5, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 3.00f, 42)),
 
-		SILVER(6, new ModMaterialProperties(true, true, true, true, true, 2.50f, 407)),
+		SILVER(6, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 2.50f, 407)),
 
-		PLATINUM(7, new ModMaterialProperties(true, true, true, true, true, 3.50f, 73)),
+		PLATINUM(7, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 3.50f, 73)),
 
-		PLUTONIUM(8, new ModMaterialProperties(true, true, true, true, true, 0.01f, 8)),
+		PLUTONIUM(8, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 0.01f, 8)),
 
-		OSMIUM(9, new ModMaterialProperties(true, true, true, true, true, 7.00f, 61)),
+		OSMIUM(9, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 7.00f, 61)),
 
-		NICKEL(10, new ModMaterialProperties(true, true, true, true, true, 4.00f, 90)),
+		NICKEL(10, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 4.00f, 90)),
 
-		STEEL(11, new ModMaterialProperties(false, true, true, true, true, 4.50f, 54)),
+		STEEL(11, ModMaterialTypes.METAL, new ModMaterialProperties(false, true, true, true, true, 4.50f, 54)),
 
-		ALUMINIUM(12, new ModMaterialProperties(true, true, true, true, true, 2.75f, 204)),
+		ALUMINIUM(12, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 2.75f, 204)),
 
-		COPPER(13, new ModMaterialProperties(true, true, true, true, true, 3.00f, 386)),
+		COPPER(13, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 3.00f, 386)),
 
-		GOLD(14, new ModMaterialProperties(true, true, true, true, true, 2.50f, 315)),
+		GOLD(14, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 2.50f, 315)),
 
-		IRON(15, new ModMaterialProperties(true, true, true, true, true, 4.00f, 73)),
+		IRON(15, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 4.00f, 73)),
 
-		LEAD(16, new ModMaterialProperties(true, true, true, true, true, 1.50f, 35)),
+		LEAD(16, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 1.50f, 35)),
 
-		GALLIUM(17, new ModMaterialProperties(true, true, true, true, true, 1.50f, 29)),
+		GALLIUM(17, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 1.50f, 29)),
 
-		BAUXITE(18, new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0));
+		BAUXITE(18, ModMaterialTypes.METAL, new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0)),
+
+		APATITE(19, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, true, true, true, 4.50f, 0)),
+
+		// tests
+
+		TEST_MATERIAL_MTTTTF(20, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, false, 1.00f, 0)),
+
+		TEST_MATERIAL_MTTTFF(21, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, false, false, 1.00f, 0)),
+
+		TEST_MATERIAL_MTTFFF(22, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, false, true, false, 1.00f, 0)),
+
+		TEST_MATERIAL_MTFFFF(23, ModMaterialTypes.METAL, new ModMaterialProperties(true, false, false, false, false, 1.00f, 0)),
+
+		TEST_MATERIAL_MFFFFF(24, ModMaterialTypes.METAL, new ModMaterialProperties(false, false, false, false, false, 1.00f, 0)),
+
+		TEST_MATERIAL_GTTTTF(25, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, true, true, false, 1.00f, 0)),
+
+		TEST_MATERIAL_GTTTFF(26, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, true, false, false, 1.00f, 0)),
+
+		TEST_MATERIAL_GTTFFF(27, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, false, true, false, 1.00f, 0)),
+
+		TEST_MATERIAL_GTFFFF(28, ModMaterialTypes.GEM, new ModMaterialProperties(true, false, false, false, false, 1.00f, 0)),
+
+		TEST_MATERIAL_GFFFFF(29, ModMaterialTypes.GEM, new ModMaterialProperties(false, false, false, false, false, 1.00f, 0));
 
 		private final int id;
+		private final ModMaterialTypes type;
 		private final ModMaterialProperties properties;
 		private final ArmorMaterial armorMaterial;
 		private final ToolMaterial toolMaterial;
 
-		ModMaterials(final int idIn, final ModMaterialProperties propertiesIn) {
-			this.id = idIn;
-			this.properties = propertiesIn;
+		ModMaterials(final int id, final ModMaterialTypes type, final ModMaterialProperties properties) {
+			this.id = id;
+			this.type = type;
+			this.properties = properties;
+			this.armorMaterial = this.generateArmorMaterial();
+			this.toolMaterial = this.generateToolMaterial();
 
-			if (this.getProperties().hasArmor()) {
+		}
+		public int getId() {
+			return this.id;
+		}
+
+		public ModMaterialTypes getType() {
+			return this.type;
+		}
+
+		public ModMaterialProperties getProperties() {
+			return this.properties;
+		}
+
+		public ArmorMaterial getArmorMaterial() {
+			return this.armorMaterial;
+		}
+
+		public ToolMaterial getToolMaterial() {
+			return this.toolMaterial;
+		}
+
+		private ToolMaterial generateToolMaterial() {
+			if (!this.getProperties().hasTools()) {
+				return null;
+			} else {
+				final String name = this.getNameUppercase();
+				final int harvestLevel = Math.min(3, Math.round(this.getProperties().getHardness() / 3f));
+				final int maxUses = Math.round(this.getProperties().getHardness() * 150f);
+				final float efficiency = this.getProperties().getHardness();
+				final float damageVsEntity = this.getProperties().getHardness();
+				final int enchantability = Math.round(this.getProperties().getConductivity() / 10f);
+
+				final ToolMaterial toolMaterial = EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damageVsEntity, enchantability);
+				return toolMaterial;
+			}
+		}
+
+		private ArmorMaterial generateArmorMaterial() {
+			if (!this.getProperties().hasArmor()) {
+				return null;
+			} else {
 				final String name = this.getNameUppercase();
 
 				final String textureName = new ModResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), this.getNameLowercase()).toString();
@@ -140,42 +215,12 @@ public final class ModEnums {
 
 				final float toughness = Math.round(this.getProperties().getHardness() / 5f);
 
-				this.armorMaterial = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability, soundOnEquip, toughness);
+				final ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability, soundOnEquip, toughness);
 				// TODO TEST THIS!!
-				this.armorMaterial.setRepairItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ModResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), this.getNameLowercase()))));
-			} else {
-				this.armorMaterial = null;
+				armorMaterial.setRepairItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ModResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), this.getNameLowercase()))));
+				return armorMaterial;
+
 			}
-
-			if (this.getProperties().hasTools()) {
-
-				final String name = this.getNameUppercase();
-				final int harvestLevel = Math.min(3, Math.round(this.getProperties().getHardness() / 3f));
-				final int maxUses = Math.round(this.getProperties().getHardness() * 150f);
-				final float efficiency = this.getProperties().getHardness();
-				final float damageVsEntity = this.getProperties().getHardness();
-				final int enchantability = Math.round(this.getProperties().getConductivity() / 10f);
-
-				this.toolMaterial = EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damageVsEntity, enchantability);
-			} else {
-				this.toolMaterial = null;
-			}
-		}
-
-		public int getId() {
-			return this.id;
-		}
-
-		public ModMaterialProperties getProperties() {
-			return this.properties;
-		}
-
-		public ArmorMaterial getArmorMaterial() {
-			return this.armorMaterial;
-		}
-
-		public ToolMaterial getToolMaterial() {
-			return this.toolMaterial;
 		}
 
 		public String getResouceLocationDomain(final String nameSuffix, final IForgeRegistry registry) {
@@ -235,19 +280,20 @@ public final class ModEnums {
 		}
 
 		@Nullable
-		public BlockItem getIngot() {
-			if (!this.getProperties().hasIngotAndNugget()) {
+		public BlockItem getResource() {
+			if (!this.getProperties().hasResource()) {
 				return null;
 			}
-			return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, "ingot");
+			return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, this.getType().getResourceNameSuffix());
 		}
 
 		@Nullable
-		public BlockItem getNugget() {
-			if (!this.getProperties().hasIngotAndNugget()) {
+		public BlockItem getResourcePiece() {
+			if ((!this.getProperties().hasResource()) || (!this.getType().hasResourcePiece())) {
 				return null;
+			} else {
+				return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, this.getType().getResourcePieceNameSuffix());
 			}
-			return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, "nugget");
 		}
 
 		@Nullable
@@ -422,25 +468,158 @@ public final class ModEnums {
 
 	}
 
-	public static enum BlockItemTypes implements IEnumNameFormattable {
+	public static enum ModMaterialTypes implements IEnumNameFormattable {
 
-		/* @formatter:off */
-		NUGGET(0), INGOT(1);
-		/* @formatter:on */
+		METAL(0), GEM(1);
 
 		private final int id;
 
-		BlockItemTypes(final int idIn) {
-			this.id = idIn;
+		ModMaterialTypes(final int id) {
+			this.id = id;
+		}
+
+		public String getResourceNameSuffix() {
+			return this.getResourceBlockItemType().getNameLowercase();
+		}
+
+		public String getResourcePieceNameSuffix() {
+			final BlockItemTypes type = this.getResourcePieceBlockItemType();
+			if (type == null) {
+				return "";
+			} else {
+				return this.getResourcePieceBlockItemType().getNameLowercase();
+			}
 		}
 
 		public int getId() {
 			return this.id;
 		}
 
+		public static ModMaterialTypes byId(final int id) {
+			return values()[Math.min(Math.abs(id), values().length)];
+		}
+
+		public boolean hasResourcePiece() {
+			boolean hasResourcePiece;
+			switch (byId(this.getId())) {
+				case GEM :
+					hasResourcePiece = false;
+					break;
+				default :
+				case METAL :
+					hasResourcePiece = true;
+					break;
+			}
+			return hasResourcePiece;
+		}
+
+		public BlockItemTypes getResourceBlockItemType() {
+			BlockItemTypes resourceBlockItemType;
+			switch (byId(this.getId())) {
+				case GEM :
+					resourceBlockItemType = BlockItemTypes.GEM;
+					break;
+				default :
+				case METAL :
+					resourceBlockItemType = BlockItemTypes.INGOT;
+					break;
+			}
+			return resourceBlockItemType;
+		}
+
+		public BlockItemTypes getResourcePieceBlockItemType() {
+			BlockItemTypes resourcePieceBlockItemType;
+			switch (byId(this.getId())) {
+				case GEM :
+					resourcePieceBlockItemType = null;
+					break;
+				default :
+				case METAL :
+					resourcePieceBlockItemType = BlockItemTypes.NUGGET;
+					break;
+			}
+			return resourcePieceBlockItemType;
+		}
+	}
+
+	public static enum ResourcePieceTypes implements IEnumNameFormattable {
+
+		NUGGET(0), FLAKE(1);
+
+		private final int id;
+
+		ResourcePieceTypes(final int id) {
+			this.id = id;
+		}
+
+		public int getId() {
+			return this.id;
+		}
+
+		public static ResourcePieceTypes byId(final int id) {
+			return values()[Math.min(Math.abs(id), values().length)];
+		}
+	}
+
+	public static enum BlockItemTypes implements IEnumNameFormattable {
+
+		INGOT(0), NUGGET(1), GEM(2);
+
+		private static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0.2, 0.0, 0.2, 0.8, 0.2, 0.8);
+
+		private static final AxisAlignedBB INGOT_EW_AABB = new AxisAlignedBB(3d / 16d, 0, 6d / 16d, 1d - (3d / 16d), 3d / 16d, 1d - (6d / 16d));
+		private static final AxisAlignedBB INGOT_NS_AABB = new AxisAlignedBB(6d / 16d, 0, 3d / 16d, 1d - (6d / 16d), 3d / 16d, 1d - (3d / 16d));
+
+		private static final AxisAlignedBB NUGGET_EW_AABB = new AxisAlignedBB(4d / 16d, 0, 5d / 16d, 1d - (4d / 16d), 1d / 16d, 1d - (5d / 16d));
+		private static final AxisAlignedBB NUGGET_NS_AABB = new AxisAlignedBB(5d / 16d, 0, 4d / 16d, 1d - (5d / 16d), 1d / 16d, 1d - (4d / 16d));
+
+		private final int id;
+
+		BlockItemTypes(final int id) {
+			this.id = id;
+		}
+
+		public int getId() {
+			return this.id;
+		}
+
+		public AxisAlignedBB getBoundingBox(final EnumFacing facing) {
+
+			switch (byId(this.getId())) {
+				case INGOT :
+					switch (facing) {
+						case EAST :
+						case WEST :
+							return INGOT_EW_AABB;
+						case NORTH :
+						case SOUTH :
+							return INGOT_NS_AABB;
+						default :
+							return DEFAULT_AABB;
+					}
+				case NUGGET :
+					switch (facing) {
+						case EAST :
+						case WEST :
+							return NUGGET_EW_AABB;
+						case NORTH :
+						case SOUTH :
+							return NUGGET_NS_AABB;
+						default :
+							return DEFAULT_AABB;
+					}
+				case GEM :
+					return DEFAULT_AABB;
+				default :
+					return DEFAULT_AABB;
+
+			}
+		}
+
 		public static BlockItemTypes byId(final int id) {
 			return values()[Math.min(Math.abs(id), values().length)];
 		}
+
 	}
 
 	public static enum SlugCasingParts implements IEnumNameFormattable, IStringSerializable {
@@ -453,8 +632,8 @@ public final class ModEnums {
 
 		private final int id;
 
-		SlugCasingParts(final int idIn) {
-			this.id = idIn;
+		SlugCasingParts(final int id) {
+			this.id = id;
 		}
 
 		@Override

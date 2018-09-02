@@ -10,7 +10,7 @@ public final class ModReference {
 
 	/**
 	 * @author Cadiboo
-	 * @see <a href= "https://mcforge.readthedocs.io/en/latest/conventions/versioning/">Forge Versioning Docs</a>
+	 * @see    <a href= "https://mcforge.readthedocs.io/en/latest/conventions/versioning/">Forge Versioning Docs</a>
 	 */
 	public static final class Version {
 		/**

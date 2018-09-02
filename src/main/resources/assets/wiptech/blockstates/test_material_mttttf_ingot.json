@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "facing=north": { "model": "wiptech:test_material_mttttf_ingot", "y": 0 },
+        "facing=south": { "model": "wiptech:test_material_mttttf_ingot", "y": 180 },
+        "facing=west":  { "model": "wiptech:test_material_mttttf_ingot", "y": 270 },
+        "facing=east":  { "model": "wiptech:test_material_mttttf_ingot", "y": 90 }
+    }
+}
+

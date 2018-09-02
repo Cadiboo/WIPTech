@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:block/cube_all",
+	"textures": {
+		"all": "wiptech:block/test_material_mtttff_block"
+	}
+}
+

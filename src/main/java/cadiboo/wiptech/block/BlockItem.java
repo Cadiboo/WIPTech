@@ -22,22 +22,14 @@ public class BlockItem extends Block implements IBlockModMaterial {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-	private static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0.2, 0.0, 0.2, 0.8, 0.2, 0.8);
-
-	private static final AxisAlignedBB INGOT_EW_AABB = new AxisAlignedBB(3d / 16d, 0, 6d / 16d, 1d - (3d / 16d), 3d / 16d, 1d - (6d / 16d));
-	private static final AxisAlignedBB INGOT_NS_AABB = new AxisAlignedBB(6d / 16d, 0, 3d / 16d, 1d - (6d / 16d), 3d / 16d, 1d - (3d / 16d));
-
-	private static final AxisAlignedBB NUGGET_EW_AABB = new AxisAlignedBB(4d / 16d, 0, 5d / 16d, 1d - (4d / 16d), 1d / 16d, 1d - (5d / 16d));
-	private static final AxisAlignedBB NUGGET_NS_AABB = new AxisAlignedBB(5d / 16d, 0, 4d / 16d, 1d - (5d / 16d), 1d / 16d, 1d - (4d / 16d));
-
 	protected final ModMaterials material;
 	protected final BlockItemTypes type;
 
-	public BlockItem(final ModMaterials materialIn, final BlockItemTypes typeIn) {
-		super(materialIn.getVanillaMaterial());
-		ModUtil.setRegistryNames(this, materialIn, typeIn.getNameLowercase());
-		this.material = materialIn;
-		this.type = typeIn;
+	public BlockItem(final ModMaterials material, final BlockItemTypes type) {
+		super(material.getVanillaMaterial());
+		ModUtil.setRegistryNames(this, material, type.getNameLowercase());
+		this.material = material;
+		this.type = type;
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
@@ -76,60 +68,23 @@ public class BlockItem extends Block implements IBlockModMaterial {
 	}
 
 	@Override
-	public BlockFaceShape getBlockFaceShape(final IBlockAccess worldIn, final IBlockState state, final BlockPos pos, final EnumFacing face) {
+	public BlockFaceShape getBlockFaceShape(final IBlockAccess world, final IBlockState state, final BlockPos pos, final EnumFacing face) {
 		return BlockFaceShape.UNDEFINED;
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(final World worldIn, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer) {
+	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer) {
 		final EnumFacing enumfacing = placer.getHorizontalFacing().rotateY();
-		return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, enumfacing);
+		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, enumfacing);
 	}
 
 	@Override
 	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
-
 		EnumFacing facing = state.getValue(FACING);
-		if ((this.type == BlockItemTypes.NUGGET) & (this.material == ModMaterials.GOLD)) {
+		if ((this.getType() == BlockItemTypes.NUGGET) & (this.material == ModMaterials.GOLD)) {
 			facing = facing.rotateY();
 		}
-
-		switch (this.type) {
-
-			case INGOT :
-				switch (state.getValue(FACING)) {
-
-					case EAST :
-					case WEST :
-						return INGOT_EW_AABB;
-
-					case NORTH :
-					case SOUTH :
-						return INGOT_NS_AABB;
-
-					default :
-						return DEFAULT_AABB;
-				}
-
-			case NUGGET :
-				switch (facing) {
-
-					case EAST :
-					case WEST :
-						return NUGGET_EW_AABB;
-
-					case NORTH :
-					case SOUTH :
-						return NUGGET_NS_AABB;
-
-					default :
-						return DEFAULT_AABB;
-				}
-			default :
-				return DEFAULT_AABB;
-
-		}
-
+		return this.getType().getBoundingBox(facing);
 	}
 
 	@Override

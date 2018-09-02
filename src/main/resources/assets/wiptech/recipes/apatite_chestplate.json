@@ -1,0 +1,17 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"X X",
+		"XXX",
+		"XXX"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:apatite_gem"
+		}
+	},
+	"result": {
+		"item": "wiptech:apatite_chestplate",
+		"count": 1
+	}
+}

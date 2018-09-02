@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"X X",
+		"X X"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:apatite_gem"
+		}
+	},
+	"result": {
+		"item": "wiptech:apatite_boots",
+		"count": 1
+	}
+}

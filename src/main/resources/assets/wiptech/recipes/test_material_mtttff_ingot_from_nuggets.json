@@ -1,0 +1,18 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "test_material_mtttff_ingot",
+	"pattern": [
+		"###",
+		"###",
+		"###"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:test_material_mtttff_nugget"
+		}
+	},
+	"result": {
+		"item": "wiptech:test_material_mtttff_ingot",
+		"count": 1
+	}
+}

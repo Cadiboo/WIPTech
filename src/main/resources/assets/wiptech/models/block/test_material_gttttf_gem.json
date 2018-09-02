@@ -1,0 +1,7 @@
+{
+	"parent": "wiptech:block/gem",
+	"textures": {
+		"ingot": "wiptech:item/test_material_gttttf_ingot"
+	}
+}
+
