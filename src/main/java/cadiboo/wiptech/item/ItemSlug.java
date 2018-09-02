@@ -8,9 +8,9 @@ import net.minecraft.item.Item;
 public class ItemSlug extends Item implements IItemModMaterial {
 	protected final ModMaterials material;
 
-	public ItemSlug(final ModMaterials materialIn) {
-		ModUtil.setRegistryNames(this, materialIn, "slug");
-		this.material = materialIn;
+	public ItemSlug(final ModMaterials material) {
+		ModUtil.setRegistryNames(this, material, "slug");
+		this.material = material;
 	}
 
 	@Override
