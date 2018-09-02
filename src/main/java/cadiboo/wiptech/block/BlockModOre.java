@@ -51,6 +51,8 @@ public class BlockModOre extends Block implements IBlockModMaterial {
 	public boolean isOpaqueCube(final IBlockState state) {
 		if (ModReference.Debug.debugOres()) {
 			return false;
+		} else if (this.getModMaterial() == ModMaterials.GLITCH) {
+			return false;
 		} else {
 			return true;
 		}

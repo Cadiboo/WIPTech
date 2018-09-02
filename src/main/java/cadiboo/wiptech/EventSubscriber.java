@@ -13,6 +13,7 @@ import cadiboo.wiptech.capability.energy.network.EnergyNetworkList;
 import cadiboo.wiptech.capability.energy.network.IEnergyNetworkList;
 import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.client.model.ModelsCache;
+import cadiboo.wiptech.client.render.block.model.GlitchModelLoader;
 import cadiboo.wiptech.client.render.block.model.WireModelLoader;
 import cadiboo.wiptech.client.render.entity.EntityNapalmRenderer;
 import cadiboo.wiptech.client.render.entity.EntityPortableGeneratorRenderer;
@@ -355,6 +356,27 @@ public final class EventSubscriber {
 		}
 		ModelLoaderRegistry.registerLoader(new WireModelLoader());
 		WIPTech.debug("Registered custom State Mappers for wires and enamels with the Model Loader");
+
+		if (ModMaterials.GLITCH.getProperties().hasBlock() || ModMaterials.GLITCH.getProperties().hasOre()) {
+			if (ModMaterials.GLITCH.getBlock() != null) {
+				ModelLoader.setCustomStateMapper(ModMaterials.GLITCH.getBlock(), new StateMapperBase() {
+					@Override
+					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_block"), ModWritingUtil.default_variant_name);
+					}
+				});
+			}
+			if (ModMaterials.GLITCH.getOre() != null) {
+				ModelLoader.setCustomStateMapper(ModMaterials.GLITCH.getOre(), new StateMapperBase() {
+					@Override
+					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_ore"), ModWritingUtil.default_variant_name);
+					}
+				});
+			}
+		}
+		ModelLoaderRegistry.registerLoader(new GlitchModelLoader());
+		WIPTech.debug("Registered custom State Mapper(s) for glitch block and ore with the Model Loader");
 
 		for (final ModMaterials material : ModMaterials.values()) {
 

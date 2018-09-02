@@ -1,5 +1,7 @@
 package cadiboo.wiptech.util;
 
+import java.util.Random;
+
 import org.apache.commons.lang3.StringUtils;
 
 import cadiboo.wiptech.creativetab.ModCreativeTabs;
@@ -151,6 +153,8 @@ public final class ModUtil {
 				return 6;
 			case URANIUM :
 				return 8;
+			case GLITCH :
+				return Math.round(Math.round(ModUtil.map(0, 1, 0, 15, new Random().nextDouble())));
 			default :
 				return 0;
 		}
@@ -170,6 +174,8 @@ public final class ModUtil {
 				return 9;
 			case URANIUM :
 				return 7;
+			case GLITCH :
+				return Math.round(Math.round(ModUtil.map(0, 1, 0, 15, new Random().nextDouble())));
 			default :
 				return 0;
 		}

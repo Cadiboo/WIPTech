@@ -6,6 +6,7 @@ import java.util.function.Function;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModReference;
+import cadiboo.wiptech.util.ModResourceLocation;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -45,11 +46,11 @@ public class ModelWire implements IModel {
 		}
 	}
 
-	protected ResourceLocation getModelLocation(final String string) {
+	protected ModResourceLocation getModelLocation(final String string) {
 		if (string == "core") {
-			return new ResourceLocation(ModReference.MOD_ID, "block/" + this.material.getNameLowercase() + "_wire_core");
+			return new ModResourceLocation(ModReference.MOD_ID, "block/" + this.material.getNameLowercase() + "_wire_core");
 		}
-		return new ResourceLocation(ModReference.MOD_ID, "block/" + this.material.getNameLowercase() + "_wire_extension_" + string);
+		return new ModResourceLocation(ModReference.MOD_ID, "block/" + this.material.getNameLowercase() + "_wire_extension_" + string);
 	}
 
 }
