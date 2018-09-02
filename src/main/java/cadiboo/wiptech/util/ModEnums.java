@@ -122,7 +122,9 @@ public final class ModEnums {
 
 		BAUXITE(18, ModMaterialTypes.METAL, new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0)),
 
-		APATITE(19, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, true, true, true, 4.50f, 0));
+		APATITE(19, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, true, true, true, 4.50f, 0)),
+
+		GLITCH(19, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 20.0f, 1000));
 
 		private final int id;
 		private final ModMaterialTypes type;
