@@ -1,7 +1,0 @@
-{
-	"parent": "wiptech:block/ore",
-	"textures": {
-		"ore": "wiptech:block/test_material_gtffff_ore"
-	}
-}
-

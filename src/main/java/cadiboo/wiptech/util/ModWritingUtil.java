@@ -19,6 +19,7 @@ import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.util.ModEnums.ModMaterialTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import net.minecraft.block.Block;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -282,7 +283,7 @@ public class ModWritingUtil {
 					GameRegistry.addSmelting(new ItemStack(material.getOre()), new ItemStack(material.getResource()), 1);
 				}
 
-				if ((material.getBlock() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getBlock() != null) && (material.getResource() != null) && (material.getResouceLocationDomain("block", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getBlock().getRegistryName().getResourcePath(), "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -303,7 +304,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 				}
 
-				if ((material.getResource() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getResource() != null) && (material.getBlock() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getResource().getRegistryName().getResourcePath() + "_from_block", "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -322,8 +323,9 @@ public class ModWritingUtil {
 							"	}\n" +
 							"}"));
 					/*@formatter:on*/
-					if (material.getResourcePiece() != null) {
-						/*@formatter:off*/
+				}
+				if ((material.getResource() != null) && (material.getResourcePiece() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+					/*@formatter:off*/
 						recipesObj.add(new Tuple<>(material.getResource().getRegistryName().getResourcePath() + "_from_"+material.getType().getResourcePieceNameSuffix()+"s", "{\n" +
 								"	\"type\": \"minecraft:crafting_shaped\",\n" +
 								"	\"group\": \""+material.getResource().getRegistryName().getResourcePath()+"\",\n" +
@@ -343,7 +345,6 @@ public class ModWritingUtil {
 								"	}\n" +
 								"}"));
 						/*@formatter:on*/
-					}
 				}
 
 				if ((material.getResourcePiece() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourcePieceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
@@ -374,7 +375,7 @@ public class ModWritingUtil {
 
 				// armor
 
-				if ((material.getHelmet() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getHelmet() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(ModUtil.getSlotGameNameLowercase(EntityEquipmentSlot.HEAD), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getHelmet().getRegistryName().getResourcePath(), "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -395,7 +396,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 				}
 
-				if ((material.getChestplate() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getChestplate() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(ModUtil.getSlotGameNameLowercase(EntityEquipmentSlot.CHEST), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getChestplate().getRegistryName().getResourcePath(), "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -417,7 +418,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 				}
 
-				if ((material.getLeggings() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getLeggings() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(ModUtil.getSlotGameNameLowercase(EntityEquipmentSlot.LEGS), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getLeggings().getRegistryName().getResourcePath(), "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -439,7 +440,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 				}
 
-				if ((material.getBoots() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getBoots() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(ModUtil.getSlotGameNameLowercase(EntityEquipmentSlot.FEET), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getBoots().getRegistryName().getResourcePath(), "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -462,7 +463,7 @@ public class ModWritingUtil {
 
 				// tools
 
-				if ((material.getAxe() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getAxe() != null) && (material.getResource() != null) && (material.getResouceLocationDomain("axe", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getAxe().getRegistryName().getResourcePath(), "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -487,7 +488,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 				}
 
-				if ((material.getPickaxe() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getPickaxe() != null) && (material.getResource() != null) && (material.getResouceLocationDomain("pickaxe", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getPickaxe().getRegistryName().getResourcePath(), "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -512,7 +513,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 				}
 
-				if ((material.getSword() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getSword() != null) && (material.getResource() != null) && (material.getResouceLocationDomain("sword", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getSword().getRegistryName().getResourcePath(), "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -537,7 +538,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 				}
 
-				if ((material.getShovel() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getShovel() != null) && (material.getResource() != null) && (material.getResouceLocationDomain("shovel", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getShovel().getRegistryName().getResourcePath(), "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -562,7 +563,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 				}
 
-				if ((material.getHoe() != null) && (material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+				if ((material.getHoe() != null) && (material.getResource() != null) && (material.getResouceLocationDomain("hoe", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 					/*@formatter:off*/
 					recipesObj.add(new Tuple<>(material.getHoe().getRegistryName().getResourcePath(), "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +

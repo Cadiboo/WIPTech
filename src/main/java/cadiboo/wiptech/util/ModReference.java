@@ -99,6 +99,10 @@ public final class ModReference {
 		public static boolean debugOres() {
 			return false;
 		}
+
+		public static boolean debugAPIMaterials() {
+			return false;
+		}
 	}
 
 }

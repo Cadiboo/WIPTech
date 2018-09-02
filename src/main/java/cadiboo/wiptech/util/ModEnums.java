@@ -122,29 +122,7 @@ public final class ModEnums {
 
 		BAUXITE(18, ModMaterialTypes.METAL, new ModMaterialProperties(true, false, false, false, false, ModMaterials.ALUMINIUM.getProperties().getHardness(), 0)),
 
-		APATITE(19, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, true, true, true, 4.50f, 0)),
-
-		// tests
-
-		TEST_MATERIAL_MTTTTF(20, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, false, 1.00f, 0)),
-
-		TEST_MATERIAL_MTTTFF(21, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, false, false, 1.00f, 0)),
-
-		TEST_MATERIAL_MTTFFF(22, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, false, true, false, 1.00f, 0)),
-
-		TEST_MATERIAL_MTFFFF(23, ModMaterialTypes.METAL, new ModMaterialProperties(true, false, false, false, false, 1.00f, 0)),
-
-		TEST_MATERIAL_MFFFFF(24, ModMaterialTypes.METAL, new ModMaterialProperties(false, false, false, false, false, 1.00f, 0)),
-
-		TEST_MATERIAL_GTTTTF(25, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, true, true, false, 1.00f, 0)),
-
-		TEST_MATERIAL_GTTTFF(26, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, true, false, false, 1.00f, 0)),
-
-		TEST_MATERIAL_GTTFFF(27, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, false, true, false, 1.00f, 0)),
-
-		TEST_MATERIAL_GTFFFF(28, ModMaterialTypes.GEM, new ModMaterialProperties(true, false, false, false, false, 1.00f, 0)),
-
-		TEST_MATERIAL_GFFFFF(29, ModMaterialTypes.GEM, new ModMaterialProperties(false, false, false, false, false, 1.00f, 0));
+		APATITE(19, ModMaterialTypes.GEM, new ModMaterialProperties(true, true, true, true, true, 4.50f, 0));
 
 		private final int id;
 		private final ModMaterialTypes type;
