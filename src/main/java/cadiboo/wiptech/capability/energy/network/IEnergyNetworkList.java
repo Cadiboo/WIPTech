@@ -12,18 +12,10 @@ public interface IEnergyNetworkList extends ITickable {
 
 	HashSet<BlockPos> getConnections();
 
-	// @Nullable
-	// public EnergyNetwork getNetworkFor(T potentialConnection);
-	//
-	// @Nonnull
-	// public EnergyNetwork getCreateOrMergeNetworkFor(T potentialConnection);
-	//
-	// public void splitNetworks(T potentialConnection);
-
 	void addConnection(BlockPos pos);
 
 	void removeConnection(BlockPos pos);
 
-	// public void setNetworks(ArrayList<EnergyNetwork> networks);
+	void onChange(BlockPos pos);
 
 }

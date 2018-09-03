@@ -101,7 +101,7 @@ public final class ModReference {
 		}
 
 		public static boolean debugAPIMaterials() {
-			return true;
+			return false;
 		}
 	}
 

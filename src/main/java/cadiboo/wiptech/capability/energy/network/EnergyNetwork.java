@@ -1,136 +1,37 @@
 package cadiboo.wiptech.capability.energy.network;
 
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
-
-import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.tileentity.TileEntityWire;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class EnergyNetwork {
 
-	private ModEnergyStorage energy;
+	private final HashSet<BlockPos> connections;
+	private final World world;
 
-	private HashSet<TileEntityWire> connections;
-
-	public EnergyNetwork() {
-		this.energy = new ModEnergyStorage(0) {
-			@Override
-			public int getCapacity() {
-				int capacity = 0;
-				for (final ModEnergyStorage energy : EnergyNetwork.this.getEnergyStorages()) {
-					capacity += energy.getCapacity();
-				}
-				return capacity;
-			}
-
-			@Override
-			public int getEnergyStored() {
-				int energyStored = 0;
-				for (final ModEnergyStorage energy : EnergyNetwork.this.getEnergyStorages()) {
-					energyStored += energy.getEnergyStored();
-				}
-				return energyStored;
-			}
-
-			@Override
-			public int getMaxExtract() {
-				int maxExtract = 0;
-				for (final ModEnergyStorage energy : EnergyNetwork.this.getEnergyStorages()) {
-					maxExtract += energy.getMaxExtract();
-				}
-				return maxExtract;
-			}
-
-			@Override
-			public int getMaxReceive() {
-				int maxReceive = 0;
-				for (final ModEnergyStorage energy : EnergyNetwork.this.getEnergyStorages()) {
-					maxReceive += energy.getMaxReceive();
-				}
-				return maxReceive;
-			}
-		};
+	public EnergyNetwork(final World world) {
 		this.connections = new HashSet<>(0);
+		this.world = world;
 	}
 
-	public ModEnergyStorage getEnergy() {
-		return this.energy;
-	}
-
-	public HashSet<TileEntityWire> getConnections() {
+	public HashSet<BlockPos> getConnections() {
 		return this.connections;
 	}
 
-	public Set<BlockPos> getPositions() {
-		final HashSet<BlockPos> positions = new HashSet<>();
-		for (final TileEntityWire connection : this.connections) {
-			positions.add(connection.getPosition());
-		}
-		return positions;
-	}
-
-	public Collection<ModEnergyStorage> getEnergyStorages() {
-		final HashSet<ModEnergyStorage> storages = new HashSet<>();
-		for (final TileEntityWire connection : this.connections) {
-			storages.add(connection.getEnergy());
-		}
-		return storages;
-	}
-
-	public EnergyNetwork add(final TileEntityWire connection) {
+	public EnergyNetwork add(final BlockPos connection) {
 		this.getConnections().add(connection);
 		return this;
 	}
 
-	public EnergyNetwork remove(final TileEntityWire connection) {
+	public EnergyNetwork remove(final BlockPos connection) {
 		this.getConnections().remove(connection);
 		return this;
-	}
-
-	public void update() {
-		final int eachEnergy = (int) ((float) this.getEnergy().getEnergyStored() / (float) this.getConnections().size());
-		int energyRemaining = this.getEnergy().getEnergyStored();
-
-		int repetitions = 0;
-
-		while (energyRemaining > 0) {
-			repetitions++;
-			if (repetitions > 3) {
-				WIPTech.warn("repetitions went over 3 when trying to distribute energy inside the network!");
-				new Exception().printStackTrace();
-				break;
-			}
-			for (final ModEnergyStorage energy : this.getEnergyStorages()) {
-				energyRemaining -= energy.extractEnergy(eachEnergy, false);
-			}
-
-		}
-
-	}
-
-	@Nullable
-	public EnergyNetwork tryMerge(final EnergyNetwork other) {
-		for (final BlockPos myConnectionPosition : this.getPositions()) {
-			for (final BlockPos otherConnectionPosition : other.getPositions()) {
-				for (final EnumFacing facing : EnumFacing.VALUES) {
-					final BlockPos pos = myConnectionPosition.offset(facing);
-					if (otherConnectionPosition.equals(pos)) {
-						final EnergyNetwork newNetwork = new EnergyNetwork();
-						newNetwork.getConnections().addAll(this.getConnections());
-						newNetwork.getConnections().addAll(other.getConnections());
-						return newNetwork;
-					}
-				}
-			}
-		}
-
-		return null;
 	}
 
 	@Override
@@ -140,7 +41,68 @@ public class EnergyNetwork {
 
 	@Override
 	public int hashCode() {
-		return this.connections.hashCode();
+		return this.getConnections().hashCode();
+	}
+
+	void distributeEnergy(final BlockPos... dontDistribute) {
+		int networkEnergy = this.getNetworkEnergy();
+
+		final HashSet<BlockPos> hashedDontDistribute = new HashSet<>(Arrays.asList(dontDistribute));
+
+		final HashSet<ModEnergyStorage> storages = new HashSet<>();
+
+		for (final BlockPos pos : this.getConnections()) {
+			try {
+				if (!hashedDontDistribute.contains(pos)) {
+					storages.add(((TileEntityWire) this.world.getTileEntity(pos)).getEnergy());
+				}
+			} catch (final Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		int repetitions = 0;
+		while (networkEnergy > 0) {
+			repetitions++;
+
+			final int[] sets = splitIntoParts(networkEnergy, storages.size());
+
+			if (repetitions >= 5) {
+				WIPTech.warn("repetitions went over 5. repetitions were", repetitions, networkEnergy, sets);
+				break;
+			}
+
+			for (int i = 0; i < storages.size(); i++) {
+				networkEnergy -= storages.toArray(new ModEnergyStorage[0])[i].setEnergyStored(sets[i], false);
+			}
+
+		}
+	}
+
+	int getNetworkEnergy() {
+		int networkEnergy = 0;
+		for (final BlockPos pos : this.getConnections()) {
+			try {
+				final TileEntity tile = this.world.getTileEntity(pos);
+				final ModEnergyStorage energy = ((TileEntityWire) tile).getEnergy();
+				networkEnergy += energy.getEnergyStored();
+			} catch (final Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return networkEnergy;
+	}
+	private static int[] splitIntoParts(final int whole, final int parts) {
+		final int[] arr = new int[parts];
+		int remain = whole;
+		int partsLeft = parts;
+		for (int i = 0; partsLeft > 0; i++) {
+			final int size = ((remain + partsLeft) - 1) / partsLeft; // rounded up, aka ceiling
+			arr[i] = size;
+			remain -= size;
+			partsLeft--;
+		}
+		return arr;
 	}
 
 }

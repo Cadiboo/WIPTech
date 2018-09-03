@@ -1,8 +1,12 @@
 package cadiboo.wiptech.capability.energy.network;
 
+import java.util.HashSet;
+
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -17,28 +21,16 @@ public class CapabilityEnergyNetworkList {
 
 		CapabilityManager.INSTANCE.register(IEnergyNetworkList.class, new IStorage<IEnergyNetworkList>() {
 			@Override
-			public NBTTagCompound writeNBT(final Capability<IEnergyNetworkList> capability, final IEnergyNetworkList instance, final EnumFacing side) {
-				final NBTTagCompound compound = new NBTTagCompound();
-				// compound.setInteger("networksSize", instance.getNetworks().size());
-				//
-				// ArrayList<EnergyNetwork> networks = instance.getNetworks();
-				//
-				// for (int i = 0; i < networks.size(); i++) {
-				// NBTTagCompound networkCompound = new NBTTagCompound();
-				// Set<BlockPos> positions = networks.get(i).getPositions();
-				// networkCompound.setInteger("positionsSize", positions.size());
-				// Iterator<BlockPos> it = positions.iterator();
-				//
-				// int j = 0;
-				// while (it.hasNext()) {
-				// j++;
-				// networkCompound.setString("" + j, "" + it.next().toLong());
-				// }
-				//
-				// compound.setTag("" + i, networkCompound);
-				// }
+			public NBTTagList writeNBT(final Capability<IEnergyNetworkList> capability, final IEnergyNetworkList instance, final EnumFacing side) {
+				final NBTTagList nbtTagList = new NBTTagList();
 
-				return compound;
+				for (final BlockPos pos : instance.getConnections()) {
+					final NBTTagCompound compound = new NBTTagCompound();
+					compound.setLong("pos", pos.toLong());
+					nbtTagList.appendTag(compound);
+				}
+
+				return nbtTagList;
 			}
 
 			@Override
@@ -47,28 +39,27 @@ public class CapabilityEnergyNetworkList {
 					throw new IllegalArgumentException("Can't deserialize to an instance that isn't the default implementation");
 				}
 
-				// if (!(nbt instanceof NBTTagCompound))
-				// throw new IllegalArgumentException("Can't deserialize from a NBT type that isn't a NBTTagCompound");
-				//
-				// NBTTagCompound compound = (NBTTagCompound) nbt;
-				//
-				// int networkSize = compound.getInteger("networksSize");
-				//
-				// ArrayList<EnergyNetwork> networks = new ArrayList<>();
-				//
-				// for (int i = 0; i < networkSize; i++) {
-				// NBTTagCompound networkCompound = compound.getCompoundTag("" + i);
-				// int positionsSize = networkCompound.getInteger("positionsSize");
-				//
-				// EnergyNetwork network = new EnergyNetwork();
-				//
-				// for (int j = 0; j < positionsSize; j++) {
-				// network.add((TileEntityWire) instance.getWorld().getTileEntity(BlockPos.fromLong(Long.parseLong(networkCompound.getString("" + j)))));
-				// }
-				//
-				// }
-				//
-				// instance.setNetworks(networks);
+				final EnergyNetworkList energyNetworkList = (EnergyNetworkList) instance;
+
+				final NBTTagList tagList = (NBTTagList) nbt;
+
+				final HashSet<BlockPos> connections = new HashSet<>();
+
+				for (int i = 0; i < tagList.tagCount(); i++) {
+					final NBTTagCompound compound = tagList.getCompoundTagAt(i);
+
+					final long posLong = compound.getLong("pos");
+					final BlockPos pos = BlockPos.fromLong(posLong);
+
+					connections.add(pos);
+
+				}
+
+				energyNetworkList.getConnections().clear();
+				energyNetworkList.getConnections().addAll(connections);
+
+				energyNetworkList.refreshNetworks();
+
 			}
 		}, () -> new EnergyNetworkList(null));
 	}

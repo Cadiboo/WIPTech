@@ -10,6 +10,7 @@ import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.block.IBlockModMaterial;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
+import cadiboo.wiptech.capability.energy.network.EnergyNetwork;
 import cadiboo.wiptech.capability.energy.network.EnergyNetworkList;
 import cadiboo.wiptech.capability.energy.network.IEnergyNetworkList;
 import cadiboo.wiptech.client.ClientUtil;
@@ -46,6 +47,8 @@ import cadiboo.wiptech.item.ItemRailgun;
 import cadiboo.wiptech.item.ItemSlug;
 import cadiboo.wiptech.item.ItemSlugCasing;
 import cadiboo.wiptech.item.ModItemBlock;
+import cadiboo.wiptech.network.ModNetworkManager;
+import cadiboo.wiptech.network.play.server.SPacketSyncEnergyNetworkList;
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ExistsForDebugging;
@@ -66,8 +69,10 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -93,6 +98,9 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerChangedDimensionEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -574,39 +582,50 @@ public final class EventSubscriber {
 		if (list == null) {
 			return;
 		}
-
-		for (final BlockPos pos : list.getConnections()) {
-			// your positions. You might want to shift them a bit too
-			final int sX = pos.getX();
-			final int sY = pos.getY();
-			final int sZ = pos.getZ();
-			// Usually the player
-			final Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-			// Interpolating everything back to 0,0,0. These are transforms you can find at
-			// RenderEntity class
-			final double d0 = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * event.getPartialTicks());
-			final double d1 = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * event.getPartialTicks());
-			final double d2 = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * event.getPartialTicks());
-			// Apply 0-our transforms to set everything back to 0,0,0
-			Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
-			// Tessellator.getInstance().getBuffer().setTranslation(100, 0, 0);
-			// Your render function which renders boxes at a desired position. In this
-			// example I just copy-pasted the one on TileEntityStructureRenderer
-			Minecraft.getMinecraft().getTextureManager().bindTexture(new ModResourceLocation("minecraft", "textures/environment/clouds.png"));
-
-			final Random rand = new Random(world.getTotalWorldTime());
-
-			for (int i = 0; i < (sX + sY + sZ); i++) {
-				rand.nextFloat();
-			}
-
-			GlStateManager.color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
-			ClientUtil.drawCuboidAt(sX + 0.5, sY + 0.5, sZ + 0.5, 0, 1, 0, 1, 0.5, 0.5, 0.5, 1);
-			// renderBox(Tessellator.getInstance(), Tessellator.getInstance().getBuffer(), sX, sY, sZ, sX + 1, sY + 1, sZ + 1);
-			// When you are done rendering all your boxes reset the offsets. We do not want
-			// everything that renders next to still be at 0,0,0 :)
-			Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
+		if (!(list instanceof EnergyNetworkList)) {
+			return;
 		}
+
+		for (final EnergyNetwork network : ((EnergyNetworkList) list).getNetworks()) {
+			for (final BlockPos pos : network.getConnections()) {
+
+				// our positions
+				final int sX = pos.getX();
+				final int sY = pos.getY();
+				final int sZ = pos.getZ();
+
+				// Usually the player
+				final Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+
+				// Interpolating everything back to 0,0,0. These are transforms you can find at RenderEntity class
+				final double d0 = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * event.getPartialTicks());
+				final double d1 = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * event.getPartialTicks());
+				final double d2 = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * event.getPartialTicks());
+
+				// Apply 0-our transforms to set everything back to 0,0,0
+				Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
+
+				// bind our texture
+				Minecraft.getMinecraft().getTextureManager().bindTexture(new ModResourceLocation(ModReference.MOD_ID, "textures/misc/circuits.png"));
+
+				if (pos.distanceSq(d0, d1, d2) > Math.pow(5, 2)) {
+					Minecraft.getMinecraft().getTextureManager().getTexture(new ModResourceLocation(ModReference.MOD_ID, "textures/misc/circuits.png")).setBlurMipmap(true, false);
+				} else {
+					Minecraft.getMinecraft().getTextureManager().getTexture(new ModResourceLocation(ModReference.MOD_ID, "textures/misc/circuits.png")).setBlurMipmap(false, false);
+				}
+
+				final Random rand = new Random(network.hashCode());
+
+				GlStateManager.color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
+
+				// actual render function
+//				ClientUtil.drawCuboidAt(sX + 0.5, sY + 0.5, sZ + 0.5, 0, 1, 0, 1, 0.5, 0.5, 0.5, 1);
+
+				// When you are done rendering all your boxes reset the offsets. We do not want everything that renders next to still be at 0,0,0 :)
+				Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
+			}
+		}
+
 	}
 
 	@SubscribeEvent
@@ -732,6 +751,42 @@ public final class EventSubscriber {
 				return null;
 			}
 		});
+	}
+
+	@SubscribeEvent
+	public static void onPlayerLoggedIn(final PlayerLoggedInEvent event) {
+		if (!(event.player instanceof EntityPlayerMP)) {
+			return;
+		}
+		final EntityPlayerMP player = (EntityPlayerMP) event.player;
+
+		final World world = player.world;
+		if (world == null) {
+			return;
+		}
+
+		final IEnergyNetworkList list = world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
+		if (list == null) {
+			return;
+		}
+
+		final NBTTagList syncTag = (NBTTagList) CapabilityEnergyNetworkList.NETWORK_LIST.writeNBT(list, null);
+
+		ModNetworkManager.NETWORK.sendTo(new SPacketSyncEnergyNetworkList(syncTag), player);
+
+	}
+
+	@SubscribeEvent
+	public void onChangeDimension(final PlayerChangedDimensionEvent event) {
+		WIPTech.info("Player Changed Dimension");
+		WIPTech.info(event.player.world.loadedTileEntityList);
+		WIPTech.info("New Dimension ID: " + event.player.dimension);
+	}
+
+	@SubscribeEvent
+	public void onPlayerRespawn(final PlayerRespawnEvent event) {
+		WIPTech.info(event.player.world.loadedTileEntityList);
+		WIPTech.info("Player Respawned");
 	}
 
 	@SubscribeEvent
