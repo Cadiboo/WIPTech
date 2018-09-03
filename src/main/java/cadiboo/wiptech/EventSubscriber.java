@@ -8,6 +8,7 @@ import cadiboo.wiptech.block.BlockModOre;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.block.IBlockModMaterial;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.capability.energy.network.EnergyNetworkList;
 import cadiboo.wiptech.capability.energy.network.IEnergyNetworkList;
@@ -29,6 +30,7 @@ import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.entity.projectile.EntitySlugCasing;
 import cadiboo.wiptech.init.ModItems;
+import cadiboo.wiptech.item.IItemModMaterial;
 import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemFlamethrower;
@@ -305,12 +307,12 @@ public final class EventSubscriber {
 
 		registerModelsForMaterials();
 
-		registerItemModel(ModItems.PORTABLE_GENERATOR);
-		registerItemModel(ModItems.FLAMETHROWER);
-		registerItemModel(ModItems.RAILGUN);
-		registerItemModel(ModItems.SLUG_CASING_BACK);
-		registerItemModel(ModItems.SLUG_CASING_TOP);
-		registerItemModel(ModItems.SLUG_CASING_BOTTOM);
+		registerNormalItemModel(ModItems.PORTABLE_GENERATOR);
+		registerNormalItemModel(ModItems.FLAMETHROWER);
+		registerNormalItemModel(ModItems.RAILGUN);
+		registerNormalItemModel(ModItems.SLUG_CASING_BACK);
+		registerNormalItemModel(ModItems.SLUG_CASING_TOP);
+		registerNormalItemModel(ModItems.SLUG_CASING_BOTTOM);
 
 		WIPTech.info("Registered models");
 
@@ -339,7 +341,7 @@ public final class EventSubscriber {
 				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name);
 					}
 				});
 			}
@@ -348,7 +350,7 @@ public final class EventSubscriber {
 				ModelLoader.setCustomStateMapper(material.getEnamel(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
 					}
 				});
 			}
@@ -381,7 +383,8 @@ public final class EventSubscriber {
 		for (final ModMaterials material : ModMaterials.values()) {
 
 			if (material.getProperties().hasRailgunSlug()) {
-				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "cased_" + material.getNameLowercase() + "_slug"), ModWritingUtil.default_variant_name));
+				// FIXME TODO
+				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), "cased_" + material.getNameLowercase() + "_slug"), ModWritingUtil.default_variant_name));
 			}
 
 		}
@@ -392,91 +395,91 @@ public final class EventSubscriber {
 		for (final ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre()) {
 				if (material.getOre() != null) {
-					registerItemBlockModel(material.getOre());
+					registerBlockModMaterialItemBlockModel(material.getOre());
 				}
 			}
 
 			if (material.getProperties().hasBlock()) {
 				if (material.getBlock() != null) {
-					registerItemBlockModel(material.getBlock());
+					registerBlockModMaterialItemBlockModel(material.getBlock());
 				}
 			}
 
 			if (material.getProperties().hasResource()) {
-				if ((material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
-					registerItemBlockModel(material.getResource());
+				if ((material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getAssetsModId()))) {
+					registerBlockModMaterialItemBlockModel(material.getResource());
 				}
-				if ((material.getResourcePiece() != null) && (material.getResouceLocationDomain(material.getType().getResourcePieceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
-					registerItemBlockModel(material.getResourcePiece());
+				if ((material.getResourcePiece() != null) && (material.getResouceLocationDomain(material.getType().getResourcePieceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getAssetsModId()))) {
+					registerBlockModMaterialItemBlockModel(material.getResourcePiece());
 				}
 			}
 
 			if (material.getProperties().hasWire()) {
 				if (material.getWire() != null) {
-					registerItemBlockModel(material.getWire());
+					registerBlockModMaterialItemBlockModel(material.getWire());
 				}
 				if (material.getSpool() != null) {
-					registerItemBlockModel(material.getSpool());
+					registerBlockModMaterialItemBlockModel(material.getSpool());
 				}
 			}
 
 			if (material.getProperties().hasEnamel()) {
 				if (material.getEnamel() != null) {
-					registerItemBlockModel(material.getEnamel());
+					registerBlockModMaterialItemBlockModel(material.getEnamel());
 				}
 			}
 
 			if (material.getProperties().hasArmor()) {
 				if (material.getHelmet() != null) {
-					registerItemModel(material.getHelmet());
+					registerItemModMaterialModel(material.getHelmet());
 				}
 				if (material.getChestplate() != null) {
-					registerItemModel(material.getChestplate());
+					registerItemModMaterialModel(material.getChestplate());
 				}
 				if (material.getLeggings() != null) {
-					registerItemModel(material.getLeggings());
+					registerItemModMaterialModel(material.getLeggings());
 				}
 				if (material.getBoots() != null) {
-					registerItemModel(material.getBoots());
+					registerItemModMaterialModel(material.getBoots());
 				}
 			}
 
 			if (material.getProperties().hasTools()) {
 				if (material.getPickaxe() != null) {
-					registerItemModel(material.getPickaxe());
+					registerItemModMaterialModel(material.getPickaxe());
 				}
 				if (material.getAxe() != null) {
-					registerItemModel(material.getAxe());
+					registerItemModMaterialModel(material.getAxe());
 				}
 				if (material.getSword() != null) {
-					registerItemModel(material.getSword());
+					registerItemModMaterialModel(material.getSword());
 				}
 				if (material.getShovel() != null) {
-					registerItemModel(material.getShovel());
+					registerItemModMaterialModel(material.getShovel());
 				}
 				if (material.getHoe() != null) {
-					registerItemModel(material.getHoe());
+					registerItemModMaterialModel(material.getHoe());
 				}
 			}
 
 			if (material.getProperties().hasCoil()) {
 				if (material.getCoil() != null) {
-					registerItemModel(material.getCoil());
+					registerItemModMaterialModel(material.getCoil());
 				}
 			}
 
 			if (material.getProperties().hasRail()) {
 				if (material.getRail() != null) {
-					registerItemModel(material.getRail());
+					registerItemModMaterialModel(material.getRail());
 				}
 			}
 
 			if (material.getProperties().hasRailgunSlug()) {
 				if (material.getSlugItem() != null) {
-					registerItemModel(material.getSlugItem());
+					registerItemModMaterialModel(material.getSlugItem());
 				}
 				if (material.getCasedSlug() != null) {
-					registerItemModel(material.getCasedSlug());
+					registerItemModMaterialModel(material.getCasedSlug());
 				}
 			}
 
@@ -485,23 +488,31 @@ public final class EventSubscriber {
 	}
 
 	@SideOnly(Side.CLIENT)
-	private static void registerItemModel(final Item item) {
+	private static <T extends Item & IItemModMaterial> void registerItemModMaterialModel(final T item) {
+		final boolean isVanilla = item.getRegistryName().getResourceDomain().equals("minecraft");
+		final String registryNameResourceDomain = isVanilla ? "minecraft" : item.getModMaterial().getAssetsModId();
+		final String registryNameResourcePath = item.getRegistryName().getResourcePath();
+
+		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), ModWritingUtil.default_variant_name));
+	}
+
+	@SideOnly(Side.CLIENT)
+	private static <T extends Block & IBlockModMaterial> void registerBlockModMaterialItemBlockModel(final T block) {
+		final boolean isVanilla = block.getRegistryName().getResourceDomain().equals("minecraft");
+		final String registryNameResourceDomain = isVanilla ? "minecraft" : block.getModMaterial().getAssetsModId();
+		final String registryNameResourcePath = block.getRegistryName().getResourcePath();
+
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), ModWritingUtil.default_variant_name));
+	}
+
+	@SideOnly(Side.CLIENT)
+	private static void registerNormalItemModel(final Item item) {
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
 	@SideOnly(Side.CLIENT)
-	private static void registerItemBlockModel(final Block block) {
+	private static void registerNormalBlockModel(final Block block) {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), ModWritingUtil.default_variant_name));
-	}
-
-	@SideOnly(Side.CLIENT)
-	private static void registerBlockItemModel(final Block block) {
-		registerItemBlockModel(block);
-	}
-
-	@SideOnly(Side.CLIENT)
-	private static void registerBlockItemItemOverrideModel(final Block block) {
-		ModelLoader.setCustomModelResourceLocation(ForgeRegistries.ITEMS.getValue(new ModResourceLocation("minecraft", block.getRegistryName().getResourcePath())), 0, new ModelResourceLocation(block.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
 	@SubscribeEvent

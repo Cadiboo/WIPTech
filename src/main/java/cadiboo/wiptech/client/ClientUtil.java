@@ -243,7 +243,6 @@ public final class ClientUtil {
 		return new Vec3d(dX, dY, dZ);
 	}
 
-	// TODO
 	/**
 	 * Rotates the X axis directly towards a {@link net.minecraft.util.math.Vec3d Vec3d} position
 	 * @param  source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)

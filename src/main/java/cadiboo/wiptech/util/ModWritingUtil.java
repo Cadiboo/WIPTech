@@ -45,11 +45,21 @@ public class ModWritingUtil {
 	@SideOnly(Side.CLIENT)
 	public static void writeMod() {
 
-		final boolean recipes = true;
-		final boolean lang = true;
-		final boolean json = true;
+		final boolean recipes = false;
+		final boolean lang = false;
+		final boolean json = false;
 
 		WIPTech.info("ModWritingUtil.writeMod() with options write recipes: " + recipes + ", write lang: " + lang + ", write json: " + json);
+
+		if (ModReference.Debug.debugAPIMaterials()) {
+			WIPTech.info("debugAPIMaterials returned true! to prevent large useless files from being created writeMod() is Aborting!");
+			return;
+		}
+
+		if (Boolean.valueOf(false).equals(recipes) && Boolean.valueOf(false).equals(recipes) && Boolean.valueOf(false).equals(recipes)) {
+			WIPTech.info("All arguments are false for writeMod() - Aborting!");
+			return;
+		}
 
 		final ArrayList<Tuple<String, String>> blockstates = new ArrayList<>();
 		final ArrayList<Tuple<String, String>> blockModels = new ArrayList<>();

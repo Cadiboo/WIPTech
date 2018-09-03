@@ -73,6 +73,7 @@ public final class ModEnums {
 			return StringUtils.capitalize(this.getNameLowercase());
 		}
 
+		// HACK
 		String name(); /* not exactly hacky, but this method is provided by enum */
 
 	}
@@ -156,6 +157,10 @@ public final class ModEnums {
 
 		public ModMaterialProperties getProperties() {
 			return this.properties;
+		}
+
+		public String getAssetsModId() {
+			return this.assetsModId;
 		}
 
 		public ArmorMaterial getArmorMaterial() {
