@@ -1,19 +1,14 @@
 package cadiboo.wiptech;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import cadiboo.wiptech.api.WIPTechAPI;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.util.IProxy;
-import cadiboo.wiptech.util.ModEnums.ModMaterialTypes;
 import cadiboo.wiptech.util.ModGuiHandler;
-import cadiboo.wiptech.util.ModMaterialProperties;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModWritingUtil;
 import cadiboo.wiptech.world.gen.ModWorldGenerator;
@@ -85,33 +80,6 @@ public class WIPTech {
 		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 3);
 		new ModNetworkManager();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
-
-		if (ModReference.Debug.debugAPIMaterials()) {
-			for (final ModMaterialTypes type : ModMaterialTypes.values()) {
-				final int n = 5;
-				BigInteger bi = BigInteger.ZERO;
-				final BigDecimal rows = new BigDecimal(Math.pow(2, n));
-				while (bi.compareTo(rows.toBigInteger()) < 0) {
-					String bin = bi.toString(2);// Integer.toBinaryString(i);
-					while (bin.length() < n) {
-						bin = "0" + bin;
-					}
-					final char[] chars = bin.toCharArray();
-					final boolean[] boolArray = new boolean[n];
-					final String[] tfArray = new String[n];
-					for (int j = 0; j < chars.length; j++) {
-						boolArray[j] = chars[j] == '0' ? true : false;
-						tfArray[j] = chars[j] == '0' ? "T" : "F";
-					}
-
-					WIPTech.info(String.join("", tfArray));
-
-					WIPTechAPI.addMaterial("TEST_MATERIAL_" + type.getNameUppercase() + "_" + String.join("", tfArray), type, new ModMaterialProperties(boolArray[0], boolArray[1], boolArray[2], boolArray[3], boolArray[4], 4.00f, 73));
-
-					bi = bi.add(BigInteger.ONE);
-				}
-			}
-		}
 
 		CapabilityEnergyNetworkList.register();
 

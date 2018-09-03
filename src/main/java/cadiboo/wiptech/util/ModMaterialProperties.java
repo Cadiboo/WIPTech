@@ -4,16 +4,16 @@ public class ModMaterialProperties {
 
 	private final boolean hasOre;
 	private final boolean hasBlock;
-	private final boolean hasResouce;
+	private final boolean hasResource;
 	private final boolean hasArmor;
 	private final boolean hasTools;
 	private final float hardness;
 	private final int conductivity;
 
-	public ModMaterialProperties(final boolean hasOre, final boolean hasBlock, final boolean hasResouce, final boolean hasArmor, final boolean hasTools, final float MOHS_Hardness, final int thermalConductivityAt20DegreesCelsius) {
+	public ModMaterialProperties(final boolean hasOre, final boolean hasBlock, final boolean hasResource, final boolean hasArmor, final boolean hasTools, final float MOHS_Hardness, final int thermalConductivityAt20DegreesCelsius) {
 		this.hasOre = hasOre;
 		this.hasBlock = hasBlock;
-		this.hasResouce = hasResouce;
+		this.hasResource = hasResource;
 		this.hasArmor = hasArmor;
 		this.hasTools = hasTools;
 		this.hardness = MOHS_Hardness;
@@ -29,7 +29,7 @@ public class ModMaterialProperties {
 	}
 
 	public final boolean hasResource() {
-		return this.hasResouce;
+		return this.hasResource;
 	}
 
 	public final boolean hasArmor() {
@@ -66,6 +66,24 @@ public class ModMaterialProperties {
 
 	public final boolean hasRail() {
 		return this.hasWire();
+	}
+
+	@Override
+	public String toString() {
+		String string = super.toString() + " - ";
+		string += "hasOre: " + this.hasOre();
+		string += ", hasBlock: " + this.hasBlock();
+		string += ", hasResource: " + this.hasResource();
+		string += ", hasArmor: " + this.hasArmor();
+		string += ", hasTools: " + this.hasTools();
+		string += ", hardness: " + this.getHardness();
+		string += ", conductivity: " + this.getConductivity();
+		string += ", hasRailgunSlug: " + this.hasRailgunSlug();
+		string += ", hasWire: " + this.hasWire();
+		string += ", hasEnamel: " + this.hasEnamel();
+		string += ", hasCoil: " + this.hasCoil();
+		string += ", hasRail: " + this.hasRail();
+		return string;
 	}
 
 }
