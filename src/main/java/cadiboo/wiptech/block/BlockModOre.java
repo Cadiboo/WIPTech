@@ -12,6 +12,10 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
+/**
+ * Custom ore block for materials
+ * @author Cadiboo
+ */
 public class BlockModOre extends Block implements IBlockModMaterial {
 
 	protected final ModMaterials material;

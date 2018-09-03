@@ -26,6 +26,10 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 
+/**
+ * Transmits energy, has a custom baked model, is awesome
+ * @author cadigal
+ */
 public class BlockWire extends Block implements IBlockModMaterial {
 
 	protected static final AxisAlignedBB CORE_AABB = new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 9d / 16d, 9d / 16d, 9d / 16d);

@@ -11,6 +11,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+/**
+ * The same as {@link cadiboo.wiptech.block.BlockWire BlockWire} except with a bigger bounding box and a {@link cadiboo.wiptech.tileentity.TileEntityEnamel TileEntityEnamel} instead of a {@link cadiboo.wiptech.tileentity.TileEntityWire TileEntityWire}
+ * @author Cadiboo
+ */
 public class BlockEnamel extends BlockWire {
 
 	protected static final AxisAlignedBB CORE_AABB = BlockWire.CORE_AABB.grow(1d / 16d);
@@ -59,9 +63,12 @@ public class BlockEnamel extends BlockWire {
 		return new TileEntityEnamel();
 	}
 
+	/**
+	 * Because enamel is covered, only have it emit at maximum a small amount of light
+	 */
 	@Override
 	public int getLightValue(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
-		return Math.min(1, ModUtil.getMaterialLightValue(this.getModMaterial()));
+		return Math.min(2, ModUtil.getMaterialLightValue(this.getModMaterial()));
 	}
 
 }

@@ -7,6 +7,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
+/**
+ * The same as a block of Iron or a block of Gold but for all materials
+ * @author Cadiboo
+ */
 public class BlockResource extends Block implements IBlockModMaterial {
 
 	protected final ModMaterials material;

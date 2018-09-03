@@ -8,6 +8,10 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
+/**
+ * A block of wires stored for later use
+ * @author Cadiboo
+ */
 public class BlockSpool extends Block implements IBlockModMaterial {
 
 	protected final ModMaterials material;

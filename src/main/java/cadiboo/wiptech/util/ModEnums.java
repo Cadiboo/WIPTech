@@ -131,15 +131,21 @@ public final class ModEnums {
 		private final ModMaterialProperties properties;
 		private final ArmorMaterial armorMaterial;
 		private final ToolMaterial toolMaterial;
+		private final String assetsModId;
 
-		ModMaterials(final int id, final ModMaterialTypes type, final ModMaterialProperties properties) {
+		private ModMaterials(final int id, final ModMaterialTypes type, final ModMaterialProperties properties) {
+			this(id, type, properties, ModReference.MOD_ID);
+		}
+
+		ModMaterials(final int id, final ModMaterialTypes type, final ModMaterialProperties properties, final String assetsModId) {
 			this.id = id;
 			this.type = type;
 			this.properties = properties;
 			this.armorMaterial = this.generateArmorMaterial();
 			this.toolMaterial = this.generateToolMaterial();
-
+			this.assetsModId = assetsModId;
 		}
+
 		public int getId() {
 			return this.id;
 		}
