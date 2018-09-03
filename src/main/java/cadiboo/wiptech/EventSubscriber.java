@@ -777,14 +777,14 @@ public final class EventSubscriber {
 	}
 
 	@SubscribeEvent
-	public void onChangeDimension(final PlayerChangedDimensionEvent event) {
+	public static void onPlayerChangedDimension(final PlayerChangedDimensionEvent event) {
 		WIPTech.info("Player Changed Dimension");
 		WIPTech.info(event.player.world.loadedTileEntityList);
 		WIPTech.info("New Dimension ID: " + event.player.dimension);
 	}
 
 	@SubscribeEvent
-	public void onPlayerRespawn(final PlayerRespawnEvent event) {
+	public static void onPlayerRespawn(final PlayerRespawnEvent event) {
 		WIPTech.info(event.player.world.loadedTileEntityList);
 		WIPTech.info("Player Respawned");
 	}
