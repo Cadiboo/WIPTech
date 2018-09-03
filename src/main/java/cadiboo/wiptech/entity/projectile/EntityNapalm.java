@@ -2,6 +2,7 @@ package cadiboo.wiptech.entity.projectile;
 
 import java.util.Random;
 
+import cadiboo.wiptech.util.ModReference;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
@@ -54,6 +55,10 @@ public class EntityNapalm extends EntityThrowable {
 			if ((result.entityHit != this.getThrower()) || (this.ticksExisted > 5)) {
 				result.entityHit.setFire(100);
 			}
+		}
+
+		if (ModReference.Debug.insanity()) {
+			this.world.newExplosion(this, this.posX, this.posY, this.posZ, 30, true, true);
 		}
 
 		this.igniteBlocks();

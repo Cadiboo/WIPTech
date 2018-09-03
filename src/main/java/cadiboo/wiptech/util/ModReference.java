@@ -103,6 +103,10 @@ public final class ModReference {
 		public static boolean debugAPIMaterials() {
 			return false;
 		}
+
+		public static boolean insanity() {
+			return false;
+		}
 	}
 
 }

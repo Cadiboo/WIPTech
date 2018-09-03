@@ -62,8 +62,10 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 		if (this.shouldRefreshNetworks()) {
 			this.refreshNetworks();
 		}
-		for (final EnergyNetwork network : this.networks) {
-			network.distributeEnergy();
+		if (this.shouldDistributeEnergy()) {
+			for (final EnergyNetwork network : this.networks) {
+				network.distributeEnergy();
+			}
 		}
 	}
 
@@ -76,7 +78,15 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 	}
 
 	private boolean shouldRefreshNetworks() {
-		final int check = (int) (this.getNetworks().size() / 100f);
+		final int check = (int) (this.getConnections().size() / 100f);
+		if (check == 0) {
+			return true;
+		}
+		return (this.world.getTotalWorldTime() % check) == 0;
+	}
+
+	private boolean shouldDistributeEnergy() {
+		final int check = (int) (this.getConnections().size() / 10f);
 		if (check == 0) {
 			return true;
 		}
@@ -101,6 +111,12 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 	}
 
 	private void generateNetwork(final EnergyNetwork network, final BlockPos pos) {
+
+		if (network.getConnections().size() > 250) {
+			// WIPTech.error("Energy network reached max size! " + pos.toString() + " and any more connections cannot be added to the network!");
+			return;
+		}
+
 		final TileEntity tile = this.world.getTileEntity(pos);
 		if (tile == null) {
 			return;

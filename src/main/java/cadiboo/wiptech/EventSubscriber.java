@@ -586,24 +586,27 @@ public final class EventSubscriber {
 			return;
 		}
 
+		// Usually the player
+		final Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+
+		// Interpolating everything back to 0,0,0. These are transforms you can find at RenderEntity class
+		final double d0 = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * event.getPartialTicks());
+		final double d1 = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * event.getPartialTicks());
+		final double d2 = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * event.getPartialTicks());
+
+		// Apply 0-our transforms to set everything back to 0,0,0
+		Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
+
 		for (final EnergyNetwork network : ((EnergyNetworkList) list).getNetworks()) {
+			final Random rand = new Random(network.hashCode());
+
+			GlStateManager.color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
 			for (final BlockPos pos : network.getConnections()) {
 
 				// our positions
 				final int sX = pos.getX();
 				final int sY = pos.getY();
 				final int sZ = pos.getZ();
-
-				// Usually the player
-				final Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-
-				// Interpolating everything back to 0,0,0. These are transforms you can find at RenderEntity class
-				final double d0 = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * event.getPartialTicks());
-				final double d1 = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * event.getPartialTicks());
-				final double d2 = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * event.getPartialTicks());
-
-				// Apply 0-our transforms to set everything back to 0,0,0
-				Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
 
 				// bind our texture
 				Minecraft.getMinecraft().getTextureManager().bindTexture(new ModResourceLocation(ModReference.MOD_ID, "textures/misc/circuits.png"));
@@ -614,17 +617,14 @@ public final class EventSubscriber {
 					Minecraft.getMinecraft().getTextureManager().getTexture(new ModResourceLocation(ModReference.MOD_ID, "textures/misc/circuits.png")).setBlurMipmap(false, false);
 				}
 
-				final Random rand = new Random(network.hashCode());
-
-				GlStateManager.color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
-
 				// actual render function
-//				ClientUtil.drawCuboidAt(sX + 0.5, sY + 0.5, sZ + 0.5, 0, 1, 0, 1, 0.5, 0.5, 0.5, 1);
+				ClientUtil.drawCuboidAt(sX + 0.5, sY + 0.5, sZ + 0.5, 0, 1, 0, 1, 0.5, 0.5, 0.5, 1);
 
-				// When you are done rendering all your boxes reset the offsets. We do not want everything that renders next to still be at 0,0,0 :)
-				Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
 			}
+
 		}
+		// When you are done rendering all your boxes reset the offsets. We do not want everything that renders next to still be at 0,0,0 :)
+		Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
 
 	}
 
