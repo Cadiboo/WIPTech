@@ -32,7 +32,7 @@ public final class ModReference {
 		 * It is changed when modify API mechanics by changing the order or variables of enums, changing return types of methods or remove public methods altogether.<br>
 		 * It is reset when we update to a new Minecraft version or our Major Mod Version increments.
 		 */
-		public static final int MAJOR_API_VERSION = 0;
+		public static final int MAJOR_API_VERSION = 1;
 
 		/**
 		 * This is our Mod's Minor Mod Version.<br>
@@ -46,7 +46,7 @@ public final class ModReference {
 		 * It is changed when we patch small problems that do not cause a change to any greater versions.<br>
 		 * It is reset when we update to a new Minecraft version, our Major Mod Version increments, our Major API Version increments or our Minor Mod Version increments.
 		 */
-		public static final int PATCH_VERSION = 77;
+		public static final int PATCH_VERSION = 107;
 
 		/**
 		 * This is our Mod's PreRelease Version.<br>
