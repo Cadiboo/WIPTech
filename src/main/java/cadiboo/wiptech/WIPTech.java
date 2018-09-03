@@ -77,12 +77,12 @@ public class WIPTech {
 	public void preInit(final FMLPreInitializationEvent event) {
 		logger = event.getModLog();
 		proxy.logLogicalSide();
+
 		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 3);
 		new ModNetworkManager();
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
 
 		CapabilityEnergyNetworkList.register();
-
 	}
 
 	/**
