@@ -1,7 +1,6 @@
 {
 	"parent": "wiptech:block/wire_extension_up",
 	"textures": {
-		"ingot": "wiptech:item/tungsten_carbite_ingot"
+		"resource": "wiptech:item/tungsten_carbite_ingot"
 	}
 }
-

@@ -4,6 +4,7 @@ import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
@@ -42,6 +43,17 @@ public class BlockResource extends Block implements IBlockModMaterial {
 	}
 
 	@Override
+	public BlockRenderLayer getBlockLayer() {
+		switch (this.getModMaterial().getType()) {
+			case GEM :
+				return BlockRenderLayer.TRANSLUCENT;
+			default :
+			case METAL :
+				return super.getBlockLayer();
+		}
+	}
+
+	@Override
 	public boolean isFullCube(final IBlockState state) {
 		return true;
 	}
@@ -49,6 +61,13 @@ public class BlockResource extends Block implements IBlockModMaterial {
 	@Override
 	public boolean isOpaqueCube(final IBlockState state) {
 		return true;
+		// switch (this.getModMaterial().getType()) {
+		// case GEM :
+		// return false;
+		// default :
+		// case METAL :
+		// return true;
+		// }
 	}
 
 }

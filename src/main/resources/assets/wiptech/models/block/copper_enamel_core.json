@@ -1,7 +1,6 @@
 {
 	"parent": "wiptech:block/enamel_core",
 	"textures": {
-		"ingot": "wiptech:item/copper_ingot"
+		"resource": "wiptech:item/copper_ingot"
 	}
 }
-

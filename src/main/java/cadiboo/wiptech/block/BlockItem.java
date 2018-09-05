@@ -78,16 +78,16 @@ public class BlockItem extends Block implements IBlockModMaterial {
 
 	@Override
 	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer) {
-		final EnumFacing enumfacing = placer.getHorizontalFacing().rotateY();
+		EnumFacing enumfacing = placer.getHorizontalFacing().rotateY();
+		if ((this.getType() == BlockItemTypes.NUGGET) & (this.material == ModMaterials.GOLD)) {
+			enumfacing = enumfacing.rotateY();
+		}
 		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, enumfacing);
 	}
 
 	@Override
 	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
-		EnumFacing facing = state.getValue(FACING);
-		if ((this.getType() == BlockItemTypes.NUGGET) & (this.material == ModMaterials.GOLD)) {
-			facing = facing.rotateY();
-		}
+		final EnumFacing facing = state.getValue(FACING);
 		return this.getType().getBoundingBox(facing);
 	}
 

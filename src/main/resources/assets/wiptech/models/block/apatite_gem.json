@@ -1,7 +1,6 @@
 {
 	"parent": "wiptech:block/gem",
 	"textures": {
-		"ingot": "wiptech:item/apatite_ingot"
+		"gem": "wiptech:item/apatite_gem"
 	}
 }
-

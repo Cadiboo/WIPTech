@@ -1,7 +1,6 @@
 {
-	"parent": "wiptech:entity/slug",
+	"parent": "wiptech:item/slug",
 	"textures": {
-		"ingot": "wiptech:item/steel_ingot"
+		"resource": "wiptech:item/steel_ingot"
 	}
 }
-

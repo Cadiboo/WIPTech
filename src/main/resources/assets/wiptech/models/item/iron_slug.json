@@ -1,7 +1,6 @@
 {
-	"parent": "wiptech:entity/slug",
+	"parent": "wiptech:item/slug",
 	"textures": {
-		"ingot": "minecraft:items/iron_ingot"
+		"resource": "minecraft:items/iron_ingot"
 	}
 }
-

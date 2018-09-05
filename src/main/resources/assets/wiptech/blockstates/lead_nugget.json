@@ -1,9 +1,15 @@
 {
-    "variants": {
-        "facing=north": { "model": "wiptech:lead_nugget", "y": 90 },
-        "facing=south": { "model": "wiptech:lead_nugget", "y": 270 },
-        "facing=west":  { "model": "wiptech:lead_nugget", "y": 0 },
-        "facing=east":  { "model": "wiptech:lead_nugget", "y": 180 }
-    }
+	"variants": {
+		"facing=south": {
+			"model": "wiptech:lead_nugget", "y": 270
+		},
+		"facing=west": {
+			"model": "wiptech:lead_nugget", "y": 0
+		},
+		"facing=north": {
+			"model": "wiptech:lead_nugget", "y": 90
+		},
+		"facing=east": {
+			"model": "wiptech:lead_nugget", "y": 180
+		}	}
 }
-

@@ -1,7 +1,6 @@
 {
 	"parent": "wiptech:block/spool",
 	"textures": {
-		"ingot": "minecraft:items/iron_ingot"
+		"resource": "minecraft:items/iron_ingot"
 	}
 }
-

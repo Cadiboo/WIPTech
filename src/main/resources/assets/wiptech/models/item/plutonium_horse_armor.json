@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "wiptech:item/plutonium_horse_armor"
+	}
+}

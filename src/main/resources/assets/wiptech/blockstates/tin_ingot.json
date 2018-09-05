@@ -1,9 +1,15 @@
 {
-    "variants": {
-        "facing=north": { "model": "wiptech:tin_ingot", "y": 0 },
-        "facing=south": { "model": "wiptech:tin_ingot", "y": 180 },
-        "facing=west":  { "model": "wiptech:tin_ingot", "y": 270 },
-        "facing=east":  { "model": "wiptech:tin_ingot", "y": 90 }
-    }
+	"variants": {
+		"facing=south": {
+			"model": "wiptech:tin_ingot", "y": 0
+		},
+		"facing=west": {
+			"model": "wiptech:tin_ingot", "y": 90
+		},
+		"facing=north": {
+			"model": "wiptech:tin_ingot", "y": 180
+		},
+		"facing=east": {
+			"model": "wiptech:tin_ingot", "y": 270
+		}	}
 }
-

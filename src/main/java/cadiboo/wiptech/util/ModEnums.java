@@ -18,12 +18,14 @@ import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemModArmor;
 import cadiboo.wiptech.item.ItemModAxe;
 import cadiboo.wiptech.item.ItemModHoe;
+import cadiboo.wiptech.item.ItemModHorseArmor;
 import cadiboo.wiptech.item.ItemModPickaxe;
 import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.item.ItemSlug;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.passive.HorseArmorType;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
@@ -132,6 +134,7 @@ public final class ModEnums {
 		private final ModMaterialProperties properties;
 		private final ArmorMaterial armorMaterial;
 		private final ToolMaterial toolMaterial;
+		private final HorseArmorType horseArmorType;
 		private final String assetsModId;
 
 		private ModMaterials(final int id, final ModMaterialTypes type, final ModMaterialProperties properties) {
@@ -144,6 +147,7 @@ public final class ModEnums {
 			this.properties = properties;
 			this.armorMaterial = this.generateArmorMaterial();
 			this.toolMaterial = this.generateToolMaterial();
+			this.horseArmorType = this.generateHorseArmorType();
 			this.assetsModId = assetsModId;
 		}
 
@@ -169,6 +173,10 @@ public final class ModEnums {
 
 		public ToolMaterial getToolMaterial() {
 			return this.toolMaterial;
+		}
+
+		public HorseArmorType getHorseArmorType() {
+			return this.horseArmorType;
 		}
 
 		private ToolMaterial generateToolMaterial() {
@@ -214,6 +222,20 @@ public final class ModEnums {
 			}
 		}
 
+		private HorseArmorType generateHorseArmorType() {
+			if (!this.getProperties().hasArmor()) {
+				return HorseArmorType.NONE;
+			} else {
+				final String name = this.getNameUppercase();
+
+				final String textureLocation = new ModResourceLocation(this.getResouceLocationDomain("horse_armor", ForgeRegistries.ITEMS), "textures/entity/horse/armor/horse_armor_" + this.getNameLowercase()).toString() + ".png";
+
+				final int armorStrength = Math.round(this.getProperties().getHardness());
+
+				return EnumHelper.addHorseArmor(name, textureLocation, armorStrength);
+			}
+		}
+
 		public String getResouceLocationDomain(final String nameSuffix, final IForgeRegistry registry) {
 			for (final ModContainer mod : Loader.instance().getActiveModList()) {
 				if (!mod.getModId().equals(ModReference.MOD_ID)) {
@@ -226,6 +248,11 @@ public final class ModEnums {
 		}
 
 		public String getVanillaNameLowercase(final String suffix) {
+
+			// if (suffix.toLowerCase().equals("horse_armor") && this.getNameLowercase().equals("iron")) {
+			// return "metal_horse_armor";
+			// }
+
 			switch (suffix.toLowerCase()) {
 				case "sword" :
 				case "shovel" :
@@ -343,6 +370,13 @@ public final class ModEnums {
 			return (ItemModArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "boots");
 		}
 
+		public ItemModHorseArmor getHorseArmor() {
+			if (!this.getProperties().hasArmor()) {
+				return null;
+			}
+			return (ItemModHorseArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "horse_armor");
+		}
+
 		@Nullable
 		public ItemModPickaxe getPickaxe() {
 			if (!this.getProperties().hasTools()) {
@@ -424,9 +458,14 @@ public final class ModEnums {
 		}
 
 		@Nullable
-		private <T> T getRegistryValue(@Nonnull final IForgeRegistry<? extends IForgeRegistryEntry<T>> registry, @Nonnull String nameSuffix) {
+		private <T> T getRegistryValue(@Nonnull final IForgeRegistry<? extends IForgeRegistryEntry<T>> registry, @Nonnull final String nameSuffix) {
+			return getRegistryValue(registry, this, nameSuffix);
+		}
+
+		@Nullable
+		public static <T> T getRegistryValue(@Nonnull final IForgeRegistry<? extends IForgeRegistryEntry<T>> registry, @Nonnull final ModMaterials material, @Nonnull String nameSuffix) {
 			nameSuffix = nameSuffix.toLowerCase();
-			return (T) registry.getValue(new ModResourceLocation(this.getResouceLocationDomain(nameSuffix, registry), this.getNameLowercase() + "_" + nameSuffix));
+			return (T) registry.getValue(new ModResourceLocation(material.getResouceLocationDomain(nameSuffix, registry), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix));
 		}
 
 		public static float getHighestHardness() {
@@ -442,6 +481,9 @@ public final class ModEnums {
 		public static double getHighestConductivity() {
 			float ret = 0;
 			for (final ModMaterials material : ModMaterials.values()) {
+				if (material == material.GLITCH) {
+					continue;
+				}
 				if (material.getProperties().getConductivity() > ret) {
 					ret = material.getProperties().getConductivity();
 				}

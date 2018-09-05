@@ -1,7 +1,0 @@
-{
-	"parent": "wiptech:wire",
-	"textures": {
-		"layer0": "wiptech:item/osmium_wire"
-	}
-}
-

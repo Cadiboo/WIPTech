@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 /**
  * @author Cadiboo
  */
-@Mod(modid = "wiptech_api_tester", name = "WIPTech Api Tester")
+@Mod(modid = "wiptech_api_tester", name = "WIPTech Api Tester", version = "0.0")
 /*@formatter:on*/
 public class WIPTechApiTester {
 

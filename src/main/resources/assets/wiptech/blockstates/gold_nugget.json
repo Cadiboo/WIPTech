@@ -1,9 +1,15 @@
 {
-    "variants": {
-        "facing=north": { "model": "wiptech:gold_nugget", "y": 180},
-        "facing=south": { "model": "wiptech:gold_nugget", "y": 0 },
-        "facing=west":  { "model": "wiptech:gold_nugget", "y": 90 },
-        "facing=east":  { "model": "wiptech:gold_nugget", "y": 270 }
-    }
+	"variants": {
+		"facing=south": {
+			"model": "wiptech:gold_nugget", "y": 270
+		},
+		"facing=west": {
+			"model": "wiptech:gold_nugget", "y": 0
+		},
+		"facing=north": {
+			"model": "wiptech:gold_nugget", "y": 90
+		},
+		"facing=east": {
+			"model": "wiptech:gold_nugget", "y": 180
+		}	}
 }
-

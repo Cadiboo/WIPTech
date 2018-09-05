@@ -1,7 +1,6 @@
 {
 	"parent": "wiptech:block/wire_extension_north",
 	"textures": {
-		"ingot": "wiptech:item/osmium_ingot"
+		"resource": "wiptech:item/osmium_ingot"
 	}
 }
-

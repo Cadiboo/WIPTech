@@ -1,7 +1,6 @@
 {
 	"parent": "wiptech:block/spool",
 	"textures": {
-		"ingot": "wiptech:item/nickel_ingot"
+		"resource": "wiptech:item/nickel_ingot"
 	}
 }
-

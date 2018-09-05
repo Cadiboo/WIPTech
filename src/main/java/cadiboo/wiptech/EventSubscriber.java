@@ -1,5 +1,6 @@
 package cadiboo.wiptech;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import cadiboo.wiptech.block.BlockEnamel;
@@ -38,6 +39,7 @@ import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemModArmor;
 import cadiboo.wiptech.item.ItemModAxe;
 import cadiboo.wiptech.item.ItemModHoe;
+import cadiboo.wiptech.item.ItemModHorseArmor;
 import cadiboo.wiptech.item.ItemModPickaxe;
 import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
@@ -69,6 +71,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.HorseArmorType;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -78,6 +81,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.registry.IRegistry;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
@@ -225,6 +229,7 @@ public final class EventSubscriber {
 				registry.register(new ItemModArmor(material, EntityEquipmentSlot.CHEST));
 				registry.register(new ItemModArmor(material, EntityEquipmentSlot.LEGS));
 				registry.register(new ItemModArmor(material, EntityEquipmentSlot.FEET));
+				registry.register(new ItemModHorseArmor(material));
 			}
 
 			if (material.getProperties().hasTools()) {
@@ -450,6 +455,9 @@ public final class EventSubscriber {
 				if (material.getBoots() != null) {
 					registerItemModMaterialModel(material.getBoots());
 				}
+				if (material.getHorseArmor() != null) {
+					registerItemModMaterialModel(material.getHorseArmor());
+				}
 			}
 
 			if (material.getProperties().hasTools()) {
@@ -535,25 +543,16 @@ public final class EventSubscriber {
 
 	@SideOnly(Side.CLIENT)
 	private static void injectModels(final IRegistry<ModelResourceLocation, IBakedModel> registry) {
-		final ModResourceLocation[] models = {
+		final ArrayList<ModResourceLocation> models = new ArrayList<>();
 
-				new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_handle"),
-
-				new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_wheel"),
-
-				new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_base"),
-
-				new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_turret"),
-
-				new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_gun"),
-
-				// new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_back"),
-				//
-				// new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_top"),
-				//
-				// new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_bottom"),
-
-		};
+		models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_handle"));
+		models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_wheel"));
+		models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_base"));
+		models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_turret"));
+		models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_gun"));
+		// models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_back"));
+		// models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_top"));
+		// models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_bottom"));
 
 		for (final ModResourceLocation model : models) {
 			try {
@@ -586,6 +585,8 @@ public final class EventSubscriber {
 			return;
 		}
 
+		GlStateManager.enableBlend();
+
 		// Usually the player
 		final Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
 
@@ -600,7 +601,7 @@ public final class EventSubscriber {
 		for (final EnergyNetwork network : ((EnergyNetworkList) list).getNetworks()) {
 			final Random rand = new Random(network.hashCode());
 
-			GlStateManager.color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
+			GlStateManager.color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 0.6f);
 			for (final BlockPos pos : network.getConnections()) {
 
 				// our positions
@@ -625,6 +626,8 @@ public final class EventSubscriber {
 		}
 		// When you are done rendering all your boxes reset the offsets. We do not want everything that renders next to still be at 0,0,0 :)
 		Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
+
+		GlStateManager.disableBlend();
 
 	}
 
@@ -686,6 +689,23 @@ public final class EventSubscriber {
 	public static void onTooltipEvent(final ItemTooltipEvent event) {
 
 		final Item item = event.getItemStack().getItem();
+
+		if (item.getHorseArmorType(event.getItemStack()) != HorseArmorType.NONE) {
+			final HorseArmorType armorType = item.getHorseArmorType(event.getItemStack());
+
+			setTooltip(event, TextFormatting.RESET + "");
+
+			setTooltip(event, WIPTech.proxy.localize("item.modifiers.horse") + ": ");
+
+			final int protection = armorType.getProtection();
+
+			if (protection > 0) {
+				setTooltip(event, TextFormatting.BLUE + " " + WIPTech.proxy.localizeAndFormat("attribute.modifier.plus.0", protection, WIPTech.proxy.localize("enchantment.protect.all")));
+			} else if (protection < 0) {
+				setTooltip(event, TextFormatting.RED + " " + WIPTech.proxy.localizeAndFormat("attribute.modifier.take.0", protection, WIPTech.proxy.localize("enchantment.protect.all")));
+			}
+
+		}
 
 		if (!item.getRegistryName().getResourceDomain().equals(ModReference.MOD_ID)) {
 			return;

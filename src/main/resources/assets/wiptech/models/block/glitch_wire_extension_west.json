@@ -1,7 +1,6 @@
 {
 	"parent": "wiptech:block/wire_extension_west",
 	"textures": {
-		"ingot": "wiptech:item/glitch_ingot"
+		"resource": "wiptech:item/glitch_ingot"
 	}
 }
-

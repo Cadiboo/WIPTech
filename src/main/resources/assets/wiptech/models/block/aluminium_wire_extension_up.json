@@ -1,7 +1,6 @@
 {
 	"parent": "wiptech:block/wire_extension_up",
 	"textures": {
-		"ingot": "wiptech:item/aluminium_ingot"
+		"resource": "wiptech:item/aluminium_ingot"
 	}
 }
-

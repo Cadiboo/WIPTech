@@ -1,7 +1,6 @@
 {
 	"parent": "wiptech:block/enamel_extension_up",
 	"textures": {
-		"ingot": "minecraft:items/iron_ingot"
+		"resource": "minecraft:items/iron_ingot"
 	}
 }
-

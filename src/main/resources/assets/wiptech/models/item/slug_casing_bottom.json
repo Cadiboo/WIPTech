@@ -1,5 +1,5 @@
 {
-	"credit": "Made with Blockbench",
+	"parent": "minecraft:item/generated",
 	"textures": {
 		"iron": "blocks/door_iron_lower"
 	},
@@ -52,33 +52,5 @@
 				"down": {"uv": [0, 7, 16, 9], "texture": "#iron", "rotation": 90}
 			}
 		}
-	],
-	"display": {
-		"firstperson_lefthand": {
-			"scale": [0.68, 0.68, 0.68],
-			"rotation": [0, 0, 25],
-			"translation": [1.13, 3.2, 0]
-		},
-		"firstperson_righthand": {
-			"scale": [0.68, 0.68, 0.68],
-			"rotation": [0, 0, 25],
-			"translation": [1.13, 3.2, 0]
-		},
-		"head": {
-			"translation": [0, 11.5, 0]
-		},
-		"ground": {
-			"scale": [0.5, 0.5, 0.5],
-			"rotation": [0, 0, 0],
-			"translation": [0, 2, 0]
-		},
-		"fixed": {
-			"rotation": [0, -90, 0]
-		},
-		"gui": {
-			"scale": [0.625, 0.625, 0.625],
-			"rotation": [30, 225, 0],
-			"translation": [0, 0, 0]
-		}
-	}
+	]
 }

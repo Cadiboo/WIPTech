@@ -1,7 +1,6 @@
 {
 	"parent": "wiptech:block/enamel_extension_west",
 	"textures": {
-		"ingot": "wiptech:item/silver_ingot"
+		"resource": "wiptech:item/silver_ingot"
 	}
 }
-

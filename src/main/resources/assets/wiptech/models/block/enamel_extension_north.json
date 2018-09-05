@@ -1,20 +1,20 @@
 {
 	"textures": {
-		"ingot": "wiptech:item/copper_ingot",
+		"resource": "wiptech:item/copper_resource",
 		"concrete": "blocks/concrete_brown",
-		"particle": "#ingot"
+		"particle": "#resource"
 	},
 	"elements": [
 		{
 			"from": [7, 7, 0],
 			"to": [9, 9, 7],
 			"faces": {
-				"north": {"uv": [7, 6, 8, 7], "texture": "#ingot"},
-				"east": {"uv": [7, 6, 8, 7], "texture": "#ingot"},
-				"south": {"uv": [7, 6, 8, 7], "texture": "#ingot"},
-				"west": {"uv": [7, 6, 8, 7], "texture": "#ingot"},
-				"up": {"uv": [7, 6, 8, 7], "texture": "#ingot", "rotation": 270},
-				"down": {"uv": [7, 6, 8, 7], "texture": "#ingot", "rotation": 90}
+				"north": {"uv": [7, 6, 8, 7], "texture": "#resource"},
+				"east": {"uv": [7, 6, 8, 7], "texture": "#resource"},
+				"south": {"uv": [7, 6, 8, 7], "texture": "#resource"},
+				"west": {"uv": [7, 6, 8, 7], "texture": "#resource"},
+				"up": {"uv": [7, 6, 8, 7], "texture": "#resource", "rotation": 270},
+				"down": {"uv": [7, 6, 8, 7], "texture": "#resource", "rotation": 90}
 			}
 		},
 		{
