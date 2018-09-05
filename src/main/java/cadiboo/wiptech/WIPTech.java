@@ -43,6 +43,7 @@ public class WIPTech {
 
 	/***** FOR 1.13 *****/
 	// TODO: Texture locations
+	// TODO: check lang generation
 
 	/***** FOR ALL VERSIONS *****/
 	// TODO: Material Texture locations
@@ -60,6 +61,10 @@ public class WIPTech {
 	// TODO: weapon modules :( scopes, chips, etc
 	// TODO: steel & tungsten carbite - alloying -> custom furnace | craftable raw alloy?
 	// TODO: Glitch models
+	// TODO: test camera transforms
+	// TODO: energy network performance
+	// TODO: CreativeTab itemstack
+	// TODO: glitch spool (should be easy)
 
 	@Instance(ModReference.MOD_ID)
 	public static WIPTech instance;
