@@ -2,12 +2,15 @@ package cadiboo.wiptech.util;
 
 import java.util.List;
 
+import cadiboo.wiptech.client.gui.inventory.GuiModFurnace;
 import cadiboo.wiptech.client.gui.inventory.GuiPortableGenerator;
 import cadiboo.wiptech.client.gui.inventory.GuiRailgun;
 import cadiboo.wiptech.entity.item.EntityPortableGenerator;
 import cadiboo.wiptech.entity.item.EntityRailgun;
+import cadiboo.wiptech.inventory.ContainerModFurnace;
 import cadiboo.wiptech.inventory.ContainerPortableGenerator;
 import cadiboo.wiptech.inventory.ContainerRailgun;
+import cadiboo.wiptech.tileentity.TileEntityModFurnace;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +30,7 @@ public class ModGuiHandler implements IGuiHandler {
 
 	public static final int RAILGUN = 0;
 	public static final int PORTABLE_GENERATOR = 1;
+	public static final int MOD_FURNACE = 2;
 
 	/**
 	 * gets the server's part of a Gui
@@ -51,6 +55,8 @@ public class ModGuiHandler implements IGuiHandler {
 					assert false;
 					return null;
 				}
+			case MOD_FURNACE :
+				return new ContainerModFurnace(player.inventory, (TileEntityModFurnace) world.getTileEntity(new BlockPos(x, y, z)));
 			default :
 				return null;
 		}
@@ -80,6 +86,9 @@ public class ModGuiHandler implements IGuiHandler {
 					assert false;
 					return null;
 				}
+			case MOD_FURNACE :
+				return new GuiModFurnace(player.inventory, (TileEntityModFurnace) world.getTileEntity(new BlockPos(x, y, z)));
+
 			default :
 				return null;
 		}

@@ -185,8 +185,6 @@ public class ModWritingUtil {
 		if (properties.hasArmor()) {
 			for (final Item itemArmor : new Item[]{material.getHelmet(), material.getChestplate(), material.getLeggings(), material.getBoots(), material.getHorseArmor()}) {
 
-				WIPTech.info(material, itemArmor);
-
 				final ModResourceLocation armor = new ModResourceLocation(itemArmor.getRegistryName());
 
 				if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
@@ -328,7 +326,7 @@ public class ModWritingUtil {
 
 		//
 
-		WIPTech.info("Writing blockstates for " + material);
+		WIPTech.debug("Writing blockstates for " + material);
 		blockstates.forEach((name, state) -> {
 			final ArrayList data = new ArrayList<>(Arrays.asList(state.split("\n")));
 			final Iterator<String> it = data.iterator();
@@ -347,7 +345,7 @@ public class ModWritingUtil {
 
 		});
 
-		WIPTech.info("Writing blockModels for " + material);
+		WIPTech.debug("Writing blockModels for " + material);
 		blockModels.forEach((name, model) -> {
 			final ArrayList data = new ArrayList<>(Arrays.asList(model.split("\n")));
 			final Iterator<String> it = data.iterator();
@@ -366,7 +364,7 @@ public class ModWritingUtil {
 
 		});
 
-		WIPTech.info("Writing itemModels for " + material);
+		WIPTech.debug("Writing itemModels for " + material);
 		itemModels.forEach((name, model) -> {
 			final ArrayList data = new ArrayList<>(Arrays.asList(model.split("\n")));
 			final Iterator<String> it = data.iterator();
@@ -400,7 +398,7 @@ public class ModWritingUtil {
 	}
 
 	private static void generateAndWriteLang() {
-		WIPTech.info("Initialising lang");
+		WIPTech.debug("Initialising lang");
 
 		final HashMap<String, String> lang = new HashMap<>();
 
@@ -573,7 +571,7 @@ public class ModWritingUtil {
 		}
 
 		final Path file = Paths.get(assetDir + "lang/" + getLangFileName() + "." + (Loader.MC_VERSION.contains("1.13") ? "json" : "lang"));
-		WIPTech.info("Writing lang");
+		WIPTech.debug("Writing lang");
 		try {
 			Files.write(file, finalData, Charset.forName("UTF-8"));
 		} catch (final IOException e) {
@@ -586,7 +584,7 @@ public class ModWritingUtil {
 	}
 
 	private static void generateAndWriteRecipes(final ModMaterials material) {
-		WIPTech.info("Initialising recipes");
+		WIPTech.debug("Initialising recipes");
 
 		final HashMap<String, String> recipes = new HashMap<>();
 
@@ -982,7 +980,7 @@ public class ModWritingUtil {
 				/*@formatter:on*/
 		}
 
-		WIPTech.info("Writing recipes for " + material);
+		WIPTech.debug("Writing recipes for " + material);
 		recipes.forEach((name, recipe) -> {
 			final ArrayList data = new ArrayList<>(Arrays.asList(recipe.split("\n")));
 			final Iterator<String> it = data.iterator();

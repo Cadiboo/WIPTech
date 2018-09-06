@@ -357,8 +357,9 @@ public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser
 	private ItemStack findAmmo() {
 		final Iterator<ItemStack> it = this.getInventory().getStacks().iterator();
 		while (it.hasNext()) {
-			if (this.isAmmo(it.next())) {
-				return it.next();
+			final ItemStack check = it.next();
+			if (this.isAmmo(check)) {
+				return check;
 			}
 		}
 		return ItemStack.EMPTY;

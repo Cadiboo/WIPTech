@@ -60,14 +60,17 @@ public class BlockResource extends Block implements IBlockModMaterial {
 
 	@Override
 	public boolean isOpaqueCube(final IBlockState state) {
-		return true;
-		// switch (this.getModMaterial().getType()) {
-		// case GEM :
-		// return false;
-		// default :
-		// case METAL :
-		// return true;
-		// }
+		/* have to do this because isOpaqueCube is called in Block.<init> (before our material is set) */
+		if (this.getModMaterial() == null) {
+			return true;
+		}
+		switch (this.getModMaterial().getType()) {
+			case GEM :
+				return false;
+			default :
+			case METAL :
+				return true;
+		}
 	}
 
 }

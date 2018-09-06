@@ -40,6 +40,10 @@ public class ItemRailgun extends Item {
 
 		world.spawnEntity(railgun);
 
+		if (!player.isCreative()) {
+			stack.shrink(1);
+		}
+
 		return EnumActionResult.SUCCESS;
 	}
 

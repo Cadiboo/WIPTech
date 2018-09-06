@@ -65,6 +65,10 @@ public class WIPTech {
 	// TODO: energy network performance
 	// TODO: CreativeTab itemstack
 	// TODO: glitch spool (should be easy)
+	// TODO: fix railgun rendering glitch when yaw = 0;
+	// TODO: fix GUIs
+	// TODO: block hardness - call me crazy but didnt i fix this already???
+	// TODO: EMP - if(hasCapability(energy) setblock lava);
 
 	@Instance(ModReference.MOD_ID)
 	public static WIPTech instance;

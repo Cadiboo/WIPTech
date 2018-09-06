@@ -274,6 +274,7 @@ item.aluminium_boots.name=Aluminum Boots
 item.platinum_rail.name=Platinum Rail
 item.horsearmorgold.name=Gold Horse Armor
 item.apatite_chestplate.name=Apatite Chestplate
+tile.mod_furnace.name=Mod Furnace
 tile.titanium_nugget.name=Titanium Nugget
 item.tin_boots.name=Tin Boots
 tile.silver_block.name=Silver Block

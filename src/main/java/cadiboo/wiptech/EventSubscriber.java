@@ -5,6 +5,7 @@ import java.util.Random;
 
 import cadiboo.wiptech.block.BlockEnamel;
 import cadiboo.wiptech.block.BlockItem;
+import cadiboo.wiptech.block.BlockModFurnace;
 import cadiboo.wiptech.block.BlockModOre;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
@@ -31,6 +32,7 @@ import cadiboo.wiptech.entity.item.EntityRailgun;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.entity.projectile.EntitySlugCasing;
+import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.IItemModMaterial;
 import cadiboo.wiptech.item.ItemCasedSlug;
@@ -52,6 +54,7 @@ import cadiboo.wiptech.item.ModItemBlock;
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.network.play.server.SPacketSyncEnergyNetworkList;
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
+import cadiboo.wiptech.tileentity.TileEntityModFurnace;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ExistsForDebugging;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
@@ -126,6 +129,8 @@ public final class EventSubscriber {
 
 		registerBlocksForMaterials(registry);
 
+		registry.register(new BlockModFurnace("mod_furnace"));
+
 		WIPTech.info("Registered blocks");
 
 		registerTileEntities();
@@ -167,6 +172,7 @@ public final class EventSubscriber {
 	private static void registerTileEntities() {
 		registerTileEntity(TileEntityWire.class);
 		registerTileEntity(TileEntityEnamel.class);
+		registerTileEntity(TileEntityModFurnace.class);
 	}
 
 	private static void registerTileEntity(final Class<? extends TileEntity> clazz) {
@@ -181,6 +187,10 @@ public final class EventSubscriber {
 	@SubscribeEvent
 	public static void onRegisterItemsEvent(final RegistryEvent.Register<Item> event) {
 		final IForgeRegistry<Item> registry = event.getRegistry();
+
+		registry.register(new ModItemBlock(ModBlocks.MOD_FURNACE));
+
+		//
 
 		registerItemsForMaterials(registry);
 

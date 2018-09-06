@@ -82,6 +82,10 @@ public class ItemPortableGenerator extends Item implements IModItem {
 
 		world.spawnEntity(generator);
 
+		if (!player.isCreative()) {
+			stack.shrink(1);
+		}
+
 		return EnumActionResult.SUCCESS;
 	}
 

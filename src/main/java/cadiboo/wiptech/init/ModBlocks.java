@@ -1,5 +1,6 @@
 package cadiboo.wiptech.init;
 
+import cadiboo.wiptech.block.BlockModFurnace;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
@@ -10,5 +11,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 @ObjectHolder(ModReference.MOD_ID)
 public class ModBlocks {
+
+	public static final BlockModFurnace MOD_FURNACE = null;
 
 }

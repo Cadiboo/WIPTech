@@ -26,11 +26,11 @@ public class GuiRailgun extends GuiContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(final float partialTicks, final int mouseX, final int mouseY) {
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
 		this.mc.getTextureManager().bindTexture(new ModResourceLocation(ModReference.MOD_ID, "textures/gui/container/railgun.png"));
-		final int i = (this.width - this.xSize) / 2;
-		final int j = (this.height - this.ySize) / 2;
-		this.drawTexturedModalRect(i, j, 0, 0, this.xSize, (9 * 18) + 17);
-		this.drawTexturedModalRect(i, j + (9 * 18) + 17, 0, 126, this.xSize, 96);
+		final int x = (this.width - this.xSize) / 2;
+		final int y = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 	}
 
 	@Override

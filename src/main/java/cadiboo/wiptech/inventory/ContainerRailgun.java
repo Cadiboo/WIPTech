@@ -1,7 +1,7 @@
 package cadiboo.wiptech.inventory;
 
 import cadiboo.wiptech.entity.item.EntityRailgun;
-import cadiboo.wiptech.item.ItemSlug;
+import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -18,7 +18,7 @@ public class ContainerRailgun extends Container {
 			this.addSlotToContainer(new SlotItemHandler(railgun.getInventory(), i, 62 + (i * 18), 20) {
 				@Override
 				public boolean isItemValid(final ItemStack stack) {
-					if (stack.getItem() instanceof ItemSlug) {
+					if (stack.getItem() instanceof ItemCasedSlug) {
 						return super.isItemValid(stack);
 					}
 					return false;
