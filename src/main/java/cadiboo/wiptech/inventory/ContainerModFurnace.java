@@ -7,22 +7,23 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.items.SlotItemHandler;
 
 public class ContainerModFurnace extends Container {
 
 	public ContainerModFurnace(final InventoryPlayer playerInv, final TileEntityModFurnace modFurnace) {
 
-		for (int i = 0; i < modFurnace.getInventory().getSlots(); i++) {
-			// this.addSlotToContainer(new SlotItemHandler(modFurnace.getInventory(), i, 62 + (i * 18), 20) {
-			// @Override
-			// public boolean isItemValid(final ItemStack stack) {
-			// if (stack.getItem() instanceof ItemCasedSlug) {
-			// return super.isItemValid(stack);
-			// }
-			// return false;
-			// }
-			// });
-		}
+		this.addSlotToContainer(new SlotItemHandler(modFurnace.getInventory(), TileEntityModFurnace.INPUT_SLOT, 56, 17) {
+
+		});
+
+		this.addSlotToContainer(new SlotItemHandler(modFurnace.getInventory(), TileEntityModFurnace.FUEL_SLOT, 56, 53) {
+
+		});
+
+		this.addSlotToContainer(new SlotItemHandler(modFurnace.getInventory(), TileEntityModFurnace.OUTPUT_SLOT, 116, 35) {
+
+		});
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {

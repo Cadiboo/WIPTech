@@ -67,7 +67,6 @@ public class WIPTech {
 	// TODO: glitch spool (should be easy)
 	// TODO: fix railgun rendering glitch when yaw = 0;
 	// TODO: fix GUIs
-	// TODO: block hardness - call me crazy but didnt i fix this already???
 	// TODO: EMP - if(hasCapability(energy) setblock lava);
 
 	@Instance(ModReference.MOD_ID)
@@ -123,8 +122,8 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#DEBUG DEBUG} level.
-	 * @param  messages the message objects to log.
-	 * @author          Cadiboo
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
 	 */
 	public static void debug(final Object... messages) {
 		for (final Object msg : messages) {
@@ -134,8 +133,8 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#INFO ERROR} INFO.
-	 * @param  messages the message objects to log.
-	 * @author          Cadiboo
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
 	 */
 	public static void info(final Object... messages) {
 		for (final Object msg : messages) {
@@ -145,8 +144,8 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#WARN WARN} level.
-	 * @param  messages the message objects to log.
-	 * @author          Cadiboo
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
 	 */
 	public static void warn(final Object... messages) {
 		for (final Object msg : messages) {
@@ -156,8 +155,8 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#ERROR ERROR} level.
-	 * @param  messages the message objects to log.
-	 * @author          Cadiboo
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
 	 */
 	public static void error(final Object... messages) {
 		for (final Object msg : messages) {
@@ -167,8 +166,8 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#FATAL FATAL} level.
-	 * @param  messages the message objects to log.
-	 * @author          Cadiboo
+	 * @param messages the message objects to log.
+	 * @author Cadiboo
 	 */
 	public static void fatal(final Object... messages) {
 		for (final Object msg : messages) {
@@ -178,8 +177,8 @@ public class WIPTech {
 
 	/**
 	 * Logs all {@link java.lang.reflect.Field Field}s and their values of an object with the {@link org.apache.logging.log4j.Level#INFO INFO} level.
-	 * @param  objects the objects to dump.
-	 * @author         Cadiboo
+	 * @param objects the objects to dump.
+	 * @author Cadiboo
 	 */
 	public static void dump(final Object... objects) {
 		for (final Object obj : objects) {

@@ -4,15 +4,12 @@ import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityWireRenderer extends ModTileEntitySpecialRenderer<TileEntityWire> {
-
-	protected static final ItemStack stack = new ItemStack(net.minecraft.init.Items.IRON_INGOT);
 
 	@Override
 	public void renderAtCentre(final TileEntityWire te, final float partialTicks, final int destroyStage, final float alpha) {

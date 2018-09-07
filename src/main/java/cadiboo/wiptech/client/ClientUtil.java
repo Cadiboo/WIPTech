@@ -37,8 +37,8 @@ public final class ClientUtil {
 
 	/**
 	 * Rotation algorithm Taken off Max_the_Technomancer from <a href= "https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2772267-tesr-getting-darker-and-lighter-as-it-rotates">here</a>
-	 * @param  face the {@link net.minecraft.util.EnumFacing face} to rotate for
-	 * @author      Cadiboo
+	 * @param face the {@link net.minecraft.util.EnumFacing face} to rotate for
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void rotateForFace(final EnumFacing face) {
@@ -72,11 +72,11 @@ public final class ClientUtil {
 
 	/**
 	 * Modifed by Cadiboo, based on Notch?'s lightning code. Cleaned it up, made it readable & used pushMatrix, popMatrix & translate instead of drawing it straight onto the screen
-	 * @param  number                      The seed for the randoms that are used
-	 * @param  NumberOfBranches            The number of main (full length) branches
-	 * @param  NumberOfPossibleSubBranches The number Sub branches for each main branch
-	 * @param  scale                       How large/small it will render
-	 * @author                             Cadiboo
+	 * @param number                      The seed for the randoms that are used
+	 * @param NumberOfBranches            The number of main (full length) branches
+	 * @param NumberOfPossibleSubBranches The number Sub branches for each main branch
+	 * @param scale                       How large/small it will render
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void renderLightning(final int number, final int NumberOfBranches, final int NumberOfPossibleSubBranches, final double scale) {
@@ -192,10 +192,10 @@ public final class ClientUtil {
 
 	/**
 	 * Put a lot of effort into this, it gets the entities exact (really, really exact) position
-	 * @param  entity       The entity to calculate the position of
-	 * @param  partialTicks The multiplier used to predict where the entity is/will be
-	 * @return              The position of the entity as a Vec3d
-	 * @author              Cadiboo
+	 * @param entity       The entity to calculate the position of
+	 * @param partialTicks The multiplier used to predict where the entity is/will be
+	 * @return The position of the entity as a Vec3d
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static Vec3d getEntityRenderPos(final Entity entity, final double partialTicks) {
@@ -245,9 +245,9 @@ public final class ClientUtil {
 
 	/**
 	 * Rotates the X axis directly towards a {@link net.minecraft.util.math.Vec3d Vec3d} position
-	 * @param  source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
-	 * @param  destination The position to rotate towards
-	 * @author             Cadiboo
+	 * @param source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
+	 * @param destination The position to rotate towards
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void rotateXAxisTowardsPos(final Vec3d source, final Vec3d destination) {
@@ -257,9 +257,9 @@ public final class ClientUtil {
 
 	/**
 	 * Rotates the Y axis directly towards a {@link net.minecraft.util.math.Vec3d Vec3d} position
-	 * @param  source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
-	 * @param  destination The position to rotate towards
-	 * @author             Cadiboo
+	 * @param source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
+	 * @param destination The position to rotate towards
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void rotateYAxisTowardsPos(final Vec3d source, final Vec3d destination) {
@@ -269,9 +269,9 @@ public final class ClientUtil {
 
 	/**
 	 * Rotates the Z axis directly towards a {@link net.minecraft.util.math.Vec3d Vec3d} position
-	 * @param  source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
-	 * @param  destination The position to rotate towards
-	 * @author             Cadiboo
+	 * @param source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
+	 * @param destination The position to rotate towards
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void rotateZAxisTowardsPos(final Vec3d source, final Vec3d destination) {
@@ -292,10 +292,10 @@ public final class ClientUtil {
 
 	/**
 	 * Modified version of {@link ClientUtil#renderLightning(int, int, int, double) renderLightning} that looks more electricity-arcy
-	 * @param  number           The seed for the randoms that are used
-	 * @param  NumberOfBranches The number of main (full length) branches
-	 * @param  scale            How large/small/long it will be
-	 * @author                  Cadiboo
+	 * @param number           The seed for the randoms that are used
+	 * @param NumberOfBranches The number of main (full length) branches
+	 * @param scale            How large/small/long it will be
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void renderElectricity(final int number, final int NumberOfBranches, final double scale) {
@@ -429,15 +429,15 @@ public final class ClientUtil {
 
 	/**
 	 * Draws a cuboid similar to the way blocks are drawn
-	 * @param  minU   Minimum texture U (x) to draw from (between 0 and 1)
-	 * @param  maxU   Maximum texture U (x) to draw from (between 0 and 1)
-	 * @param  minV   Minimum texture V (y) to draw from (between 0 and 1)
-	 * @param  maxV   Maximum texture V (y) to draw from (between 0 and 1)
-	 * @param  x_size The size of the cuboid on the X plane
-	 * @param  y_size The size of the cuboid on the Y plane
-	 * @param  z_size The size of the cuboid on the Z plane
-	 * @param  scale  How much to scale in {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double) GLStateManager.scale}
-	 * @author        Cadiboo
+	 * @param minU   Minimum texture U (x) to draw from (between 0 and 1)
+	 * @param maxU   Maximum texture U (x) to draw from (between 0 and 1)
+	 * @param minV   Minimum texture V (y) to draw from (between 0 and 1)
+	 * @param maxV   Maximum texture V (y) to draw from (between 0 and 1)
+	 * @param x_size The size of the cuboid on the X plane
+	 * @param y_size The size of the cuboid on the Y plane
+	 * @param z_size The size of the cuboid on the Z plane
+	 * @param scale  How much to scale in {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double) GLStateManager.scale}
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void drawCuboid(final float minU, final float maxU, final float minV, final float maxV, final double x_size, final double y_size, final double z_size, final double scale) {
@@ -496,15 +496,15 @@ public final class ClientUtil {
 
 	/**
 	 * Draws a cuboid that has its texture always be "seamless"
-	 * @param  minU   Minimum texture U (x) to draw from (between 0 and 1)
-	 * @param  maxU   Maximum texture U (x) to draw from (between 0 and 1)
-	 * @param  minV   Minimum texture V (y) to draw from (between 0 and 1)
-	 * @param  maxV   Maximum texture V (y) to draw from (between 0 and 1)
-	 * @param  x_size The size of the cuboid on the X plane
-	 * @param  y_size The size of the cuboid on the Y plane
-	 * @param  z_size The size of the cuboid on the Z plane
-	 * @param  scale  How much to scale in {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double) GLStateManager.scale}
-	 * @author        Cadiboo
+	 * @param minU   Minimum texture U (x) to draw from (between 0 and 1)
+	 * @param maxU   Maximum texture U (x) to draw from (between 0 and 1)
+	 * @param minV   Minimum texture V (y) to draw from (between 0 and 1)
+	 * @param maxV   Maximum texture V (y) to draw from (between 0 and 1)
+	 * @param x_size The size of the cuboid on the X plane
+	 * @param y_size The size of the cuboid on the Y plane
+	 * @param z_size The size of the cuboid on the Z plane
+	 * @param scale  How much to scale in {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double) GLStateManager.scale}
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void drawSeamlessCuboid(final float minU, final float maxU, final float minV, final float maxV, final double z_size, final double y_size, final double x_size, final double scale) {
@@ -580,14 +580,14 @@ public final class ClientUtil {
 
 	/**
 	 * Draws a part of a texture
-	 * @param  minU   Minimum texture U (x) to draw from (between 0 and 1)
-	 * @param  maxU   Maximum texture U (x) to draw from (between 0 and 1)
-	 * @param  minV   Minimum texture V (y) to draw from (between 0 and 1)
-	 * @param  maxV   Maximum texture V (y) to draw from (between 0 and 1)
-	 * @param  x_size The size of the cuboid on the X plane
-	 * @param  y_size The size of the cuboid on the Y plane
-	 * @param  scale  How much to scale in {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double) GLStateManager.scale}
-	 * @author        Cadiboo
+	 * @param minU   Minimum texture U (x) to draw from (between 0 and 1)
+	 * @param maxU   Maximum texture U (x) to draw from (between 0 and 1)
+	 * @param minV   Minimum texture V (y) to draw from (between 0 and 1)
+	 * @param maxV   Maximum texture V (y) to draw from (between 0 and 1)
+	 * @param x_size The size of the cuboid on the X plane
+	 * @param y_size The size of the cuboid on the Y plane
+	 * @param scale  How much to scale in {@link net.minecraft.client.renderer.GlStateManager#scale(double, double, double) GLStateManager.scale}
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void drawQuad(final float minU, final float maxU, final float minV, final float maxV, final double x_size, final double y_size, final double scale) {
@@ -615,9 +615,9 @@ public final class ClientUtil {
 
 	/**
 	 * Renders an {@link ItemStack} with the ground camera transform
-	 * @param  stack
-	 * @param  world
-	 * @author       Cadiboo
+	 * @param stack
+	 * @param world
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void renderStack(final ItemStack stack, final World world) {
@@ -630,9 +630,9 @@ public final class ClientUtil {
 
 	/**
 	 * Renders an {@link ItemStack} without any camera transforms
-	 * @param  stack
-	 * @param  world
-	 * @author       Cadiboo
+	 * @param stack
+	 * @param world
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void renderStackWithoutTransforms(final ItemStack stack, final World world) {
@@ -645,10 +645,10 @@ public final class ClientUtil {
 
 	/**
 	 * Renders an {@link ItemStack} with the specified {@link IBakedModel} with the specified color
-	 * @param  stack
-	 * @param  model
-	 * @param  color
-	 * @author       Cadiboo
+	 * @param stack
+	 * @param model
+	 * @param color
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void renderStackWithColor(final ItemStack stack, final World world, final int color) {
@@ -694,11 +694,11 @@ public final class ClientUtil {
 
 	/**
 	 * Renders a list of quads with the specified color
-	 * @param  bufferbuilder
-	 * @param  quads
-	 * @param  color
-	 * @param  stack
-	 * @author               Cadiboo
+	 * @param bufferbuilder
+	 * @param quads
+	 * @param color
+	 * @param stack
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	private static void renderQuadsColor(final BufferBuilder bufferbuilder, final List<BakedQuad> quads, int color) {
@@ -721,10 +721,10 @@ public final class ClientUtil {
 
 	/**
 	 * gets the model from a stack with overrides
-	 * @param  stack
-	 * @param  world
-	 * @return       The stack's model
-	 * @author       Cadiboo
+	 * @param stack
+	 * @param world
+	 * @return The stack's model
+	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
 	public static IBakedModel getModelFromStack(final ItemStack stack, final World world) {
@@ -774,9 +774,9 @@ public final class ClientUtil {
 
 	/**
 	 * Gets the pitch rotation between two vectors
-	 * @param  source
-	 * @param  destination
-	 * @return             the pitch rotation
+	 * @param source
+	 * @param destination
+	 * @return the pitch rotation
 	 */
 	@SideOnly(Side.CLIENT)
 	public static double getPitch(final Vec3d source, final Vec3d destination) {
@@ -788,15 +788,29 @@ public final class ClientUtil {
 
 	/**
 	 * Gets the yaw rotation between two vectors
-	 * @param  source
-	 * @param  destination
-	 * @return             the yaw rotation
+	 * @param source
+	 * @param destination
+	 * @return the yaw rotation
 	 */
 	public static double getYaw(final Vec3d source, final Vec3d destination) {
 		double yaw = Math.atan2(destination.x - source.x, destination.z - source.z);
 		yaw = yaw * (180 / Math.PI);
 		yaw = yaw < 0 ? 360 - (-yaw) : yaw;
 		return yaw + 90;
+	}
+
+	/**
+	 * Used in Guis to determine whether or not to render a tooltip
+	 * @param x
+	 * @param y
+	 * @param xSize
+	 * @param ySize
+	 * @param mouseX
+	 * @param mouseY
+	 * @return
+	 */
+	public static boolean isInRect(final int x, final int y, final int xSize, final int ySize, final int mouseX, final int mouseY) {
+		return (mouseX >= x) && (mouseX <= (x + xSize)) && (mouseY >= y) && (mouseY <= (y + ySize));
 	}
 
 }

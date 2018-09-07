@@ -18,12 +18,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class BakedModelGlitchBlock implements IBakedModel {
+public class BakedModelGlitch implements IBakedModel {
 
 	private final IBakedModel modelMissing;
 	private final IBakedModel modelInvisible;
 
-	public BakedModelGlitchBlock(final IBakedModel modelMissing, final IBakedModel modelInvisible) {
+	public BakedModelGlitch(final IBakedModel modelMissing, final IBakedModel modelInvisible) {
 		this.modelMissing = modelMissing;
 		this.modelInvisible = modelInvisible;
 	}

@@ -17,13 +17,13 @@ import net.minecraft.world.World;
  */
 public class BlockEnamel extends BlockWire {
 
-	protected static final AxisAlignedBB CORE_AABB = BlockWire.CORE_AABB.grow(1d / 16d);
-	protected static final AxisAlignedBB UP_AABB = BlockWire.UP_AABB.grow(1d / 16d, 0, 1d / 16d);
-	protected static final AxisAlignedBB DOWN_AABB = BlockWire.DOWN_AABB.grow(1d / 16d, 0, 1d / 16d);
-	protected static final AxisAlignedBB NORTH_AABB = BlockWire.NORTH_AABB.grow(1d / 16d, 1d / 16d, 0);
-	protected static final AxisAlignedBB SOUTH_AABB = BlockWire.SOUTH_AABB.grow(1d / 16d, 1d / 16d, 0);
-	protected static final AxisAlignedBB EAST_AABB = BlockWire.EAST_AABB.grow(0, 1d / 16d, 1d / 16d);
-	protected static final AxisAlignedBB WEST_AABB = BlockWire.WEST_AABB.grow(0, 1d / 16d, 1d / 16d);
+	protected static final AxisAlignedBB	CORE_AABB	= BlockWire.CORE_AABB.grow(1d / 16d);
+	protected static final AxisAlignedBB	UP_AABB		= BlockWire.UP_AABB.grow(1d / 16d, 0, 1d / 16d);
+	protected static final AxisAlignedBB	DOWN_AABB	= BlockWire.DOWN_AABB.grow(1d / 16d, 0, 1d / 16d);
+	protected static final AxisAlignedBB	NORTH_AABB	= BlockWire.NORTH_AABB.grow(1d / 16d, 1d / 16d, 0);
+	protected static final AxisAlignedBB	SOUTH_AABB	= BlockWire.SOUTH_AABB.grow(1d / 16d, 1d / 16d, 0);
+	protected static final AxisAlignedBB	EAST_AABB	= BlockWire.EAST_AABB.grow(0, 1d / 16d, 1d / 16d);
+	protected static final AxisAlignedBB	WEST_AABB	= BlockWire.WEST_AABB.grow(0, 1d / 16d, 1d / 16d);
 
 	public BlockEnamel(final ModMaterials material) {
 		super(material, "enamel");

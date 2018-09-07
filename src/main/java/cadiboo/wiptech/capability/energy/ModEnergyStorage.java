@@ -95,8 +95,8 @@ public class ModEnergyStorage extends EnergyStorage {
 	}
 
 	/**
-	 * @param  energy the energy to set
-	 * @return        the amount of energy that was set
+	 * @param energy the energy to set
+	 * @return the amount of energy that was set
 	 */
 	public int setEnergyStored(final int energy, final boolean simulate) {
 		this.onEnergyChanged();

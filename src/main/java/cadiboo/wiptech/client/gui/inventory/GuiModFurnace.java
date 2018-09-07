@@ -1,10 +1,12 @@
 package cadiboo.wiptech.client.gui.inventory;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.inventory.ContainerModFurnace;
 import cadiboo.wiptech.tileentity.TileEntityModFurnace;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
+import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -14,8 +16,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiModFurnace extends GuiContainer {
 
-	private final InventoryPlayer playerInventory;
-	private final TileEntityModFurnace modFurnace;
+	private final InventoryPlayer		playerInventory;
+	private final TileEntityModFurnace	modFurnace;
 
 	public GuiModFurnace(final InventoryPlayer playerInv, final TileEntityModFurnace modFurnace) {
 		super(new ContainerModFurnace(playerInv, modFurnace));
@@ -32,21 +34,21 @@ public class GuiModFurnace extends GuiContainer {
 		final int y = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 
-		// GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		// this.mc.getTextureManager().bindTexture(FURNACE_GUI_TEXTURES);
-		// int i = (this.width - this.xSize) / 2;
-		// int j = (this.height - this.ySize) / 2;
-		// this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
-		//
-		// if (TileEntityFurnace.isBurning(this.tileFurnace))
-		// {
-		// int k = this.getBurnLeftScaled(13);
-		// this.drawTexturedModalRect(i + 56, j + 36 + 12 - k, 176, 12 - k, 14, k + 1);
-		// }
-		//
-		// int l = this.getCookProgressScaled(24);
-		// this.drawTexturedModalRect(i + 79, j + 34, 176, 14, l + 1, 16);
+		// fuel fire
 
+		final int fuelBurnTime = this.modFurnace.getMaxFuelTime();
+		final int fuelTimeRemaining = this.modFurnace.getFuelTimeRemaining();
+
+		final int k = (int) ModUtil.map(0, fuelBurnTime, 0, 16, fuelTimeRemaining);
+		this.drawTexturedModalRect(x + 56, (y + 36 + 13) - k, 176, 13 - k, 14, k);
+
+		// progress arrow
+
+		final int inputSmeltTime = this.modFurnace.getMaxSmeltTime();
+		final int modFurnaceSmeltTime = this.modFurnace.getSmeltTime();
+
+		final int l = (int) ModUtil.map(0, inputSmeltTime, 0, 24, modFurnaceSmeltTime);
+		this.drawTexturedModalRect(x + 79, y + 34, 176, 14, l + 1, 16);
 	}
 
 	@Override
@@ -54,6 +56,28 @@ public class GuiModFurnace extends GuiContainer {
 		this.drawDefaultBackground();
 		super.drawScreen(mouseX, mouseY, partialTicks);
 		this.renderHoveredToolTip(mouseX, mouseY);
+
+		final int x = (this.width - this.xSize) / 2;
+		final int y = (this.height - this.ySize) / 2;
+
+		if (ClientUtil.isInRect(x + 56, y + 36, 24, 16, mouseX, mouseY)) {
+			final int fuelBurnTime = this.modFurnace.getMaxFuelTime();
+			final int fuelTimeRemaining = this.modFurnace.getFuelTimeRemaining();
+
+			final int percentage = Math.round(Math.round(ModUtil.map(0, fuelBurnTime, 0, 100, fuelTimeRemaining)));
+
+			this.drawHoveringText(percentage + "%", mouseX, mouseY);
+		}
+
+		if (ClientUtil.isInRect(x + 79, y + 34, 24, 16, mouseX, mouseY)) {
+			final int inputSmeltTime = this.modFurnace.getMaxSmeltTime();
+			final int modFurnaceSmeltTime = this.modFurnace.getSmeltTime();
+
+			final int percentage = Math.round(Math.round(ModUtil.map(0, inputSmeltTime, 0, 100, modFurnaceSmeltTime)));
+
+			this.drawHoveringText(percentage + "%", mouseX, mouseY);
+		}
+
 	}
 
 	@Override

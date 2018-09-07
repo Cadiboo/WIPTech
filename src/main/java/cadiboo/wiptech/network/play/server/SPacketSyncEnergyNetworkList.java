@@ -3,7 +3,7 @@ package cadiboo.wiptech.network.play.server;
 import java.io.IOException;
 
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
-import cadiboo.wiptech.capability.energy.network.IEnergyNetworkList;
+import cadiboo.wiptech.capability.energy.network.EnergyNetworkList;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTBase;
@@ -55,7 +55,7 @@ public class SPacketSyncEnergyNetworkList implements IMessage, IMessageHandler<S
 					return;
 				}
 
-				final IEnergyNetworkList list = Minecraft.getMinecraft().world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
+				final EnergyNetworkList list = Minecraft.getMinecraft().world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
 				if (list == null) {
 					return;
 				}

@@ -1,8 +1,9 @@
 package cadiboo.wiptech.client.render.block.model;
 
-import cadiboo.wiptech.client.model.ModelGlitchBlock;
-import cadiboo.wiptech.client.model.ModelGlitchOre;
+import cadiboo.wiptech.client.model.ModelGlitch;
 import cadiboo.wiptech.util.ModReference;
+import cadiboo.wiptech.util.ModResourceLocation;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
@@ -14,8 +15,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GlitchModelLoader implements ICustomModelLoader {
 
-	public static final String GLITCH_BLOCK_MODEL_RESOURCE_LOCATION = "models/block/glitch_block";
-	public static final String GLITCH_ORE_MODEL_RESOURCE_LOCATION = "models/block/glitch_ore";
+	public static final String	GLITCH_BLOCK_MODEL_RESOURCE_LOCATION	= "models/block/glitch_block";
+	public static final String	GLITCH_ORE_MODEL_RESOURCE_LOCATION		= "models/block/glitch_ore";
 
 	@Override
 	public void onResourceManagerReload(final IResourceManager resourceManager) {
@@ -34,13 +35,18 @@ public class GlitchModelLoader implements ICustomModelLoader {
 		}
 
 		try {
+			ModResourceLocation missingModel = new ModResourceLocation(TextureMap.LOCATION_MISSING_TEXTURE);
+			ModResourceLocation invisibleModel = new ModResourceLocation(TextureMap.LOCATION_MISSING_TEXTURE);
 			if (resourcePath.equals(GLITCH_BLOCK_MODEL_RESOURCE_LOCATION)) {
-				return new ModelGlitchBlock();
+				missingModel = new ModResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "block/missing_block"));
+				invisibleModel = new ModResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_block"));
 			} else if (resourcePath.equals(GLITCH_ORE_MODEL_RESOURCE_LOCATION)) {
-				return new ModelGlitchOre();
+				missingModel = new ModResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "block/missing_ore"));
+				invisibleModel = new ModResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_ore"));
 			} else {
-				throw new IllegalArgumentException();
+				new IllegalArgumentException("how did we get here...??????").printStackTrace();
 			}
+			return new ModelGlitch(missingModel, invisibleModel);
 		} catch (final Exception e) {
 			return ModelLoaderRegistry.getMissingModel();
 		}

@@ -14,14 +14,14 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 
 public class CapabilityEnergyNetworkList {
 
-	@CapabilityInject(IEnergyNetworkList.class)
-	public static Capability<IEnergyNetworkList> NETWORK_LIST = null;
+	@CapabilityInject(EnergyNetworkList.class)
+	public static Capability<EnergyNetworkList> NETWORK_LIST = null;
 
 	public static void register() {
 
-		CapabilityManager.INSTANCE.register(IEnergyNetworkList.class, new IStorage<IEnergyNetworkList>() {
+		CapabilityManager.INSTANCE.register(EnergyNetworkList.class, new IStorage<EnergyNetworkList>() {
 			@Override
-			public NBTTagList writeNBT(final Capability<IEnergyNetworkList> capability, final IEnergyNetworkList instance, final EnumFacing side) {
+			public NBTTagList writeNBT(final Capability<EnergyNetworkList> capability, final EnergyNetworkList instance, final EnumFacing side) {
 				final NBTTagList nbtTagList = new NBTTagList();
 
 				for (final BlockPos pos : instance.getConnections()) {
@@ -34,12 +34,12 @@ public class CapabilityEnergyNetworkList {
 			}
 
 			@Override
-			public void readNBT(final Capability<IEnergyNetworkList> capability, final IEnergyNetworkList instance, final EnumFacing side, final NBTBase nbt) {
+			public void readNBT(final Capability<EnergyNetworkList> capability, final EnergyNetworkList instance, final EnumFacing side, final NBTBase nbt) {
 				if (!(instance instanceof EnergyNetworkList)) {
 					throw new IllegalArgumentException("Can't deserialize to an instance that isn't the default implementation");
 				}
 
-				final EnergyNetworkList energyNetworkList = (EnergyNetworkList) instance;
+				final EnergyNetworkList energyNetworkList = instance;
 
 				final NBTTagList tagList = (NBTTagList) nbt;
 

@@ -6,14 +6,15 @@ import java.util.HashSet;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.tileentity.TileEntityWire;
+import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EnergyNetwork {
 
-	private final HashSet<BlockPos> connections;
-	private final World world;
+	private final HashSet<BlockPos>	connections;
+	private final World				world;
 
 	public EnergyNetwork(final World world) {
 		this.connections = new HashSet<>(0);
@@ -65,7 +66,7 @@ public class EnergyNetwork {
 		while (networkEnergy > 0) {
 			repetitions++;
 
-			final int[] sets = splitIntoParts(networkEnergy, storages.size());
+			final int[] sets = ModUtil.splitIntoParts(networkEnergy, storages.size());
 
 			if (repetitions >= 5) {
 				WIPTech.warn("repetitions went over 5. repetitions were", repetitions, networkEnergy, sets);
@@ -91,18 +92,6 @@ public class EnergyNetwork {
 			}
 		}
 		return networkEnergy;
-	}
-	private static int[] splitIntoParts(final int whole, final int parts) {
-		final int[] arr = new int[parts];
-		int remain = whole;
-		int partsLeft = parts;
-		for (int i = 0; partsLeft > 0; i++) {
-			final int size = ((remain + partsLeft) - 1) / partsLeft; // rounded up, aka ceiling
-			arr[i] = size;
-			remain -= size;
-			partsLeft--;
-		}
-		return arr;
 	}
 
 }

@@ -71,8 +71,7 @@ public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser
 
 	@Override
 	public int transferEnergyTo(final EnumFacing side, final int energyToTransfer, final boolean simulate) {
-		// if (IEnergyUser.super.transferEnergyTo(side, energyToTransfer, true) == energyToTransfer && (getEnergy().getStorage(side) != energy.getLastRecieved() || world.getTotalWorldTime() % 10 == 0))
-		// return IEnergyUser.super.transferEnergyTo(side, energyToTransfer, simulate);
+		// TODO: transfer to stuff around - if!instanceof wire
 		return 0;
 	}
 

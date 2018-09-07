@@ -2,9 +2,8 @@ package cadiboo.wiptech.client.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
-
-import com.google.common.base.Function;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.util.ModResourceLocation;
@@ -35,12 +34,12 @@ public class ModelsCache implements ISelectiveResourceReloadListener {
 	private ModelsCache() {
 	}
 
-	public static final IModelState DEFAULTMODELSTATE = part -> java.util.Optional.empty();
-	public static final VertexFormat DEFAULTVERTEXFORMAT = DefaultVertexFormats.BLOCK;
-	public static final Function<ResourceLocation, TextureAtlasSprite> DEFAULTTEXTUREGETTER = texture -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture.toString());
+	public static final IModelState										DEFAULTMODELSTATE		= part -> java.util.Optional.empty();
+	public static final VertexFormat									DEFAULTVERTEXFORMAT		= DefaultVertexFormats.BLOCK;
+	public static final Function<ResourceLocation, TextureAtlasSprite>	DEFAULTTEXTUREGETTER	= texture -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(texture.toString());
 
-	private final Map<ResourceLocation, IModel> modelCache = new HashMap<>();
-	private final Map<ResourceLocation, IBakedModel> bakedCache = new HashMap<>();
+	private final Map<ResourceLocation, IModel>			modelCache	= new HashMap<>();
+	private final Map<ResourceLocation, IBakedModel>	bakedCache	= new HashMap<>();
 
 	public IModel getModel(final ModResourceLocation location) {
 		IModel model = this.modelCache.get(location);

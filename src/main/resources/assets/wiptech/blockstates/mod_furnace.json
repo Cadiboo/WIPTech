@@ -1,12 +1,8 @@
 {
 	"variants": {
-		"facing=north,on=false": 	{ "model": "wiptech:mod_furnace_off" },
-		"facing=south,on=false": 	{ "model": "wiptech:mod_furnace_off", "y": 180 },
-		"facing=west,on=false": 	{ "model": "wiptech:mod_furnace_off", "y": 270 },
-		"facing=east,on=false": 	{ "model": "wiptech:mod_furnace_off", "y": 90 },
-		"facing=north,on=true": 	{ "model": "wiptech:mod_furnace_on" },
-		"facing=south,on=true": 	{ "model": "wiptech:mod_furnace_on", "y": 180 },
-		"facing=west,on=true":  	{ "model": "wiptech:mod_furnace_on", "y": 270 },
-		"facing=east,on=true":  	{ "model": "wiptech:mod_furnace_on", "y": 90 }
+		"facing=north":	{ "model": "wiptech:mod_furnace" },
+		"facing=south":	{ "model": "wiptech:mod_furnace", "y": 180 },
+		"facing=west":	{ "model": "wiptech:mod_furnace", "y": 270 },
+		"facing=east":	{ "model": "wiptech:mod_furnace", "y": 90 }
 	}
 }

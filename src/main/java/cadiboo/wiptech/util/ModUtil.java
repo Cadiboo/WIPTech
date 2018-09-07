@@ -31,6 +31,7 @@ public final class ModUtil {
 	 */
 	public static void setRegistryNames(final Block block, final ModMaterials material, final String nameSuffix) {
 		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.BLOCKS), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
+		block.setHardness(material.getProperties().getHardness());
 		setRegistryNames(block, registryName);
 	}
 
@@ -88,21 +89,21 @@ public final class ModUtil {
 	/**
 	 * Gets the game name from a slot<br>
 	 * For example {@link net.minecraft.inventory.EntityEquipmentSlot.CHEST EntityEquipmentSlot.CHEST} -> "CHESTPLATE"
-	 * @param  slot the {@link net.minecraft.inventory.EntityEquipmentSlot EntityEquipmentSlot} to get the name for
-	 * @return      the game name for the slot
+	 * @param slot the {@link net.minecraft.inventory.EntityEquipmentSlot EntityEquipmentSlot} to get the name for
+	 * @return the game name for the slot
 	 */
 	public static String getSlotGameNameUppercase(final EntityEquipmentSlot slot) {
 		switch (slot) {
-			case CHEST :
-				return "CHESTPLATE";
-			case FEET :
-				return "BOOTS";
-			case HEAD :
-				return "HELMET";
-			case LEGS :
-				return "LEGGINGS";
-			default :
-				return slot.name().toUpperCase();
+		case CHEST:
+			return "CHESTPLATE";
+		case FEET:
+			return "BOOTS";
+		case HEAD:
+			return "HELMET";
+		case LEGS:
+			return "LEGGINGS";
+		default:
+			return slot.name().toUpperCase();
 		}
 	}
 
@@ -122,11 +123,11 @@ public final class ModUtil {
 
 	/**
 	 * Utility method to make sure that all our items appear on our creative tab, the search tab and any other tab they specify
-	 * @param  item the {@link net.minecraft.item.Item Item}
-	 * @return      an array of all tabs that this item is on.
+	 * @param item the {@link net.minecraft.item.Item Item}
+	 * @return an array of all tabs that this item is on.
 	 */
 	public static CreativeTabs[] getCreativeTabs(final Item item) {
-		return new CreativeTabs[]{item.getCreativeTab(), ModCreativeTabs.CREATIVE_TAB, CreativeTabs.SEARCH};
+		return new CreativeTabs[] { item.getCreativeTab(), ModCreativeTabs.CREATIVE_TAB, CreativeTabs.SEARCH };
 	}
 
 	/**
@@ -141,53 +142,53 @@ public final class ModUtil {
 
 	/**
 	 * Utility method allowing centralized control of glowing material ores, blocks etc. Helpful for debugging
-	 * @param  material the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
-	 * @return          a light value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
+	 * @param material the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
+	 * @return a light value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
 	 */
 	public static int getMaterialLightValue(final ModMaterials material) {
 		if (ModReference.Debug.debugOres()) {
 			return 14;
 		}
 		switch (material) {
-			case PLUTONIUM :
-				return 6;
-			case URANIUM :
-				return 8;
-			case GLITCH :
-				return Math.round(Math.round(ModUtil.map(0, 1, 0, 15, new Random().nextDouble())));
-			default :
-				return 0;
+		case PLUTONIUM:
+			return 6;
+		case URANIUM:
+			return 8;
+		case GLITCH:
+			return Math.round(Math.round(ModUtil.map(0, 1, 0, 15, new Random().nextDouble())));
+		default:
+			return 0;
 		}
 	}
 
 	/**
 	 * Utility method allowing centralized control of glowing material ores, blocks etc. Helpful for debugging
-	 * @param  material the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
-	 * @return          a light opacity value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
+	 * @param material the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
+	 * @return a light opacity value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
 	 */
 	public static int getMaterialLightOpacity(final ModMaterials material) {
 		if (ModReference.Debug.debugOres()) {
 			return 1;
 		}
 		switch (material) {
-			case PLUTONIUM :
-				return 9;
-			case URANIUM :
-				return 7;
-			case GLITCH :
-				return Math.round(Math.round(ModUtil.map(0, 1, 0, 15, new Random().nextDouble())));
-			default :
-				return 0;
+		case PLUTONIUM:
+			return 9;
+		case URANIUM:
+			return 7;
+		case GLITCH:
+			return Math.round(Math.round(ModUtil.map(0, 1, 0, 15, new Random().nextDouble())));
+		default:
+			return 0;
 		}
 	}
 
 	/**
 	 * https://stackoverflow.com/a/5732117
-	 * @param  input_start
-	 * @param  input_end
-	 * @param  output_start
-	 * @param  output_end
-	 * @param  input
+	 * @param input_start
+	 * @param input_end
+	 * @param output_start
+	 * @param output_end
+	 * @param input
 	 * @return
 	 */
 	public static double map(final double input_start, final double input_end, final double output_start, final double output_end, final double input) {
@@ -203,9 +204,9 @@ public final class ModUtil {
 	 * (EntityPortableGenerator, "Entity") -> portable_generator<br>
 	 * (TileEntityPortableGenerator, "Entity") -> tile_portable_generator<br>
 	 * (EntityPortableEntityGeneratorEntity, "Entity") -> portable_generator<br>
-	 * @param  clazz      the class
-	 * @param  removeType the string to be removed from the class's name
-	 * @return            the recommended registry name for the class
+	 * @param clazz      the class
+	 * @param removeType the string to be removed from the class's name
+	 * @return the recommended registry name for the class
 	 */
 	public static String getRegistryNameForClass(final Class clazz, final String removeType) {
 		return org.apache.commons.lang3.StringUtils.uncapitalize(clazz.getSimpleName().replace(removeType, "")).replaceAll("([A-Z])", "_$1").toLowerCase();
@@ -216,8 +217,8 @@ public final class ModUtil {
 	 * super_advanced_furnace -> Super Advanced Furnace<br>
 	 * portable_generator -> Portable Generator<br>
 	 * tile_portable_generator -> Tile Portable Generator <br>
-	 * @param  unlocalised the unlocalised name in
-	 * @return             the recommended localised name for the class
+	 * @param unlocalised the unlocalised name in
+	 * @return the recommended localised name for the class
 	 */
 	public static String getLocalisedName(final String unlocalised) {
 		final String[] strs = unlocalised.split("_");
@@ -231,9 +232,9 @@ public final class ModUtil {
 	/**
 	 * Generic & dynamic version of {@link Container#transferStackInSlot(EntityPlayer, int)}<br>
 	 * Handle when the stack in slot {@code index} is shift-clicked. Normally this moves the stack between the player inventory and the other inventory(s).
-	 * @param  player
-	 * @param  index
-	 * @param  container the container to apply the transfer to
+	 * @param player
+	 * @param index
+	 * @param container the container to apply the transfer to
 	 * @return
 	 */
 	public static ItemStack transferStackInSlot(final EntityPlayer player, final int index, final Container container) {
@@ -360,6 +361,19 @@ public final class ModUtil {
 		}
 
 		return flag;
+	}
+
+	public static int[] splitIntoParts(final int whole, final int parts) {
+		final int[] arr = new int[parts];
+		int remain = whole;
+		int partsLeft = parts;
+		for (int i = 0; partsLeft > 0; i++) {
+			final int size = ((remain + partsLeft) - 1) / partsLeft; // rounded up, aka ceiling
+			arr[i] = size;
+			remain -= size;
+			partsLeft--;
+		}
+		return arr;
 	}
 
 }

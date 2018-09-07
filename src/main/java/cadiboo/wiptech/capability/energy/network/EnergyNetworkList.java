@@ -9,14 +9,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class EnergyNetworkList implements IEnergyNetworkList {
+public class EnergyNetworkList implements ITickable {
 
-	private final HashSet<BlockPos> connections;
-	private final HashSet<EnergyNetwork> networks;
-	private final World world;
+	private final HashSet<BlockPos>			connections;
+	private final HashSet<EnergyNetwork>	networks;
+	private final World						world;
 
 	public EnergyNetworkList(final World world) {
 		this.connections = new HashSet<>(0);
@@ -24,23 +25,19 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 		this.world = world;
 	}
 
-	@Override
 	public HashSet<BlockPos> getConnections() {
 		return this.connections;
 	}
 
-	@Override
 	public World getWorld() {
 		return this.world;
 	}
 
-	@Override
 	public void addConnection(final BlockPos pos) {
 		this.getConnections().add(pos);
 		this.onChange(pos);
 	}
 
-	@Override
 	public void removeConnection(final BlockPos pos) {
 		this.getConnections().remove(pos);
 		this.onChange(pos);
@@ -149,7 +146,6 @@ public class EnergyNetworkList implements IEnergyNetworkList {
 		}
 	}
 
-	@Override
 	public void onChange(final BlockPos pos) {
 		if (!this.world.isRemote) {
 			final NBTTagList syncTag = (NBTTagList) CapabilityEnergyNetworkList.NETWORK_LIST.writeNBT(this, null);

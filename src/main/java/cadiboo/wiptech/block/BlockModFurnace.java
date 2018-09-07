@@ -11,7 +11,6 @@ import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -25,17 +24,17 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockModFurnace extends BlockHorizontal {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	public static final PropertyBool ON = PropertyBool.create("on");
 
 	public BlockModFurnace(final String name) {
 		super(Material.ROCK);
 		ModUtil.setRegistryNames(this, name);
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ON, false));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
 	}
 
 	@Override
@@ -50,23 +49,20 @@ public class BlockModFurnace extends BlockHorizontal {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING, ON});
+		return new BlockStateContainer(this, new IProperty[] { FACING });
 	}
 
 	@ExistsForDebugging
 	@Override
 	public int getMetaFromState(final IBlockState state) {
-		if (state.getValue(ON)) {
-			return state.getValue(FACING).getHorizontalIndex() + EnumFacing.HORIZONTALS.length;
-		} else {
-			return state.getValue(FACING).getHorizontalIndex();
-		}
+		return state.getValue(FACING).getHorizontalIndex();
+
 	}
 
 	@ExistsForDebugging
 	@Override
 	public IBlockState getStateFromMeta(final int meta) {
-		return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta % EnumFacing.HORIZONTALS.length)).withProperty(ON, meta >= EnumFacing.HORIZONTALS.length);
+		return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
 	}
 
 	@Override
@@ -78,7 +74,14 @@ public class BlockModFurnace extends BlockHorizontal {
 	@Override
 	public void randomDisplayTick(final IBlockState stateIn, final World worldIn, final BlockPos pos, final Random rand) {
 		super.randomDisplayTick(stateIn, worldIn, pos, rand);
-		if (stateIn.getValue(ON)) {
+
+		if ((worldIn.getTileEntity(pos) == null) || !(worldIn.getTileEntity(pos) instanceof TileEntityModFurnace)) {
+			return;
+		}
+
+		final TileEntityModFurnace tile = (TileEntityModFurnace) worldIn.getTileEntity(pos);
+
+		if (tile.isOn()) {
 			final EnumFacing enumfacing = stateIn.getValue(FACING);
 			final double d0 = pos.getX() + 0.5D;
 			final double d1 = pos.getY() + ((rand.nextDouble() * 6.0D) / 16.0D);
@@ -91,24 +94,34 @@ public class BlockModFurnace extends BlockHorizontal {
 			}
 
 			switch (enumfacing) {
-				case WEST :
-					worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
-					worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
-					break;
-				case EAST :
-					worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
-					worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
-					break;
-				default :
-				case NORTH :
-					worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D);
-					worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D);
-					break;
-				case SOUTH :
-					worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D);
-					worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D);
+			case WEST:
+				worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+				worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 - 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+				break;
+			case EAST:
+				worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+				worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + 0.52D, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+				break;
+			default:
+			case NORTH:
+				worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D);
+				worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 - 0.52D, 0.0D, 0.0D, 0.0D);
+				break;
+			case SOUTH:
+				worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D);
+				worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4, d1, d2 + 0.52D, 0.0D, 0.0D, 0.0D);
 			}
 		}
+	}
+
+	@Override
+	public void breakBlock(final World worldIn, final BlockPos pos, final IBlockState state) {
+		final TileEntity tile = worldIn.getTileEntity(pos);
+		if ((tile != null) && (tile instanceof TileEntityModFurnace)) {
+			final TileEntityModFurnace furnace = (TileEntityModFurnace) tile;
+			furnace.getInventory().dropItems(worldIn, pos.getX(), pos.getY(), pos.getZ());
+		}
+		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
@@ -153,6 +166,15 @@ public class BlockModFurnace extends BlockHorizontal {
 		}
 
 		return Math.round(Math.round(ModUtil.map(0, max, 0, 15, size)));
+	}
+
+	@Override
+	public int getLightValue(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+		final TileEntity tile = world.getTileEntity(pos);
+		if ((tile == null) || !(tile instanceof TileEntityModFurnace) || !((TileEntityModFurnace) tile).isOn()) {
+			return 0;
+		}
+		return 16;
 	}
 
 }

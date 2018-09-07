@@ -45,11 +45,11 @@ public class BlockResource extends Block implements IBlockModMaterial {
 	@Override
 	public BlockRenderLayer getBlockLayer() {
 		switch (this.getModMaterial().getType()) {
-			case GEM :
-				return BlockRenderLayer.TRANSLUCENT;
-			default :
-			case METAL :
-				return super.getBlockLayer();
+		case GEM:
+			return BlockRenderLayer.TRANSLUCENT;
+		default:
+		case METAL:
+			return super.getBlockLayer();
 		}
 	}
 
@@ -65,11 +65,11 @@ public class BlockResource extends Block implements IBlockModMaterial {
 			return true;
 		}
 		switch (this.getModMaterial().getType()) {
-			case GEM :
-				return false;
-			default :
-			case METAL :
-				return true;
+		case GEM:
+			return false;
+		default:
+		case METAL:
+			return true;
 		}
 	}
 

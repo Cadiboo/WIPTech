@@ -129,13 +129,13 @@ public final class ModEnums {
 
 		GLITCH(19, ModMaterialTypes.METAL, new ModMaterialProperties(true, true, true, true, true, 20.0f, 1000));
 
-		private final int id;
-		private final ModMaterialTypes type;
-		private final ModMaterialProperties properties;
-		private final ArmorMaterial armorMaterial;
-		private final ToolMaterial toolMaterial;
-		private final HorseArmorType horseArmorType;
-		private final String assetsModId;
+		private final int					id;
+		private final ModMaterialTypes		type;
+		private final ModMaterialProperties	properties;
+		private final ArmorMaterial			armorMaterial;
+		private final ToolMaterial			toolMaterial;
+		private final HorseArmorType		horseArmorType;
+		private final String				assetsModId;
 
 		private ModMaterials(final int id, final ModMaterialTypes type, final ModMaterialProperties properties) {
 			this(id, type, properties, ModReference.MOD_ID);
@@ -185,10 +185,10 @@ public final class ModEnums {
 			} else {
 				final String name = this.getNameUppercase();
 				final int harvestLevel = Math.min(3, Math.round(this.getProperties().getHardness() / 3f));
-				final int maxUses = Math.round(this.getProperties().getHardness() * 150f);
+				final int maxUses = (int) Math.ceil(this.getProperties().getHardness() * 150f);
 				final float efficiency = this.getProperties().getHardness();
 				final float damageVsEntity = this.getProperties().getHardness();
-				final int enchantability = Math.round(this.getProperties().getConductivity() / 10f);
+				final int enchantability = (int) Math.ceil(this.getProperties().getConductivity() / 10f);
 
 				final ToolMaterial toolMaterial = EnumHelper.addToolMaterial(name, harvestLevel, maxUses, efficiency, damageVsEntity, enchantability);
 				return toolMaterial;
@@ -203,16 +203,16 @@ public final class ModEnums {
 
 				final String textureName = new ModResourceLocation(this.getResouceLocationDomain("helmet", ForgeRegistries.ITEMS), this.getNameLowercase()).toString();
 
-				final int durability = Math.round(this.getProperties().getHardness() * ModReference.ARMOR_MATERIAL_HARDNESS_MULTIPLIER);
+				final int durability = (int) Math.ceil(this.getProperties().getHardness() * ModReference.ARMOR_MATERIAL_HARDNESS_MULTIPLIER);
 
 				final int[] reductionAmounts = new int[4];
-				Arrays.fill(reductionAmounts, Math.round(this.getProperties().getHardness() / 2f));
+				Arrays.fill(reductionAmounts, (int) Math.ceil(this.getProperties().getHardness() / 2f));
 
-				final int enchantability = Math.round(this.getProperties().getConductivity() / 10f);
+				final int enchantability = (int) Math.ceil(this.getProperties().getConductivity() / 10f);
 
 				final SoundEvent soundOnEquip = SoundEvents.ITEM_ARMOR_EQUIP_IRON;
 
-				final float toughness = Math.round(this.getProperties().getHardness() / 5f);
+				final float toughness = (int) Math.ceil(this.getProperties().getHardness() / 5f);
 
 				final ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability, soundOnEquip, toughness);
 				// TODO TEST THIS!!
@@ -230,7 +230,7 @@ public final class ModEnums {
 
 				final String textureLocation = new ModResourceLocation(this.getResouceLocationDomain("horse_armor", ForgeRegistries.ITEMS), "textures/entity/horse/armor/horse_armor_" + this.getNameLowercase()).toString() + ".png";
 
-				final int armorStrength = Math.round(this.getProperties().getHardness());
+				final int armorStrength = (int) Math.ceil(this.getProperties().getHardness());
 
 				return EnumHelper.addHorseArmor(name, textureLocation, armorStrength);
 			}
@@ -254,21 +254,21 @@ public final class ModEnums {
 			// }
 
 			switch (suffix.toLowerCase()) {
-				case "sword" :
-				case "shovel" :
-				case "pickaxe" :
-				case "axe" :
-				case "hoe" :
-				case "helmet" :
-				case "chestplate" :
-				case "leggings" :
-				case "boots" :
-				case "apple" :
-				case "carrot" :
-				case "horse_armor" :
-					return this.getNameLowercase() + (this.getNameLowercase().contains("gold") ? "en" : "");
-				default :
-					return this.getNameLowercase();
+			case "sword":
+			case "shovel":
+			case "pickaxe":
+			case "axe":
+			case "hoe":
+			case "helmet":
+			case "chestplate":
+			case "leggings":
+			case "boots":
+			case "apple":
+			case "carrot":
+			case "horse_armor":
+				return this.getNameLowercase() + (this.getNameLowercase().contains("gold") ? "en" : "");
+			default:
+				return this.getNameLowercase();
 			}
 
 		}
@@ -535,13 +535,13 @@ public final class ModEnums {
 		public boolean hasResourcePiece() {
 			boolean hasResourcePiece;
 			switch (byId(this.getId())) {
-				case GEM :
-					hasResourcePiece = false;
-					break;
-				default :
-				case METAL :
-					hasResourcePiece = true;
-					break;
+			case GEM:
+				hasResourcePiece = false;
+				break;
+			default:
+			case METAL:
+				hasResourcePiece = true;
+				break;
 			}
 			return hasResourcePiece;
 		}
@@ -549,13 +549,13 @@ public final class ModEnums {
 		public BlockItemTypes getResourceBlockItemType() {
 			BlockItemTypes resourceBlockItemType;
 			switch (byId(this.getId())) {
-				case GEM :
-					resourceBlockItemType = BlockItemTypes.GEM;
-					break;
-				default :
-				case METAL :
-					resourceBlockItemType = BlockItemTypes.INGOT;
-					break;
+			case GEM:
+				resourceBlockItemType = BlockItemTypes.GEM;
+				break;
+			default:
+			case METAL:
+				resourceBlockItemType = BlockItemTypes.INGOT;
+				break;
 			}
 			return resourceBlockItemType;
 		}
@@ -563,13 +563,13 @@ public final class ModEnums {
 		public BlockItemTypes getResourcePieceBlockItemType() {
 			BlockItemTypes resourcePieceBlockItemType;
 			switch (byId(this.getId())) {
-				case GEM :
-					resourcePieceBlockItemType = null;
-					break;
-				default :
-				case METAL :
-					resourcePieceBlockItemType = BlockItemTypes.NUGGET;
-					break;
+			case GEM:
+				resourcePieceBlockItemType = null;
+				break;
+			default:
+			case METAL:
+				resourcePieceBlockItemType = BlockItemTypes.NUGGET;
+				break;
 			}
 			return resourcePieceBlockItemType;
 		}
@@ -600,11 +600,11 @@ public final class ModEnums {
 
 		private static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0.2, 0.0, 0.2, 0.8, 0.2, 0.8);
 
-		private static final AxisAlignedBB INGOT_EW_AABB = new AxisAlignedBB(3d / 16d, 0, 6d / 16d, 1d - (3d / 16d), 3d / 16d, 1d - (6d / 16d));
-		private static final AxisAlignedBB INGOT_NS_AABB = new AxisAlignedBB(6d / 16d, 0, 3d / 16d, 1d - (6d / 16d), 3d / 16d, 1d - (3d / 16d));
+		private static final AxisAlignedBB	INGOT_EW_AABB	= new AxisAlignedBB(3d / 16d, 0, 6d / 16d, 1d - (3d / 16d), 3d / 16d, 1d - (6d / 16d));
+		private static final AxisAlignedBB	INGOT_NS_AABB	= new AxisAlignedBB(6d / 16d, 0, 3d / 16d, 1d - (6d / 16d), 3d / 16d, 1d - (3d / 16d));
 
-		private static final AxisAlignedBB NUGGET_EW_AABB = new AxisAlignedBB(4d / 16d, 0, 5d / 16d, 1d - (4d / 16d), 1d / 16d, 1d - (5d / 16d));
-		private static final AxisAlignedBB NUGGET_NS_AABB = new AxisAlignedBB(5d / 16d, 0, 4d / 16d, 1d - (5d / 16d), 1d / 16d, 1d - (4d / 16d));
+		private static final AxisAlignedBB	NUGGET_EW_AABB	= new AxisAlignedBB(4d / 16d, 0, 5d / 16d, 1d - (4d / 16d), 1d / 16d, 1d - (5d / 16d));
+		private static final AxisAlignedBB	NUGGET_NS_AABB	= new AxisAlignedBB(5d / 16d, 0, 4d / 16d, 1d - (5d / 16d), 1d / 16d, 1d - (4d / 16d));
 
 		private final int id;
 
@@ -619,32 +619,32 @@ public final class ModEnums {
 		public AxisAlignedBB getBoundingBox(final EnumFacing facing) {
 
 			switch (byId(this.getId())) {
-				case INGOT :
-					switch (facing) {
-						case EAST :
-						case WEST :
-							return INGOT_EW_AABB;
-						case NORTH :
-						case SOUTH :
-							return INGOT_NS_AABB;
-						default :
-							return DEFAULT_AABB;
-					}
-				case NUGGET :
-					switch (facing) {
-						case EAST :
-						case WEST :
-							return NUGGET_EW_AABB;
-						case NORTH :
-						case SOUTH :
-							return NUGGET_NS_AABB;
-						default :
-							return DEFAULT_AABB;
-					}
-				case GEM :
+			case INGOT:
+				switch (facing) {
+				case EAST:
+				case WEST:
+					return INGOT_EW_AABB;
+				case NORTH:
+				case SOUTH:
+					return INGOT_NS_AABB;
+				default:
 					return DEFAULT_AABB;
-				default :
+				}
+			case NUGGET:
+				switch (facing) {
+				case EAST:
+				case WEST:
+					return NUGGET_EW_AABB;
+				case NORTH:
+				case SOUTH:
+					return NUGGET_NS_AABB;
+				default:
 					return DEFAULT_AABB;
+				}
+			case GEM:
+				return DEFAULT_AABB;
+			default:
+				return DEFAULT_AABB;
 
 			}
 		}

@@ -10,7 +10,7 @@ public final class ModReference {
 
 	/**
 	 * @author Cadiboo
-	 * @see    <a href= "https://mcforge.readthedocs.io/en/latest/conventions/versioning/">Forge Versioning Docs</a>
+	 * @see <a href= "https://mcforge.readthedocs.io/en/latest/conventions/versioning/">Forge Versioning Docs</a>
 	 */
 	public static final class Version {
 		/**
@@ -83,17 +83,17 @@ public final class ModReference {
 
 	}
 
-	public static final String CLIENT_PROXY_CLASS = "cadiboo.wiptech.client.Proxy";
-	public static final String SERVER_PROXY_CLASS = "cadiboo.wiptech.server.Proxy";
-	public static final String GUI_FACTORY_CLASS = "";
+	public static final String	CLIENT_PROXY_CLASS	= "cadiboo.wiptech.client.Proxy";
+	public static final String	SERVER_PROXY_CLASS	= "cadiboo.wiptech.server.Proxy";
+	public static final String	GUI_FACTORY_CLASS	= "";
 
-	public static final String ACCEPTED_VERSIONS = "[1.12.2, 1.13]";
-	public static final String DEPENDENCIES = "required-after:minecraft;" + "required-after:forge@[14.23.4.2723,);" + "";
+	public static final String	ACCEPTED_VERSIONS	= "[1.12.2, 1.13]";
+	public static final String	DEPENDENCIES		= "required-after:minecraft;" + "required-after:forge@[14.23.4.2723,);" + "";
 
 	public static final String ENERGY_UNIT = "PNs";
 
-	public static final boolean CAN_BE_DEACTIVATED = false;
-	public static final int ARMOR_MATERIAL_HARDNESS_MULTIPLIER = 5; // TODO this
+	public static final boolean	CAN_BE_DEACTIVATED					= false;
+	public static final int		ARMOR_MATERIAL_HARDNESS_MULTIPLIER	= 5;	// TODO this
 
 	public static final class Debug {
 		public static boolean debugOres() {

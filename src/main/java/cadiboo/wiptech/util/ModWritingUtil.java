@@ -37,13 +37,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ModWritingUtil {
 
 	@VisibleForTesting
-	public static String default_variant_name = "normal";
-	private static String assetDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
-	private static String dataDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
+	public static String	default_variant_name	= "normal";
+	private static String	assetDir				= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
+	private static String	dataDir					= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
 
-	private static final ModResourceLocation item_generated = new ModResourceLocation("", "item/generated");
-	private static final ModResourceLocation item_handheld = new ModResourceLocation("", "item/handheld");
-	private static final String item_default_texture_name = "layer0";
+	private static final ModResourceLocation	item_generated				= new ModResourceLocation("", "item/generated");
+	private static final ModResourceLocation	item_handheld				= new ModResourceLocation("", "item/handheld");
+	private static final String					item_default_texture_name	= "layer0";
 
 	@ExistsForDebugging
 	@SideOnly(Side.CLIENT)
@@ -66,15 +66,27 @@ public class ModWritingUtil {
 		}
 		if (recipes) {
 			for (final ModMaterials material : ModMaterials.values()) {
-				generateAndWriteRecipes(material);
+				try {
+					generateAndWriteRecipes(material);
+				} catch (final Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		if (lang) {
-			generateAndWriteLang();
+			try {
+				generateAndWriteLang();
+			} catch (final Exception e) {
+				e.printStackTrace();
+			}
 		}
 		if (json) {
 			for (final ModMaterials material : ModMaterials.values()) {
-				generateAndWriteModels(material);
+				try {
+					generateAndWriteModels(material);
+				} catch (final Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -183,7 +195,7 @@ public class ModWritingUtil {
 		}
 
 		if (properties.hasArmor()) {
-			for (final Item itemArmor : new Item[]{material.getHelmet(), material.getChestplate(), material.getLeggings(), material.getBoots(), material.getHorseArmor()}) {
+			for (final Item itemArmor : new Item[] { material.getHelmet(), material.getChestplate(), material.getLeggings(), material.getBoots(), material.getHorseArmor() }) {
 
 				final ModResourceLocation armor = new ModResourceLocation(itemArmor.getRegistryName());
 
@@ -200,7 +212,7 @@ public class ModWritingUtil {
 		}
 
 		if (properties.hasTools()) {
-			for (final Item itemTool : new Item[]{material.getPickaxe(), material.getAxe(), material.getSword(), material.getShovel(), material.getHoe()}) {
+			for (final Item itemTool : new Item[] { material.getPickaxe(), material.getAxe(), material.getSword(), material.getShovel(), material.getHoe() }) {
 
 				final ModResourceLocation tool = new ModResourceLocation(itemTool.getRegistryName());
 

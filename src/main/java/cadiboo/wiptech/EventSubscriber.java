@@ -14,7 +14,6 @@ import cadiboo.wiptech.block.IBlockModMaterial;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.capability.energy.network.EnergyNetwork;
 import cadiboo.wiptech.capability.energy.network.EnergyNetworkList;
-import cadiboo.wiptech.capability.energy.network.IEnergyNetworkList;
 import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.client.model.ModelsCache;
 import cadiboo.wiptech.client.render.block.model.GlitchModelLoader;
@@ -24,14 +23,15 @@ import cadiboo.wiptech.client.render.entity.EntityPortableGeneratorRenderer;
 import cadiboo.wiptech.client.render.entity.EntityRailgunRenderer;
 import cadiboo.wiptech.client.render.entity.EntitySlugCasingRenderer;
 import cadiboo.wiptech.client.render.entity.EntitySlugRenderer;
-import cadiboo.wiptech.client.render.item.model.CasedSlugModelLoader;
 import cadiboo.wiptech.client.render.tileentity.TileEntityEnamelRenderer;
+import cadiboo.wiptech.client.render.tileentity.TileEntityModFurnaceRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityWireRenderer;
 import cadiboo.wiptech.entity.item.EntityPortableGenerator;
 import cadiboo.wiptech.entity.item.EntityRailgun;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.entity.projectile.EntitySlugCasing;
+import cadiboo.wiptech.event.ModFurnaceItemSmeltTimeEvent;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.IItemModMaterial;
@@ -345,6 +345,7 @@ public final class EventSubscriber {
 	private static void registerTileEntitySpecialRenderers() {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWire.class, new TileEntityWireRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnamel.class, new TileEntityEnamelRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityModFurnace.class, new TileEntityModFurnaceRenderer());
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -412,8 +413,8 @@ public final class EventSubscriber {
 
 		}
 
-		ModelLoaderRegistry.registerLoader(new CasedSlugModelLoader());
-		WIPTech.debug("Registered custom Mesh Definitions for cased slugs with the Model Loader");
+//		ModelLoaderRegistry.registerLoader(new CasedSlugModelLoader());
+//		WIPTech.debug("Registered custom Mesh Definitions for cased slugs with the Model Loader");
 
 		for (final ModMaterials material : ModMaterials.values()) {
 			if (material.getProperties().hasOre()) {
@@ -429,10 +430,10 @@ public final class EventSubscriber {
 			}
 
 			if (material.getProperties().hasResource()) {
-				if ((material.getResource() != null) && (material.getResouceLocationDomain(material.getType().getResourceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getAssetsModId()))) {
+				if ((material.getResource() != null) && material.getResouceLocationDomain(material.getType().getResourceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getAssetsModId())) {
 					registerBlockModMaterialItemBlockModel(material.getResource());
 				}
-				if ((material.getResourcePiece() != null) && (material.getResouceLocationDomain(material.getType().getResourcePieceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getAssetsModId()))) {
+				if ((material.getResourcePiece() != null) && material.getResouceLocationDomain(material.getType().getResourcePieceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getAssetsModId())) {
 					registerBlockModMaterialItemBlockModel(material.getResourcePiece());
 				}
 			}
@@ -504,9 +505,9 @@ public final class EventSubscriber {
 				if (material.getSlugItem() != null) {
 					registerItemModMaterialModel(material.getSlugItem());
 				}
-				if (material.getCasedSlug() != null) {
-					registerItemModMaterialModel(material.getCasedSlug());
-				}
+//				if (material.getCasedSlug() != null) {
+//					registerItemModMaterialModel(material.getCasedSlug());
+//				}
 			}
 
 		}
@@ -587,14 +588,10 @@ public final class EventSubscriber {
 		if (world == null) {
 			return;
 		}
-		final IEnergyNetworkList list = world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
+		final EnergyNetworkList list = world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
 		if (list == null) {
 			return;
 		}
-		if (!(list instanceof EnergyNetworkList)) {
-			return;
-		}
-
 		GlStateManager.enableBlend();
 
 		// Usually the player
@@ -608,7 +605,7 @@ public final class EventSubscriber {
 		// Apply 0-our transforms to set everything back to 0,0,0
 		Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
 
-		for (final EnergyNetwork network : ((EnergyNetworkList) list).getNetworks()) {
+		for (final EnergyNetwork network : list.getNetworks()) {
 			final Random rand = new Random(network.hashCode());
 
 			GlStateManager.color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), 0.6f);
@@ -795,7 +792,7 @@ public final class EventSubscriber {
 			return;
 		}
 
-		final IEnergyNetworkList list = world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
+		final EnergyNetworkList list = world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
 		if (list == null) {
 			return;
 		}
@@ -825,7 +822,7 @@ public final class EventSubscriber {
 			return;
 		}
 
-		final IEnergyNetworkList list = event.world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
+		final EnergyNetworkList list = event.world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null);
 		if (list == null) {
 			return;
 		}
@@ -839,6 +836,12 @@ public final class EventSubscriber {
 
 		ModWritingUtil.writeMod();
 
+	}
+
+	@SubscribeEvent
+	@ExistsForDebugging
+	public static void getModFurnaceItemSmeltTime(final ModFurnaceItemSmeltTimeEvent event) {
+		event.setSmeltTime(20);
 	}
 
 }

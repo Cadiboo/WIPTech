@@ -26,8 +26,8 @@ public class BlockItem extends Block implements IBlockModMaterial {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-	protected final ModMaterials material;
-	protected final BlockItemTypes type;
+	protected final ModMaterials	material;
+	protected final BlockItemTypes	type;
 
 	public BlockItem(final ModMaterials material, final BlockItemTypes type) {
 		super(material.getVanillaMaterial());
@@ -93,7 +93,7 @@ public class BlockItem extends Block implements IBlockModMaterial {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[]{FACING});
+		return new BlockStateContainer(this, new IProperty[] { FACING });
 	}
 
 	@Override
