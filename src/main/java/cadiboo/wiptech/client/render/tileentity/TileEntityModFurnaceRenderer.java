@@ -29,11 +29,11 @@ public class TileEntityModFurnaceRenderer extends ModTileEntitySpecialRenderer<T
 			GlStateManager.scale(4 / 16d, 4 / 16d, 4 / 16d);
 			GlStateManager.translate(0, 1 / 2d, 0);
 
-			if (!(fuel.getItem() instanceof ItemBlock)) {
+			if (!(input.getItem() instanceof ItemBlock)) {
 				GlStateManager.rotate(90, 1, 0, 0);
 			}
 
-			if (te.getFuelTimeRemaining() > 0) {
+			if (te.isOn()) {
 
 				// Other systems, such as Java, will want an integer where bits 0-7 are the red value, 8-15 the green, and 16-23 the blue.
 

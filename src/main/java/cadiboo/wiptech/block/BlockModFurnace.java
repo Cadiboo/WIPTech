@@ -174,7 +174,7 @@ public class BlockModFurnace extends BlockHorizontal {
 		if ((tile == null) || !(tile instanceof TileEntityModFurnace) || !((TileEntityModFurnace) tile).isOn()) {
 			return 0;
 		}
-		return 16;
+		return 15;
 	}
 
 }

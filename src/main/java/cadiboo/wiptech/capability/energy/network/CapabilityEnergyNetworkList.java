@@ -35,9 +35,6 @@ public class CapabilityEnergyNetworkList {
 
 			@Override
 			public void readNBT(final Capability<EnergyNetworkList> capability, final EnergyNetworkList instance, final EnumFacing side, final NBTBase nbt) {
-				if (!(instance instanceof EnergyNetworkList)) {
-					throw new IllegalArgumentException("Can't deserialize to an instance that isn't the default implementation");
-				}
 
 				final EnergyNetworkList energyNetworkList = instance;
 

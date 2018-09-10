@@ -19,6 +19,7 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
@@ -207,5 +208,19 @@ public class BlockWire extends Block implements IBlockModMaterial {
 		}
 
 		super.breakBlock(world, pos, state);
+	}
+
+	@Override
+	public void onBlockExploded(final World world, final BlockPos pos, final Explosion explosion) {
+		if (world != null) {
+			final TileEntity tile = world.getTileEntity(pos);
+			if (tile != null) {
+				if (tile instanceof TileEntityWire) {
+					final TileEntityWire wire = (TileEntityWire) tile;
+					world.getCapability(CapabilityEnergyNetworkList.NETWORK_LIST, null).removeConnection(tile.getPos());
+				}
+			}
+		}
+		super.onBlockExploded(world, pos, explosion);
 	}
 }

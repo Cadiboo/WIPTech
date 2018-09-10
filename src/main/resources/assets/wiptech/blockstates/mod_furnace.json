@@ -1,5 +1,6 @@
 {
 	"variants": {
+		"normal":		{ "model": "wiptech:mod_furnace" },
 		"facing=north":	{ "model": "wiptech:mod_furnace" },
 		"facing=south":	{ "model": "wiptech:mod_furnace", "y": 180 },
 		"facing=west":	{ "model": "wiptech:mod_furnace", "y": 270 },

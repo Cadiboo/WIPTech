@@ -681,6 +681,23 @@ public final class ModEnums {
 		public static SlugCasingParts byId(final int id) {
 			return values()[Math.min(Math.abs(id), values().length)];
 		}
+
+	}
+
+	public enum AttachmentPoints implements IEnumNameFormattable {
+		SCOPE, SIDE_LEFT, SIDE_RIGHT, CIRCUIT, RAIL, COIL, SILENCER;
+
+	}
+
+	public enum CircuitTypes implements IEnumNameFormattable {
+
+		AUTO, BURST3, BURST5, MANUAL;
+
+		public static final int	AUTO_SHOTS		= 1;
+		public static final int	BURST3_SHOTS	= 3;
+		public static final int	BURST5_SHOTS	= 5;
+		public static final int	MANUAL_SHOTS	= 1;
+
 	}
 
 }

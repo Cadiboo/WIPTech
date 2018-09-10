@@ -3,10 +3,12 @@ package cadiboo.wiptech;
 import java.util.ArrayList;
 import java.util.Random;
 
+import cadiboo.wiptech.block.BlockAssemblyTable;
 import cadiboo.wiptech.block.BlockEnamel;
 import cadiboo.wiptech.block.BlockItem;
 import cadiboo.wiptech.block.BlockModFurnace;
 import cadiboo.wiptech.block.BlockModOre;
+import cadiboo.wiptech.block.BlockPeripheral;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
@@ -36,8 +38,10 @@ import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.IItemModMaterial;
 import cadiboo.wiptech.item.ItemCasedSlug;
+import cadiboo.wiptech.item.ItemCircuit;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemFlamethrower;
+import cadiboo.wiptech.item.ItemHandheldRailgun;
 import cadiboo.wiptech.item.ItemModArmor;
 import cadiboo.wiptech.item.ItemModAxe;
 import cadiboo.wiptech.item.ItemModHoe;
@@ -53,10 +57,13 @@ import cadiboo.wiptech.item.ItemSlugCasing;
 import cadiboo.wiptech.item.ModItemBlock;
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.network.play.server.SPacketSyncEnergyNetworkList;
+import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
 import cadiboo.wiptech.tileentity.TileEntityModFurnace;
+import cadiboo.wiptech.tileentity.TileEntityPeripheral;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ExistsForDebugging;
+import cadiboo.wiptech.util.ModEnums.CircuitTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModEnums.SlugCasingParts;
 import cadiboo.wiptech.util.ModReference;
@@ -131,6 +138,10 @@ public final class EventSubscriber {
 
 		registry.register(new BlockModFurnace("mod_furnace"));
 
+		registry.register(new BlockAssemblyTable("assembly_table"));
+
+		registry.register(new BlockPeripheral("peripheral"));
+
 		WIPTech.info("Registered blocks");
 
 		registerTileEntities();
@@ -173,6 +184,8 @@ public final class EventSubscriber {
 		registerTileEntity(TileEntityWire.class);
 		registerTileEntity(TileEntityEnamel.class);
 		registerTileEntity(TileEntityModFurnace.class);
+		registerTileEntity(TileEntityAssemblyTable.class);
+		registerTileEntity(TileEntityPeripheral.class);
 	}
 
 	private static void registerTileEntity(final Class<? extends TileEntity> clazz) {
@@ -190,6 +203,10 @@ public final class EventSubscriber {
 
 		registry.register(new ModItemBlock(ModBlocks.MOD_FURNACE));
 
+		registry.register(new ModItemBlock(ModBlocks.ASSEMBLY_TABLE));
+
+//		registry.register(new ModItemBlock(ModBlocks.PERIPHERAL));
+
 		//
 
 		registerItemsForMaterials(registry);
@@ -203,6 +220,12 @@ public final class EventSubscriber {
 		registry.register(new ItemSlugCasing("slug_casing_back", SlugCasingParts.BACK));
 		registry.register(new ItemSlugCasing("slug_casing_top", SlugCasingParts.TOP));
 		registry.register(new ItemSlugCasing("slug_casing_bottom", SlugCasingParts.BOTTOM));
+
+		registry.register(new ItemHandheldRailgun("handheld_railgun"));
+
+		for (final CircuitTypes type : CircuitTypes.values()) {
+			registry.register(new ItemCircuit(type.getNameLowercase() + "_circuit", type));
+		}
 
 		WIPTech.info("Registered items");
 
@@ -330,6 +353,8 @@ public final class EventSubscriber {
 
 		registerModelsForMaterials();
 
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.MOD_FURNACE), 0, new ModelResourceLocation(ModBlocks.MOD_FURNACE.getRegistryName(), "north"));
+
 		registerNormalItemModel(ModItems.PORTABLE_GENERATOR);
 		registerNormalItemModel(ModItems.FLAMETHROWER);
 		registerNormalItemModel(ModItems.RAILGUN);
@@ -408,7 +433,7 @@ public final class EventSubscriber {
 
 			if (material.getProperties().hasRailgunSlug()) {
 				// FIXME TODO
-				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), "cased_" + material.getNameLowercase() + "_slug"), ModWritingUtil.default_variant_name));
+//				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), "cased_" + material.getNameLowercase() + "_slug"), ModWritingUtil.default_variant_name));
 			}
 
 		}

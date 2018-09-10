@@ -1,6 +1,8 @@
 package cadiboo.wiptech.init;
 
+import cadiboo.wiptech.block.BlockAssemblyTable;
 import cadiboo.wiptech.block.BlockModFurnace;
+import cadiboo.wiptech.block.BlockPeripheral;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
@@ -13,5 +15,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 public class ModBlocks {
 
 	public static final BlockModFurnace MOD_FURNACE = null;
+
+	public static final BlockAssemblyTable ASSEMBLY_TABLE = null;
+
+	public static final BlockPeripheral PERIPHERAL = null;
 
 }

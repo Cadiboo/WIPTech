@@ -79,6 +79,7 @@ public final class ModUtil {
 		entry.setRegistryName(registryName);
 		if (entry instanceof Block) {
 			((Block) entry).setUnlocalizedName(unlocalizedName);
+			((Block) entry).setHardness(1);
 		}
 		if (entry instanceof Item) {
 			((Item) entry).setUnlocalizedName(unlocalizedName);

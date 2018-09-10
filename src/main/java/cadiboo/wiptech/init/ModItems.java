@@ -1,6 +1,7 @@
 package cadiboo.wiptech.init;
 
 import cadiboo.wiptech.item.ItemFlamethrower;
+import cadiboo.wiptech.item.ItemHandheldRailgun;
 import cadiboo.wiptech.item.ItemPortableGenerator;
 import cadiboo.wiptech.item.ItemRailgun;
 import cadiboo.wiptech.item.ItemSlugCasing;
@@ -27,4 +28,5 @@ public class ModItems {
 
 	public static final ItemSlugCasing SLUG_CASING_BOTTOM = null;
 
+	public static final ItemHandheldRailgun HANDHELD_RAILGUN = null;
 }

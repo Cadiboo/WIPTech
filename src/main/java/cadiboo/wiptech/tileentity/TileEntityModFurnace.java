@@ -3,7 +3,6 @@ package cadiboo.wiptech.tileentity;
 import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
 import cadiboo.wiptech.event.ModEventFactory;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -69,9 +68,9 @@ public class TileEntityModFurnace extends TileEntity implements ITickable, ITile
 					if (!input.isEmpty()) {
 						TileEntityModFurnace.this.maxSmeltTime = TileEntityModFurnace.this.getSmeltTime(input);
 					} else {
+						TileEntityModFurnace.this.smeltTime = 0;
 						TileEntityModFurnace.this.maxSmeltTime = 0;
 					}
-					TileEntityModFurnace.this.smeltTime = 0;
 				}
 			}
 
@@ -108,6 +107,8 @@ public class TileEntityModFurnace extends TileEntity implements ITickable, ITile
 			this.fuelTimeRemaining--;
 		}
 
+		this.getWorld().checkLight(this.getPos());
+
 		if (this.world.isRemote) {
 			return;
 		}
@@ -118,9 +119,9 @@ public class TileEntityModFurnace extends TileEntity implements ITickable, ITile
 
 		this.trySmeltItem();
 
-		for (final EntityPlayer player : this.world.playerEntities) {
-			this.syncToClient(player);
-		}
+		this.syncToClients();
+
+		this.markDirty();
 
 //		this.world.playerEntities.forEach(player -> {
 //			this.syncToClient(player);
@@ -320,7 +321,16 @@ public class TileEntityModFurnace extends TileEntity implements ITickable, ITile
 	}
 
 	public boolean isOn() {
-		return this.fuelTimeRemaining > 0;
+		if (this.fuelTimeRemaining > 0) {
+			return true;
+		} else if (!this.getInventory().getStackInSlot(FUEL_SLOT).isEmpty()) {
+			if (!this.getInventory().getStackInSlot(INPUT_SLOT).isEmpty()) {
+				if (this.getInventory().getStackInSlot(OUTPUT_SLOT).getCount() != this.getInventory().getStackInSlot(OUTPUT_SLOT).getMaxStackSize()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

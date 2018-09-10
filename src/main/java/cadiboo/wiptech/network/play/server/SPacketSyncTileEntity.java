@@ -17,29 +17,29 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SPacketSyncTileEntity implements IMessage, IMessageHandler<SPacketSyncTileEntity, IMessage> {
 
-	private NBTTagCompound syncTag;
-	private BlockPos pos;
+	private NBTTagCompound	syncTag;
+	private BlockPos		pos;
 
 	public SPacketSyncTileEntity() {
 	}
 
-	public SPacketSyncTileEntity(NBTTagCompound syncTag, BlockPos pos) {
+	public SPacketSyncTileEntity(final NBTTagCompound syncTag, final BlockPos pos) {
 		this.syncTag = syncTag;
 		this.pos = pos;
 	}
 
 	@Override
-	public void fromBytes(ByteBuf buf) {
+	public void fromBytes(final ByteBuf buf) {
 		try {
 			this.syncTag = new PacketBuffer(buf).readCompoundTag();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 		this.pos = BlockPos.fromLong(buf.readLong());
 	}
 
 	@Override
-	public void toBytes(ByteBuf buf) {
+	public void toBytes(final ByteBuf buf) {
 		new PacketBuffer(buf).writeCompoundTag(this.syncTag);
 		buf.writeLong(this.pos.toLong());
 	}
@@ -49,20 +49,30 @@ public class SPacketSyncTileEntity implements IMessage, IMessageHandler<SPacketS
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IMessage onMessage(SPacketSyncTileEntity message, MessageContext ctx) {
+	public IMessage onMessage(final SPacketSyncTileEntity message, final MessageContext ctx) {
 		if (message.syncTag != null) {
 			Minecraft.getMinecraft().addScheduledTask(() -> {
-				if (Minecraft.getMinecraft() == null)
+				if (Minecraft.getMinecraft() == null) {
 					return;
-				if (Minecraft.getMinecraft().world == null)
-					return;
-				if (message.pos == null)
-					return;
-
-				TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(message.pos);
-				if (tile != null && tile instanceof ITileEntitySyncable) {
-					((ITileEntitySyncable) tile).readNBT(message.syncTag);
 				}
+				if (Minecraft.getMinecraft().world == null) {
+					return;
+				}
+				if (message.pos == null) {
+					return;
+				}
+
+				final TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(message.pos);
+				if (tile == null) {
+					return;
+				}
+
+				if (!(tile instanceof ITileEntitySyncable)) {
+					return;
+				}
+
+				((ITileEntitySyncable) tile).readNBT(message.syncTag);
+
 			});
 		}
 		return null;

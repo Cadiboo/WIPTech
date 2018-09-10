@@ -18,9 +18,7 @@ public interface ITileEntitySyncable {
 	default void handleSync() {
 		if (!getWorld().isRemote) {
 			if ((getWorld().getTotalWorldTime() % getSyncFrequency()) == 0) {
-				for (final EntityPlayer player : this.getWorld().playerEntities) {
-					syncToClient(player);
-				}
+				syncToClients();
 				return;
 			}
 
@@ -45,6 +43,12 @@ public interface ITileEntitySyncable {
 
 	default int getInstaSyncRange() {
 		return 6;
+	}
+
+	default void syncToClients() {
+		for (final EntityPlayer player : this.getWorld().playerEntities) {
+			syncToClient(player);
+		}
 	}
 
 	default void syncToClient(final EntityPlayer player) {
