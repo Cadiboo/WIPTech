@@ -19,7 +19,7 @@ public class ItemFlamethrower extends Item implements IModItem {
 
 	public ItemFlamethrower(final String name) {
 		ModUtil.setRegistryNames(this, name);
-		this.setMaxStackSize(0);
+		this.setMaxStackSize(1);
 	}
 
 	@Override
