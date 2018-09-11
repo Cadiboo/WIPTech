@@ -1,41 +1,26 @@
 package cadiboo.wiptech.tileentity;
 
-import cadiboo.wiptech.capability.energy.IEnergyUser;
-import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
  * @author Cadiboo
  */
-public class TileEntityPeripheral extends TileEntity implements IEnergyUser, ITileEntitySyncable {
+public class TileEntityPeripheral extends TileEntity implements ITileEntitySyncable {
 
 	private BlockPos centralPos;
-
-	@Override
-	public ModEnergyStorage getEnergy() {
-		if (this.getCentral() == null) {
-			return null;
-		}
-		return this.getCentral().getEnergy();
-	}
 
 	@Override
 	public BlockPos getPosition() {
 		return this.getPos();
 	}
 
-	/**
-	 * @return
-	 * @return
-	 */
-	public <T extends TileEntity & IEnergyUser> T getCentral() {
+	public <T extends TileEntity & ITileEntityCentral> T getCentral() {
 		if (!this.hasWorld()) {
 			return null;
 		}
@@ -56,13 +41,16 @@ public class TileEntityPeripheral extends TileEntity implements IEnergyUser, ITi
 			return null;
 		}
 
-		if (!(tile instanceof IEnergyUser)) {
+		if (!(tile instanceof ITileEntityCentral)) {
 			return null;
 		}
 
 		return (T) tile;
 	}
 
+	/**
+	 * @return the central pos or (0, 0, 0) if it is null
+	 */
 	public BlockPos getCentralPos() {
 		if (this.centralPos == null) {
 			return BlockPos.ORIGIN;
@@ -105,8 +93,9 @@ public class TileEntityPeripheral extends TileEntity implements IEnergyUser, ITi
 
 	@Override
 	public <T> T getCapability(final Capability<T> capability, final EnumFacing facing) {
-		if (capability == CapabilityEnergy.ENERGY) {
-			return (T) this.getEnergy();
+		if (this.getCentral() != null) {
+			return this.getCentral().getCapability(capability, facing);
+
 		}
 		return super.getCapability(capability, facing);
 	}

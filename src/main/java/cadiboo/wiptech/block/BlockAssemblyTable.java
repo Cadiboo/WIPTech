@@ -1,7 +1,5 @@
 package cadiboo.wiptech.block;
 
-import java.util.HashSet;
-
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
@@ -23,11 +21,7 @@ import net.minecraft.world.World;
 /**
  * @author Cadiboo
  */
-public class BlockAssemblyTable extends Block {
-
-	public static final int	WIDTH	= 3;
-	public static final int	HEIGHT	= 2;
-	public static final int	DEPTH	= 3;
+public class BlockAssemblyTable extends Block implements IBlockCentral {
 
 	public BlockAssemblyTable(final String name) {
 		super(Material.IRON);
@@ -36,7 +30,7 @@ public class BlockAssemblyTable extends Block {
 
 	@Override
 	public boolean canPlaceBlockAt(final World world, final BlockPos pos) {
-		for (final BlockPos peripheralPos : getPeripheralPositions(pos)) {
+		for (final BlockPos peripheralPos : this.getPeripheralPositions(pos)) {
 			if (!world.getBlockState(peripheralPos).getBlock().isReplaceable(world, peripheralPos)) {
 				return false;
 			}
@@ -87,30 +81,6 @@ public class BlockAssemblyTable extends Block {
 		super.onBlockExploded(world, pos, explosion);
 	}
 
-	public static HashSet<BlockPos> getPeripheralPositions(final BlockPos pos) {
-		final int smallX = (int) -(WIDTH / 2f);
-		final int smallY = 0;
-		final int smallZ = (int) -(DEPTH / 2f);
-
-		final int bigX = (int) (WIDTH / 2f);
-		final int bigY = HEIGHT - 1;
-		final int bigZ = (int) (DEPTH / 2f);
-
-		final HashSet<BlockPos> peripheralPositions = new HashSet<>();
-
-		final BlockPos from = new BlockPos(smallX, smallY, smallZ).add(pos);
-
-		final BlockPos to = new BlockPos(bigX, bigY, bigZ).add(pos);
-
-		BlockPos.getAllInBox(from, to).forEach(peripheralPos -> {
-			if (!peripheralPos.equals(pos)) {
-				peripheralPositions.add(peripheralPos);
-			}
-		});
-
-		return peripheralPositions;
-	}
-
 	@Override
 	public boolean onBlockActivated(final World worldIn, final BlockPos pos, final IBlockState state, final EntityPlayer playerIn, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if (worldIn.isRemote) {
@@ -139,6 +109,21 @@ public class BlockAssemblyTable extends Block {
 	@Override
 	public int getLightOpacity(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return 0;
+	}
+
+	@Override
+	public int getWidth() {
+		return 3;
+	}
+
+	@Override
+	public int getHeight() {
+		return 2;
+	}
+
+	@Override
+	public int getDepth() {
+		return 3;
 	}
 
 }

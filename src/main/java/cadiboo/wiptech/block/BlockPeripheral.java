@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -100,6 +101,24 @@ public class BlockPeripheral extends Block {
 	@Override
 	public int getLightOpacity(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
 		return 0;
+	}
+
+	@Override
+	public AxisAlignedBB getSelectedBoundingBox(final IBlockState state, final World world, final BlockPos pos) {
+		final TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileEntityPeripheral) {
+			final TileEntityPeripheral peripheral = (TileEntityPeripheral) tile;
+			final BlockPos central = peripheral.getCentralPos();
+			final Block block = world.getBlockState(central).getBlock();
+			if (block instanceof IBlockCentral) {
+				AxisAlignedBB selectedBB = block.getSelectedBoundingBox(state, world, pos);
+				for (final BlockPos peripheralPos : ((IBlockCentral) block).getPeripheralPositions(central)) {
+					selectedBB = selectedBB.union(new AxisAlignedBB(peripheralPos));
+				}
+				return selectedBB;
+			}
+		}
+		return super.getSelectedBoundingBox(state, world, pos);
 	}
 
 }

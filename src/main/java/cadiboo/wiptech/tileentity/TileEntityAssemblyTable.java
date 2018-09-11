@@ -1,10 +1,10 @@
 package cadiboo.wiptech.tileentity;
 
-import cadiboo.wiptech.block.BlockAssemblyTable;
 import cadiboo.wiptech.capability.energy.IEnergyUser;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
+import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -17,7 +17,11 @@ import net.minecraftforge.items.CapabilityItemHandler;
 /**
  * @author Cadiboo
  */
-public class TileEntityAssemblyTable extends TileEntity implements IEnergyUser, IInventoryUser {
+public class TileEntityAssemblyTable extends TileEntity implements IEnergyUser, IInventoryUser, ITileEntityCentral {
+
+	public static final int	WIDTH	= 3;
+	public static final int	HEIGHT	= 2;
+	public static final int	DEPTH	= 3;
 
 	private final ModEnergyStorage		energy;
 	private final ModItemStackHandler	inventory;
@@ -46,7 +50,7 @@ public class TileEntityAssemblyTable extends TileEntity implements IEnergyUser, 
 	public void onLoad() {
 		super.onLoad();
 
-		BlockAssemblyTable.getPeripheralPositions(this.pos).forEach(peripheralPos -> {
+		ModBlocks.ASSEMBLY_TABLE.getPeripheralPositions(this.pos).forEach(peripheralPos -> {
 			final TileEntity tile = this.world.getTileEntity(peripheralPos);
 
 			if (tile == null) {
