@@ -17,6 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 /**
@@ -123,6 +124,21 @@ public class BlockAssemblyTable extends Block {
 
 			return true;
 		}
+	}
+
+	@Override
+	public boolean isOpaqueCube(final IBlockState state) {
+		return false;
+	}
+
+	@Override
+	public int getLightValue(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+		return 1;
+	}
+
+	@Override
+	public int getLightOpacity(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
+		return 0;
 	}
 
 }

@@ -130,6 +130,7 @@ public final class EventSubscriber {
 
 	private static int entityId = 0;
 
+	/* register blocks */
 	@SubscribeEvent
 	public static void onRegisterBlocksEvent(final RegistryEvent.Register<Block> event) {
 		final IForgeRegistry<Block> registry = event.getRegistry();
@@ -197,6 +198,7 @@ public final class EventSubscriber {
 		}
 	}
 
+	/* register items */
 	@SubscribeEvent
 	public static void onRegisterItemsEvent(final RegistryEvent.Register<Item> event) {
 		final IForgeRegistry<Item> registry = event.getRegistry();
@@ -292,6 +294,7 @@ public final class EventSubscriber {
 
 	}
 
+	/* register entities */
 	@SubscribeEvent
 	public static void onRegisterEntitiesEvent(final RegistryEvent.Register<EntityEntry> event) {
 		final IForgeRegistry<EntityEntry> registry = event.getRegistry();
@@ -338,6 +341,7 @@ public final class EventSubscriber {
 		return builder.build();
 	}
 
+	/* register models */
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void onRegisterModelsEvent(final ModelRegistryEvent event) {
@@ -353,8 +357,11 @@ public final class EventSubscriber {
 
 		registerModelsForMaterials();
 
+		/* item blocks */
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.MOD_FURNACE), 0, new ModelResourceLocation(ModBlocks.MOD_FURNACE.getRegistryName(), "north"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.ASSEMBLY_TABLE), 0, new ModelResourceLocation(ModBlocks.ASSEMBLY_TABLE.getRegistryName(), ModWritingUtil.default_variant_name));
 
+		/* items */
 		registerNormalItemModel(ModItems.PORTABLE_GENERATOR);
 		registerNormalItemModel(ModItems.FLAMETHROWER);
 		registerNormalItemModel(ModItems.RAILGUN);
@@ -567,6 +574,7 @@ public final class EventSubscriber {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
+	/* injected models */
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void onModelBakeEvent(final ModelBakeEvent event) {
@@ -605,6 +613,7 @@ public final class EventSubscriber {
 		}
 	}
 
+	/* world rendering */
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void onRenderWorldLast(final RenderWorldLastEvent event) {
@@ -663,6 +672,7 @@ public final class EventSubscriber {
 
 	}
 
+	/* HUD rendering */
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public static void onRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
@@ -716,6 +726,7 @@ public final class EventSubscriber {
 
 	}
 
+	/* tooltips */
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	@SideOnly(Side.CLIENT)
 	public static void onTooltipEvent(final ItemTooltipEvent event) {
@@ -773,6 +784,7 @@ public final class EventSubscriber {
 		event.getToolTip().add(tooltip);
 	}
 
+	/* shoot railgun */
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerInteract(final PlayerInteractEvent event) {
 		if ((event.getEntityPlayer() == null) || (event.getEntityPlayer().getRidingEntity() == null) || !(event.getEntityPlayer().getRidingEntity() instanceof EntityRailgun)) {
@@ -784,6 +796,7 @@ public final class EventSubscriber {
 		return;
 	}
 
+	/* attach capabilities */
 	@SubscribeEvent
 	public static void onAttachCapabilities(final AttachCapabilitiesEvent<World> event) {
 		event.addCapability(new ModResourceLocation(ModReference.MOD_ID, ModUtil.getRegistryNameForClass(CapabilityEnergyNetworkList.class, "Capability")), new ICapabilityProvider() {

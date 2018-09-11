@@ -39,6 +39,8 @@ public class GuiAssemblyTable extends GuiContainer {
 
 		final int attachmentsSize = this.assemblyTable.getInventory().getSlots() - 1 - 2;
 
+		// TODO: code cleanup!!!
+
 		final int scale = 3;
 
 		RenderHelper.enableGUIStandardItemLighting();
@@ -46,7 +48,27 @@ public class GuiAssemblyTable extends GuiContainer {
 		GlStateManager.pushMatrix();
 		GlStateManager.translate((x + 194) - ((18 / 2) * (scale)), (y + 38) - ((18 / 2) * (scale)), 0);
 		GlStateManager.scale(scale, scale, 1);
+
+		// this.zLevel += 50.0F;
+		// translate 100 + this.zLevel
+
+		final float iHateThis = 100 + 50 + this.zLevel;
+
+		GlStateManager.translate(0, 0, iHateThis);
+		GlStateManager.translate(8.0F, 8.0F, 0.0F);
+		GlStateManager.scale(1.0F, -1.0F, 1.0F);
+		GlStateManager.scale(16.0F, 16.0F, 16.0F);
+
+		GlStateManager.rotate((this.assemblyTable.getWorld().getTotalWorldTime()), 0, 1, 0);
+
+		GlStateManager.scale(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
+		GlStateManager.scale(1 / 1.0F, 1 / -1.0F, 1 / 1.0F);
+		GlStateManager.translate(-8.0F, -8.0F, -0.0F);
+		GlStateManager.translate(0, 0, -iHateThis);
+
+		// TODO: Camera transforms.type.fixed //FIXME
 		this.itemRender.renderItemAndEffectIntoGUI(this.assemblyTable.getInventory().getStackInSlot(attachmentsSize + 1), 0, 0);
+
 		GlStateManager.popMatrix();
 
 		final int width = (((ContainerAssemblyTable.WIDTH / 2) - ContainerAssemblyTable.SLOT_WIDTH) + ContainerAssemblyTable.BORDER_SIZE) - 12;

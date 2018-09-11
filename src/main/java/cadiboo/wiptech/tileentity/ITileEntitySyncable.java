@@ -60,12 +60,12 @@ public interface ITileEntitySyncable {
 	}
 
 	/**
-	 * Implement this from tile Entity class
+	 * Implement this from Tile Entity class
 	 */
 	void readFromNBT(NBTTagCompound compound);
 
 	/**
-	 * Implement this from tile Entity class
+	 * Implement this from Tile Entity class
 	 */
 	NBTTagCompound writeToNBT(NBTTagCompound compound);
 
