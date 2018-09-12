@@ -69,6 +69,8 @@ public class WIPTech {
 	// TODO: assembly table assembling
 	// TODO: handheld guns shooting
 	// TODO: mounted guns
+	// TODO: attachments doing stuff
+	// TODO: SOPMOD achievement http://callofduty.wikia.com/wiki/SOPMOD
 
 	@Instance(ModReference.MOD_ID)
 	public static WIPTech instance;
