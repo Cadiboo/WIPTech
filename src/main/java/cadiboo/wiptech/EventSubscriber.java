@@ -482,7 +482,7 @@ public final class EventSubscriber {
 		for (final ModMaterials material : ModMaterials.values()) {
 
 			if (material.getProperties().hasRailgunSlug()) {
-				// FIXME TODO
+				// FIXME TODO re-enable this & make it work
 //				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), "cased_" + material.getNameLowercase() + "_slug"), ModWritingUtil.default_variant_name));
 			}
 
@@ -836,9 +836,15 @@ public final class EventSubscriber {
 
 	@SideOnly(Side.CLIENT)
 	private static void setTooltip(final ItemTooltipEvent event, final String tooltip) {
-		for (int i = 0; i < event.getToolTip().size(); i++) {
-			if (net.minecraft.util.StringUtils.stripControlCodes(event.getToolTip().get(i)).equals(event.getItemStack().getItem().getRegistryName().toString())) { // TODO why? and what does this do???
-				event.getToolTip().add(i, tooltip);
+
+		for (int index = 0; index < event.getToolTip().size(); index++) {
+
+			final String line = event.getToolTip().get(index);
+			final String check = net.minecraft.util.StringUtils.stripControlCodes(line);
+			final String registryName = event.getItemStack().getItem().getRegistryName().toString();
+
+			if (check.equals(registryName)) { // TODO why? and what does this do???
+				event.getToolTip().add(index, tooltip);
 				return;
 			}
 		}
