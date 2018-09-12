@@ -25,6 +25,7 @@ import cadiboo.wiptech.client.render.entity.EntityPortableGeneratorRenderer;
 import cadiboo.wiptech.client.render.entity.EntityRailgunRenderer;
 import cadiboo.wiptech.client.render.entity.EntitySlugCasingRenderer;
 import cadiboo.wiptech.client.render.entity.EntitySlugRenderer;
+import cadiboo.wiptech.client.render.tileentity.TileEntityAssemblyTableRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityEnamelRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityModFurnaceRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityWireRenderer;
@@ -416,6 +417,7 @@ public final class EventSubscriber {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityWire.class, new TileEntityWireRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEnamel.class, new TileEntityEnamelRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityModFurnace.class, new TileEntityModFurnaceRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAssemblyTable.class, new TileEntityAssemblyTableRenderer());
 	}
 
 	@SideOnly(Side.CLIENT)

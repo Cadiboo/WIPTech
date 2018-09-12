@@ -1,6 +1,7 @@
 package cadiboo.wiptech.client.render.tileentity;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.tileentity.IModTileEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -9,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class ModTileEntitySpecialRenderer<T extends TileEntity> extends TileEntitySpecialRenderer<T> {
+public abstract class ModTileEntitySpecialRenderer<T extends TileEntity & IModTileEntity> extends TileEntitySpecialRenderer<T> {
 
 	@Override
 	public final void render(final T te, final double x, final double y, final double z, final float partialTicks, final int destroyStage, final float alpha) {

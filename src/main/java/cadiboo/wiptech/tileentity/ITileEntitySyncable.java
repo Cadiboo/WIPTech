@@ -13,7 +13,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public interface ITileEntitySyncable {
+public interface ITileEntitySyncable extends IModTileEntity {
 
 	default void handleSync() {
 		if (!getWorld().isRemote) {

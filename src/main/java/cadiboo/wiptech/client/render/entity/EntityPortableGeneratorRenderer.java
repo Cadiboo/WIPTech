@@ -84,8 +84,9 @@ public class EntityPortableGeneratorRenderer extends Render<EntityPortableGenera
 			e.printStackTrace();
 		}
 
-		GlStateManager.enableLighting();
+		RenderHelper.enableStandardItemLighting();
 		GlStateManager.disableRescaleNormal();
+		GlStateManager.enableLighting();
 		GlStateManager.popMatrix();
 
 	}

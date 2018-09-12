@@ -19,7 +19,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 
-public class TileEntityWire extends TileEntity implements ITickable, IEnergyUser, ITileEntitySyncable {
+public class TileEntityWire extends TileEntity implements IModTileEntity, ITickable, IEnergyUser, ITileEntitySyncable {
 
 	private final ModEnergyStorage energy;
 

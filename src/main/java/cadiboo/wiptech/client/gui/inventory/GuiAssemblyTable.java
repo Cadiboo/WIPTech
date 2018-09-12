@@ -1,13 +1,17 @@
 package cadiboo.wiptech.client.gui.inventory;
 
 import cadiboo.wiptech.client.ClientUtil;
+import cadiboo.wiptech.client.render.ModRenderItem;
 import cadiboo.wiptech.inventory.ContainerAssemblyTable;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,37 +43,9 @@ public class GuiAssemblyTable extends GuiContainer {
 
 		final int attachmentsSize = this.assemblyTable.getInventory().getSlots() - 1 - 2;
 
-		// TODO: code cleanup!!!
+		final ItemStack main = this.assemblyTable.getInventory().getStackInSlot(attachmentsSize + 1).copy();
 
-		final int scale = 3;
-
-		RenderHelper.enableGUIStandardItemLighting();
-
-		GlStateManager.pushMatrix();
-		GlStateManager.translate((x + 194) - ((18 / 2) * (scale)), (y + 38) - ((18 / 2) * (scale)), 0);
-		GlStateManager.scale(scale, scale, 1);
-
-		// this.zLevel += 50.0F;
-		// translate 100 + this.zLevel
-
-		final float iHateThis = 100 + 50 + this.zLevel;
-
-		GlStateManager.translate(0, 0, iHateThis);
-		GlStateManager.translate(8.0F, 8.0F, 0.0F);
-		GlStateManager.scale(1.0F, -1.0F, 1.0F);
-		GlStateManager.scale(16.0F, 16.0F, 16.0F);
-
-		GlStateManager.rotate((this.assemblyTable.getWorld().getTotalWorldTime()), 0, 1, 0);
-
-		GlStateManager.scale(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
-		GlStateManager.scale(1 / 1.0F, 1 / -1.0F, 1 / 1.0F);
-		GlStateManager.translate(-8.0F, -8.0F, -0.0F);
-		GlStateManager.translate(0, 0, -iHateThis);
-
-		// TODO: Camera transforms.type.fixed //FIXME
-		this.itemRender.renderItemAndEffectIntoGUI(this.assemblyTable.getInventory().getStackInSlot(attachmentsSize + 1), 0, 0);
-
-		GlStateManager.popMatrix();
+		renderItemAndEffectIntoGUI(main, x + 182, y + 27);
 
 		final int width = (((ContainerAssemblyTable.WIDTH / 2) - ContainerAssemblyTable.SLOT_WIDTH) + ContainerAssemblyTable.BORDER_SIZE) - 12;
 		final int height = (ContainerAssemblyTable.TOP_HEIGHT - ContainerAssemblyTable.SLOT_WIDTH) + ContainerAssemblyTable.BORDER_SIZE;
@@ -88,31 +64,7 @@ public class GuiAssemblyTable extends GuiContainer {
 
 			final ItemStack stack = this.assemblyTable.getInventory().getStackInSlot(attachmentSlotIndex);
 
-			GlStateManager.pushMatrix();
-			GlStateManager.translate((x + 194) - ((18 / 2) * (scale)), (y + 38) - ((18 / 2) * (scale)), 0);
-			GlStateManager.scale(scale, scale, 1);
-
-			// this.zLevel += 50.0F;
-			// translate 100 + this.zLevel
-
-			final float iHateThis2 = 100 + 50 + this.zLevel;
-
-			GlStateManager.translate(0, 0, iHateThis2);
-			GlStateManager.translate(8.0F, 8.0F, 0.0F);
-			GlStateManager.scale(1.0F, -1.0F, 1.0F);
-			GlStateManager.scale(16.0F, 16.0F, 16.0F);
-
-			GlStateManager.rotate((this.assemblyTable.getWorld().getTotalWorldTime()), 0, 1, 0);
-
-			GlStateManager.scale(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
-			GlStateManager.scale(1 / 1.0F, 1 / -1.0F, 1 / 1.0F);
-			GlStateManager.translate(-8.0F, -8.0F, -0.0F);
-			GlStateManager.translate(0, 0, -iHateThis);
-
-			// TODO: Camera transforms.type.fixed //FIXME
-			this.itemRender.renderItemAndEffectIntoGUI(stack, 0, 0);
-
-			GlStateManager.popMatrix();
+			renderItemAndEffectIntoGUI(stack, x + 182, y + 27);
 
 		}
 
@@ -174,6 +126,47 @@ public class GuiAssemblyTable extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int mouseX, final int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
+	}
+
+	public static void renderItemAndEffectIntoGUI(final ItemStack stack, final int xPos, final int yPos) {
+
+		IBakedModel bakedmodel = ModRenderItem.getItemModelWithOverrides(stack, null, null);
+		final ItemCameraTransforms.TransformType transformType = ItemCameraTransforms.TransformType.FIXED;
+
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(xPos, yPos, 0);
+
+		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
+
+		GlStateManager.enableRescaleNormal();
+		GlStateManager.enableAlpha();
+		GlStateManager.alphaFunc(516, 0.1F);
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+		ModRenderItem.setupGuiTransform(0, 0, bakedmodel.isGui3d());
+
+		GlStateManager.scale(3.1, 3.1, 3.1);
+
+		GlStateManager.rotate(Minecraft.getMinecraft().world.getTotalWorldTime() * 2.5f, 0, 1, 0);
+
+		bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(bakedmodel, transformType, false);
+
+		ClientUtil.enableMaxLighting();
+
+		ModRenderItem.renderItem(stack, bakedmodel);
+
+		GlStateManager.disableAlpha();
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.disableLighting();
+
+		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+		Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
+
+		GlStateManager.popMatrix();
+
 	}
 
 }

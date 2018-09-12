@@ -3,6 +3,7 @@ package cadiboo.wiptech.tileentity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -11,7 +12,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 /**
  * @author Cadiboo
  */
-public class TileEntityPeripheral extends TileEntity implements ITileEntitySyncable {
+public class TileEntityPeripheral extends TileEntity implements IModTileEntity, ITileEntitySyncable, ITickable {
 
 	private BlockPos centralPos;
 
@@ -108,6 +109,16 @@ public class TileEntityPeripheral extends TileEntity implements ITileEntitySynca
 	@Override
 	public void writeNBT(final NBTTagCompound syncTag) {
 		this.writeToNBT(syncTag);
+	}
+
+	@Override
+	public void update() {
+		this.handleSync();
+	}
+
+	@Override
+	public int getSyncFrequency() {
+		return 20 * 10;// every 10 seconds
 	}
 
 }

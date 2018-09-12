@@ -19,7 +19,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityModFurnace extends TileEntity implements ITickable, ITileEntitySyncable, IInventoryUser {
+public class TileEntityModFurnace extends TileEntity implements IModTileEntity, ITickable, ITileEntitySyncable, IInventoryUser {
 
 	public static final int	INPUT_SLOT	= 0;
 	public static final int	FUEL_SLOT	= 1;

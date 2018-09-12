@@ -54,9 +54,6 @@ public class WIPTech {
 	// TODO: world gen to subscriber
 	// TODO: NetworkManager to subscriber
 	// TODO: generators
-	// TODO: handheld coilgun
-	// TODO: Gauss cannon (mounted coilgun)
-	// TODO: handheld PlasmaGun & mounted Plasma Cannon
 	// TODO: Crushing & hammering
 	// TODO: weapon modules :( scopes, chips, etc
 	// TODO: steel & tungsten carbite - alloying -> custom furnace | craftable raw alloy?
@@ -68,6 +65,10 @@ public class WIPTech {
 	// TODO: fix railgun rendering glitch when yaw = 0;
 	// TODO: fix GUIs
 	// TODO: EMP - if(hasCapability(energy) setblock lava);
+	// TODO: rail & coil models
+	// TODO: assembly table assembling
+	// TODO: handheld guns shooting
+	// TODO: mounted guns
 
 	@Instance(ModReference.MOD_ID)
 	public static WIPTech instance;
