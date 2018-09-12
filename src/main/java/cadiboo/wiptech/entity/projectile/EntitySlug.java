@@ -3,6 +3,7 @@ package cadiboo.wiptech.entity.projectile;
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.entity.IModEntity;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,12 +19,12 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EntitySlug extends EntityThrowable implements IEntityAdditionalSpawnData {
+public class EntitySlug extends EntityThrowable implements IModEntity, IEntityAdditionalSpawnData {
 
 	// FIXME do all this with capabilities or IEEPs. THe issue is that the material
 	// isnt synced between client & server
-	private ModMaterials material;
-	private static final DataParameter<Integer> MATERIAL = EntityDataManager.<Integer>createKey(EntitySlug.class, DataSerializers.VARINT);
+	private ModMaterials						material;
+	private static final DataParameter<Integer>	MATERIAL	= EntityDataManager.<Integer>createKey(EntitySlug.class, DataSerializers.VARINT);
 
 	public EntitySlug(final World world) {
 		this(world, ModMaterials.IRON);

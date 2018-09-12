@@ -7,7 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
-public class ItemSlugCasing extends Item {
+public class ItemSlugCasing extends Item implements IModItem {
 
 	private final SlugCasingParts part;
 

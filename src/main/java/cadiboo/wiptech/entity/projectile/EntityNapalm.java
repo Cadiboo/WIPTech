@@ -2,6 +2,7 @@ package cadiboo.wiptech.entity.projectile;
 
 import java.util.Random;
 
+import cadiboo.wiptech.entity.IModEntity;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
@@ -11,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class EntityNapalm extends EntityThrowable {
+public class EntityNapalm extends EntityThrowable implements IModEntity {
 
 	public EntityNapalm(final World world) {
 		super(world);

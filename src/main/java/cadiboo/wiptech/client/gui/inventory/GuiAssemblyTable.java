@@ -81,8 +81,8 @@ public class GuiAssemblyTable extends GuiContainer {
 			this.mc.getTextureManager().bindTexture(new ModResourceLocation(ModReference.MOD_ID, "textures/gui/container/slot.png"));
 
 			final double t = (2 * Math.PI * attachmentSlotIndex) / attachmentsSize;
-			final int posX = (int) Math.round((width / 2) + (radiusX * Math.cos(t))) + 6;
-			final int posY = (int) Math.round((height / 2) + (radiusY * Math.sin(t)));
+			final int posX = (int) Math.round((width / 2) + (radiusX * Math.cos(t + 90))) + 6;
+			final int posY = (int) Math.round((height / 2) + (radiusY * Math.sin(t + 90))) + 3;
 
 			ClientUtil.drawNonStandardTexturedRect((x + posX + ContainerAssemblyTable.BORDER_SIZE) - 1, (y + posY + ContainerAssemblyTable.BORDER_SIZE) - 1, 0, 0, 18, 18, 18, 18);
 
@@ -91,7 +91,27 @@ public class GuiAssemblyTable extends GuiContainer {
 			GlStateManager.pushMatrix();
 			GlStateManager.translate((x + 194) - ((18 / 2) * (scale)), (y + 38) - ((18 / 2) * (scale)), 0);
 			GlStateManager.scale(scale, scale, 1);
+
+			// this.zLevel += 50.0F;
+			// translate 100 + this.zLevel
+
+			final float iHateThis2 = 100 + 50 + this.zLevel;
+
+			GlStateManager.translate(0, 0, iHateThis2);
+			GlStateManager.translate(8.0F, 8.0F, 0.0F);
+			GlStateManager.scale(1.0F, -1.0F, 1.0F);
+			GlStateManager.scale(16.0F, 16.0F, 16.0F);
+
+			GlStateManager.rotate((this.assemblyTable.getWorld().getTotalWorldTime()), 0, 1, 0);
+
+			GlStateManager.scale(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
+			GlStateManager.scale(1 / 1.0F, 1 / -1.0F, 1 / 1.0F);
+			GlStateManager.translate(-8.0F, -8.0F, -0.0F);
+			GlStateManager.translate(0, 0, -iHateThis);
+
+			// TODO: Camera transforms.type.fixed //FIXME
 			this.itemRender.renderItemAndEffectIntoGUI(stack, 0, 0);
+
 			GlStateManager.popMatrix();
 
 		}

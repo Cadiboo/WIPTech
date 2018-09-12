@@ -28,6 +28,7 @@ import cadiboo.wiptech.client.render.entity.EntitySlugRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityEnamelRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityModFurnaceRenderer;
 import cadiboo.wiptech.client.render.tileentity.TileEntityWireRenderer;
+import cadiboo.wiptech.entity.IModEntity;
 import cadiboo.wiptech.entity.item.EntityPortableGenerator;
 import cadiboo.wiptech.entity.item.EntityRailgun;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
@@ -41,7 +42,13 @@ import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemCircuit;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemFlamethrower;
+import cadiboo.wiptech.item.ItemGrenadeLauncher;
+import cadiboo.wiptech.item.ItemHandheldCoilgun;
+import cadiboo.wiptech.item.ItemHandheldCoilgunPistol;
+import cadiboo.wiptech.item.ItemHandheldPlasmagun;
 import cadiboo.wiptech.item.ItemHandheldRailgun;
+import cadiboo.wiptech.item.ItemHeartbeatSensor;
+import cadiboo.wiptech.item.ItemLaser;
 import cadiboo.wiptech.item.ItemModArmor;
 import cadiboo.wiptech.item.ItemModAxe;
 import cadiboo.wiptech.item.ItemModHoe;
@@ -52,6 +59,8 @@ import cadiboo.wiptech.item.ItemModSword;
 import cadiboo.wiptech.item.ItemPortableGenerator;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.item.ItemRailgun;
+import cadiboo.wiptech.item.ItemScope;
+import cadiboo.wiptech.item.ItemShotgun;
 import cadiboo.wiptech.item.ItemSlug;
 import cadiboo.wiptech.item.ItemSlugCasing;
 import cadiboo.wiptech.item.ModItemBlock;
@@ -65,6 +74,7 @@ import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ExistsForDebugging;
 import cadiboo.wiptech.util.ModEnums.CircuitTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ScopeTypes;
 import cadiboo.wiptech.util.ModEnums.SlugCasingParts;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
@@ -212,6 +222,7 @@ public final class EventSubscriber {
 		//
 
 		registerItemsForMaterials(registry);
+		registerItemsForAttachments(registry);
 
 		registry.register(new ItemPortableGenerator("portable_generator"));
 
@@ -224,10 +235,9 @@ public final class EventSubscriber {
 		registry.register(new ItemSlugCasing("slug_casing_bottom", SlugCasingParts.BOTTOM));
 
 		registry.register(new ItemHandheldRailgun("handheld_railgun"));
-
-		for (final CircuitTypes type : CircuitTypes.values()) {
-			registry.register(new ItemCircuit(type.getNameLowercase() + "_circuit", type));
-		}
+		registry.register(new ItemHandheldCoilgun("handheld_coilgun"));
+		registry.register(new ItemHandheldCoilgunPistol("handheld_coilgun_pistol"));
+		registry.register(new ItemHandheldPlasmagun("handheld_plasmagun"));
 
 		WIPTech.info("Registered items");
 
@@ -294,6 +304,24 @@ public final class EventSubscriber {
 
 	}
 
+	private static void registerItemsForAttachments(final IForgeRegistry<Item> registry) {
+
+		for (final CircuitTypes type : CircuitTypes.values()) {
+			registry.register(new ItemCircuit("circuit", type));
+		}
+
+		for (final ScopeTypes type : ScopeTypes.values()) {
+			registry.register(new ItemScope("scope", type));
+		}
+
+		registry.register(new ItemShotgun("shotgun"));
+		registry.register(new ItemGrenadeLauncher("grenade_launcher"));
+
+		registry.register(new ItemHeartbeatSensor("heartbeat_sensor"));
+		registry.register(new ItemLaser("laser"));
+
+	}
+
 	/* register entities */
 	@SubscribeEvent
 	public static void onRegisterEntitiesEvent(final RegistryEvent.Register<EntityEntry> event) {
@@ -309,6 +337,10 @@ public final class EventSubscriber {
 
 		event.getRegistry().register(buildEntityEntryFromClass(EntityNapalm.class, false, 128, 2, true));
 
+		// TODO: register shotgun bullet;
+
+		// TODO: register grenade bullet;
+
 		WIPTech.info("Registered entities");
 
 	}
@@ -323,11 +355,11 @@ public final class EventSubscriber {
 		WIPTech.debug("Registered entities for materials");
 	}
 
-	private static EntityEntry buildEntityEntryFromClass(final Class<? extends Entity> clazz, final boolean hasEgg, final int range, final int updateFrequency, final boolean sendVelocityUpdates) {
+	private static <T extends Entity & IModEntity> EntityEntry buildEntityEntryFromClass(final Class<T> clazz, final boolean hasEgg, final int range, final int updateFrequency, final boolean sendVelocityUpdates) {
 		return buildEntityEntryFromClassWithName(clazz, new ModResourceLocation(ModReference.MOD_ID, ModUtil.getRegistryNameForClass(clazz, "Entity")), hasEgg, range, updateFrequency, sendVelocityUpdates);
 	}
 
-	private static EntityEntry buildEntityEntryFromClassWithName(final Class<? extends Entity> clazz, final ModResourceLocation registryName, final boolean hasEgg, final int range, final int updateFrequency, final boolean sendVelocityUpdates) {
+	private static <T extends Entity & IModEntity> EntityEntry buildEntityEntryFromClassWithName(final Class<T> clazz, final ModResourceLocation registryName, final boolean hasEgg, final int range, final int updateFrequency, final boolean sendVelocityUpdates) {
 		EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
 		builder = builder.entity(clazz);
 		builder = builder.id(registryName, entityId++);
@@ -356,6 +388,7 @@ public final class EventSubscriber {
 		WIPTech.info("Registered entity renderers");
 
 		registerModelsForMaterials();
+		registerModelsForAttachments();
 
 		/* item blocks */
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.MOD_FURNACE), 0, new ModelResourceLocation(ModBlocks.MOD_FURNACE.getRegistryName(), "north"));
@@ -368,6 +401,11 @@ public final class EventSubscriber {
 		registerNormalItemModel(ModItems.SLUG_CASING_BACK);
 		registerNormalItemModel(ModItems.SLUG_CASING_TOP);
 		registerNormalItemModel(ModItems.SLUG_CASING_BOTTOM);
+
+		registerNormalItemModel(ModItems.HANDHELD_RAILGUN);
+		registerNormalItemModel(ModItems.HANDHELD_COILGUN);
+		registerNormalItemModel(ModItems.HANDHELD_COILGUN_PISTOL);
+		registerNormalItemModel(ModItems.HANDHELD_PLASMAGUN);
 
 		WIPTech.info("Registered models");
 
@@ -404,6 +442,7 @@ public final class EventSubscriber {
 
 			if (material.getProperties().hasEnamel()) {
 				ModelLoader.setCustomStateMapper(material.getEnamel(), new StateMapperBase() {
+
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
 						return new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
@@ -424,7 +463,9 @@ public final class EventSubscriber {
 					}
 				});
 			}
-			if (ModMaterials.GLITCH.getOre() != null) {
+			if (ModMaterials.GLITCH.getOre() != null)
+
+			{
 				ModelLoader.setCustomStateMapper(ModMaterials.GLITCH.getOre(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
@@ -544,6 +585,24 @@ public final class EventSubscriber {
 
 		}
 		WIPTech.debug("Registered models for materials");
+	}
+
+	private static void registerModelsForAttachments() {
+
+		for (final CircuitTypes type : CircuitTypes.values()) {
+			registerNormalItemModel(type.getItem("circuit"));
+		}
+
+		for (final ScopeTypes type : ScopeTypes.values()) {
+			registerNormalItemModel(type.getItem("scope"));
+		}
+
+		registerNormalItemModel(ModItems.SHOTGUN);
+		registerNormalItemModel(ModItems.GRENADE_LAUNCHER);
+
+		registerNormalItemModel(ModItems.HEARTBEAT_SENSOR);
+		registerNormalItemModel(ModItems.LASER);
+
 	}
 
 	@SideOnly(Side.CLIENT)

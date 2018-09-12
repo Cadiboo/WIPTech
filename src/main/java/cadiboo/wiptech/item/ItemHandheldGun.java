@@ -1,5 +1,7 @@
 package cadiboo.wiptech.item;
 
+import java.util.HashSet;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -26,15 +28,21 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
+import scala.actors.threadpool.Arrays;
 
 public abstract class ItemHandheldGun extends Item implements IModItem {
 
-	private final AttachmentList attachments;
+	private static final AttachmentPoints[]	REQUIRED_ATTACHMENT_POINTS	= new AttachmentPoints[] { AttachmentPoints.CIRCUIT };
+	private final AttachmentList			attachments;
 
 	public ItemHandheldGun(final String name, final AttachmentPoints... attachmentPoints) {
-		super();
 		ModUtil.setRegistryNames(this, name);
-		this.attachments = new AttachmentList(attachmentPoints);
+
+		final HashSet<AttachmentPoints> points = new HashSet<>();
+		points.addAll(Arrays.asList(attachmentPoints));
+		points.addAll(Arrays.asList(REQUIRED_ATTACHMENT_POINTS));
+
+		this.attachments = new AttachmentList(points.toArray(new AttachmentPoints[0]));
 		this.setMaxDamage(100);
 		this.setMaxStackSize(1);
 	}

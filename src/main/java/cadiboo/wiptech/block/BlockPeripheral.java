@@ -7,12 +7,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -119,6 +121,20 @@ public class BlockPeripheral extends Block {
 			}
 		}
 		return super.getSelectedBoundingBox(state, world, pos);
+	}
+
+	@Override
+	public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
+		final TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileEntityPeripheral) {
+			final TileEntityPeripheral peripheral = (TileEntityPeripheral) tile;
+			final BlockPos central = peripheral.getCentralPos();
+			final Block block = world.getBlockState(central).getBlock();
+			if (block instanceof IBlockCentral) {
+				return block.getPickBlock(state, target, world, central, player);
+			}
+		}
+		return super.getPickBlock(state, target, world, pos, player);
 	}
 
 }

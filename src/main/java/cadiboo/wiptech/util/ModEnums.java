@@ -14,6 +14,7 @@ import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.item.ItemCasedSlug;
+import cadiboo.wiptech.item.ItemCircuit;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemModArmor;
 import cadiboo.wiptech.item.ItemModAxe;
@@ -23,6 +24,7 @@ import cadiboo.wiptech.item.ItemModPickaxe;
 import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
 import cadiboo.wiptech.item.ItemRail;
+import cadiboo.wiptech.item.ItemScope;
 import cadiboo.wiptech.item.ItemSlug;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.passive.HorseArmorType;
@@ -685,18 +687,76 @@ public final class ModEnums {
 	}
 
 	public enum AttachmentPoints implements IEnumNameFormattable {
-		SCOPE, SIDE_LEFT, SIDE_RIGHT, CIRCUIT, RAIL, COIL, SILENCER;
+		SCOPE(0), SIDE_LEFT(1), SIDE_RIGHT(2), CIRCUIT(3), RAIL(4), COIL(5), SILENCER(6), UNDER(7);
+
+		final int id;
+
+		private AttachmentPoints(final int id) {
+			this.id = id;
+		}
+
+		public int getId() {
+			return this.id;
+		}
+
+		public static AttachmentPoints byId(final int id) {
+			return values()[Math.min(Math.abs(id), values().length)];
+		}
 
 	}
 
 	public enum CircuitTypes implements IEnumNameFormattable {
 
-		AUTO, BURST3, BURST5, MANUAL;
+		MANUAL(0), AUTO(1), BURST3(2), BURST5(3);
 
 		public static final int	AUTO_SHOTS		= 1;
 		public static final int	BURST3_SHOTS	= 3;
 		public static final int	BURST5_SHOTS	= 5;
 		public static final int	MANUAL_SHOTS	= 1;
+
+		final int id;
+
+		private CircuitTypes(final int id) {
+			this.id = id;
+		}
+
+		public int getId() {
+			return this.id;
+		}
+
+		public static CircuitTypes byId(final int id) {
+			return values()[Math.min(Math.abs(id), values().length)];
+		}
+
+		@Nonnull
+		public ItemCircuit getItem(final String suffix) {
+			return (ItemCircuit) ForgeRegistries.ITEMS.getValue(new ModResourceLocation(ModReference.MOD_ID, this.getNameLowercase() + "_" + suffix));
+		}
+
+	}
+
+	public enum ScopeTypes implements IEnumNameFormattable {
+
+		ACOG(0), HOLOGRAPHIC(1), MARS(2), RED_DOT(3), REFLEX(4), SUSAT(5), SNIPER(6), TELESCOPIC(7), THERMAL(8);
+
+		final int id;
+
+		private ScopeTypes(final int id) {
+			this.id = id;
+		}
+
+		public int getId() {
+			return this.id;
+		}
+
+		public static ScopeTypes byId(final int id) {
+			return values()[Math.min(Math.abs(id), values().length)];
+		}
+
+		@Nonnull
+		public ItemScope getItem(final String suffix) {
+			return (ItemScope) ForgeRegistries.ITEMS.getValue(new ModResourceLocation(ModReference.MOD_ID, this.getNameLowercase() + "_" + suffix));
+		}
 
 	}
 

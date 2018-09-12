@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 
-public class ModItemBlock extends ItemBlock {
+public class ModItemBlock extends ItemBlock implements IModItem {
 
 	public ModItemBlock(final Block block) {
 		this(block, new ModResourceLocation(block.getRegistryName()));

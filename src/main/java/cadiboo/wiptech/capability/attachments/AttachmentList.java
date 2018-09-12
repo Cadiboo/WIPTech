@@ -34,6 +34,11 @@ public class AttachmentList {
 		return this.attachments.get(attachmentPoint);
 	}
 
+	/**
+	 * Adds a stack to the attachment list
+	 * @param attachmentStack the stack to add (the stack's item must implement IItemAttachment)
+	 * @return the amount of the stack that wasn't/couldn't be added
+	 */
 	public ItemStack addAttachment(final ItemStack attachmentStack) {
 		final Item item = attachmentStack.getItem();
 		if (item instanceof IItemAttachment) {
@@ -46,7 +51,12 @@ public class AttachmentList {
 
 					if (!this.getAttachment(attachmentPoint).isItemEqual(attachmentStack)) {
 
-						this.attachments.put(attachmentPoint, attachmentStack);
+						final ItemStack put = attachmentStack.copy();
+						put.setCount(1);
+
+						attachmentStack.shrink(1);
+
+						this.attachments.put(attachmentPoint, put);
 
 					}
 

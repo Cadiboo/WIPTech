@@ -12,11 +12,9 @@ import net.minecraft.world.World;
  */
 public class ItemHandheldRailgun extends ItemHandheldGun {
 
-	public static final AttachmentPoints[] RAILGUN_ATTACHMENT_POINTS = new AttachmentPoints[] {
+	public static final AttachmentPoints[] ATTACHMENT_POINTS = new AttachmentPoints[] {
 
 			AttachmentPoints.CIRCUIT,
-
-			AttachmentPoints.COIL,
 
 			AttachmentPoints.SCOPE,
 
@@ -24,12 +22,14 @@ public class ItemHandheldRailgun extends ItemHandheldGun {
 
 			AttachmentPoints.SIDE_RIGHT,
 
-			AttachmentPoints.RAIL
+			AttachmentPoints.RAIL,
+
+			AttachmentPoints.UNDER
 
 	};
 
 	public ItemHandheldRailgun(final String name) {
-		super(name, RAILGUN_ATTACHMENT_POINTS);
+		super(name, ATTACHMENT_POINTS);
 	}
 
 	@Override

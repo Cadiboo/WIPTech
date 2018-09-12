@@ -5,7 +5,7 @@ import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-public class ItemSlug extends Item implements IItemModMaterial {
+public class ItemSlug extends Item implements IItemModMaterial, IModItem {
 	protected final ModMaterials material;
 
 	public ItemSlug(final ModMaterials material) {

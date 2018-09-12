@@ -12,7 +12,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemRailgun extends Item {
+public class ItemRailgun extends Item implements IModItem {
 
 	public ItemRailgun(final String name) {
 		ModUtil.setRegistryNames(this, name);

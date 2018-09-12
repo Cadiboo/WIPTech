@@ -1,12 +1,13 @@
 package cadiboo.wiptech.entity.projectile;
 
+import cadiboo.wiptech.entity.IModEntity;
 import cadiboo.wiptech.util.ModEnums.SlugCasingParts;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 
-public class EntitySlugCasing extends Entity {
+public class EntitySlugCasing extends Entity implements IModEntity {
 
 	private SlugCasingParts part;
 

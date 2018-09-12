@@ -11,6 +11,7 @@ import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
 import cadiboo.wiptech.entity.IEntitySyncable;
+import cadiboo.wiptech.entity.IModEntity;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.ItemCasedSlug;
@@ -40,20 +41,20 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class EntityRailgun extends Entity implements IWorldNameable, IEnergyUser, IInventoryUser, IEntitySyncable {
+public class EntityRailgun extends Entity implements IModEntity, IWorldNameable, IEnergyUser, IInventoryUser, IEntitySyncable {
 
-	private float momentum;
-	private float deltaRotation;
-	private int lerpSteps;
-	private double lerpX;
-	private double lerpY;
-	private double lerpZ;
-	private double lerpYaw;
-	private double lerpPitch;
+	private float	momentum;
+	private float	deltaRotation;
+	private int		lerpSteps;
+	private double	lerpX;
+	private double	lerpY;
+	private double	lerpZ;
+	private double	lerpYaw;
+	private double	lerpPitch;
 
-	private final ModEnergyStorage energy;
-	private final ModItemStackHandler inventory;
-	private int shootCooldown;
+	private final ModEnergyStorage		energy;
+	private final ModItemStackHandler	inventory;
+	private int							shootCooldown;
 
 	public EntityRailgun(final World world) {
 		super(world);
