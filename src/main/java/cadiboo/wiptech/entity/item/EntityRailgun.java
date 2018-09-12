@@ -16,6 +16,7 @@ import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemSlug;
+import cadiboo.wiptech.util.ExistsForDebugging;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModGuiHandler;
 import net.minecraft.entity.Entity;
@@ -417,12 +418,12 @@ public class EntityRailgun extends Entity implements IModEntity, IWorldNameable,
 			slug.shoot(this.getControllingPassenger(), this.rotationPitch, this.rotationYaw, 0, velocity, 0);
 			this.world.spawnEntity(slug);
 
-			// TODO FIXME THIS IS BAD, FORGE DOCS SAYS EXPLICITLY "SERIOUSLY: DO NOT MODIFY
-			// THE RETURNED ITEMSTACK."
+			// TODO FIXME THIS IS BAD, FORGE DOCS SAYS EXPLICITLY "SERIOUSLY: DO NOT MODIFY THE RETURNED ITEMSTACK."
 			ammo.shrink(1);
 		}
 	}
 
+	@ExistsForDebugging
 	public void shootInternal() {
 		if (this.world.isRemote) {
 			return;
@@ -466,8 +467,7 @@ public class EntityRailgun extends Entity implements IModEntity, IWorldNameable,
 
 		this.world.spawnEntity(slug);
 
-		// TODO FIXME THIS IS BAD, FORGE DOCS SAYS EXPLICITLY "SERIOUSLY: DO NOT MODIFY
-		// THE RETURNED ITEMSTACK."
+		// TODO FIXME THIS IS BAD, FORGE DOCS SAYS EXPLICITLY "SERIOUSLY: DO NOT MODIFY THE RETURNED ITEMSTACK."
 		ammo.shrink(1);
 
 	}

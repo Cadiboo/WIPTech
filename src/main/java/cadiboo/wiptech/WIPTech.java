@@ -46,24 +46,25 @@ public class WIPTech {
 	// TODO: check lang generation
 
 	/***** FOR ALL VERSIONS *****/
-	// TODO: Material Texture locations
-	// TODO: electrocution
-	// TODO: Wire & Enamel ItemBlock Models->Wire & Enamel Item Models (Code & JSON)
+	// VITAL FIXME FIXME FIXME TODO: INJECT TEXTURES!!!
+	// FIXME TODO: Slugs & SlugCasings
+	// FIXME TODO: Glitch models
+	// FIXME TODO: test camera transforms (on wires? i forgot what this was about)
+	// FIXME TODO: Mod CreativeTab itemstack icon is invisible -> use @ItemStackHolder?
+	// FIXME TODO: better electrocution -> actual list of entities?
+	// FIXME TODO: Wire & Enamel ItemBlock Models->Wire & Enamel Item Models (Code & JSON)
+	// FIXME TODO: glitch spool models (should be easy)
+	// FIXME TODO: fix railgun rendering glitch when yaw = 0;
+	// TESTME FIXME TODO: fix GUIs - this might be done?
+	// TESTME FIXME TODO: Material Texture locations
 	// TODO: radioactivity
-	// TODO: Slugs & SlugCasings
 	// TODO: world gen to subscriber
+	// TODO: energy network performance
 	// TODO: NetworkManager to subscriber
 	// TODO: generators
 	// TODO: Crushing & hammering
 	// TODO: weapon modules :( scopes, chips, etc
 	// TODO: steel & tungsten carbite - alloying -> custom furnace | craftable raw alloy?
-	// TODO: Glitch models
-	// TODO: test camera transforms
-	// TODO: energy network performance
-	// TODO: CreativeTab itemstack
-	// TODO: glitch spool (should be easy)
-	// TODO: fix railgun rendering glitch when yaw = 0;
-	// TODO: fix GUIs
 	// TODO: EMP - if(hasCapability(energy) setblock lava);
 	// TODO: rail & coil models
 	// TODO: assembly table assembling
