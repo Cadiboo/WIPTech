@@ -1,6 +1,6 @@
 package cadiboo.wiptech;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 import cadiboo.wiptech.block.BlockAssemblyTable;
@@ -77,6 +77,7 @@ import cadiboo.wiptech.util.ModEnums.CircuitTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModEnums.ScopeTypes;
 import cadiboo.wiptech.util.ModEnums.SlugCasingParts;
+import cadiboo.wiptech.util.ModMaterialProperties;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModUtil;
@@ -90,6 +91,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.HorseArmorType;
@@ -99,6 +101,7 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.registry.IRegistry;
@@ -108,6 +111,8 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.capabilities.Capability;
@@ -635,6 +640,101 @@ public final class EventSubscriber {
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), ModWritingUtil.default_variant_name));
 	}
 
+	/* injected textures */
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public static void onTextureStichEvent(final TextureStitchEvent event) {
+
+		final TextureMap map = event.getMap();
+
+		injectTextures(map);
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	private static void injectTextures(final TextureMap map) {
+		final HashSet<ModResourceLocation> modelLocations = new HashSet<>();
+
+		if (ModMaterials.GLITCH != null) {
+			final ModMaterialProperties properties = ModMaterials.GLITCH.getProperties();
+			if (properties.hasOre()) {
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/missing_ore"));
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_ore"));
+			}
+			if (properties.hasBlock()) {
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/missing_block"));
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_block"));
+			}
+
+			if (properties.hasResource()) {
+				final String resourceSuffix = ModMaterials.GLITCH.getType().getResourceNameSuffix();
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + resourceSuffix));
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + resourceSuffix));
+
+				if (ModMaterials.GLITCH.getType().hasResourcePiece()) {
+					final String resourcePieceSuffix = ModMaterials.GLITCH.getType().getResourcePieceNameSuffix();
+					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + resourcePieceSuffix));
+					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + resourcePieceSuffix));
+				}
+			}
+
+			if (properties.hasArmor()) {
+				for (final String suffix : new String[] { "helmet", "chestplate", "leggings", "boots" }) {
+					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + suffix));
+					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + suffix));
+				}
+				// TODO: horse armor
+			}
+
+			if (properties.hasTools()) {
+				for (final String suffix : new String[] { "pickaxe", "axe", "sword", "shovel", "hoe" }) {
+					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + suffix));
+					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + suffix));
+				}
+			}
+
+			if (properties.hasRailgunSlug()) {
+				// FIXME TODO: make it work
+			}
+
+			if (properties.hasWire()) {
+				// idk what to do here
+			}
+
+			if (properties.hasEnamel()) {
+				// idk what to do here
+			}
+
+			if (properties.hasCoil()) {
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + "coil"));
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + "coil"));
+
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/missing_spool"));
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_spool"));
+			}
+
+			if (properties.hasRail()) {
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + "rail"));
+				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + "rail"));
+			}
+
+		}
+
+		for (final ModResourceLocation modelLocation : modelLocations) {
+			final IModel model = ModelsCache.INSTANCE.getModel(modelLocation);
+
+			for (final ResourceLocation textureLocation : model.getTextures()) {
+				map.registerSprite(textureLocation);
+			}
+		}
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	public static void onHorseArmorTexture() {
+		// TODO: submit a pull to forge for this
+	}
+
 	/* injected models */
 	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
@@ -648,28 +748,28 @@ public final class EventSubscriber {
 
 	@SideOnly(Side.CLIENT)
 	private static void injectModels(final IRegistry<ModelResourceLocation, IBakedModel> registry) {
-		final ArrayList<ModResourceLocation> models = new ArrayList<>();
+		final HashSet<ModResourceLocation> modelLocations = new HashSet<>();
 
-		models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_handle"));
-		models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_wheel"));
-		models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_base"));
-		models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_turret"));
-		models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_gun"));
+		modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_handle"));
+		modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "entity/portable_generator_wheel"));
+		modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_base"));
+		modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_turret"));
+		modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "entity/railgun_gun"));
 		// models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_back"));
 		// models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_top"));
 		// models.add(new ModResourceLocation(ModReference.MOD_ID, "entity/slug_casing_bottom"));
 
-		for (final ModResourceLocation model : models) {
+		for (final ModResourceLocation modelLocation : modelLocations) {
 			try {
 				/* modified from code made by Draco18s */
-				final ModelResourceLocation location = new ModelResourceLocation(model.toString());
+				final ModelResourceLocation location = new ModelResourceLocation(modelLocation.toString());
 
-				final IBakedModel bakedModel = ModelsCache.INSTANCE.getBakedModel(model);
+				final IBakedModel bakedModel = ModelsCache.INSTANCE.getBakedModel(modelLocation);
 
 				registry.putObject(location, bakedModel);
-				WIPTech.debug("Sucessfully injected " + model.toString() + " into Model Registry");
+				WIPTech.debug("Sucessfully injected " + modelLocation.toString() + " into Model Registry");
 			} catch (final Exception e) {
-				WIPTech.error("Error injecting model " + model.toString() + " into Model Registry");
+				WIPTech.error("Error injecting model " + modelLocation.toString() + " into Model Registry");
 			}
 		}
 	}
@@ -733,9 +833,7 @@ public final class EventSubscriber {
 
 	}
 
-	/* HUD rendering */
 	@SubscribeEvent
-	@SideOnly(Side.CLIENT)
 	public static void onRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
 		if ((event.getType() != RenderGameOverlayEvent.ElementType.ALL) || (Minecraft.getMinecraft().currentScreen != null)) {
 			return;
@@ -787,7 +885,6 @@ public final class EventSubscriber {
 
 	}
 
-	/* tooltips */
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	@SideOnly(Side.CLIENT)
 	public static void onTooltipEvent(final ItemTooltipEvent event) {
@@ -851,7 +948,6 @@ public final class EventSubscriber {
 		event.getToolTip().add(tooltip);
 	}
 
-	/* shoot railgun */
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onPlayerInteract(final PlayerInteractEvent event) {
 		if ((event.getEntityPlayer() == null) || (event.getEntityPlayer().getRidingEntity() == null) || !(event.getEntityPlayer().getRidingEntity() instanceof EntityRailgun)) {
@@ -863,9 +959,8 @@ public final class EventSubscriber {
 		return;
 	}
 
-	/* attach capabilities */
 	@SubscribeEvent
-	public static void onAttachCapabilities(final AttachCapabilitiesEvent<World> event) {
+	public static void onAttachWorldCapabilities(final AttachCapabilitiesEvent<World> event) {
 		event.addCapability(new ModResourceLocation(ModReference.MOD_ID, ModUtil.getRegistryNameForClass(CapabilityEnergyNetworkList.class, "Capability")), new ICapabilityProvider() {
 
 			private final EnergyNetworkList energyNetworkList = new EnergyNetworkList(event.getObject());
@@ -934,7 +1029,7 @@ public final class EventSubscriber {
 		list.update();
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	@SideOnly(Side.CLIENT)
 	@ExistsForDebugging
 	public static void writeMod(final ModelBakeEvent event) {
