@@ -18,8 +18,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileEntityWire extends TileEntity implements IModTileEntity, ITickable, IEnergyUser, ITileEntitySyncable {
+public class TileEntityWire extends TileEntity implements IModTileEntity, ITickable, IEnergyUser, ITileEntitySyncable, TileEntityNetworkConnection {
 
 	private final ModEnergyStorage energy;
 
@@ -70,9 +71,38 @@ public class TileEntityWire extends TileEntity implements IModTileEntity, ITicka
 	}
 
 	@Override
-	public int transferEnergyTo(final EnumFacing side, final int energyToTransfer, final boolean simulate) {
-		// TODO: transfer to stuff around - if!instanceof wire
-		return 0;
+	public boolean canTransferEnergyTo(final EnumFacing side, final int energyToTransfer) {
+		if (!this.getEnergy().canExtract()) {
+			return false;
+		}
+
+		if (this.getWorld() == null) {
+			return false;
+		}
+
+		if (this.getWorld().isRemote) {
+			return false;
+		}
+
+		if (this.getWorld().getTileEntity(this.getPosition().offset(side)) == null) {
+			return false;
+		}
+
+		if (this.getWorld().getTileEntity(this.getPosition().offset(side)) instanceof TileEntityNetworkConnection) {
+			return false;
+		}
+
+		final IEnergyStorage storage = this.getWorld().getTileEntity(this.getPosition().offset(side)).getCapability(CapabilityEnergy.ENERGY, side.getOpposite());
+
+		if (storage == null) {
+			return false;
+		}
+
+		if (!storage.canReceive()) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private float getElectrocutionDamage() {

@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
+import cadiboo.wiptech.tileentity.TileEntityNetworkConnection;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.tileentity.TileEntity;
@@ -55,7 +56,7 @@ public class EnergyNetwork {
 		for (final BlockPos pos : this.getConnections()) {
 			try {
 				if (!hashedDontDistribute.contains(pos)) {
-					storages.add(((TileEntityWire) this.world.getTileEntity(pos)).getEnergy());
+					storages.add(((TileEntityNetworkConnection) this.world.getTileEntity(pos)).getEnergy());
 				}
 			} catch (final Exception e) {
 				e.printStackTrace();

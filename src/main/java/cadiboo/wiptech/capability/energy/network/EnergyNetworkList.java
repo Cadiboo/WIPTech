@@ -4,6 +4,7 @@ import java.util.HashSet;
 
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.network.play.server.SPacketSyncEnergyNetworkList;
+import cadiboo.wiptech.tileentity.TileEntityNetworkConnection;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagList;
@@ -118,7 +119,7 @@ public class EnergyNetworkList implements ITickable {
 		if (tile == null) {
 			return;
 		}
-		if (!(tile instanceof TileEntity)) {
+		if (!(tile instanceof TileEntityNetworkConnection)) {
 			return;
 		}
 
@@ -139,7 +140,7 @@ public class EnergyNetworkList implements ITickable {
 				this.removeConnection(pos);
 				continue;
 			}
-			if (!(tile instanceof TileEntity)) {
+			if (!(tile instanceof TileEntityNetworkConnection)) {
 				this.removeConnection(pos);
 				continue;
 			}
