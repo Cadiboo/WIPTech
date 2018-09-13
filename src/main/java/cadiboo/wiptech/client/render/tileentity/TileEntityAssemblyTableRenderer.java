@@ -23,7 +23,8 @@ public class TileEntityAssemblyTableRenderer extends ModTileEntitySpecialRendere
 			attachments.add(te.getInventory().getStackInSlot(slot));
 		}
 
-//		GlStateManager.disableLighting();
+		ClientUtil.enableMaxLighting();
+		GlStateManager.enableLighting();
 
 		GlStateManager.pushMatrix();
 

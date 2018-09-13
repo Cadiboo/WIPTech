@@ -150,7 +150,7 @@ public class GuiAssemblyTable extends GuiContainer {
 
 		GlStateManager.scale(3.1, 3.1, 3.1);
 
-		GlStateManager.rotate(Minecraft.getMinecraft().world.getTotalWorldTime() * 2.5f, 0, 1, 0);
+		GlStateManager.rotate(Minecraft.getMinecraft().world.getTotalWorldTime(), 0, 1, 0);
 
 		bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(bakedmodel, transformType, false);
 
