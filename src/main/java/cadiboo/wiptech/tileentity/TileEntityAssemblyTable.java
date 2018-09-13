@@ -9,6 +9,7 @@ import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
@@ -18,7 +19,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 /**
  * @author Cadiboo
  */
-public class TileEntityAssemblyTable extends TileEntity implements IModTileEntity, IEnergyUser, IInventoryUser, ITileEntityCentral {
+public class TileEntityAssemblyTable extends TileEntity implements IModTileEntity, ITickable, ITileEntitySyncable, IEnergyUser, IInventoryUser, ITileEntityCentral {
 
 	public static final int	WIDTH	= 3;
 	public static final int	HEIGHT	= 2;
@@ -67,6 +68,11 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 	}
 
 	@Override
+	public void update() {
+		this.handleSync();
+	}
+
+	@Override
 	public boolean hasCapability(final Capability<?> capability, final EnumFacing facing) {
 		return this.getCapability(capability, facing) != null;
 	}
@@ -106,6 +112,16 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		return super.getRenderBoundingBox().grow(3);
+	}
+
+	@Override
+	public void readNBT(final NBTTagCompound syncTag) {
+		this.readFromNBT(syncTag);
+	}
+
+	@Override
+	public void writeNBT(final NBTTagCompound syncTag) {
+		this.writeToNBT(syncTag);
 	}
 
 }
