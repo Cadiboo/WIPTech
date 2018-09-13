@@ -808,6 +808,10 @@ public final class EventSubscriber {
 			return;
 		}
 
+		if (rayTraceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+			return;
+		}
+
 		final BlockPos pos = rayTraceResult.getBlockPos();
 
 		final IBlockState blockState = world.getBlockState(pos);
