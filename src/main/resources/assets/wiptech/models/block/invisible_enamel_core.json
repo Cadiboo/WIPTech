@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/enamel_core",
+	"textures": {
+		"resource": "wiptech:item/invisible_ingot"
+	}
+}

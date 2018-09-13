@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/nugget",
+	"textures": {
+		"ingot": "wiptech:item/missing_ingot"
+	}
+}

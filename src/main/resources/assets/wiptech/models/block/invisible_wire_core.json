@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/wire_core",
+	"textures": {
+		"resource": "wiptech:item/invisible_ingot"
+	}
+}

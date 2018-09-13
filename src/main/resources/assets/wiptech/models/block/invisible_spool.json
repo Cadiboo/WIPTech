@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/spool",
+	"textures": {
+		"resource": "wiptech:item/invisible_ingot"
+	}
+}

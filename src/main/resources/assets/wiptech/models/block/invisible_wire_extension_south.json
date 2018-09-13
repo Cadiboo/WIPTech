@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/wire_extension_south",
+	"textures": {
+		"resource": "wiptech:item/invisible_ingot"
+	}
+}

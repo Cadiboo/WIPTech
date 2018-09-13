@@ -1,0 +1,15 @@
+{
+	"variants": {
+		"facing=south": {
+			"model": "wiptech:invisible_ingot", "y": 0
+		},
+		"facing=west": {
+			"model": "wiptech:invisible_ingot", "y": 90
+		},
+		"facing=north": {
+			"model": "wiptech:invisible_ingot", "y": 180
+		},
+		"facing=east": {
+			"model": "wiptech:invisible_ingot", "y": 270
+		}	}
+}

@@ -1,0 +1,15 @@
+{
+	"variants": {
+		"facing=south": {
+			"model": "wiptech:missing_nugget", "y": 270
+		},
+		"facing=west": {
+			"model": "wiptech:missing_nugget", "y": 0
+		},
+		"facing=north": {
+			"model": "wiptech:missing_nugget", "y": 90
+		},
+		"facing=east": {
+			"model": "wiptech:missing_nugget", "y": 180
+		}	}
+}

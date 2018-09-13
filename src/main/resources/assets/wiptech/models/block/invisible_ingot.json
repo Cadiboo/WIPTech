@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/ingot",
+	"textures": {
+		"ingot": "wiptech:item/invisible_ingot"
+	}
+}

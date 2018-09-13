@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/wire_extension_north",
+	"textures": {
+		"resource": "wiptech:item/missing_ingot"
+	}
+}

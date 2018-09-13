@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/enamel_extension_south",
+	"textures": {
+		"resource": "wiptech:item/missing_ingot"
+	}
+}

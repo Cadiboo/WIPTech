@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:item/slug",
+	"textures": {
+		"resource": "wiptech:item/missing_ingot"
+	}
+}
