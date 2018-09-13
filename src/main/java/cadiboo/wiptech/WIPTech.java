@@ -36,8 +36,7 @@ import net.minecraftforge.fml.relauncher.Side;
 	canBeDeactivated = ModReference.CAN_BE_DEACTIVATED,
 	clientSideOnly = false,
 	serverSideOnly = false,
-	modLanguage = "java",
-	guiFactory = ModReference.GUI_FACTORY_CLASS)
+	modLanguage = "java")
 /*@formatter:on*/
 public class WIPTech {
 

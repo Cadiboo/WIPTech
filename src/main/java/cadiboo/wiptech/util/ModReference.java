@@ -1,5 +1,9 @@
 package cadiboo.wiptech.util;
 
+/**
+ * Holds mod-wide constant values
+ * @author Cadiboo
+ */
 public final class ModReference {
 
 	/** This is our Mod's Name. */
@@ -85,7 +89,6 @@ public final class ModReference {
 
 	public static final String	CLIENT_PROXY_CLASS	= "cadiboo.wiptech.client.Proxy";
 	public static final String	SERVER_PROXY_CLASS	= "cadiboo.wiptech.server.Proxy";
-	public static final String	GUI_FACTORY_CLASS	= "";
 
 	public static final String	ACCEPTED_VERSIONS	= "[1.12.2, 1.13]";
 	public static final String	DEPENDENCIES		= "required-after:minecraft;" + "required-after:forge@[14.23.4.2723,);" + "";
