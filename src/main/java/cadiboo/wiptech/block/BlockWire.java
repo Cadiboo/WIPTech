@@ -2,6 +2,7 @@ package cadiboo.wiptech.block;
 
 import java.util.List;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
@@ -33,13 +34,13 @@ import net.minecraftforge.common.property.Properties;
  */
 public class BlockWire extends Block implements IBlockModMaterial {
 
-	protected static final AxisAlignedBB	CORE_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 9d / 16d, 9d / 16d, 9d / 16d);
-	protected static final AxisAlignedBB	UP_AABB		= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 9d / 16d, 1, 9d / 16d);
-	protected static final AxisAlignedBB	DOWN_AABB	= new AxisAlignedBB(7d / 16d, 0, 7d / 16d, 9d / 16d, 9d / 16d, 9d / 16d);
-	protected static final AxisAlignedBB	NORTH_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 0, 9d / 16d, 9d / 16d, 9d / 16d);
-	protected static final AxisAlignedBB	SOUTH_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 9d / 16d, 9d / 16d, 1);
-	protected static final AxisAlignedBB	EAST_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 1, 9d / 16d, 9d / 16d);
-	protected static final AxisAlignedBB	WEST_AABB	= new AxisAlignedBB(0, 7d / 16d, 7d / 16d, 9d / 16d, 9d / 16d, 9d / 16d);
+	public static final AxisAlignedBB	CORE_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 9d / 16d, 9d / 16d, 9d / 16d);
+	public static final AxisAlignedBB	UP_AABB		= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 9d / 16d, 1, 9d / 16d);
+	public static final AxisAlignedBB	DOWN_AABB	= new AxisAlignedBB(7d / 16d, 0, 7d / 16d, 9d / 16d, 9d / 16d, 9d / 16d);
+	public static final AxisAlignedBB	NORTH_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 0, 9d / 16d, 9d / 16d, 9d / 16d);
+	public static final AxisAlignedBB	SOUTH_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 9d / 16d, 9d / 16d, 1);
+	public static final AxisAlignedBB	EAST_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 1, 9d / 16d, 9d / 16d);
+	public static final AxisAlignedBB	WEST_AABB	= new AxisAlignedBB(0, 7d / 16d, 7d / 16d, 9d / 16d, 9d / 16d, 9d / 16d);
 
 	public static final IUnlistedProperty<Boolean>	CONNECTED_DOWN	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_down"));
 	public static final IUnlistedProperty<Boolean>	CONNECTED_UP	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_up"));
@@ -192,6 +193,9 @@ public class BlockWire extends Block implements IBlockModMaterial {
 				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
 			}
 		}
+		if (collidingBoxes.size() > 0) {
+			WIPTech.proxy.getSide();
+		}
 
 	}
 
@@ -222,5 +226,10 @@ public class BlockWire extends Block implements IBlockModMaterial {
 			}
 		}
 		super.onBlockExploded(world, pos, explosion);
+	}
+
+	@Override
+	public AxisAlignedBB getSelectedBoundingBox(final IBlockState state, final World world, final BlockPos pos) {
+		return new AxisAlignedBB(0, -20, 0, 0, -20, 0);
 	}
 }
