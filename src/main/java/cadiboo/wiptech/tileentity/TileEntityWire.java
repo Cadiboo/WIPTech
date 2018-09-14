@@ -20,7 +20,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileEntityWire extends TileEntity implements IModTileEntity, ITickable, IEnergyUser, ITileEntitySyncable, TileEntityNetworkConnection {
+public class TileEntityWire extends TileEntity implements IModTileEntity, ITickable, IEnergyUser, ITileEntitySyncable, ITileEntityNetworkConnection {
 
 	private final ModEnergyStorage energy;
 
@@ -88,7 +88,7 @@ public class TileEntityWire extends TileEntity implements IModTileEntity, ITicka
 			return false;
 		}
 
-		if (this.getWorld().getTileEntity(this.getPosition().offset(side)) instanceof TileEntityNetworkConnection) {
+		if (this.getWorld().getTileEntity(this.getPosition().offset(side)) instanceof ITileEntityNetworkConnection) {
 			return false;
 		}
 
