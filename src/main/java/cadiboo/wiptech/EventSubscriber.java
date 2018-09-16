@@ -405,7 +405,7 @@ public final class EventSubscriber {
 		registerModelsForAttachments();
 
 		/* item blocks */
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.MOD_FURNACE), 0, new ModelResourceLocation(ModBlocks.MOD_FURNACE.getRegistryName(), "north"));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.MOD_FURNACE), 0, new ModelResourceLocation(ModBlocks.MOD_FURNACE.getRegistryName(), "facing=north"));
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.ASSEMBLY_TABLE), 0, new ModelResourceLocation(ModBlocks.ASSEMBLY_TABLE.getRegistryName(), ModWritingUtil.default_variant_name));
 
 		/* items */
@@ -1020,19 +1020,21 @@ public final class EventSubscriber {
 				return;
 			}
 
-			if (!(blockState.getBlock() instanceof BlockWire) && !ModReference.Debug.debugBoundingBoxes()) {
+			if (!(blockState.getBlock() instanceof BlockWire) && !ModReference.Debug.debugBoundingBoxes() && !ModReference.Debug.debugCollisionBoxes()) {
 				return;
 			}
 
 			event.setCanceled(true);
 
+			final AxisAlignedBB oldSelectedBox = blockState.getSelectedBoundingBox(world, pos);
+
 			final List<AxisAlignedBB> boxes = new ArrayList<>();
 
-			blockState.addCollisionBoxToList(world, pos, new AxisAlignedBB(pos), boxes, player, true);
+			blockState.addCollisionBoxToList(world, pos, new AxisAlignedBB(pos), boxes, player, false);
 
 			if (boxes.size() <= 1) {
 				boxes.clear();
-				boxes.add(blockState.getSelectedBoundingBox(world, pos));
+				boxes.add(oldSelectedBox);
 			}
 
 			final double renderX = player.lastTickPosX + ((player.posX - player.lastTickPosX) * partialTicks);
@@ -1045,16 +1047,30 @@ public final class EventSubscriber {
 			GlStateManager.disableTexture2D();
 			GlStateManager.depthMask(false);
 
-			for (final AxisAlignedBB box : boxes) {
-				if (box.equals(BlockWire.CORE_AABB.offset(pos))) {
+			for (AxisAlignedBB box : boxes) {
+				if (box.equals(BlockWire.CORE_AABB.offset(pos)) && !ModReference.Debug.debugCollisionBoxes()) {
 					continue;
 				}
+
+				if (!ModReference.Debug.debugCollisionBoxes()) {
+					if (box.maxY > (box.minY + 1)) {
+						box = box.setMaxY(oldSelectedBox.maxY);
+					}
+				}
+
 				final AxisAlignedBB renderBox = box.grow(0.0020000000949949026D).offset(-renderX, -renderY, -renderZ);
+
+				if (ModReference.Debug.debugCollisionBoxes()) {
+					event.getContext().drawSelectionBoundingBox(renderBox, 1.0F, 0.0F, 0.0F, 0.4F);
+					continue;
+				}
+
 				if (ModReference.Debug.debugBoundingBoxes()) {
 					event.getContext().drawSelectionBoundingBox(renderBox, 0.0F, 1.0F, 1.0F, 0.4F);
-				} else {
-					event.getContext().drawSelectionBoundingBox(renderBox, 0.0F, 0.0F, 0.0F, 0.4F);
+					continue;
 				}
+				event.getContext().drawSelectionBoundingBox(renderBox, 0.0F, 0.0F, 0.0F, 0.4F);
+
 			}
 
 			GlStateManager.depthMask(true);

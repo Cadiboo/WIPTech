@@ -12,6 +12,9 @@ import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Custom ore block for materials
@@ -61,6 +64,13 @@ public class BlockModOre extends Block implements IBlockModMaterial {
 		} else {
 			return true;
 		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(final IBlockState stateIn, final World world, final BlockPos pos, final Random rand) {
+		super.randomDisplayTick(stateIn, world, pos, rand);
+		world.getLight(pos);
 	}
 
 	@Override

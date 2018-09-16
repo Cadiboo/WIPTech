@@ -6,8 +6,6 @@ import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -78,12 +76,14 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 		}
 		final int dimension = this.world.provider.getDimension();
 
-		for (final EntityPlayer player : this.world.playerEntities) {
-			if (!(player instanceof EntityPlayerMP)) {
-				continue;
-			}
-			((EntityPlayerMP) player).connection.sendPacket(this.getUpdatePacket());
-		}
+		this.handleSync();
+
+//		for (final EntityPlayer player : this.world.playerEntities) {
+//			if (!(player instanceof EntityPlayerMP)) {
+//				continue;
+//			}
+//			((EntityPlayerMP) player).connection.sendPacket(this.getUpdatePacket());
+//		}
 
 //		ModNetworkManager.NETWORK.sendToAllAround(getUpdatePacket(), new NetworkRegistry.TargetPoint(dimension, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 64));
 //		this.handleSync();

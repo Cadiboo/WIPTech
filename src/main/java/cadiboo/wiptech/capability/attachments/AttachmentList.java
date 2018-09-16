@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import com.google.common.collect.ImmutableSet;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.item.IItemAttachment;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
 import net.minecraft.item.Item;
@@ -19,7 +18,6 @@ public class AttachmentList {
 
 	public AttachmentList(final AttachmentPoints... attachmentPoints) {
 		this.attachmentPoints = ImmutableSet.copyOf(Arrays.asList(attachmentPoints));
-		WIPTech.info(this.attachmentPoints.size());
 		this.attachments = new HashMap<>();
 		this.attachmentPoints.forEach(point -> {
 			this.attachments.put(point, ItemStack.EMPTY);

@@ -1,4 +1,5 @@
 {
+	"parent": "block/block",
 	"variants": {
 		"normal": {
 			"model": "wiptech:transparent_block"
