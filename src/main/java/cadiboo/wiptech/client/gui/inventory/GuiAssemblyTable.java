@@ -131,17 +131,11 @@ public class GuiAssemblyTable extends GuiContainer {
 
 		ModRenderItem.setupGuiTransform(0, 0, bakedmodel.isGui3d());
 
-		GlStateManager.scale(3.1, 3.1, 3.1);
+		GlStateManager.scale(4.4, 4.4, 4.4);
 
-//		WIPTech.info(Mouse.getX());
-
-		GlStateManager.rotate(90 + (float) ModUtil.map(0, Minecraft.getMinecraft().displayWidth, 0, 360, Mouse.getX()), 0, 1, 0);
+		GlStateManager.rotate(45 + (float) ModUtil.map(0, Minecraft.getMinecraft().displayWidth, 0, 360, Mouse.getX()), 0, 1, 0);
 
 		GlStateManager.rotate(90 + (float) ModUtil.map(0, Minecraft.getMinecraft().displayHeight, 0, 360, Mouse.getY()), 1, 0, 0);
-
-//		ClientUtil.rotateZAxisTowardsPos(new Vec3d(0, 0, 0), new Vec3d(Mouse.getX(), Mouse.getY(), 0));
-
-//		GlStateManager.rotate(Minecraft.getMinecraft().world.getTotalWorldTime(), 0, 1, 0);
 
 		bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(bakedmodel, transformType, false);
 
