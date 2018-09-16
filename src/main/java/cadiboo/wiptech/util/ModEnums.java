@@ -703,6 +703,10 @@ public final class ModEnums {
 			return values()[Math.min(Math.abs(id), values().length)];
 		}
 
+		public String getUnlocalizedName() {
+			return this.getNameLowercase();
+		}
+
 	}
 
 	public enum CircuitTypes implements IEnumNameFormattable {

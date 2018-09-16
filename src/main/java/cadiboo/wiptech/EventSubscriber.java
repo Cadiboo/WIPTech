@@ -15,6 +15,8 @@ import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
 import cadiboo.wiptech.block.IBlockModMaterial;
+import cadiboo.wiptech.capability.attachments.AttachmentList;
+import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.capability.energy.network.EnergyNetwork;
 import cadiboo.wiptech.capability.energy.network.EnergyNetworkList;
@@ -40,6 +42,7 @@ import cadiboo.wiptech.entity.projectile.EntitySlugCasing;
 import cadiboo.wiptech.event.ModFurnaceItemSmeltTimeEvent;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
+import cadiboo.wiptech.item.IItemAttachment;
 import cadiboo.wiptech.item.IItemModMaterial;
 import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemCircuit;
@@ -47,7 +50,6 @@ import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemGrenadeLauncher;
 import cadiboo.wiptech.item.ItemHandheldCoilgun;
-import cadiboo.wiptech.item.ItemHandheldCoilgunPistol;
 import cadiboo.wiptech.item.ItemHandheldPlasmagun;
 import cadiboo.wiptech.item.ItemHandheldRailgun;
 import cadiboo.wiptech.item.ItemHeartbeatSensor;
@@ -75,6 +77,7 @@ import cadiboo.wiptech.tileentity.TileEntityModFurnace;
 import cadiboo.wiptech.tileentity.TileEntityPeripheral;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ExistsForDebugging;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
 import cadiboo.wiptech.util.ModEnums.CircuitTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModEnums.ScopeTypes;
@@ -250,7 +253,6 @@ public final class EventSubscriber {
 
 		registry.register(new ItemHandheldRailgun("handheld_railgun"));
 		registry.register(new ItemHandheldCoilgun("handheld_coilgun"));
-		registry.register(new ItemHandheldCoilgunPistol("handheld_coilgun_pistol"));
 		registry.register(new ItemHandheldPlasmagun("handheld_plasmagun"));
 
 		WIPTech.info("Registered items");
@@ -418,7 +420,6 @@ public final class EventSubscriber {
 
 		registerNormalItemModel(ModItems.HANDHELD_RAILGUN);
 		registerNormalItemModel(ModItems.HANDHELD_COILGUN);
-		registerNormalItemModel(ModItems.HANDHELD_COILGUN_PISTOL);
 		registerNormalItemModel(ModItems.HANDHELD_PLASMAGUN);
 
 		WIPTech.info("Registered models");
@@ -824,7 +825,7 @@ public final class EventSubscriber {
 
 		final Block block = blockState.getBlock();
 
-		if (!(block instanceof BlockWire)) {
+		if (!(block instanceof BlockWire) && !(block instanceof BlockEnamel)) {
 			return;
 		}
 
@@ -847,9 +848,13 @@ public final class EventSubscriber {
 
 		// FIXME TODO: remove the intersecting lines
 		for (final AxisAlignedBB AABB : AABBs) {
-			if (AABB.equals(BlockWire.CORE_AABB.offset(pos))) {
+			if ((block instanceof BlockWire) && AABB.equals(BlockWire.CORE_AABB.offset(pos))) {
 				continue;
 			}
+			if ((block instanceof BlockEnamel) && AABB.equals(BlockEnamel.CORE_AABB.offset(pos))) {
+				continue;
+			}
+
 			GlStateManager.enableBlend();
 			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 			GlStateManager.glLineWidth(2.0F);
@@ -1020,7 +1025,9 @@ public final class EventSubscriber {
 				return;
 			}
 
-			if (!(blockState.getBlock() instanceof BlockWire) && !ModReference.Debug.debugBoundingBoxes() && !ModReference.Debug.debugCollisionBoxes()) {
+			final Block block = blockState.getBlock();
+
+			if (!(block instanceof BlockWire) && !(block instanceof BlockEnamel) && !ModReference.Debug.debugBoundingBoxes() && !ModReference.Debug.debugCollisionBoxes()) {
 				return;
 			}
 
@@ -1048,7 +1055,10 @@ public final class EventSubscriber {
 			GlStateManager.depthMask(false);
 
 			for (AxisAlignedBB box : boxes) {
-				if (box.equals(BlockWire.CORE_AABB.offset(pos)) && !ModReference.Debug.debugCollisionBoxes()) {
+				if ((block instanceof BlockWire) && box.equals(BlockWire.CORE_AABB.offset(pos)) && !ModReference.Debug.debugCollisionBoxes()) {
+					continue;
+				}
+				if ((block instanceof BlockEnamel) && box.equals(BlockEnamel.CORE_AABB.offset(pos)) && !ModReference.Debug.debugCollisionBoxes()) {
 					continue;
 				}
 
@@ -1123,6 +1133,40 @@ public final class EventSubscriber {
 
 		if (Block.getBlockFromItem(item) instanceof BlockEnamel) {
 			setTooltip(event, WIPTech.proxy.localize("conductivity") + ": " + ((BlockEnamel) Block.getBlockFromItem(item)).getModMaterial().getProperties().getConductivity() + "");
+		}
+
+		if (item instanceof IItemAttachment) {
+			setTooltip(event, WIPTech.proxy.localize("attachmentpoint") + ": " + WIPTech.proxy.localize(((IItemAttachment) item).getAttachmentPoint().getUnlocalizedName() + ".name"));
+		}
+
+		final AttachmentList attachmentList = event.getItemStack().getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
+		if (attachmentList != null) {
+
+			boolean isEmpty = true;
+			for (final AttachmentPoints attachmentPoint : attachmentList.getPoints()) {
+				if (!isEmpty) {
+					continue;
+				}
+				final ItemStack attachmentStack = attachmentList.getAttachment(attachmentPoint);
+				if (attachmentStack.isEmpty()) {
+					continue;
+				}
+				isEmpty = false;
+			}
+
+			if (!isEmpty) {
+				setTooltip(event, TextFormatting.RESET + "");
+				setTooltip(event, WIPTech.proxy.localize("attachments") + ":");
+				for (final AttachmentPoints attachmentPoint : attachmentList.getPoints()) {
+					final ItemStack attachmentStack = attachmentList.getAttachment(attachmentPoint);
+					if (attachmentStack.isEmpty()) {
+						continue;
+					}
+					final String tooltip = WIPTech.proxy.localize(attachmentPoint.getUnlocalizedName() + ".name") + ": " + WIPTech.proxy.localize(attachmentStack.getUnlocalizedName() + ".name");
+
+					setTooltip(event, TextFormatting.BLUE + " " + tooltip);
+				}
+			}
 		}
 
 	}

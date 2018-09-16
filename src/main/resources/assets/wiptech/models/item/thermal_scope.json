@@ -69,8 +69,8 @@
 		},
 		"gui": {
 			"rotation": [30, 225, 0],
-			"translation": [0, 0, 0],
-			"scale": [0.625, 0.625, 0.625]
+			"translation": [0, -4, 0],
+			"scale": [3, 3, 3]
 		}
 	},
 	"groups": [

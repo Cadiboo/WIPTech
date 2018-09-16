@@ -19,8 +19,11 @@ import com.google.common.annotations.VisibleForTesting;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import cadiboo.wiptech.util.ModEnums.CircuitTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterialTypes;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ScopeTypes;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -504,6 +507,18 @@ public class ModWritingUtil {
 			}
 		}
 
+		for (final CircuitTypes type : CircuitTypes.values()) {
+			lang.put(type.getItem("circuit").getUnlocalizedName(), getLocalisedName(type.getNameLowercase()) + " Circuit");
+		}
+
+		for (final ScopeTypes type : ScopeTypes.values()) {
+			lang.put(type.getItem("scope").getUnlocalizedName(), getLocalisedName(type.getNameLowercase()) + " Scope");
+		}
+
+		for (final AttachmentPoints attachmentPoint : AttachmentPoints.values()) {
+			lang.put(attachmentPoint.getNameLowercase(), getLocalisedName(attachmentPoint.getNameLowercase()));
+		}
+
 		for (final Field field : ModItems.class.getFields()) {
 			Object value;
 			try {
@@ -528,7 +543,7 @@ public class ModWritingUtil {
 		for (final Field field : ModBlocks.class.getFields()) {
 			Object value;
 			try {
-				value = field.get(ModItems.class);
+				value = field.get(ModBlocks.class);
 
 				if (!(value instanceof Block)) {
 					continue;
@@ -572,9 +587,15 @@ public class ModWritingUtil {
 		if (Loader.MC_VERSION.contains("1.13")) {
 			finalData.add("\"itemGroup." + ModReference.MOD_ID + "\"" + ": " + "\"" + ModReference.MOD_NAME + "\"" + ",");
 			finalData.add("\"item.modifiers.horse\": \"When on Horse\",");
+			finalData.add("\"startassembly\": \"Start Assembly\",");
+			finalData.add("\"attachments\": \"Attachments\",");
+			finalData.add("\"attachmentpoint\": \"Attachment Point\",");
 		} else {
 			finalData.add("itemGroup." + ModReference.MOD_ID + "=" + ModReference.MOD_NAME);
 			finalData.add("item.modifiers.horse=When on Horse");
+			finalData.add("startassembly=Start Assembly");
+			finalData.add("attachments=Attachments");
+			finalData.add("attachmentpoint=Attachment Point");
 		}
 
 		finalData.addAll(data);

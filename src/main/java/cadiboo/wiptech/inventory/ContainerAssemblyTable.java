@@ -36,22 +36,16 @@ public class ContainerAssemblyTable extends Container {
 
 		final boolean debugJeff = Boolean.valueOf(Boolean.valueOf(Boolean.parseBoolean("false")));
 
-		final int attachmentsSize = assemblyTable.getInventory().getSlots() - 1 - 2;
-
-		final int assembleBody = assemblyTable.getInventory().getSlots() - 1 - 1;
-
-		final int output = assemblyTable.getInventory().getSlots() - 1 - 0;
-
-		final int width = (((WIDTH / 2) - SLOT_WIDTH) + BORDER_SIZE) - 12;
-		final int height = (TOP_HEIGHT - SLOT_WIDTH) + BORDER_SIZE;
+		final int width = 118 - 23;
+		final int height = width;
 		final int radiusX = width / 2;
 		final int radiusY = height / 2;
 
-		for (int attachmentSlotIndex = 0; attachmentSlotIndex < attachmentsSize; attachmentSlotIndex++) {
+		for (int attachmentSlotIndex = 0; attachmentSlotIndex < TileEntityAssemblyTable.ATTACHMENT_SLOTS_SIZE; attachmentSlotIndex++) {
 
-			final double t = (2 * Math.PI * attachmentSlotIndex) / attachmentsSize;
-			final int posX = (int) Math.round((width / 2) + (radiusX * Math.cos(t + 90))) + 6;
-			final int posY = (int) Math.round((height / 2) + (radiusY * Math.sin(t + 90))) + 3;
+			final double t = (2 * Math.PI * attachmentSlotIndex) / TileEntityAssemblyTable.ATTACHMENT_SLOTS_SIZE;
+			final int posX = (int) Math.round((width / 2) + (radiusX * Math.cos(t + 90))) + 9;
+			final int posY = (int) Math.round((height / 2) + (radiusY * Math.sin(t + 90))) + 20;
 
 			final int index = attachmentSlotIndex;
 
@@ -59,7 +53,7 @@ public class ContainerAssemblyTable extends Container {
 				@Override
 				public boolean isItemValid(final ItemStack stack) {
 					if (super.isItemValid(stack) && (stack.getItem() instanceof IItemAttachment)) {
-						final ItemStack body = assemblyTable.getInventory().getStackInSlot(assembleBody);
+						final ItemStack body = assemblyTable.getInventory().getStackInSlot(TileEntityAssemblyTable.ASSEMBLY_SLOT);
 						if (!body.isEmpty()) {
 							final AttachmentList attachmentList = body.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
 							if (attachmentList != null) {
@@ -85,7 +79,7 @@ public class ContainerAssemblyTable extends Container {
 		}
 
 		// assembleBody
-		this.addSlotToContainer(new SlotItemHandler(assemblyTable.getInventory(), assembleBody, ((width + (SLOT_WIDTH / 2)) / 2) + 5, ((height + (SLOT_WIDTH / 2)) / 2) - 1) {
+		this.addSlotToContainer(new SlotItemHandler(assemblyTable.getInventory(), TileEntityAssemblyTable.ASSEMBLY_SLOT, (width / 2) + 13, (height / 2) + 23) {
 			@Override
 			public boolean isItemValid(final ItemStack stack) {
 				final AttachmentList attachmentList = stack.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
@@ -98,22 +92,7 @@ public class ContainerAssemblyTable extends Container {
 			@Override
 			public void onSlotChanged() {
 				if (debugJeff) {
-					WIPTech.info("assembly table body changed " + assembleBody);
-				}
-			}
-		});
-
-		// output
-		this.addSlotToContainer(new SlotItemHandler(assemblyTable.getInventory(), output, 188, 91) {
-			@Override
-			public boolean isItemValid(final ItemStack stack) {
-				return false;
-			}
-
-			@Override
-			public void onSlotChanged() {
-				if (debugJeff) {
-					WIPTech.info("assembly table output changed " + output);
+					WIPTech.info("assembly table body changed " + TileEntityAssemblyTable.ASSEMBLY_SLOT);
 				}
 			}
 		});
@@ -122,7 +101,7 @@ public class ContainerAssemblyTable extends Container {
 			for (int topColumn = 0; topColumn < 9; topColumn++) {
 				final int row = topRow;
 				final int column = topColumn;
-				this.addSlotToContainer(new Slot(playerInv, topColumn + (topRow * 9) + 9, 48 + (topColumn * 18), 132 + (topRow * 18)) {
+				this.addSlotToContainer(new Slot(playerInv, topColumn + (topRow * 9) + 9, 48 + (topColumn * 18), 144 + (topRow * 18)) {
 					@Override
 					public void onSlotChanged() {
 						if (debugJeff) {
@@ -135,7 +114,7 @@ public class ContainerAssemblyTable extends Container {
 
 		for (int bottomColumn = 0; bottomColumn < 9; bottomColumn++) {
 			final int column = bottomColumn;
-			this.addSlotToContainer(new Slot(playerInv, bottomColumn, 48 + (bottomColumn * 18), 190) {
+			this.addSlotToContainer(new Slot(playerInv, bottomColumn, 48 + (bottomColumn * 18), 202) {
 				@Override
 				public void onSlotChanged() {
 					if (debugJeff) {

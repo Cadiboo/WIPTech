@@ -108,7 +108,7 @@ public final class ModReference {
 		}
 
 		public static boolean insanity() {
-			return true;
+			return false;
 		}
 
 		public static boolean debugEnergyNetworks() {

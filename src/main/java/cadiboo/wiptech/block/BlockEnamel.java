@@ -20,13 +20,16 @@ import net.minecraft.world.World;
  */
 public class BlockEnamel extends BlockWire {
 
-	protected static final AxisAlignedBB	CORE_AABB	= BlockWire.CORE_AABB.grow(1d / 16d);
-	protected static final AxisAlignedBB	UP_AABB		= BlockWire.UP_AABB.grow(1d / 16d, 0, 1d / 16d);
-	protected static final AxisAlignedBB	DOWN_AABB	= BlockWire.DOWN_AABB.grow(1d / 16d, 0, 1d / 16d);
-	protected static final AxisAlignedBB	NORTH_AABB	= BlockWire.NORTH_AABB.grow(1d / 16d, 1d / 16d, 0);
-	protected static final AxisAlignedBB	SOUTH_AABB	= BlockWire.SOUTH_AABB.grow(1d / 16d, 1d / 16d, 0);
-	protected static final AxisAlignedBB	EAST_AABB	= BlockWire.EAST_AABB.grow(0, 1d / 16d, 1d / 16d);
-	protected static final AxisAlignedBB	WEST_AABB	= BlockWire.WEST_AABB.grow(0, 1d / 16d, 1d / 16d);
+	private static final int	format__0	= 0;
+	private static final int	format__1	= 1;
+
+	public static final AxisAlignedBB	CORE_AABB	= new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, 10d / 16d, 10d / 16d, 10d / 16d);
+	public static final AxisAlignedBB	UP_AABB		= new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, 10d / 16d, format__1, 10d / 16d);
+	public static final AxisAlignedBB	DOWN_AABB	= new AxisAlignedBB(06d / 16d, format__0, 06d / 16d, 10d / 16d, 10d / 16d, 10d / 16d);
+	public static final AxisAlignedBB	NORTH_AABB	= new AxisAlignedBB(06d / 16d, 06d / 16d, format__0, 10d / 16d, 10d / 16d, 10d / 16d);
+	public static final AxisAlignedBB	SOUTH_AABB	= new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, 10d / 16d, 10d / 16d, format__1);
+	public static final AxisAlignedBB	EAST_AABB	= new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, format__1, 10d / 16d, 10d / 16d);
+	public static final AxisAlignedBB	WEST_AABB	= new AxisAlignedBB(format__0, 06d / 16d, 06d / 16d, 10d / 16d, 10d / 16d, 10d / 16d);
 
 	public BlockEnamel(final ModMaterials material) {
 		super(material, "enamel");

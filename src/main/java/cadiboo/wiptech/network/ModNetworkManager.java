@@ -1,5 +1,6 @@
 package cadiboo.wiptech.network;
 
+import cadiboo.wiptech.network.play.client.CPacketStartAssembly;
 import cadiboo.wiptech.network.play.client.CPacketSyncEntity;
 import cadiboo.wiptech.network.play.server.SPacketSyncEnergyNetworkList;
 import cadiboo.wiptech.network.play.server.SPacketSyncEntity;
@@ -34,6 +35,9 @@ public final class ModNetworkManager {
 
 		/* Server -> Client */
 		NETWORK.registerMessage(SPacketSyncEnergyNetworkList.class, SPacketSyncEnergyNetworkList.class, networkIds++, Side.CLIENT);
+
+		/* Client -> Server */
+		NETWORK.registerMessage(CPacketStartAssembly.class, CPacketStartAssembly.class, networkIds++, Side.SERVER);
 	}
 
 }

@@ -3,7 +3,6 @@ package cadiboo.wiptech.init;
 import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemGrenadeLauncher;
 import cadiboo.wiptech.item.ItemHandheldCoilgun;
-import cadiboo.wiptech.item.ItemHandheldCoilgunPistol;
 import cadiboo.wiptech.item.ItemHandheldPlasmagun;
 import cadiboo.wiptech.item.ItemHandheldRailgun;
 import cadiboo.wiptech.item.ItemHeartbeatSensor;
@@ -35,10 +34,9 @@ public class ModItems {
 
 	public static final ItemSlugCasing SLUG_CASING_BOTTOM = null;
 
-	public static final ItemHandheldRailgun			HANDHELD_RAILGUN		= null;
-	public static final ItemHandheldCoilgun			HANDHELD_COILGUN		= null;
-	public static final ItemHandheldCoilgunPistol	HANDHELD_COILGUN_PISTOL	= null;
-	public static final ItemHandheldPlasmagun		HANDHELD_PLASMAGUN		= null;
+	public static final ItemHandheldRailgun		HANDHELD_RAILGUN	= null;
+	public static final ItemHandheldCoilgun		HANDHELD_COILGUN	= null;
+	public static final ItemHandheldPlasmagun	HANDHELD_PLASMAGUN	= null;
 
 	public static final ItemShotgun SHOTGUN = null;
 

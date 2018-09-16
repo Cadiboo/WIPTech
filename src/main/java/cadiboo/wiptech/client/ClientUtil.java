@@ -1,5 +1,6 @@
 package cadiboo.wiptech.client;
 
+import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Random;
 
@@ -811,6 +812,21 @@ public final class ClientUtil {
 	 */
 	public static boolean isInRect(final int x, final int y, final int xSize, final int ySize, final int mouseX, final int mouseY) {
 		return (mouseX >= x) && (mouseX <= (x + xSize)) && (mouseY >= y) && (mouseY <= (y + ySize));
+	}
+
+	public static int color(final int red, final int green, final int blue) {
+		if (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {
+			return -16777216 | (blue << 16) | (green << 8) | red;
+		} else {
+			return (red << 24) | (green << 16) | (blue << 8) | 255;
+		}
+	}
+
+	public static int colorf(final float red, final float green, final float blue) {
+		final int redInt = Math.max(0, Math.min(255, Math.round(red * 255)));
+		final int greenInt = Math.max(0, Math.min(255, Math.round(green * 255)));
+		final int blueInt = Math.max(0, Math.min(255, Math.round(blue * 255)));
+		return color(redInt, greenInt, blueInt);
 	}
 
 }

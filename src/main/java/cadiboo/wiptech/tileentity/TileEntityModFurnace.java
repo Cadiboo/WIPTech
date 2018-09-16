@@ -56,7 +56,6 @@ public class TileEntityModFurnace extends TileEntity implements IModTileEntity, 
 	}
 
 	public TileEntityModFurnace() {
-		TileEntityFurnace.class.getName();
 
 		this.inventory = new ModItemStackHandler(3) {
 

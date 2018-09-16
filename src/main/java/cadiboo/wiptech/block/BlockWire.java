@@ -33,13 +33,16 @@ import net.minecraftforge.common.property.Properties;
  */
 public class BlockWire extends Block implements IBlockModMaterial {
 
-	public static final AxisAlignedBB	CORE_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 9d / 16d, 9d / 16d, 9d / 16d);
-	public static final AxisAlignedBB	UP_AABB		= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 9d / 16d, 1, 9d / 16d);
-	public static final AxisAlignedBB	DOWN_AABB	= new AxisAlignedBB(7d / 16d, 0, 7d / 16d, 9d / 16d, 9d / 16d, 9d / 16d);
-	public static final AxisAlignedBB	NORTH_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 0, 9d / 16d, 9d / 16d, 9d / 16d);
-	public static final AxisAlignedBB	SOUTH_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 9d / 16d, 9d / 16d, 1);
-	public static final AxisAlignedBB	EAST_AABB	= new AxisAlignedBB(7d / 16d, 7d / 16d, 7d / 16d, 1, 9d / 16d, 9d / 16d);
-	public static final AxisAlignedBB	WEST_AABB	= new AxisAlignedBB(0, 7d / 16d, 7d / 16d, 9d / 16d, 9d / 16d, 9d / 16d);
+	private static final int	format__0	= 0;
+	private static final int	format__1	= 1;
+
+	public static final AxisAlignedBB	CORE_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB	UP_AABB		= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, format__1, 09d / 16d);
+	public static final AxisAlignedBB	DOWN_AABB	= new AxisAlignedBB(07d / 16d, format__0, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB	NORTH_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, format__0, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB	SOUTH_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, format__1);
+	public static final AxisAlignedBB	EAST_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, format__1, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB	WEST_AABB	= new AxisAlignedBB(format__0, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
 
 	public static final IUnlistedProperty<Boolean>	CONNECTED_DOWN	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_down"));
 	public static final IUnlistedProperty<Boolean>	CONNECTED_UP	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_up"));
