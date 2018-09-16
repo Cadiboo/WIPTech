@@ -1030,7 +1030,7 @@ public final class EventSubscriber {
 
 			blockState.addCollisionBoxToList(world, pos, new AxisAlignedBB(pos), boxes, player, true);
 
-			if (boxes.size() == 1) {
+			if (boxes.size() <= 1) {
 				boxes.clear();
 				boxes.add(blockState.getSelectedBoundingBox(world, pos));
 			}
