@@ -10,6 +10,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.EnumFacing;
@@ -118,7 +120,7 @@ public class TileEntityWire extends TileEntity implements IModTileEntity, ITicka
 	}
 
 	public List<Entity> getElectrocutableEntities() {
-		return this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos()).grow(this.getElectrocutionRage()), EntitySelectors.CAN_AI_TARGET);
+		return this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos()).grow(this.getElectrocutionRange()), EntitySelectors.CAN_AI_TARGET);
 	}
 
 	@Override
@@ -133,10 +135,10 @@ public class TileEntityWire extends TileEntity implements IModTileEntity, ITicka
 
 	@Override
 	public double getMaxRenderDistanceSquared() {
-		return Math.pow(this.getElectrocutionRage(), 2);
+		return Math.pow(this.getElectrocutionRange(), 2);
 	}
 
-	private int getElectrocutionRage() {
+	private int getElectrocutionRange() {
 		return 5;
 	}
 
@@ -164,26 +166,31 @@ public class TileEntityWire extends TileEntity implements IModTileEntity, ITicka
 	@Override
 	public void readFromNBT(final NBTTagCompound compound) {
 		super.readFromNBT(compound);
-		this.readNBT(compound);
+		if (compound.hasKey(ENERGY_TAG)) {
+			this.getEnergy().setEnergyStored(compound.getInteger(ENERGY_TAG), false);
+		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		this.writeNBT(compound);
+		compound.setInteger(ENERGY_TAG, this.getEnergy().getEnergyStored());
 		return compound;
 	}
 
 	@Override
-	public void readNBT(final NBTTagCompound syncTag) {
-		if (syncTag.hasKey("energy")) {
-			this.getEnergy().setEnergyStored(syncTag.getInteger("energy"), false);
-		}
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.getPos(), this.getBlockMetadata(), this.getUpdateTag());
 	}
 
 	@Override
-	public void writeNBT(final NBTTagCompound syncTag) {
-		syncTag.setInteger("energy", this.getEnergy().getEnergyStored());
+	public NBTTagCompound getUpdateTag() {
+		return this.writeToNBT(new NBTTagCompound());
+	}
+
+	@Override
+	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
 	}
 
 }

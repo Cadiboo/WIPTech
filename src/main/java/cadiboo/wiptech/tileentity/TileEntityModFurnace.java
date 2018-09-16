@@ -9,6 +9,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
@@ -24,6 +26,11 @@ public class TileEntityModFurnace extends TileEntity implements IModTileEntity, 
 	public static final int	INPUT_SLOT	= 0;
 	public static final int	FUEL_SLOT	= 1;
 	public static final int	OUTPUT_SLOT	= 2;
+
+	public static final String	FUEL_TIME_REMAINING_TAG	= "fuelTimeRemaining";
+	public static final String	SMELT_TIME_TAG			= "smeltTime";
+	public static final String	MAX_FUEL_TIME_TAG		= "maxFuelTime";
+	public static final String	MAX_SMELT_TIME_TAG		= "maxSmeltTime";
 
 	private final ModItemStackHandler inventory;
 
@@ -123,9 +130,6 @@ public class TileEntityModFurnace extends TileEntity implements IModTileEntity, 
 
 		this.markDirty();
 
-//		this.world.playerEntities.forEach(player -> {
-//			this.syncToClient(player);
-//		});
 	}
 
 	private void smelt() {
@@ -276,50 +280,6 @@ public class TileEntityModFurnace extends TileEntity implements IModTileEntity, 
 		return this.pos;
 	}
 
-	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		this.readNBT(compound);
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
-		super.writeToNBT(compound);
-		this.writeNBT(compound);
-		return compound;
-	}
-
-	@Override
-	public void deserializeNBT(final NBTTagCompound nbt) {
-		super.deserializeNBT(nbt);
-		this.readNBT(nbt);
-	}
-
-	@Override
-	public NBTTagCompound serializeNBT() {
-		final NBTTagCompound syncTag = super.serializeNBT();
-		this.writeNBT(syncTag);
-		return syncTag;
-	}
-
-	@Override
-	public void readNBT(final NBTTagCompound syncTag) {
-		this.fuelTimeRemaining = syncTag.getInteger("fuelTimeRemaining");
-		this.smeltTime = syncTag.getInteger("smeltTime");
-		this.maxFuelTime = syncTag.getInteger("maxFuelTime");
-		this.maxSmeltTime = syncTag.getInteger("maxSmeltTime");
-		this.getInventory().deserializeNBT(syncTag.getCompoundTag("inventory"));
-	}
-
-	@Override
-	public void writeNBT(final NBTTagCompound syncTag) {
-		syncTag.setInteger("fuelTimeRemaining", this.fuelTimeRemaining);
-		syncTag.setInteger("smeltTime", this.smeltTime);
-		syncTag.setInteger("maxFuelTime", this.maxFuelTime);
-		syncTag.setInteger("maxSmeltTime", this.maxSmeltTime);
-		syncTag.setTag("inventory", this.getInventory().serializeNBT());
-	}
-
 	public boolean isOn() {
 		if (this.fuelTimeRemaining > 0) {
 			return true;
@@ -378,6 +338,50 @@ public class TileEntityModFurnace extends TileEntity implements IModTileEntity, 
 			};
 		}
 		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.getPos(), this.getBlockMetadata(), this.getUpdateTag());
+	}
+
+	@Override
+	public NBTTagCompound getUpdateTag() {
+		return this.writeToNBT(new NBTTagCompound());
+	}
+
+	@Override
+	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
+	}
+
+	@Override
+	public void readFromNBT(final NBTTagCompound compound) {
+		if (compound.hasKey(FUEL_TIME_REMAINING_TAG)) {
+			this.fuelTimeRemaining = compound.getInteger(FUEL_TIME_REMAINING_TAG);
+		}
+		if (compound.hasKey(SMELT_TIME_TAG)) {
+			this.smeltTime = compound.getInteger(SMELT_TIME_TAG);
+		}
+		if (compound.hasKey(MAX_FUEL_TIME_TAG)) {
+			this.maxFuelTime = compound.getInteger(MAX_FUEL_TIME_TAG);
+		}
+		if (compound.hasKey(MAX_SMELT_TIME_TAG)) {
+			this.maxSmeltTime = compound.getInteger(MAX_SMELT_TIME_TAG);
+		}
+		if (compound.hasKey(INVENTORY_TAG)) {
+			this.getInventory().deserializeNBT(compound.getCompoundTag(INVENTORY_TAG));
+		}
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+		compound.setInteger(FUEL_TIME_REMAINING_TAG, this.fuelTimeRemaining);
+		compound.setInteger(SMELT_TIME_TAG, this.smeltTime);
+		compound.setInteger(MAX_FUEL_TIME_TAG, this.maxFuelTime);
+		compound.setInteger(MAX_SMELT_TIME_TAG, this.maxSmeltTime);
+		compound.setTag(INVENTORY_TAG, this.getInventory().serializeNBT());
+		return compound;
 	}
 
 }

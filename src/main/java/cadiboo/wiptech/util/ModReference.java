@@ -114,6 +114,10 @@ public final class ModReference {
 		public static boolean debugEnergyNetworks() {
 			return false;
 		}
+
+		public static boolean debugBoundingBoxes() {
+			return true;
+		}
 	}
 
 }

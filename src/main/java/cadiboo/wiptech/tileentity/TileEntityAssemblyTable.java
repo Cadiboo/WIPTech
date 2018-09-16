@@ -6,7 +6,11 @@ import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -19,7 +23,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 /**
  * @author Cadiboo
  */
-public class TileEntityAssemblyTable extends TileEntity implements IModTileEntity, ITickable, ITileEntitySyncable, IEnergyUser, IInventoryUser, ITileEntityCentral {
+public class TileEntityAssemblyTable extends TileEntity implements IModTileEntity, ITickable, IEnergyUser, IInventoryUser, ITileEntitySyncable, ITileEntityCentral {
 
 	public static final int	WIDTH	= 3;
 	public static final int	HEIGHT	= 2;
@@ -69,7 +73,20 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 
 	@Override
 	public void update() {
-		this.handleSync();
+		if (this.world.isRemote) {
+			return;
+		}
+		final int dimension = this.world.provider.getDimension();
+
+		for (final EntityPlayer player : this.world.playerEntities) {
+			if (!(player instanceof EntityPlayerMP)) {
+				continue;
+			}
+			((EntityPlayerMP) player).connection.sendPacket(this.getUpdatePacket());
+		}
+
+//		ModNetworkManager.NETWORK.sendToAllAround(getUpdatePacket(), new NetworkRegistry.TargetPoint(dimension, this.pos.getX(), this.pos.getY(), this.pos.getZ(), 64));
+//		this.handleSync();
 	}
 
 	@Override
@@ -111,17 +128,22 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return super.getRenderBoundingBox().grow(3);
+		return super.getRenderBoundingBox().grow(WIDTH, HEIGHT, DEPTH);
 	}
 
 	@Override
-	public void readNBT(final NBTTagCompound syncTag) {
-		this.readFromNBT(syncTag);
+	public SPacketUpdateTileEntity getUpdatePacket() {
+		return new SPacketUpdateTileEntity(this.getPos(), this.getBlockMetadata(), this.getUpdateTag());
 	}
 
 	@Override
-	public void writeNBT(final NBTTagCompound syncTag) {
-		this.writeToNBT(syncTag);
+	public NBTTagCompound getUpdateTag() {
+		return this.writeToNBT(new NBTTagCompound());
+	}
+
+	@Override
+	public void onDataPacket(final NetworkManager net, final SPacketUpdateTileEntity pkt) {
+		this.readFromNBT(pkt.getNbtCompound());
 	}
 
 }

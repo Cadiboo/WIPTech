@@ -2,13 +2,10 @@ package cadiboo.wiptech.tileentity;
 
 import javax.annotation.Nonnull;
 
-import cadiboo.wiptech.network.ModNetworkManager;
-import cadiboo.wiptech.network.play.client.CPacketSyncTileEntity;
-import cadiboo.wiptech.network.play.server.SPacketSyncTileEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,7 +19,7 @@ public interface ITileEntitySyncable extends IModTileEntity {
 				return;
 			}
 
-			for (final EntityPlayer player : getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(-getInstaSyncRange(), -getInstaSyncRange(), -getInstaSyncRange(), getInstaSyncRange() - 1, getInstaSyncRange() - 1, getInstaSyncRange() - 1).offset(getPosition()))) {
+			for (final EntityPlayerMP player : getWorld().getEntitiesWithinAABB(EntityPlayerMP.class, new AxisAlignedBB(-getInstaSyncRange(), -getInstaSyncRange(), -getInstaSyncRange(), getInstaSyncRange() - 1, getInstaSyncRange() - 1, getInstaSyncRange() - 1).offset(getPosition()))) {
 				syncToClient(player);
 			}
 		} else {
@@ -47,17 +44,24 @@ public interface ITileEntitySyncable extends IModTileEntity {
 
 	default void syncToClients() {
 		for (final EntityPlayer player : this.getWorld().playerEntities) {
-			syncToClient(player);
+			if (!(player instanceof EntityPlayerMP)) {
+				continue;
+			}
+			syncToClient((EntityPlayerMP) player);
 		}
 	}
 
-	default void syncToClient(final EntityPlayer player) {
-		if ((player instanceof EntityPlayerMP) && shouldSyncToPlayer(player)) {
-			final NBTTagCompound syncTag = new NBTTagCompound();
-			writeNBT(syncTag);
-			ModNetworkManager.NETWORK.sendTo(new SPacketSyncTileEntity(syncTag, getPosition()), (EntityPlayerMP) player);
+	default void syncToClient(final EntityPlayerMP player) {
+		if (shouldSyncToPlayer(player)) {
+			final NBTTagCompound syncTag = writeToNBT(new NBTTagCompound());
+			player.connection.sendPacket(getUpdatePacket());
 		}
 	}
+
+	/**
+	 * Implement this from Tile Entity class
+	 */
+	SPacketUpdateTileEntity getUpdatePacket();
 
 	/**
 	 * Implement this from Tile Entity class
@@ -69,20 +73,14 @@ public interface ITileEntitySyncable extends IModTileEntity {
 	 */
 	NBTTagCompound writeToNBT(NBTTagCompound compound);
 
-	@Nonnull
-	void readNBT(NBTTagCompound syncTag);
-
-	@Nonnull
-	void writeNBT(NBTTagCompound syncTag);
-
-	default boolean shouldSyncToPlayer(final EntityPlayer player) {
+	default boolean shouldSyncToPlayer(final EntityPlayerMP player) {
 		return player.getDistanceSq(getPosition()) <= this.getMaxSyncDistanceSquared();
 	}
 
 	default void syncToServer() {
-		final NBTTagCompound syncTag = new NBTTagCompound();
-		writeNBT(syncTag);
-		ModNetworkManager.NETWORK.sendToServer(new CPacketSyncTileEntity(syncTag, getPosition(), Minecraft.getMinecraft().world.provider.getDimension()));
+		final NBTTagCompound syncTag = writeToNBT(new NBTTagCompound());
+		new NoSuchMethodError().printStackTrace();
+//		ModNetworkManager.NETWORK.sendToServer(new CPacketSyncTileEntity(syncTag, getPosition(), Minecraft.getMinecraft().world.provider.getDimension()));
 	}
 
 	default int getMaxSyncDistanceSquared() {

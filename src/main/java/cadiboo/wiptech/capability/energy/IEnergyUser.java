@@ -14,6 +14,8 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public interface IEnergyUser extends ICapabilityProvider {
 
+	public static final String ENERGY_TAG = "energy";
+	
 	@Nonnull
 	ModEnergyStorage getEnergy();
 

@@ -2,7 +2,6 @@ package cadiboo.wiptech.block;
 
 import java.util.List;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
@@ -99,30 +98,59 @@ public class BlockWire extends Block implements IBlockModMaterial {
 	@Override
 	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
 		final TileEntity tile = source.getTileEntity(pos);
-		AxisAlignedBB AABB = CORE_AABB;
+		AxisAlignedBB AABB = this.CORE_AABB;
 		if ((tile != null) && (tile instanceof TileEntityWire)) {
 			final TileEntityWire wire = (TileEntityWire) tile;
 
 			if (wire.isConnectedTo(EnumFacing.DOWN)) {
-				AABB = AABB.union(DOWN_AABB);
+				AABB = AABB.union(this.DOWN_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.UP)) {
-				AABB = AABB.union(UP_AABB);
+				AABB = AABB.union(this.UP_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.NORTH)) {
-				AABB = AABB.union(NORTH_AABB);
+				AABB = AABB.union(this.NORTH_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.SOUTH)) {
-				AABB = AABB.union(SOUTH_AABB);
+				AABB = AABB.union(this.SOUTH_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.WEST)) {
-				AABB = AABB.union(WEST_AABB);
+				AABB = AABB.union(this.WEST_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.EAST)) {
-				AABB = AABB.union(EAST_AABB);
+				AABB = AABB.union(this.EAST_AABB);
 			}
 		}
 		return AABB;
+	}
+
+	@Override
+	public void addCollisionBoxToList(final IBlockState state, final World world, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, final Entity entity, final boolean isActualState) {
+		final TileEntity tile = world.getTileEntity(pos);
+		this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.CORE_AABB);
+		if ((tile != null) && (tile instanceof TileEntityWire)) {
+			final TileEntityWire wire = (TileEntityWire) tile;
+
+			if (wire.isConnectedTo(EnumFacing.DOWN)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.DOWN_AABB);
+			}
+			if (wire.isConnectedTo(EnumFacing.UP)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.UP_AABB);
+			}
+			if (wire.isConnectedTo(EnumFacing.NORTH)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.NORTH_AABB);
+			}
+			if (wire.isConnectedTo(EnumFacing.SOUTH)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.SOUTH_AABB);
+			}
+			if (wire.isConnectedTo(EnumFacing.WEST)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.WEST_AABB);
+			}
+			if (wire.isConnectedTo(EnumFacing.EAST)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.EAST_AABB);
+			}
+		}
+
 	}
 
 	@Override
@@ -168,38 +196,6 @@ public class BlockWire extends Block implements IBlockModMaterial {
 	}
 
 	@Override
-	public void addCollisionBoxToList(final IBlockState state, final World world, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, final Entity entity, final boolean isActualState) {
-		final TileEntity tile = world.getTileEntity(pos);
-		this.addCollisionBoxToList(pos, entityBox, collidingBoxes, CORE_AABB);
-		if ((tile != null) && (tile instanceof TileEntityWire)) {
-			final TileEntityWire wire = (TileEntityWire) tile;
-
-			if (wire.isConnectedTo(EnumFacing.DOWN)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, DOWN_AABB);
-			}
-			if (wire.isConnectedTo(EnumFacing.UP)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, UP_AABB);
-			}
-			if (wire.isConnectedTo(EnumFacing.NORTH)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, NORTH_AABB);
-			}
-			if (wire.isConnectedTo(EnumFacing.SOUTH)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, SOUTH_AABB);
-			}
-			if (wire.isConnectedTo(EnumFacing.WEST)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, WEST_AABB);
-			}
-			if (wire.isConnectedTo(EnumFacing.EAST)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, EAST_AABB);
-			}
-		}
-		if (collidingBoxes.size() > 0) {
-			WIPTech.proxy.getSide();
-		}
-
-	}
-
-	@Override
 	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
 		if (world != null) {
 			final TileEntity tile = world.getTileEntity(pos);
@@ -230,6 +226,6 @@ public class BlockWire extends Block implements IBlockModMaterial {
 
 	@Override
 	public AxisAlignedBB getSelectedBoundingBox(final IBlockState state, final World world, final BlockPos pos) {
-		return new AxisAlignedBB(0, -20, 0, 0, -20, 0);
+		return this.getBoundingBox(state, world, pos).offset(pos);
 	}
 }

@@ -6,7 +6,6 @@ import java.util.HashSet;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.tileentity.ITileEntityNetworkConnection;
-import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +45,7 @@ public class EnergyNetwork {
 		return this.getConnections().hashCode();
 	}
 
-	void distributeEnergy(final BlockPos... dontDistribute) {
+	public void distributeEnergy(final BlockPos... dontDistribute) {
 		int networkEnergy = this.getNetworkEnergy();
 
 		final HashSet<BlockPos> hashedDontDistribute = new HashSet<>(Arrays.asList(dontDistribute));
@@ -82,15 +81,16 @@ public class EnergyNetwork {
 		}
 	}
 
-	int getNetworkEnergy() {
+	public int getNetworkEnergy() {
 		int networkEnergy = 0;
 		for (final BlockPos pos : this.getConnections()) {
 			try {
 				final TileEntity tile = this.world.getTileEntity(pos);
-				final ModEnergyStorage energy = ((TileEntityWire) tile).getEnergy();
+				final ModEnergyStorage energy = ((ITileEntityNetworkConnection) tile).getEnergy();
 				networkEnergy += energy.getEnergyStored();
 			} catch (final Exception e) {
 				e.printStackTrace();
+				// TODO: handle the exception & don't just cast without != null and instanceof checks
 			}
 		}
 		return networkEnergy;

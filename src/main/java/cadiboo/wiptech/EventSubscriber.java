@@ -99,6 +99,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.HorseArmorType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -113,6 +114,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.registry.IRegistry;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -798,6 +800,10 @@ public final class EventSubscriber {
 
 	private static void renderSelectedBoundingBoxes(final RenderWorldLastEvent event) {
 
+		if (Boolean.valueOf(true)) {
+			return;
+		}
+
 		final World world = Minecraft.getMinecraft().world;
 		if (world == null) {
 			return;
@@ -986,6 +992,77 @@ public final class EventSubscriber {
 		final String outOf = energy.getEnergyStored() + "/" + energy.getMaxEnergyStored();
 		mc.fontRenderer.drawStringWithShadow(outOf, Width - 1 - (outOf.length() * 6), Height + 45, 0xFFFFFF);
 
+	}
+
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public static void drawBlockHighlightEvent(final DrawBlockHighlightEvent event) {
+		try {
+			final EntityPlayer player = event.getPlayer();
+			if (player == null) {
+				return;
+			}
+
+			final RayTraceResult rayTraceResult = event.getTarget();
+			if ((rayTraceResult == null) || (rayTraceResult.typeOfHit != RayTraceResult.Type.BLOCK)) {
+				return;
+			}
+
+			final World world = player.world;
+			if (world == null) {
+				return;
+			}
+
+			final float partialTicks = event.getPartialTicks();
+			final BlockPos pos = rayTraceResult.getBlockPos();
+			final IBlockState blockState = world.getBlockState(pos);
+			if ((blockState.getMaterial() == Material.AIR) || !world.getWorldBorder().contains(pos)) {
+				return;
+			}
+
+			if (!(blockState.getBlock() instanceof BlockWire) && !ModReference.Debug.debugBoundingBoxes()) {
+				return;
+			}
+
+			event.setCanceled(true);
+
+			final List<AxisAlignedBB> boxes = new ArrayList<>();
+
+			blockState.addCollisionBoxToList(world, pos, new AxisAlignedBB(pos), boxes, player, true);
+
+			if (boxes.size() == 1) {
+				boxes.clear();
+				boxes.add(blockState.getSelectedBoundingBox(world, pos));
+			}
+
+			final double renderX = player.lastTickPosX + ((player.posX - player.lastTickPosX) * partialTicks);
+			final double renderY = player.lastTickPosY + ((player.posY - player.lastTickPosY) * partialTicks);
+			final double renderZ = player.lastTickPosZ + ((player.posZ - player.lastTickPosZ) * partialTicks);
+
+			GlStateManager.enableBlend();
+			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+			GlStateManager.glLineWidth(2.0F);
+			GlStateManager.disableTexture2D();
+			GlStateManager.depthMask(false);
+
+			for (final AxisAlignedBB box : boxes) {
+				if (box.equals(BlockWire.CORE_AABB.offset(pos))) {
+					continue;
+				}
+				final AxisAlignedBB renderBox = box.grow(0.0020000000949949026D).offset(-renderX, -renderY, -renderZ);
+				if (ModReference.Debug.debugBoundingBoxes()) {
+					event.getContext().drawSelectionBoundingBox(renderBox, 0.0F, 1.0F, 1.0F, 0.4F);
+				} else {
+					event.getContext().drawSelectionBoundingBox(renderBox, 0.0F, 0.0F, 0.0F, 0.4F);
+				}
+			}
+
+			GlStateManager.depthMask(true);
+			GlStateManager.enableTexture2D();
+			GlStateManager.disableBlend();
+		} catch (final Exception e) {
+			event.setCanceled(false);
+		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)

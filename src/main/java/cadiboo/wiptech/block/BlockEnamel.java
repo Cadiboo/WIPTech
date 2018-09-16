@@ -1,9 +1,12 @@
 package cadiboo.wiptech.block;
 
+import java.util.List;
+
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -32,30 +35,59 @@ public class BlockEnamel extends BlockWire {
 	@Override
 	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
 		final TileEntity tile = source.getTileEntity(pos);
-		AxisAlignedBB AABB = CORE_AABB;
+		AxisAlignedBB AABB = this.CORE_AABB;
 		if ((tile != null) && (tile instanceof TileEntityEnamel)) {
 			final TileEntityEnamel enamel = (TileEntityEnamel) tile;
 
 			if (enamel.isConnectedTo(EnumFacing.DOWN)) {
-				AABB = AABB.union(DOWN_AABB);
+				AABB = AABB.union(this.DOWN_AABB);
 			}
 			if (enamel.isConnectedTo(EnumFacing.UP)) {
-				AABB = AABB.union(UP_AABB);
+				AABB = AABB.union(this.UP_AABB);
 			}
 			if (enamel.isConnectedTo(EnumFacing.NORTH)) {
-				AABB = AABB.union(NORTH_AABB);
+				AABB = AABB.union(this.NORTH_AABB);
 			}
 			if (enamel.isConnectedTo(EnumFacing.SOUTH)) {
-				AABB = AABB.union(SOUTH_AABB);
+				AABB = AABB.union(this.SOUTH_AABB);
 			}
 			if (enamel.isConnectedTo(EnumFacing.WEST)) {
-				AABB = AABB.union(WEST_AABB);
+				AABB = AABB.union(this.WEST_AABB);
 			}
 			if (enamel.isConnectedTo(EnumFacing.EAST)) {
-				AABB = AABB.union(EAST_AABB);
+				AABB = AABB.union(this.EAST_AABB);
 			}
 		}
 		return AABB;
+	}
+
+	@Override
+	public void addCollisionBoxToList(final IBlockState state, final World world, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, final Entity entity, final boolean isActualState) {
+		final TileEntity tile = world.getTileEntity(pos);
+		this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.CORE_AABB);
+		if ((tile != null) && (tile instanceof TileEntityEnamel)) {
+			final TileEntityEnamel enamel = (TileEntityEnamel) tile;
+
+			if (enamel.isConnectedTo(EnumFacing.DOWN)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.DOWN_AABB);
+			}
+			if (enamel.isConnectedTo(EnumFacing.UP)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.UP_AABB);
+			}
+			if (enamel.isConnectedTo(EnumFacing.NORTH)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.NORTH_AABB);
+			}
+			if (enamel.isConnectedTo(EnumFacing.SOUTH)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.SOUTH_AABB);
+			}
+			if (enamel.isConnectedTo(EnumFacing.WEST)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.WEST_AABB);
+			}
+			if (enamel.isConnectedTo(EnumFacing.EAST)) {
+				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.EAST_AABB);
+			}
+		}
+
 	}
 
 	@Override
