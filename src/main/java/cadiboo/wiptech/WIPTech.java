@@ -45,9 +45,9 @@ public class WIPTech {
 	// TODO: check lang generation
 
 	/***** FOR ALL VERSIONS *****/
-	// VITAL FIXME FIXME FIXME TODO: INJECT TEXTURES!!!
+	// FIXME VITAL DO THIS NEXT FIXME TODO: DYNAMIC GLITCH MODELS
+	// FIXME TODO: DYNAMIC ATTACHMENT MODELS
 	// FIXME TODO: Slugs & SlugCasings
-	// FIXME TODO: Glitch models
 	// FIXME TODO: test camera transforms (on wires? i forgot what this was about)
 	// FIXME TODO: Mod CreativeTab itemstack icon is invisible -> use @ItemStackHolder?
 	// FIXME TODO: better electrocution -> actual list of entities?
@@ -56,20 +56,20 @@ public class WIPTech {
 	// FIXME TODO: fix railgun rendering glitch when yaw = 0;
 	// TESTME FIXME TODO: fix GUIs - this might be done?
 	// TESTME FIXME TODO: Material Texture locations
-	// TODO: radioactivity
 	// TODO: world gen to subscriber
-	// TODO: energy network performance
+	// TESTME TODO: energy network performance
 	// TODO: NetworkManager to subscriber
 	// TODO: generators
 	// TODO: Crushing & hammering
-	// TODO: weapon modules :( scopes, chips, etc
-	// TODO: steel & tungsten carbite - alloying -> custom furnace | craftable raw alloy?
-	// TODO: EMP - if(hasCapability(energy) setblock lava);
 	// TODO: rail & coil models
-	// TODO: assembly table assembling
 	// TODO: handheld guns shooting
 	// TODO: mounted guns
 	// TODO: attachments doing stuff
+
+	// TODO: steel & tungsten carbite - alloying -> custom furnace | craftable raw alloy?
+
+	// TODO: radioactivity
+	// TODO: EMP - if(hasCapability(energy) setblock lava);
 	// TODO: SOPMOD achievement http://callofduty.wikia.com/wiki/SOPMOD
 
 	@Instance(ModReference.MOD_ID)

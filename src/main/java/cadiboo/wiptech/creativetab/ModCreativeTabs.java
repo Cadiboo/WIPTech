@@ -23,8 +23,8 @@ public class ModCreativeTabs {
 	 */
 	public static class CustomCreativeTab extends CreativeTabs {
 
-		private final ItemStack iconStack;
-		private final boolean hasSearchBar;
+		private final ItemStack	iconStack;
+		private final boolean	hasSearchBar;
 
 		public CustomCreativeTab(final String name, final ItemStack iconStack, final boolean hasSearchBar) {
 			super(name);
