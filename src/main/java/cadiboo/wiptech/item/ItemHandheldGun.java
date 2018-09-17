@@ -133,14 +133,22 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			final CircuitTypes circuit = ((ItemCircuit) circuitItem).getType();
 			switch (circuit) {
 			case AUTO:
-			case MANUAL:
 				this.shoot(world, player, attachmentList);
+				break;
 			case BURST3:
 			case BURST5:
 				final CircuitBurstShots shots = circuitStack.getCapability(CapabilityCircuitBurstShots.CIRCUIT_BURST_SHOTS, null);
-				if ((shots != null) && shots.canShoot()) {
-					this.shoot(world, player, attachmentList);
+				if (shots != null) {
+					if (shots.canShoot()) {
+						shots.incrementShotsTaken();
+						this.shoot(world, player, attachmentList);
+					}
+					shots.resetShotsTaken();
 				}
+				break;
+			case MANUAL:
+				this.shoot(world, player, attachmentList);
+				break;
 			default:
 				return;
 			}
@@ -180,12 +188,15 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			switch (circuit) {
 			case AUTO:
 				this.shoot(world, player, attachmentList);
+				break;
 			case BURST3:
 			case BURST5:
 				final CircuitBurstShots shots = circuitStack.getCapability(CapabilityCircuitBurstShots.CIRCUIT_BURST_SHOTS, null);
 				if ((shots != null) && shots.canShoot()) {
+					shots.incrementShotsTaken();
 					this.shoot(world, player, attachmentList);
 				}
+				break;
 			default:
 			case MANUAL:
 				return;

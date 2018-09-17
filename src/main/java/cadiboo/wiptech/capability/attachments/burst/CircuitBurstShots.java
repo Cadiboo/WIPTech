@@ -6,15 +6,26 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public class CircuitBurstShots implements INBTSerializable<NBTTagCompound> {
 
-	private CircuitTypes	circuit;
-	private int				shotsTaken;
+	private final CircuitTypes	circuit;
+	private int					shotsTaken;
+	private long				lastShotIncrementedTime;
 
 	public CircuitBurstShots(final CircuitTypes circuit) {
-
+		this.circuit = circuit;
 	}
 
 	public boolean canShoot() {
-		return this.getShotsTaken() > this.getMaxShots();
+		final long check = System.currentTimeMillis() - this.lastShotIncrementedTime;
+		return (this.getShotsTaken() < this.getMaxShots()) && (check > 75);
+	}
+
+	public void incrementShotsTaken() {
+		this.shotsTaken++;
+		this.lastShotIncrementedTime = System.currentTimeMillis();
+	}
+
+	public void resetShotsTaken() {
+		this.shotsTaken = 0;
 	}
 
 	public int getMaxShots() {
@@ -27,8 +38,9 @@ public class CircuitBurstShots implements INBTSerializable<NBTTagCompound> {
 
 	@Override
 	public NBTTagCompound serializeNBT() {
-		// TODO Auto-generated method stub
-		return null;
+		final NBTTagCompound compound = new NBTTagCompound();
+
+		return compound;
 	}
 
 	@Override

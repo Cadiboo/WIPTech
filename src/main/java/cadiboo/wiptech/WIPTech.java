@@ -5,6 +5,8 @@ import java.lang.reflect.Field;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
+import cadiboo.wiptech.capability.attachments.burst.CapabilityCircuitBurstShots;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.util.IProxy;
@@ -94,6 +96,9 @@ public class WIPTech {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
 
 		CapabilityEnergyNetworkList.register();
+		CapabilityAttachmentList.register();
+		CapabilityCircuitBurstShots.register();
+
 	}
 
 	/**

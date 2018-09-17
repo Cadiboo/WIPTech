@@ -2,7 +2,7 @@ package cadiboo.wiptech.capability.attachments.burst;
 
 import cadiboo.wiptech.util.ModEnums.CircuitTypes;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.Capability.IStorage;
@@ -20,10 +20,10 @@ public class CapabilityCircuitBurstShots {
 
 		CapabilityManager.INSTANCE.register(CircuitBurstShots.class, new IStorage<CircuitBurstShots>() {
 			@Override
-			public NBTTagList writeNBT(final Capability<CircuitBurstShots> capability, final CircuitBurstShots instance, final EnumFacing side) {
-				final NBTTagList nbtTagList = new NBTTagList();
+			public NBTTagCompound writeNBT(final Capability<CircuitBurstShots> capability, final CircuitBurstShots instance, final EnumFacing side) {
+				final NBTTagCompound compound = new NBTTagCompound();
 
-				return nbtTagList;
+				return compound;
 			}
 
 			@Override
