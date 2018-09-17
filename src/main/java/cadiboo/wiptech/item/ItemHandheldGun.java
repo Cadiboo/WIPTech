@@ -7,7 +7,11 @@ import javax.annotation.Nullable;
 
 import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
+import cadiboo.wiptech.capability.attachments.burst.CapabilityCircuitBurstShots;
+import cadiboo.wiptech.capability.attachments.burst.CircuitBurstShots;
+import cadiboo.wiptech.capability.energy.IEnergyUser;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
+import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
 import cadiboo.wiptech.util.ModEnums.CircuitTypes;
@@ -26,14 +30,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import scala.actors.threadpool.Arrays;
 
 public abstract class ItemHandheldGun extends Item implements IModItem {
 
-	private static final AttachmentPoints[]	REQUIRED_ATTACHMENT_POINTS	= new AttachmentPoints[] { AttachmentPoints.CIRCUIT };
-	private final AttachmentList			attachments;
+	private static final AttachmentPoints[] REQUIRED_ATTACHMENT_POINTS = new AttachmentPoints[] { AttachmentPoints.CIRCUIT };
+
+	private final AttachmentPoints[] attachmentPoints;
 
 	public ItemHandheldGun(final String name, final AttachmentPoints... attachmentPoints) {
 		ModUtil.setRegistryNames(this, name);
@@ -42,7 +48,7 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 		points.addAll(Arrays.asList(attachmentPoints));
 		points.addAll(Arrays.asList(REQUIRED_ATTACHMENT_POINTS));
 
-		this.attachments = new AttachmentList(points.toArray(new AttachmentPoints[0]));
+		this.attachmentPoints = points.toArray(new AttachmentPoints[0]);
 		this.setMaxDamage(100);
 		this.setMaxStackSize(1);
 	}
@@ -62,7 +68,7 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 		return true;
 	}
 
-	public abstract void shoot(final World world, final EntityPlayer player);
+	public abstract void shoot(final World world, final EntityPlayer player, AttachmentList attachmentList);
 
 	/* when player starts right clicking */
 	@Override
@@ -70,7 +76,11 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 
 		final ItemStack itemstack = player.getHeldItem(hand);
 
-		final ItemStack circuitStack = this.getAttachmentList().getCircuit();
+		final AttachmentList attachmentList = itemstack.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
+		if (attachmentList == null) {
+			return new ActionResult<>(EnumActionResult.FAIL, itemstack);
+		}
+		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
 		final Item circuitItem = circuitStack.getItem();
 
 		if (circuitStack.isEmpty() || (circuitItem == null)) {
@@ -84,6 +94,7 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			case BURST3:
 			case BURST5:
 			case MANUAL:
+				player.setActiveHand(hand);
 				return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
 			default:
 				return new ActionResult<>(EnumActionResult.FAIL, itemstack);
@@ -107,7 +118,11 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 
 		final ItemStack itemstack = player.getHeldItem(hand);
 
-		final ItemStack circuitStack = this.getAttachmentList().getCircuit();
+		final AttachmentList attachmentList = itemstack.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
+		if (attachmentList == null) {
+			return;
+		}
+		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
 		final Item circuitItem = circuitStack.getItem();
 
 		if (circuitStack.isEmpty() || (circuitItem == null)) {
@@ -118,12 +133,15 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			final CircuitTypes circuit = ((ItemCircuit) circuitItem).getType();
 			switch (circuit) {
 			case AUTO:
+			case MANUAL:
+				this.shoot(world, player, attachmentList);
 			case BURST3:
 			case BURST5:
-			case MANUAL:
-				this.shoot(world, player);
+				final CircuitBurstShots shots = circuitStack.getCapability(CapabilityCircuitBurstShots.CIRCUIT_BURST_SHOTS, null);
+				if ((shots != null) && shots.canShoot()) {
+					this.shoot(world, player, attachmentList);
+				}
 			default:
-
 				return;
 			}
 		}
@@ -146,7 +164,11 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 
 		final ItemStack itemstack = player.getHeldItem(hand);
 
-		final ItemStack circuitStack = this.getAttachmentList().getCircuit();
+		final AttachmentList attachmentList = itemstack.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
+		if (attachmentList == null) {
+			return;
+		}
+		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
 		final Item circuitItem = circuitStack.getItem();
 
 		if (circuitStack.isEmpty() || (circuitItem == null)) {
@@ -157,12 +179,15 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			final CircuitTypes circuit = ((ItemCircuit) circuitItem).getType();
 			switch (circuit) {
 			case AUTO:
+				this.shoot(world, player, attachmentList);
 			case BURST3:
 			case BURST5:
-				this.shoot(world, player);
+				final CircuitBurstShots shots = circuitStack.getCapability(CapabilityCircuitBurstShots.CIRCUIT_BURST_SHOTS, null);
+				if ((shots != null) && shots.canShoot()) {
+					this.shoot(world, player, attachmentList);
+				}
 			default:
 			case MANUAL:
-
 				return;
 			}
 		}
@@ -189,21 +214,15 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 		return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand);
 	}
 
-	public ModEnergyStorage getEnergy() {
-		return null;
-	}
-
-	public ModItemStackHandler getInventory() {
-		return null;
-	}
-
-	public AttachmentList getAttachmentList() {
-		return this.attachments;
-	}
-
 	@Override
 	public final ICapabilityProvider initCapabilities(final ItemStack stack, @Nullable final NBTTagCompound nbt) {
-		return new ICapabilityProvider() {
+		return new ICapabilitySerializable<NBTTagCompound>() {
+
+			final ItemStack				itemStack		= stack;
+			final ModEnergyStorage		energy			= new ModEnergyStorage(1000);
+			final ModItemStackHandler	inventory		= new ModItemStackHandler();
+			final AttachmentList		attachments		= new AttachmentList(ItemHandheldGun.this.attachmentPoints);
+			final String				ATTACHMENTS_TAG	= "attachments";
 
 			@Override
 			public boolean hasCapability(@Nonnull final Capability<?> capability, @Nullable final EnumFacing facing) {
@@ -214,20 +233,82 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			@Override
 			public <T> T getCapability(@Nonnull final Capability<T> capability, @Nullable final EnumFacing facing) {
 				if (capability == CapabilityEnergy.ENERGY) {
-					return (T) ItemHandheldGun.this.getEnergy();
+					return (T) this.getEnergy();
 				}
 
 				if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-					return (T) ItemHandheldGun.this.getInventory();
+					return (T) this.getInventory();
 				}
 
 				if (capability == CapabilityAttachmentList.ATTACHMENT_LIST) {
-					return (T) ItemHandheldGun.this.getAttachmentList();
+					return (T) this.getAttachmentList();
 				}
 
 				return null;
 			}
+
+			@Override
+			public NBTTagCompound serializeNBT() {
+				final NBTTagCompound compound = new NBTTagCompound();
+				compound.setTag(IEnergyUser.ENERGY_TAG, this.getEnergy().serializeNBT());
+				compound.setTag(IInventoryUser.INVENTORY_TAG, this.getInventory().serializeNBT());
+				compound.setTag(this.ATTACHMENTS_TAG, this.getAttachmentList().serializeNBT());
+				return compound;
+			}
+
+			@Override
+			public void deserializeNBT(final NBTTagCompound compound) {
+				if (compound.hasKey(IEnergyUser.ENERGY_TAG)) {
+					this.getEnergy().deserializeNBT(compound.getCompoundTag(IEnergyUser.ENERGY_TAG));
+				}
+				if (compound.hasKey(IInventoryUser.INVENTORY_TAG)) {
+					this.getInventory().deserializeNBT(compound.getCompoundTag(IInventoryUser.INVENTORY_TAG));
+				}
+				if (compound.hasKey(this.ATTACHMENTS_TAG)) {
+					this.getAttachmentList().deserializeNBT(compound.getCompoundTag(this.ATTACHMENTS_TAG));
+				}
+
+			}
+
+			public AttachmentList getAttachmentList() {
+				return this.attachments;
+			}
+
+			public ModEnergyStorage getEnergy() {
+				return this.energy;
+			}
+
+			public ModItemStackHandler getInventory() {
+				return this.inventory;
+			}
+
 		};
+	}
+
+	@Override
+	public void readNBTShareTag(final ItemStack stack, final NBTTagCompound compound) {
+		super.readNBTShareTag(stack, compound);
+		if ((compound == null) || !compound.hasKey("serialized")) {
+			return;
+		}
+
+		stack.deserializeNBT(compound.getCompoundTag("serialized"));
+	}
+
+	@Override
+	public NBTTagCompound getNBTShareTag(final ItemStack stack) {
+		final NBTTagCompound compound = new NBTTagCompound();
+		final NBTTagCompound superCompound = super.getNBTShareTag(stack);
+		if (superCompound != null) {
+			compound.merge(superCompound);
+		}
+		compound.setTag("serialized", stack.serializeNBT());
+		return compound;
+	}
+
+	@Override
+	public boolean getShareTag() {
+		return super.getShareTag() && true;
 	}
 
 }

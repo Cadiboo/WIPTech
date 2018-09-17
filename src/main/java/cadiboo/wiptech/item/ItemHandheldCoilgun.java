@@ -1,5 +1,7 @@
 package cadiboo.wiptech.item;
 
+import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -30,7 +32,9 @@ public class ItemHandheldCoilgun extends ItemHandheldGun {
 	}
 
 	@Override
-	public void shoot(final World world, final EntityPlayer player) {
+	public void shoot(final World world, final EntityPlayer player, final AttachmentList attachmentList) {
+
+		WIPTech.info("shot coilgun");
 
 	}
 

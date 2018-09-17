@@ -1,5 +1,6 @@
 package cadiboo.wiptech.item;
 
+import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +34,7 @@ public class ItemHandheldRailgun extends ItemHandheldGun {
 	}
 
 	@Override
-	public void shoot(final World world, final EntityPlayer player) {
+	public void shoot(final World world, final EntityPlayer player, final AttachmentList attachmentList) {
 
 		if (!(player instanceof EntityPlayer)) {
 			return;

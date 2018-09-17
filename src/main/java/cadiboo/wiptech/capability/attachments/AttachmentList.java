@@ -9,8 +9,10 @@ import cadiboo.wiptech.item.IItemAttachment;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
 
-public class AttachmentList {
+public class AttachmentList implements INBTSerializable<NBTTagCompound> {
 
 	private final ImmutableSet<AttachmentPoints> attachmentPoints;
 
@@ -38,6 +40,11 @@ public class AttachmentList {
 	 * @return the amount of the stack that wasn't/couldn't be added
 	 */
 	public ItemStack addAttachment(final ItemStack attachmentStack) {
+
+		if (attachmentStack.isEmpty()) {
+			return attachmentStack;
+		}
+
 		final Item item = attachmentStack.getItem();
 		if (item instanceof IItemAttachment) {
 			final IItemAttachment attachmentItem = (IItemAttachment) item;
@@ -47,15 +54,19 @@ public class AttachmentList {
 
 				if (this.getPoints().contains(attachmentPoint)) {
 
-					if (!this.getAttachment(attachmentPoint).isItemEqual(attachmentStack)) {
+					final ItemStack currentAttachmentStack = this.getAttachment(attachmentPoint);
+					final ItemStack insertAttachmentStack = attachmentStack.copy();
 
-						final ItemStack put = attachmentStack.copy();
-						put.setCount(1);
-
+					if (currentAttachmentStack.isEmpty()) {
+						insertAttachmentStack.setCount(1);
+						this.attachments.put(attachmentPoint, insertAttachmentStack);
 						attachmentStack.shrink(1);
+						return attachmentStack;
+					}
 
-						this.attachments.put(attachmentPoint, put);
-
+					if (insertAttachmentStack.getCount() == 1) {
+						this.attachments.put(attachmentPoint, insertAttachmentStack);
+						return currentAttachmentStack;
 					}
 
 				}
@@ -67,9 +78,62 @@ public class AttachmentList {
 		return attachmentStack;
 	}
 
-	public ItemStack getCircuit() {
-		final ItemStack circuit = this.getAttachment(AttachmentPoints.CIRCUIT);
-		return circuit;
+	public boolean canAddAttachment(final ItemStack attachmentStack) {
+		if (attachmentStack.isEmpty()) {
+			return false;
+		}
+
+		final Item item = attachmentStack.getItem();
+		if (item instanceof IItemAttachment) {
+			final IItemAttachment attachmentItem = (IItemAttachment) item;
+			final AttachmentPoints attachmentPoint = attachmentItem.getAttachmentPoint();
+
+			if (attachmentPoint != null) {
+
+				if (this.getPoints().contains(attachmentPoint)) {
+
+					final ItemStack currentAttachmentStack = this.getAttachment(attachmentPoint);
+					final ItemStack insertAttachmentStack = attachmentStack.copy();
+
+					if (currentAttachmentStack.isEmpty()) {
+						return true;
+					}
+
+					if (insertAttachmentStack.getCount() == 1) {
+						return true;
+					}
+
+				}
+
+			}
+
+		}
+
+		return false;
+	}
+
+	@Override
+	public NBTTagCompound serializeNBT() {
+		final NBTTagCompound compound = new NBTTagCompound();
+		this.attachments.forEach((point, stack) -> {
+			if (stack.isEmpty()) {
+				return;
+			}
+			compound.setTag("" + point.getId(), stack.serializeNBT());
+		});
+		return compound;
+	}
+
+	@Override
+	public void deserializeNBT(final NBTTagCompound compound) {
+		if (compound == null) {
+			return;
+		}
+		for (final AttachmentPoints point : this.attachments.keySet()) {
+			if (compound.hasKey("" + point.getId())) {
+				this.attachments.put(point, new ItemStack((NBTTagCompound) compound.getTag("" + point.getId())));
+			}
+		}
 	}
 
 }

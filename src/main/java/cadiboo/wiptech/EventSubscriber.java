@@ -1159,15 +1159,23 @@ public final class EventSubscriber {
 				setTooltip(event, WIPTech.proxy.localize("attachments") + ":");
 				for (final AttachmentPoints attachmentPoint : attachmentList.getPoints()) {
 					final ItemStack attachmentStack = attachmentList.getAttachment(attachmentPoint);
+
+					String value = WIPTech.proxy.localize(attachmentStack.getUnlocalizedName() + ".name");
+
 					if (attachmentStack.isEmpty()) {
-						continue;
+						if (Boolean.valueOf(true)) {
+							continue;
+						}
+						value = WIPTech.proxy.localize("empty");
 					}
-					final String tooltip = WIPTech.proxy.localize(attachmentPoint.getUnlocalizedName() + ".name") + ": " + WIPTech.proxy.localize(attachmentStack.getUnlocalizedName() + ".name");
+					final String tooltip = WIPTech.proxy.localize(attachmentPoint.getUnlocalizedName() + ".name") + ": " + value;
 
 					setTooltip(event, TextFormatting.BLUE + " " + tooltip);
 				}
 			}
 		}
+
+//		setTooltip(event, event.getItemStack().serializeNBT().toString());
 
 	}
 

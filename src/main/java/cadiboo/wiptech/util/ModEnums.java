@@ -711,21 +711,22 @@ public final class ModEnums {
 
 	public enum CircuitTypes implements IEnumNameFormattable {
 
-		MANUAL(0), AUTO(1), BURST3(2), BURST5(3);
+		MANUAL(0, -1), AUTO(1, -1), BURST3(2, 3), BURST5(3, 5);
 
-		public static final int	AUTO_SHOTS		= 1;
-		public static final int	BURST3_SHOTS	= 3;
-		public static final int	BURST5_SHOTS	= 5;
-		public static final int	MANUAL_SHOTS	= 1;
+		final int	id;
+		final int	burstShots;
 
-		final int id;
-
-		private CircuitTypes(final int id) {
+		private CircuitTypes(final int id, final int burstShots) {
 			this.id = id;
+			this.burstShots = burstShots;
 		}
 
 		public int getId() {
 			return this.id;
+		}
+
+		public int getBurstShots() {
+			return this.burstShots;
 		}
 
 		public static CircuitTypes byId(final int id) {

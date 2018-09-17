@@ -3,6 +3,7 @@ package cadiboo.wiptech.tileentity;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
 import cadiboo.wiptech.capability.energy.IEnergyUser;
@@ -118,11 +119,19 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 
 				for (int slot = 0; slot < ATTACHMENT_SLOTS_SIZE; slot++) {
 
-					final ItemStack stack = attachmentList.addAttachment(this.inventory.getStackInSlot(slot).copy());
+					final ItemStack add = this.inventory.getStackInSlot(slot).copy();
+
+					if (add.isEmpty()) {
+						continue;
+					}
+
+					final ItemStack stack = attachmentList.addAttachment(add);
 					this.inventory.setStackInSlot(slot, stack);
 
 				}
 			}
+
+			WIPTech.info(attachmentList);
 
 			this.maxAssemblyTime = 0;
 		}
@@ -250,7 +259,7 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 			}
 			final AttachmentPoints attachmentPoint = ((IItemAttachment) attachment.getItem()).getAttachmentPoint();
 
-			if (attachmentList.getAttachment(attachmentPoint).isEmpty()) {
+			if (attachmentList.canAddAttachment(attachment)) {
 				canAddAnyAttachment = true;
 			}
 

@@ -1,8 +1,9 @@
 itemGroup.wiptech=WIPTech
-item.modifiers.horse=When on Horse
+item.modifiers.horse=When on horse
 startassembly=Start Assembly
 attachments=Attachments
 attachmentpoint=Attachment Point
+conductivity=Conductivity
 tile.glitch_spool.name=Glitch Spool
 item.thorium_hoe.name=Thorium Hoe
 tile.silver_spool.name=Silver Spool
