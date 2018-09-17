@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:wire_model/gold_wire"
+			"model": "wiptech:builtin/wire/gold_wire"
 		}
 	}
 }

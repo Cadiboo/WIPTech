@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:wire_model/aluminium_wire"
+			"model": "wiptech:builtin/wire/aluminium_wire"
 		}
 	}
 }

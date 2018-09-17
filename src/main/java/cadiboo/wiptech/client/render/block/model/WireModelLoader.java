@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class WireModelLoader implements ICustomModelLoader {
 
-	public static final String WIRE_MODEL_RESOURCE_LOCATION = "models/block/wire_model";
+	public static final String WIRE_MODEL_RESOURCE_LOCATION = "models/block/builtin/wire";
 
 	@Override
 	public void onResourceManagerReload(final IResourceManager resourceManager) {

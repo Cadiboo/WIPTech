@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:wire_model/glitch_wire"
+			"model": "wiptech:builtin/wire/glitch_wire"
 		}
 	}
 }

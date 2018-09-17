@@ -235,7 +235,7 @@ public class ModWritingUtil {
 			final ModResourceLocation wire = new ModResourceLocation(material.getWire().getRegistryName());
 
 			final String path = wire.getResourcePath();
-			final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, "wire_model/" + path);
+			final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, "builtin/wire/" + path);
 
 			blockstates.put(path, generateBlockstateJSON(model));
 
@@ -261,7 +261,7 @@ public class ModWritingUtil {
 			final ModResourceLocation enamel = new ModResourceLocation(material.getEnamel().getRegistryName());
 
 			final String path = enamel.getResourcePath();
-			final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, "wire_model/" + path);
+			final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, "builtin/wire/" + path);
 
 			blockstates.put(path, generateBlockstateJSON(model));
 
