@@ -7,16 +7,17 @@ import net.minecraftforge.fml.relauncher.Side;
 public class Proxy implements IProxy {
 
 	@Override
-	public String localizeAndFormat(String unlocalized, Object... args) {
+	public String localizeAndFormat(final String unlocalized, final Object... args) {
 		return I18n.translateToLocalFormatted(unlocalized, args);
 	}
 
-	public String localize(String unlocalized) {
+	@Override
+	public String localize(final String unlocalized) {
 		return I18n.translateToLocal(unlocalized);
 	}
 
 	@Override
-	public Side getSide() {
+	public Side getPhysicalSide() {
 		return Side.SERVER;
 	}
 

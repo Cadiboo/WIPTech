@@ -712,16 +712,32 @@ public final class ModEnums {
 
 	public static enum CircuitTypes implements IEnumNameFormattable {
 
-		MANUAL(0, 1), AUTO(1, Integer.MAX_VALUE), BURST3(2, 3), BURST5(3, 5);
+		SEMI_AUTO(0, 1, 0, new UsePhases[] { UsePhases.END }),
 
-		final int				id;
-		final int				maxShots;
-		final List<UsePhases>	usePhases;
+		AUTO(1, Integer.MAX_VALUE, 50, new UsePhases[] { UsePhases.TICK, UsePhases.END }),
 
-		private CircuitTypes(final int id, final int maxShots, final UsePhases... usePhases) {
+		BURST3(2, 3, 100, new UsePhases[] { UsePhases.TICK, UsePhases.END }),
+
+		BURST5(3, 5, 75, new UsePhases[] { UsePhases.TICK, UsePhases.END }),
+
+		BURST10(3, 10, 50, new UsePhases[] { UsePhases.TICK, UsePhases.END });
+
+		private final int				id;
+		private final int				maxShots;
+		private final int				shootInterval;
+		private final List<UsePhases>	usePhases;
+		private final String			assetsModId;
+
+		private CircuitTypes(final int id, final int maxShots, final int shootIntervalTimeMilliseconds, final UsePhases[] usePhases) {
+			this(id, maxShots, shootIntervalTimeMilliseconds, usePhases, ModReference.MOD_ID);
+		}
+
+		private CircuitTypes(final int id, final int maxShots, final int shootIntervalTimeMilliseconds, final UsePhases[] usePhases, final String assetsModId) {
 			this.id = id;
 			this.maxShots = maxShots;
+			this.shootInterval = shootIntervalTimeMilliseconds;
 			this.usePhases = Arrays.asList(usePhases);
+			this.assetsModId = assetsModId;
 		}
 
 		public int getId() {
@@ -732,6 +748,18 @@ public final class ModEnums {
 			return this.maxShots;
 		}
 
+		public int getShootInterval() {
+			return this.shootInterval;
+		}
+
+		public List<UsePhases> getUsePhases() {
+			return this.usePhases;
+		}
+
+		public String getAssetsModId() {
+			return this.assetsModId;
+		}
+
 		public static CircuitTypes byId(final int id) {
 			return values()[Math.min(Math.abs(id), values().length)];
 		}
@@ -739,10 +767,6 @@ public final class ModEnums {
 		@Nonnull
 		public ItemCircuit getItem(final String suffix) {
 			return (ItemCircuit) ForgeRegistries.ITEMS.getValue(new ModResourceLocation(ModReference.MOD_ID, this.getNameLowercase() + "_" + suffix));
-		}
-
-		public List<UsePhases> getUsePhases() {
-			return this.usePhases;
 		}
 
 	}

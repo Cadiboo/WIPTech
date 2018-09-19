@@ -19,7 +19,7 @@ public class Proxy implements IProxy {
 	}
 
 	@Override
-	public Side getSide() {
+	public Side getPhysicalSide() {
 		return Side.CLIENT;
 	}
 

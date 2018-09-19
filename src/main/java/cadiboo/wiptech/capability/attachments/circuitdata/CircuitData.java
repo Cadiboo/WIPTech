@@ -18,11 +18,30 @@ public class CircuitData implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public boolean canShoot(final UsePhases phase) {
-		if (!this.circuit.getUsePhases().contains(phase)) {
+
+		if (!this.canShootOnPhase(phase)) {
 			return false;
 		}
+
 		final long check = System.currentTimeMillis() - this.lastShotIncrementedTime;
-		return (this.getShotsTaken() < this.getMaxShots()) && (check > 75);
+
+		if (this.getShotsTaken() >= this.getMaxShots()) {
+			return false;
+		}
+
+		if (check < this.circuit.getShootInterval()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean canShootOnPhase(final UsePhases phase) {
+		return this.circuit.getUsePhases().contains(phase);
+	}
+
+	public CircuitTypes getType() {
+		return this.circuit;
 	}
 
 	public void incrementShotsTaken() {

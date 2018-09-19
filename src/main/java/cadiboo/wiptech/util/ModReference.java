@@ -124,6 +124,10 @@ public final class ModReference {
 			return false;
 		}
 
+		public static boolean debugAPICircuits() {
+			return true;
+		}
+
 	}
 
 }

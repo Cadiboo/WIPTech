@@ -21,15 +21,15 @@ public class CapabilityCircuitData {
 		CapabilityManager.INSTANCE.register(CircuitData.class, new IStorage<CircuitData>() {
 			@Override
 			public NBTTagCompound writeNBT(final Capability<CircuitData> capability, final CircuitData instance, final EnumFacing side) {
-				final NBTTagCompound compound = new NBTTagCompound();
-
-				return compound;
+				return instance.serializeNBT();
 			}
 
 			@Override
 			public void readNBT(final Capability<CircuitData> capability, final CircuitData instance, final EnumFacing side, final NBTBase nbt) {
-
+				if (nbt instanceof NBTTagCompound) {
+					instance.deserializeNBT((NBTTagCompound) nbt);
+				}
 			}
-		}, () -> new CircuitData(CircuitTypes.MANUAL));
+		}, () -> new CircuitData(CircuitTypes.SEMI_AUTO));
 	}
 }

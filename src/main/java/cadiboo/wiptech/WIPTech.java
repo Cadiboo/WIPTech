@@ -89,7 +89,7 @@ public class WIPTech {
 	@EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
 		logger = event.getModLog();
-		proxy.logLogicalSide();
+		proxy.logPhysicalSide();
 
 		GameRegistry.registerWorldGenerator(new ModWorldGenerator(), 3);
 		new ModNetworkManager();
@@ -106,7 +106,7 @@ public class WIPTech {
 	 */
 	@EventHandler
 	public void init(final FMLInitializationEvent event) {
-		if (proxy.getSide() == Side.CLIENT) {
+		if (proxy.getPhysicalSide() == Side.CLIENT) {
 			ModWritingUtil.writeMod();
 		}
 	}

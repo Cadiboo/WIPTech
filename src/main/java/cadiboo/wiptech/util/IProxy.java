@@ -13,9 +13,9 @@ public interface IProxy {
 
 	String localizeAndFormat(String unlocalized, Object... args);
 
-	default void logLogicalSide() {
-		WIPTech.info("Logical Side: " + getSide());
+	default void logPhysicalSide() {
+		WIPTech.info("Physical Side: " + getPhysicalSide());
 	}
 
-	Side getSide();
+	Side getPhysicalSide();
 }

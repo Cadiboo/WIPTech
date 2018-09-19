@@ -5,6 +5,7 @@ import java.util.HashSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
 import cadiboo.wiptech.capability.attachments.circuitdata.CapabilityCircuitData;
@@ -90,14 +91,65 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			return new ActionResult<>(EnumActionResult.FAIL, itemstack);
 		}
 
+		if (circuitData.canShoot(UsePhases.START)) {
+			circuitData.incrementShotsTaken();
+			this.shoot(world, player, attachmentList);
+			player.setActiveHand(hand);
+			WIPTech.info("shooting on phase START on logical side " + ModUtil.getLogicalSide(world).toString());
+			return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
+		}
+
 		for (final UsePhases phase : UsePhases.values()) {
-			if (circuitData.canShoot(phase)) {
+			if (circuitData.canShootOnPhase(phase)) {
 				player.setActiveHand(hand);
 				return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
 			}
 		}
 
 		return new ActionResult<>(EnumActionResult.FAIL, itemstack);
+
+	}
+
+	/* called every tick right click is held down */
+	@Override
+	public void onUsingTick(final ItemStack stack, final EntityLivingBase entityLiving, final int count) {
+
+		if (!(entityLiving instanceof EntityPlayer)) {
+			return;
+		}
+
+		final EntityPlayer player = (EntityPlayer) entityLiving;
+		final World world = player.world;
+		final EnumHand hand = player.getActiveHand();
+
+		final ItemStack itemstack = player.getHeldItem(hand);
+
+		final AttachmentList attachmentList = itemstack.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
+		if (attachmentList == null) {
+			return;
+		}
+
+		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
+		if (circuitStack.isEmpty()) {
+			return;
+		}
+
+		final CircuitData circuitData = circuitStack.getCapability(CapabilityCircuitData.CIRCUIT_DATA, null);
+
+		if (circuitData == null) {
+			return;
+		}
+
+		if (Boolean.valueOf(true)) {
+//			WIPTech.info("onUseTick");
+//			return;
+		}
+
+		if (circuitData.canShoot(UsePhases.TICK)) {
+			circuitData.incrementShotsTaken();
+			WIPTech.info("shooting on phase TICK on logical side " + ModUtil.getLogicalSide(world).toString());
+			this.shoot(world, player, attachmentList);
+		}
 
 	}
 
@@ -131,42 +183,12 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 		if (circuitData.canShoot(UsePhases.END)) {
 			circuitData.incrementShotsTaken();
 			this.shoot(world, player, attachmentList);
-		}
-	}
-
-	/* called every tick right click is held down */
-	@Override
-	public void onUsingTick(final ItemStack stack, final EntityLivingBase entityLiving, final int count) {
-
-		if (!(entityLiving instanceof EntityPlayer)) {
-			return;
+			WIPTech.info("shooting on phase END on logical side " + ModUtil.getLogicalSide(world).toString());
 		}
 
-		final EntityPlayer player = (EntityPlayer) entityLiving;
-		final World world = player.world;
-		final EnumHand hand = player.getActiveHand();
+		player.resetActiveHand();
 
-		final ItemStack itemstack = player.getHeldItem(hand);
-
-		final AttachmentList attachmentList = itemstack.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
-		if (attachmentList == null) {
-			return;
-		}
-		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
-		if (circuitStack.isEmpty()) {
-			return;
-		}
-		final CircuitData circuitData = circuitStack.getCapability(CapabilityCircuitData.CIRCUIT_DATA, null);
-
-		if (circuitData == null) {
-			return;
-		}
-
-		if (circuitData.canShoot(UsePhases.TICK)) {
-			circuitData.incrementShotsTaken();
-			this.shoot(world, player, attachmentList);
-		}
-
+		circuitData.resetShotsTaken();
 	}
 
 	/* when the item is FINISHED being used (I.e. when getMaxItemUseDuration is exceded) */
@@ -282,6 +304,32 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 	@Override
 	public boolean getShareTag() {
 		return super.getShareTag() && true;
+	}
+
+	@Override
+	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
+
+		final AttachmentList oldAttachmentList = oldStack.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
+		final AttachmentList newAttachmentList = newStack.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
+
+		if (oldAttachmentList == null) {
+			if (newAttachmentList == null) {
+				return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged);
+			}
+			return true;
+		}
+		if (newAttachmentList == null) {
+			return true;
+		}
+
+		final CircuitData oldCircuitData = oldAttachmentList.getAttachment(AttachmentPoints.CIRCUIT).getCapability(CapabilityCircuitData.CIRCUIT_DATA, null);
+		final CircuitData newCircuitData = newAttachmentList.getAttachment(AttachmentPoints.CIRCUIT).getCapability(CapabilityCircuitData.CIRCUIT_DATA, null);
+
+		if (!oldCircuitData.equals(newCircuitData)) {
+			return false;
+		}
+
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.creativetab.ModCreativeTabs;
 import cadiboo.wiptech.util.ModEnums.ModMaterials;
 import net.minecraft.block.Block;
@@ -14,7 +15,9 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
@@ -375,6 +378,18 @@ public final class ModUtil {
 			partsLeft--;
 		}
 		return arr;
+	}
+
+	public static Side getLogicalSide(final World world) {
+		if (world.isRemote) {
+			return Side.CLIENT;
+		} else {
+			return Side.SERVER;
+		}
+	}
+
+	public static void logLogicalSide(final World world) {
+		WIPTech.info("Logical Side: " + getLogicalSide(world));
 	}
 
 }

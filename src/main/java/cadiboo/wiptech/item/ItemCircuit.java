@@ -41,9 +41,9 @@ public class ItemCircuit extends Item implements IItemAttachment, IModItem {
 	public final ICapabilityProvider initCapabilities(final ItemStack stack, @Nullable final NBTTagCompound nbt) {
 		return new ICapabilitySerializable<NBTTagCompound>() {
 
-			final ItemStack		itemStack		= stack;
-			final CircuitData	data			= new CircuitData(ItemCircuit.this.getType());
-			final String		BURST_SHOTS_TAG	= "burstShots";
+			final ItemStack		itemStack			= stack;
+			final CircuitData	data				= new CircuitData(ItemCircuit.this.getType());
+			final String		CIRCUIT_DATA_TAG	= "circuitData";
 
 			@Override
 			public boolean hasCapability(@Nonnull final Capability<?> capability, @Nullable final EnumFacing facing) {
@@ -62,14 +62,14 @@ public class ItemCircuit extends Item implements IItemAttachment, IModItem {
 			@Override
 			public NBTTagCompound serializeNBT() {
 				final NBTTagCompound compound = new NBTTagCompound();
-				compound.setTag(this.BURST_SHOTS_TAG, this.data.serializeNBT());
+				compound.setTag(this.CIRCUIT_DATA_TAG, this.data.serializeNBT());
 				return compound;
 			}
 
 			@Override
 			public void deserializeNBT(final NBTTagCompound compound) {
-				if (compound.hasKey(this.BURST_SHOTS_TAG)) {
-					this.data.deserializeNBT(compound.getCompoundTag(this.BURST_SHOTS_TAG));
+				if (compound.hasKey(this.CIRCUIT_DATA_TAG)) {
+					this.data.deserializeNBT(compound.getCompoundTag(this.CIRCUIT_DATA_TAG));
 				}
 
 			}

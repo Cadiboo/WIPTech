@@ -36,10 +36,6 @@ public class ItemHandheldRailgun extends ItemHandheldGun {
 	@Override
 	public void shoot(final World world, final EntityPlayer player, final AttachmentList attachmentList) {
 
-		if (!(player instanceof EntityPlayer)) {
-			return;
-		}
-
 		final float velocity = 1.25F;
 		if (!player.world.isRemote) {
 			final EntityNapalm entitynapalm = new EntityNapalm(player.world, player);
