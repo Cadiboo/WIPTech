@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
-import cadiboo.wiptech.capability.attachments.burst.CapabilityCircuitBurstShots;
+import cadiboo.wiptech.capability.attachments.circuitdata.CapabilityCircuitData;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.util.IProxy;
@@ -51,7 +51,7 @@ public class WIPTech {
 	// FIXME TODO: DYNAMIC ATTACHMENT MODELS
 	// FIXME TODO: Slugs & SlugCasings
 	// FIXME TODO: test camera transforms (on wires? i forgot what this was about)
-	// FIXME TODO: Mod CreativeTab itemstack icon is invisible -> use @ItemStackHolder?
+	// FIXME TODO: Mod CreativeTab itemstack icon is air -> use @ItemStackHolder?
 	// FIXME TODO: better electrocution -> actual list of entities?
 	// FIXME TODO: Wire & Enamel ItemBlock Models->Wire & Enamel Item Models (Code & JSON)
 	// FIXME TODO: glitch spool models (should be easy)
@@ -97,7 +97,7 @@ public class WIPTech {
 
 		CapabilityEnergyNetworkList.register();
 		CapabilityAttachmentList.register();
-		CapabilityCircuitBurstShots.register();
+		CapabilityCircuitData.register();
 
 	}
 

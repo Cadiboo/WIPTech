@@ -99,6 +99,7 @@ public final class ModReference {
 	public static final int		ARMOR_MATERIAL_HARDNESS_MULTIPLIER	= 5;	// TODO this
 
 	public static final class Debug {
+
 		public static boolean debugOres() {
 			return false;
 		}
@@ -122,6 +123,7 @@ public final class ModReference {
 		public static boolean debugCollisionBoxes() {
 			return false;
 		}
+
 	}
 
 }

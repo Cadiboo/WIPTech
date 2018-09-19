@@ -7,14 +7,14 @@ import javax.annotation.Nullable;
 
 import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
-import cadiboo.wiptech.capability.attachments.burst.CapabilityCircuitBurstShots;
-import cadiboo.wiptech.capability.attachments.burst.CircuitBurstShots;
+import cadiboo.wiptech.capability.attachments.circuitdata.CapabilityCircuitData;
+import cadiboo.wiptech.capability.attachments.circuitdata.CircuitData;
 import cadiboo.wiptech.capability.energy.IEnergyUser;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
-import cadiboo.wiptech.util.ModEnums.CircuitTypes;
+import cadiboo.wiptech.util.ModEnums.UsePhases;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -81,27 +81,23 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			return new ActionResult<>(EnumActionResult.FAIL, itemstack);
 		}
 		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
-		final Item circuitItem = circuitStack.getItem();
+		if (circuitStack.isEmpty()) {
+			return new ActionResult<>(EnumActionResult.FAIL, itemstack);
+		}
+		final CircuitData circuitData = circuitStack.getCapability(CapabilityCircuitData.CIRCUIT_DATA, null);
 
-		if (circuitStack.isEmpty() || (circuitItem == null)) {
+		if (circuitData == null) {
 			return new ActionResult<>(EnumActionResult.FAIL, itemstack);
 		}
 
-		if (circuitItem instanceof ItemCircuit) {
-			final CircuitTypes circuit = ((ItemCircuit) circuitItem).getType();
-			switch (circuit) {
-			case AUTO:
-			case BURST3:
-			case BURST5:
-			case MANUAL:
+		for (final UsePhases phase : UsePhases.values()) {
+			if (circuitData.canShoot(phase)) {
 				player.setActiveHand(hand);
 				return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
-			default:
-				return new ActionResult<>(EnumActionResult.FAIL, itemstack);
 			}
 		}
 
-		return new ActionResult<>(EnumActionResult.PASS, itemstack);
+		return new ActionResult<>(EnumActionResult.FAIL, itemstack);
 
 	}
 
@@ -123,39 +119,19 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			return;
 		}
 		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
-		final Item circuitItem = circuitStack.getItem();
+		if (circuitStack.isEmpty()) {
+			return;
+		}
+		final CircuitData circuitData = circuitStack.getCapability(CapabilityCircuitData.CIRCUIT_DATA, null);
 
-		if (circuitStack.isEmpty() || (circuitItem == null)) {
+		if (circuitData == null) {
 			return;
 		}
 
-		if (circuitItem instanceof ItemCircuit) {
-			final CircuitTypes circuit = ((ItemCircuit) circuitItem).getType();
-			switch (circuit) {
-			case AUTO:
-				this.shoot(world, player, attachmentList);
-				break;
-			case BURST3:
-			case BURST5:
-				final CircuitBurstShots shots = circuitStack.getCapability(CapabilityCircuitBurstShots.CIRCUIT_BURST_SHOTS, null);
-				if (shots != null) {
-					if (shots.canShoot()) {
-						shots.incrementShotsTaken();
-						this.shoot(world, player, attachmentList);
-					}
-					shots.resetShotsTaken();
-				}
-				break;
-			case MANUAL:
-				this.shoot(world, player, attachmentList);
-				break;
-			default:
-				return;
-			}
+		if (circuitData.canShoot(UsePhases.END)) {
+			circuitData.incrementShotsTaken();
+			this.shoot(world, player, attachmentList);
 		}
-
-		return;
-
 	}
 
 	/* called every tick right click is held down */
@@ -177,33 +153,19 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			return;
 		}
 		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
-		final Item circuitItem = circuitStack.getItem();
+		if (circuitStack.isEmpty()) {
+			return;
+		}
+		final CircuitData circuitData = circuitStack.getCapability(CapabilityCircuitData.CIRCUIT_DATA, null);
 
-		if (circuitStack.isEmpty() || (circuitItem == null)) {
+		if (circuitData == null) {
 			return;
 		}
 
-		if (circuitItem instanceof ItemCircuit) {
-			final CircuitTypes circuit = ((ItemCircuit) circuitItem).getType();
-			switch (circuit) {
-			case AUTO:
-				this.shoot(world, player, attachmentList);
-				break;
-			case BURST3:
-			case BURST5:
-				final CircuitBurstShots shots = circuitStack.getCapability(CapabilityCircuitBurstShots.CIRCUIT_BURST_SHOTS, null);
-				if ((shots != null) && shots.canShoot()) {
-					shots.incrementShotsTaken();
-					this.shoot(world, player, attachmentList);
-				}
-				break;
-			default:
-			case MANUAL:
-				return;
-			}
+		if (circuitData.canShoot(UsePhases.TICK)) {
+			circuitData.incrementShotsTaken();
+			this.shoot(world, player, attachmentList);
 		}
-
-		return;
 
 	}
 

@@ -1,20 +1,26 @@
-package cadiboo.wiptech.capability.attachments.burst;
+package cadiboo.wiptech.capability.attachments.circuitdata;
 
 import cadiboo.wiptech.util.ModEnums.CircuitTypes;
+import cadiboo.wiptech.util.ModEnums.UsePhases;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
-public class CircuitBurstShots implements INBTSerializable<NBTTagCompound> {
+public class CircuitData implements INBTSerializable<NBTTagCompound> {
+
+	public static final String SHOTS_TAKEN_TAG = "shotsTaken";
 
 	private final CircuitTypes	circuit;
 	private int					shotsTaken;
 	private long				lastShotIncrementedTime;
 
-	public CircuitBurstShots(final CircuitTypes circuit) {
+	public CircuitData(final CircuitTypes circuit) {
 		this.circuit = circuit;
 	}
 
-	public boolean canShoot() {
+	public boolean canShoot(final UsePhases phase) {
+		if (!this.circuit.getUsePhases().contains(phase)) {
+			return false;
+		}
 		final long check = System.currentTimeMillis() - this.lastShotIncrementedTime;
 		return (this.getShotsTaken() < this.getMaxShots()) && (check > 75);
 	}
@@ -29,7 +35,7 @@ public class CircuitBurstShots implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public int getMaxShots() {
-		return this.circuit.getBurstShots();
+		return this.circuit.getMaxShots();
 	}
 
 	public int getShotsTaken() {
@@ -39,14 +45,15 @@ public class CircuitBurstShots implements INBTSerializable<NBTTagCompound> {
 	@Override
 	public NBTTagCompound serializeNBT() {
 		final NBTTagCompound compound = new NBTTagCompound();
-
+		compound.setInteger(SHOTS_TAKEN_TAG, this.shotsTaken);
 		return compound;
 	}
 
 	@Override
-	public void deserializeNBT(final NBTTagCompound nbt) {
-		// TODO Auto-generated method stub
-
+	public void deserializeNBT(final NBTTagCompound compound) {
+		if (compound.hasKey(SHOTS_TAKEN_TAG)) {
+			this.shotsTaken = compound.getInteger(SHOTS_TAKEN_TAG);
+		}
 	}
 
 }

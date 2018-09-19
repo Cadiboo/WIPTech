@@ -3,8 +3,8 @@ package cadiboo.wiptech.item;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cadiboo.wiptech.capability.attachments.burst.CapabilityCircuitBurstShots;
-import cadiboo.wiptech.capability.attachments.burst.CircuitBurstShots;
+import cadiboo.wiptech.capability.attachments.circuitdata.CapabilityCircuitData;
+import cadiboo.wiptech.capability.attachments.circuitdata.CircuitData;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
 import cadiboo.wiptech.util.ModEnums.CircuitTypes;
 import cadiboo.wiptech.util.ModUtil;
@@ -41,9 +41,9 @@ public class ItemCircuit extends Item implements IItemAttachment, IModItem {
 	public final ICapabilityProvider initCapabilities(final ItemStack stack, @Nullable final NBTTagCompound nbt) {
 		return new ICapabilitySerializable<NBTTagCompound>() {
 
-			final ItemStack			itemStack		= stack;
-			final CircuitBurstShots	burstShots		= new CircuitBurstShots(ItemCircuit.this.getType());
-			final String			BURST_SHOTS_TAG	= "burstShots";
+			final ItemStack		itemStack		= stack;
+			final CircuitData	data			= new CircuitData(ItemCircuit.this.getType());
+			final String		BURST_SHOTS_TAG	= "burstShots";
 
 			@Override
 			public boolean hasCapability(@Nonnull final Capability<?> capability, @Nullable final EnumFacing facing) {
@@ -53,8 +53,8 @@ public class ItemCircuit extends Item implements IItemAttachment, IModItem {
 			@Nullable
 			@Override
 			public <T> T getCapability(@Nonnull final Capability<T> capability, @Nullable final EnumFacing facing) {
-				if (capability == CapabilityCircuitBurstShots.CIRCUIT_BURST_SHOTS) {
-					return (T) this.burstShots;
+				if (capability == CapabilityCircuitData.CIRCUIT_DATA) {
+					return (T) this.data;
 				}
 				return null;
 			}
@@ -62,14 +62,14 @@ public class ItemCircuit extends Item implements IItemAttachment, IModItem {
 			@Override
 			public NBTTagCompound serializeNBT() {
 				final NBTTagCompound compound = new NBTTagCompound();
-				compound.setTag(this.BURST_SHOTS_TAG, this.burstShots.serializeNBT());
+				compound.setTag(this.BURST_SHOTS_TAG, this.data.serializeNBT());
 				return compound;
 			}
 
 			@Override
 			public void deserializeNBT(final NBTTagCompound compound) {
 				if (compound.hasKey(this.BURST_SHOTS_TAG)) {
-					this.burstShots.deserializeNBT(compound.getCompoundTag(this.BURST_SHOTS_TAG));
+					this.data.deserializeNBT(compound.getCompoundTag(this.BURST_SHOTS_TAG));
 				}
 
 			}

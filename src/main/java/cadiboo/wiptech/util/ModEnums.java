@@ -1,6 +1,7 @@
 package cadiboo.wiptech.util;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -686,7 +687,7 @@ public final class ModEnums {
 
 	}
 
-	public enum AttachmentPoints implements IEnumNameFormattable {
+	public static enum AttachmentPoints implements IEnumNameFormattable {
 		SCOPE(0), SIDE_LEFT(1), SIDE_RIGHT(2), CIRCUIT(3), RAIL(4), COIL(5), SILENCER(6), UNDER(7);
 
 		final int id;
@@ -709,24 +710,26 @@ public final class ModEnums {
 
 	}
 
-	public enum CircuitTypes implements IEnumNameFormattable {
+	public static enum CircuitTypes implements IEnumNameFormattable {
 
-		MANUAL(0, -1), AUTO(1, -1), BURST3(2, 3), BURST5(3, 5);
+		MANUAL(0, 1), AUTO(1, Integer.MAX_VALUE), BURST3(2, 3), BURST5(3, 5);
 
-		final int	id;
-		final int	burstShots;
+		final int				id;
+		final int				maxShots;
+		final List<UsePhases>	usePhases;
 
-		private CircuitTypes(final int id, final int burstShots) {
+		private CircuitTypes(final int id, final int maxShots, final UsePhases... usePhases) {
 			this.id = id;
-			this.burstShots = burstShots;
+			this.maxShots = maxShots;
+			this.usePhases = Arrays.asList(usePhases);
 		}
 
 		public int getId() {
 			return this.id;
 		}
 
-		public int getBurstShots() {
-			return this.burstShots;
+		public int getMaxShots() {
+			return this.maxShots;
 		}
 
 		public static CircuitTypes byId(final int id) {
@@ -738,9 +741,13 @@ public final class ModEnums {
 			return (ItemCircuit) ForgeRegistries.ITEMS.getValue(new ModResourceLocation(ModReference.MOD_ID, this.getNameLowercase() + "_" + suffix));
 		}
 
+		public List<UsePhases> getUsePhases() {
+			return this.usePhases;
+		}
+
 	}
 
-	public enum ScopeTypes implements IEnumNameFormattable {
+	public static enum ScopeTypes implements IEnumNameFormattable {
 
 		ACOG(0), HOLOGRAPHIC(1), MARS(2), RED_DOT(3), REFLEX(4), SUSAT(5), SNIPER(6), TELESCOPIC(7), THERMAL(8);
 
@@ -763,6 +770,10 @@ public final class ModEnums {
 			return (ItemScope) ForgeRegistries.ITEMS.getValue(new ModResourceLocation(ModReference.MOD_ID, this.getNameLowercase() + "_" + suffix));
 		}
 
+	}
+
+	public static enum UsePhases {
+		START, TICK, END
 	}
 
 }
