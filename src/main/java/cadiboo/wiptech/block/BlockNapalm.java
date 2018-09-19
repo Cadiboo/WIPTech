@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -273,8 +274,8 @@ public class BlockNapalm extends Block {
 	}
 
 	@Override
-	public AxisAlignedBB getSelectedBoundingBox(final IBlockState state, final World worldIn, final BlockPos pos) {
-		return NULL_AABB;
+	public boolean isCollidable() {
+		return false;
 	}
 
 	@Override
@@ -302,6 +303,11 @@ public class BlockNapalm extends Block {
 			world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, d0, d1, d2, 0.0D, 0.0D, 0.0D);
 		}
 
+	}
+
+	@Override
+	public BlockFaceShape getBlockFaceShape(final IBlockAccess worldIn, final IBlockState state, final BlockPos pos, final EnumFacing face) {
+		return BlockFaceShape.UNDEFINED;
 	}
 
 	// TODO: remove in 1.13

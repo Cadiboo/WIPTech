@@ -94,7 +94,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -796,84 +795,7 @@ public final class EventSubscriber {
 			return;
 		}
 
-		renderSelectedBoundingBoxes(event);
-
 		renderEnergyNetworks(world, event.getPartialTicks());
-
-	}
-
-	private static void renderSelectedBoundingBoxes(final RenderWorldLastEvent event) {
-
-		if (Boolean.valueOf(true)) {
-			return;
-		}
-
-		final World world = Minecraft.getMinecraft().world;
-		if (world == null) {
-			return;
-		}
-
-		final RayTraceResult rayTraceResult = Minecraft.getMinecraft().objectMouseOver;
-		if (rayTraceResult == null) {
-			return;
-		}
-
-		if (rayTraceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
-			return;
-		}
-
-		final BlockPos pos = rayTraceResult.getBlockPos();
-
-		final IBlockState blockState = world.getBlockState(pos);
-
-		final Block block = blockState.getBlock();
-
-		if (!(block instanceof BlockWire) && !(block instanceof BlockEnamel)) {
-			return;
-		}
-
-		final List<AxisAlignedBB> AABBs = new ArrayList<>();
-
-		blockState.addCollisionBoxToList(world, pos, new AxisAlignedBB(pos), AABBs, Minecraft.getMinecraft().player, true);
-
-		final float partialTicks = event.getPartialTicks();
-
-		// Usually the player
-		final Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
-
-		// Interpolating everything back to 0,0,0. These are transforms you can find at RenderEntity class
-		final double d0 = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * partialTicks);
-		final double d1 = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * partialTicks);
-		final double d2 = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * partialTicks);
-
-		// Apply 0-our transforms to set everything back to 0,0,0
-		Tessellator.getInstance().getBuffer().setTranslation(-d0, -d1, -d2);
-
-		// FIXME TODO: remove the intersecting lines
-		for (final AxisAlignedBB AABB : AABBs) {
-			if ((block instanceof BlockWire) && AABB.equals(BlockWire.CORE_AABB.offset(pos))) {
-				continue;
-			}
-			if ((block instanceof BlockEnamel) && AABB.equals(BlockEnamel.CORE_AABB.offset(pos))) {
-				continue;
-			}
-
-			GlStateManager.enableBlend();
-			GlStateManager.tryBlendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-			GlStateManager.glLineWidth(2.0F);
-			GlStateManager.disableTexture2D();
-			GlStateManager.depthMask(false);
-
-			if ((blockState.getMaterial() != Material.AIR) && world.getWorldBorder().contains(pos)) {
-				RenderGlobal.drawSelectionBoundingBox(AABB.grow(0.0020000000949949026D), 0.0F, 0.0F, 0.0F, 0.4F);
-			}
-
-			GlStateManager.depthMask(true);
-			GlStateManager.enableTexture2D();
-			GlStateManager.disableBlend();
-		}
-		// When you are done rendering all your boxes reset the offsets. We do not want everything that renders next to still be at 0,0,0 :)
-		Tessellator.getInstance().getBuffer().setTranslation(0, 0, 0);
 
 	}
 

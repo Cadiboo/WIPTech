@@ -125,7 +125,7 @@ public final class ModReference {
 		}
 
 		public static boolean debugAPICircuits() {
-			return true;
+			return false;
 		}
 
 	}
