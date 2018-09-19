@@ -310,6 +310,11 @@ public class BlockNapalm extends Block {
 		return BlockFaceShape.UNDEFINED;
 	}
 
+	@Override
+	public boolean isBurning(final IBlockAccess world, final BlockPos pos) {
+		return true;
+	}
+
 	// TODO: remove in 1.13
 	@Override
 	public int getMetaFromState(final IBlockState state) {
