@@ -1,0 +1,57 @@
+{
+    "multipart": [
+        {   "when": {"down": false, "up": false, "north": false, "south": false, "west": false, "east": false},
+            "apply": [
+                { "model": "redstone_block"}
+            ]
+        },
+        {   "when": {"down": true},
+            "apply": [
+                { "model": "fire_up0", "x": 180 },
+                { "model": "fire_up1", "x": 180 },
+                { "model": "fire_up_alt0", "x": 180 },
+                { "model": "fire_up_alt1", "x": 180 }
+            ]
+        },
+        {   "when": {"up": true},
+            "apply": [
+                { "model": "fire_up0" },
+                { "model": "fire_up1" },
+                { "model": "fire_up_alt0" },
+                { "model": "fire_up_alt1" }
+            ]
+        },
+        {   "when": {"north": true},
+            "apply": [
+                { "model": "fire_side0" },
+                { "model": "fire_side1" },
+                { "model": "fire_side_alt0" },
+                { "model": "fire_side_alt1" }
+            ]
+        },
+        {   "when": {"south": true},
+            "apply": [
+                { "model": "fire_side0", "y": 180 },
+                { "model": "fire_side1", "y": 180 },
+                { "model": "fire_side_alt0", "y": 180 },
+                { "model": "fire_side_alt1", "y": 180 }
+            ]
+        },
+        {   "when": {"west": true},
+            "apply": [
+                { "model": "fire_side0", "y": 270 },
+                { "model": "fire_side1", "y": 270 },
+                { "model": "fire_side_alt0", "y": 270 },
+                { "model": "fire_side_alt1", "y": 270 }
+            ]
+        },
+        {   "when": {"east": true},
+            "apply": [
+                { "model": "fire_side0", "y": 90 },
+                { "model": "fire_side1", "y": 90 },
+                { "model": "fire_side_alt0", "y": 90 },
+                { "model": "fire_side_alt1", "y": 90 }
+            ]
+        } 
+    ]
+}

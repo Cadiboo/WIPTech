@@ -10,6 +10,7 @@ import cadiboo.wiptech.block.BlockEnamel;
 import cadiboo.wiptech.block.BlockItem;
 import cadiboo.wiptech.block.BlockModFurnace;
 import cadiboo.wiptech.block.BlockModOre;
+import cadiboo.wiptech.block.BlockNapalm;
 import cadiboo.wiptech.block.BlockPeripheral;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
@@ -169,6 +170,8 @@ public final class EventSubscriber {
 		registry.register(new BlockAssemblyTable("assembly_table"));
 
 		registry.register(new BlockPeripheral("peripheral"));
+
+		registry.register(new BlockNapalm("napalm"));
 
 		WIPTech.info("Registered blocks");
 

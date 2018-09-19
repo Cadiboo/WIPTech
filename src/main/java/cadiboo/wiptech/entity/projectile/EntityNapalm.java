@@ -3,10 +3,12 @@ package cadiboo.wiptech.entity.projectile;
 import java.util.Random;
 
 import cadiboo.wiptech.entity.IModEntity;
+import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -75,13 +77,32 @@ public class EntityNapalm extends EntityThrowable implements IModEntity {
 			return;
 		}
 
-		final int radius = Math.min(3, Math.round(this.ticksExisted / 50f));
+//		final int radius = Math.min(3, Math.round(this.ticksExisted / 50f));
+		final int radius = this.ticksExisted;
 		for (int x = -(radius); x <= radius; x++) {
 			for (int y = -(radius); y <= radius; y++) {
 				for (int z = -(radius); z <= radius; z++) {
 					pos = new BlockPos(this.posX + x, this.posY + y, this.posZ + z);
-					if (this.world.getBlockState(pos) == Blocks.AIR.getDefaultState()) {
-						this.world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 11);
+
+					boolean place = false;
+
+					for (final EnumFacing facing : EnumFacing.VALUES) {
+						if (place) {
+							continue;
+						}
+						if (this.world.getBlockState(pos.offset(facing)).isSideSolid(this.world, pos, facing.getOpposite())) {
+							place = true;
+						}
+						if (place) {
+							continue;
+						}
+						if (this.world.getBlockState(pos.offset(facing)).getBlock().isFlammable(this.world, pos, facing.getOpposite())) {
+							place = true;
+						}
+					}
+
+					if ((this.world.getBlockState(pos) == Blocks.AIR.getDefaultState()) && place) {
+						this.world.setBlockState(pos, ModBlocks.NAPALM.getDefaultState(), 11);
 					} else if (this.world.getBlockState(pos) == Blocks.SNOW_LAYER.getDefaultState()) {
 						this.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 11);
 					}
