@@ -77,6 +77,7 @@ public class EntityNapalm extends EntityThrowable implements IModEntity {
 			return;
 		}
 
+		// TODO: CHANGE THIS BACK!!!!
 //		final int radius = Math.min(3, Math.round(this.ticksExisted / 50f));
 		final int radius = this.ticksExisted;
 		for (int x = -(radius); x <= radius; x++) {
