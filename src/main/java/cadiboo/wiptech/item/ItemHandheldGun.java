@@ -5,7 +5,6 @@ import java.util.HashSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
 import cadiboo.wiptech.capability.attachments.circuitdata.CapabilityCircuitData;
@@ -95,7 +94,6 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			circuitData.incrementShotsTaken();
 			this.shoot(world, player, attachmentList);
 			player.setActiveHand(hand);
-			WIPTech.info("shooting on phase START on logical side " + ModUtil.getLogicalSide(world).toString());
 			return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
 		}
 
@@ -140,14 +138,8 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			return;
 		}
 
-		if (Boolean.valueOf(true)) {
-//			WIPTech.info("onUseTick");
-//			return;
-		}
-
 		if (circuitData.canShoot(UsePhases.TICK)) {
 			circuitData.incrementShotsTaken();
-			WIPTech.info("shooting on phase TICK on logical side " + ModUtil.getLogicalSide(world).toString());
 			this.shoot(world, player, attachmentList);
 		}
 
@@ -183,7 +175,6 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 		if (circuitData.canShoot(UsePhases.END)) {
 			circuitData.incrementShotsTaken();
 			this.shoot(world, player, attachmentList);
-			WIPTech.info("shooting on phase END on logical side " + ModUtil.getLogicalSide(world).toString());
 		}
 
 		player.resetActiveHand();
@@ -304,32 +295,6 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 	@Override
 	public boolean getShareTag() {
 		return super.getShareTag() && true;
-	}
-
-	@Override
-	public boolean shouldCauseReequipAnimation(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged) {
-
-		final AttachmentList oldAttachmentList = oldStack.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
-		final AttachmentList newAttachmentList = newStack.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
-
-		if (oldAttachmentList == null) {
-			if (newAttachmentList == null) {
-				return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged);
-			}
-			return true;
-		}
-		if (newAttachmentList == null) {
-			return true;
-		}
-
-		final CircuitData oldCircuitData = oldAttachmentList.getAttachment(AttachmentPoints.CIRCUIT).getCapability(CapabilityCircuitData.CIRCUIT_DATA, null);
-		final CircuitData newCircuitData = newAttachmentList.getAttachment(AttachmentPoints.CIRCUIT).getCapability(CapabilityCircuitData.CIRCUIT_DATA, null);
-
-		if (!oldCircuitData.equals(newCircuitData)) {
-			return false;
-		}
-
-		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged);
 	}
 
 }

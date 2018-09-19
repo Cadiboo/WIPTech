@@ -64,15 +64,15 @@ public class CircuitData implements INBTSerializable<NBTTagCompound> {
 	@Override
 	public NBTTagCompound serializeNBT() {
 		final NBTTagCompound compound = new NBTTagCompound();
-		compound.setInteger(SHOTS_TAKEN_TAG, this.shotsTaken);
+//		compound.setInteger(SHOTS_TAKEN_TAG, this.shotsTaken);
 		return compound;
 	}
 
 	@Override
 	public void deserializeNBT(final NBTTagCompound compound) {
-		if (compound.hasKey(SHOTS_TAKEN_TAG)) {
-			this.shotsTaken = compound.getInteger(SHOTS_TAKEN_TAG);
-		}
+//		if (compound.hasKey(SHOTS_TAKEN_TAG)) {
+//			this.shotsTaken = compound.getInteger(SHOTS_TAKEN_TAG);
+//		}
 	}
 
 }
