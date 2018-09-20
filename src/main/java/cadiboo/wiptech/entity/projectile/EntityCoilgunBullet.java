@@ -16,6 +16,13 @@ public class EntityCoilgunBullet extends EntityThrowable implements IModEntity {
 
 	public EntityCoilgunBullet(final World world, final EntityPlayer player) {
 		super(world, player);
+		this.thrower = player;
+		this.ignoreEntity = player;
+	}
+
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
 	}
 
 	@Override
