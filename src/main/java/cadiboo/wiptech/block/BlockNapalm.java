@@ -124,20 +124,25 @@ public class BlockNapalm extends BlockFire {
 			final Block blockDown = world.getBlockState(pos.down()).getBlock();
 			final boolean burnsForever = blockDown.isFireSource(world, pos.down(), EnumFacing.UP);
 
-			final int age = state.getValue(AGE).intValue();
+			final int age = state.getValue(AGE);
 
 			if (!burnsForever && world.isRaining() && this.canDie(world, pos) && (rand.nextFloat() < (0.2F + (age * 0.03F)))) {
 				world.setBlockToAir(pos);
 			} else {
 				if (age < 15) {
-					state = state.withProperty(AGE, age + (rand.nextInt(3) / 2));
-					world.setBlockState(pos, state, 4);
+					if (rand.nextInt(5) == 0) {
+						state = state.withProperty(AGE, age + 1);
+						world.setBlockState(pos, state, 6);
+					}
+				} else {
+					world.setBlockToAir(pos);
+					return;
 				}
 
 				world.scheduleUpdate(pos, this, this.tickRate(world) + rand.nextInt(10));
 
 				if (!burnsForever) {
-					if (!this.canAnyNeighborCatchFire(world, pos) || (rand.nextInt(100) == 0)) {
+					if (!this.canAnyNeighborCatchFire(world, pos) /* || (rand.nextInt(100) == 0) */) {
 						if (age > 3) {
 							world.setBlockToAir(pos);
 							return;
@@ -153,15 +158,15 @@ public class BlockNapalm extends BlockFire {
 					this.tryCatchFire(world, pos.offset(facing), spawnChanceBase + spawnChance, rand, age, facing.getOpposite());
 				}
 
-				for (int x = -1; x <= 1; ++x) {
-					for (int z = -1; z <= 1; ++z) {
+				for (int x = -2; x <= 2; ++x) {
+					for (int z = -2; z <= 2; ++z) {
 						for (int y = -1; y <= 4; ++y) {
 
 							if ((x == 0) || (y == 0) || (z == 0)) {
 								continue;
 							}
 
-							final int heightChance = Math.max(100, (y - 1) * 100);
+							final int heightRandSeed = Math.max(100, (y - 1) * 100);
 
 							final BlockPos blockpos = pos.add(x, y, z);
 							final int encouragement = this.getNeighborEncouragement(world, blockpos);
@@ -173,14 +178,11 @@ public class BlockNapalm extends BlockFire {
 									encouragementChance /= 2;
 								}
 
-								if ((encouragementChance > 0) && (rand.nextInt(heightChance) <= encouragementChance) && (!world.isRaining() || !this.canDie(world, blockpos))) {
-									int newAge = age + (rand.nextInt(5) / 4);
+//								encouragementChance *= 10;
 
-									if (newAge > 15) {
-										newAge = 15;
-									}
+								if ((encouragementChance > 0) && (rand.nextInt(heightRandSeed) <= encouragementChance) && (!world.isRaining() || !this.canDie(world, blockpos))) {
 
-									world.setBlockState(blockpos, state.withProperty(AGE, newAge), 3);
+									world.setBlockState(blockpos, state.withProperty(AGE, 0), 3);
 								}
 
 							}
@@ -192,10 +194,6 @@ public class BlockNapalm extends BlockFire {
 	}
 
 	public void tryCatchFire(final World world, final BlockPos pos, final int chance, final Random random, final int age, final EnumFacing face) {
-
-		if (!this.canCatchFire(world, pos, face.getOpposite()) || !this.canPlaceBlockAt(world, pos)) {
-			return;
-		}
 
 		final int flamability = world.getBlockState(pos).getBlock().getFlammability(world, pos, face);
 
@@ -211,7 +209,7 @@ public class BlockNapalm extends BlockFire {
 
 				world.setBlockState(pos, this.getDefaultState().withProperty(AGE, newAge), 3);
 			} else {
-				world.setBlockToAir(pos);
+//				world.setBlockToAir(pos);
 			}
 
 			if (iblockstate.getBlock() == Blocks.TNT) {
@@ -252,7 +250,7 @@ public class BlockNapalm extends BlockFire {
 	 */
 	@Override
 	public boolean isCollidable() {
-		return false;
+		return true;
 	}
 
 	/**
