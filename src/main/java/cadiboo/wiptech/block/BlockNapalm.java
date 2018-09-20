@@ -180,10 +180,6 @@ public class BlockNapalm extends BlockFire {
 										newAge = 15;
 									}
 
-									if (!this.canPlaceBlockAt(world, blockpos)) {
-										continue;
-									}
-
 									world.setBlockState(blockpos, state.withProperty(AGE, newAge), 3);
 								}
 
