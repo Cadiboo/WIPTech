@@ -1,8 +1,9 @@
 {
 	"type": "minecraft:crafting_shaped",
+	"group": "cased_steel_slug",
 	"pattern": [
 		" B ",
-		"AXX",
+		"AX",
 		" C "
 	],
 	"key": {

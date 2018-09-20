@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "osmium_spool",
+	"ingredient": {
+		"item": "wiptech:osmium_coil",
+		"count": 4
+	},
+	"result": {
+		"item": "wiptech:osmium_spool",
+		"count": 1
+	}
+}

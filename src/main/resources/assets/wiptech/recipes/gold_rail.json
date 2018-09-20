@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XX"
+	],
+	"key": {
+		"X": {
+ 			"item": "wiptech:gold_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:gold_rail",
+		"count": 1
+	}
+}

@@ -1,8 +1,9 @@
 {
 	"type": "minecraft:crafting_shaped",
+	"group": "cased_osmium_slug",
 	"pattern": [
 		" B ",
-		"AXX",
+		"AX",
 		" C "
 	],
 	"key": {

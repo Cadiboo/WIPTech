@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "glitch_spool",
+	"ingredient": {
+		"item": "wiptech:glitch_wire",
+		"count": 64
+	},
+	"result": {
+		"item": "wiptech:glitch_spool",
+		"count": 1
+	}
+}

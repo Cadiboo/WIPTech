@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "tungsten_spool",
+	"ingredient": {
+		"item": "wiptech:tungsten_wire",
+		"count": 64
+	},
+	"result": {
+		"item": "wiptech:tungsten_spool",
+		"count": 1
+	}
+}

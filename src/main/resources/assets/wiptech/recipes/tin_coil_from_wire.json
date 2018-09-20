@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "tin_coil",
+	"ingredient": {
+		"item": "wiptech:tin_wire",
+		"count": 16
+	},
+	"result": {
+		"item": "wiptech:tin_coil",
+		"count": 1
+	}
+}

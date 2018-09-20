@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "tungsten_carbite_spool",
+	"ingredient": {
+		"item": "wiptech:tungsten_carbite_coil",
+		"count": 4
+	},
+	"result": {
+		"item": "wiptech:tungsten_carbite_spool",
+		"count": 1
+	}
+}

@@ -928,91 +928,189 @@ public class ModWritingUtil {
 
 		//
 
-		// if (material.getWire() != null&& (material.getResource()!=null) )
-//				/*@formatter:off*/
-//				recipesObj.add(new Tuple<String, String>(material.getWire().getRegistryName().getResourcePath(), "{\n" +
-//						"	\"type\": \"minecraft:crafting_shaped\",\n" +
-//						"	\"pattern\": [\n" +
-//						"		\"##\"\n" +
-//						"	],\n" +
-//						"	\"key\": {\n" +
-//						"		\"#\": {\n" +
-//						"			\"item\": \""+material.getResource().getRegistryName().toString()+"\"\n" +
-//						"		}\n" +
-//						"	},\n" +
-//						"	\"result\": {\n" +
-//						"		\"item\": \""+material.getWire().getRegistryName().toString()+"\"\n" +
-//						"	}\n" +
-//						"}"));
-//				/*@formatter:on*/
+		if ((material.getWire() != null) && (material.getResource() != null)) {
+			/*@formatter:off*/
+			recipes.put(material.getEnamel().getRegistryName().getResourcePath(), "{\n" +
+					"	\"type\": \"wiptech:hammering\",\n" +
+					"	\"ingredient\": {\n" +
+					"		\"item\": \""+material.getResource().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 1\n" +
+					"	},\n" +
+					"	\"result\": {\n" +
+					"		\"item\": \""+material.getWire().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 4\n" +
+					"	}\n" +
+					"}");
+			/*@formatter:on*/
+		}
 
 		if (material.getEnamel() != null) {
 			/*@formatter:off*/
-				recipes.put(material.getEnamel().getRegistryName().getResourcePath(), "{\n" +
-						"	\"type\": \"minecraft:crafting_shaped\",\n" +
-						"	\"pattern\": [\n" +
-						"		\"XXX\",\n" +
-						"		\"X#X\",\n" +
-						"		\"XXX\"\n" +
-						"	],\n" +
-						"	\"key\": {\n" +
-						"		\"#\": {\n" +
-						"			\"item\": \"minecraft:concrete\",\n" +
-						"			\"data\": 32767\n" +
-						"		},\n" +
-						"		\"X\": {\n" +
-						" 			\"item\": \""+material.getWire().getRegistryName().toString()+"\"\n" +
-						"		}\n" +
-						"	},\n" +
-						"	\"result\": {\n" +
-						"		\"item\": \""+material.getEnamel().getRegistryName().toString()+"\",\n" +
-						"		\"count\": 8\n" +
-						"	}\n" +
-						"}");
-				/*@formatter:on*/
+			recipes.put(material.getEnamel().getRegistryName().getResourcePath(), "{\n" +
+					"	\"type\": \"minecraft:crafting_shaped\",\n" +
+					"	\"pattern\": [\n" +
+					"		\"XXX\",\n" +
+					"		\"X#X\",\n" +
+					"		\"XXX\"\n" +
+					"	],\n" +
+					"	\"key\": {\n" +
+					"		\"#\": {\n" +
+					"			\"item\": \"minecraft:concrete\",\n" +
+					"			\"data\": 32767\n" +
+					"		},\n" +
+					"		\"X\": {\n" +
+					" 			\"item\": \""+material.getWire().getRegistryName().toString()+"\"\n" +
+					"		}\n" +
+					"	},\n" +
+					"	\"result\": {\n" +
+					"		\"item\": \""+material.getEnamel().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 8\n" +
+					"	}\n" +
+					"}");
+			/*@formatter:on*/
 		}
 
 		if (material.getRail() != null) {
-			;
+			/*@formatter:off*/
+			recipes.put(material.getRail().getRegistryName().getResourcePath(), "{\n" +
+					"	\"type\": \"minecraft:crafting_shaped\",\n" +
+					"	\"pattern\": [\n" +
+					"		\"XX\"\n" +
+					"	],\n" +
+					"	\"key\": {\n" +
+					"		\"X\": {\n" +
+					" 			\"item\": \""+material.getResource().getRegistryName().toString()+"\"\n" +
+					"		}\n" +
+					"	},\n" +
+					"	\"result\": {\n" +
+					"		\"item\": \""+material.getRail().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 1\n" +
+					"	}\n" +
+					"}");
+			/*@formatter:on*/
 		}
 
 		if (material.getCoil() != null) {
-			;
+			/*@formatter:off*/
+			recipes.put(material.getCoil().getRegistryName().getResourcePath()+"_from_wire", "{\n" +
+					"	\"type\": \"wiptech:coiling\",\n" +
+					"	\"group\": \""+material.getCoil().getRegistryName().getResourcePath()+"\",\n" +
+					"	\"ingredient\": {\n" +
+					"		\"item\": \""+material.getWire().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 16\n" +
+					"	},\n" +
+					"	\"result\": {\n" +
+					"		\"item\": \""+material.getCoil().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 1\n" +
+					"	}\n" +
+					"}");
+			/*@formatter:on*/
+			/*@formatter:off*/
+			recipes.put(material.getCoil().getRegistryName().getResourcePath()+"_from_spool", "{\n" +
+					"	\"type\": \"wiptech:coiling\",\n" +
+					"	\"group\": \""+material.getCoil().getRegistryName().getResourcePath()+"\",\n" +
+					"	\"ingredient\": {\n" +
+					"		\"item\": \""+material.getSpool().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 1\n" +
+					"	},\n" +
+					"	\"result\": {\n" +
+					"		\"item\": \""+material.getCoil().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 4\n" +
+					"	}\n" +
+					"}");
+			/*@formatter:on*/
 		}
 
 		if (material.getSpool() != null) {
-			;
+			/*@formatter:off*/
+			recipes.put(material.getSpool().getRegistryName().getResourcePath()+"_from_wire", "{\n" +
+					"	\"type\": \"wiptech:coiling\",\n" +
+					"	\"group\": \""+material.getSpool().getRegistryName().getResourcePath()+"\",\n" +
+					"	\"ingredient\": {\n" +
+					"		\"item\": \""+material.getWire().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 64\n" +
+					"	},\n" +
+					"	\"result\": {\n" +
+					"		\"item\": \""+material.getSpool().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 1\n" +
+					"	}\n" +
+					"}");
+			/*@formatter:on*/
+			/*@formatter:off*/
+			recipes.put(material.getSpool().getRegistryName().getResourcePath()+"_from_coil", "{\n" +
+					"	\"type\": \"wiptech:coiling\",\n" +
+					"	\"group\": \""+material.getSpool().getRegistryName().getResourcePath()+"\",\n" +
+					"	\"ingredient\": {\n" +
+					"		\"item\": \""+material.getCoil().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 4\n" +
+					"	},\n" +
+					"	\"result\": {\n" +
+					"		\"item\": \""+material.getSpool().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 1\n" +
+					"	}\n" +
+					"}");
+			/*@formatter:on*/
 		}
 
 		if (material.getSlugItem() != null) {
 			/*@formatter:off*/
-				recipes.put(material.getCasedSlug().getRegistryName().getResourcePath(), "{\n" +
-						"	\"type\": \"minecraft:crafting_shaped\",\n" +
-						"	\"pattern\": [\n" +
-						"		\" B \",\n" +
-						"		\"AXX\",\n" +
-						"		\" C \"\n" +
-						"	],\n" +
-						"	\"key\": {\n" +
-						"		\"A\": {\n" +
-						" 			\"item\": \""+ModItems.SLUG_CASING_BACK.getRegistryName().toString()+"\"\n" +
-						"		}," +
-						"		\"B\": {\n" +
-						" 			\"item\": \""+ModItems.SLUG_CASING_TOP.getRegistryName().toString()+"\"\n" +
-						"		}," +
-						"		\"C\": {\n" +
-						" 			\"item\": \""+ModItems.SLUG_CASING_BOTTOM.getRegistryName().toString()+"\"\n" +
-						"		}," +
-						"		\"X\": {\n" +
-						" 			\"item\": \""+material.getSlugItem().getRegistryName().toString()+"\"\n" +
-						"		}\n" +
-						"	},\n" +
-						"	\"result\": {\n" +
-						"		\"item\": \""+material.getCasedSlug().getRegistryName().toString()+"\",\n" +
-						"		\"count\": 1\n" +
-						"	}\n" +
-						"}");
-				/*@formatter:on*/
+			recipes.put(material.getCasedSlug().getRegistryName().getResourcePath(), "{\n" +
+					"	\"type\": \"minecraft:crafting_shaped\",\n" +
+					"	\"group\": \""+material.getCasedSlug().getRegistryName().getResourcePath()+"\",\n" +
+					"	\"pattern\": [\n" +
+					"		\" B \",\n" +
+					"		\"AXX\",\n" +
+					"		\" C \"\n" +
+					"	],\n" +
+					"	\"key\": {\n" +
+					"		\"A\": {\n" +
+					" 			\"item\": \""+ModItems.SLUG_CASING_BACK.getRegistryName().toString()+"\"\n" +
+					"		}," +
+					"		\"B\": {\n" +
+					" 			\"item\": \""+ModItems.SLUG_CASING_TOP.getRegistryName().toString()+"\"\n" +
+					"		}," +
+					"		\"C\": {\n" +
+					" 			\"item\": \""+ModItems.SLUG_CASING_BOTTOM.getRegistryName().toString()+"\"\n" +
+					"		}," +
+					"		\"X\": {\n" +
+					" 			\"item\": \""+material.getResource().getRegistryName().toString()+"\"\n" +
+					"		}\n" +
+					"	},\n" +
+					"	\"result\": {\n" +
+					"		\"item\": \""+material.getCasedSlug().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 1\n" +
+					"	}\n" +
+					"}");
+			/*@formatter:on*/
+			/*@formatter:off*/
+			recipes.put(material.getCasedSlug().getRegistryName().getResourcePath(), "{\n" +
+					"	\"type\": \"minecraft:crafting_shaped\",\n" +
+					"	\"group\": \""+material.getCasedSlug().getRegistryName().getResourcePath()+"\",\n" +
+					"	\"pattern\": [\n" +
+					"		\" B \",\n" +
+					"		\"AX\",\n" +
+					"		\" C \"\n" +
+					"	],\n" +
+					"	\"key\": {\n" +
+					"		\"A\": {\n" +
+					" 			\"item\": \""+ModItems.SLUG_CASING_BACK.getRegistryName().toString()+"\"\n" +
+					"		}," +
+					"		\"B\": {\n" +
+					" 			\"item\": \""+ModItems.SLUG_CASING_TOP.getRegistryName().toString()+"\"\n" +
+					"		}," +
+					"		\"C\": {\n" +
+					" 			\"item\": \""+ModItems.SLUG_CASING_BOTTOM.getRegistryName().toString()+"\"\n" +
+					"		}," +
+					"		\"X\": {\n" +
+					" 			\"item\": \""+material.getSlugItem().getRegistryName().toString()+"\"\n" +
+					"		}\n" +
+					"	},\n" +
+					"	\"result\": {\n" +
+					"		\"item\": \""+material.getCasedSlug().getRegistryName().toString()+"\",\n" +
+					"		\"count\": 1\n" +
+					"	}\n" +
+					"}");
+			/*@formatter:on*/
 		}
 
 		WIPTech.debug("Writing recipes for " + material);

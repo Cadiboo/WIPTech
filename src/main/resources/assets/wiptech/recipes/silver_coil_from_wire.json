@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "silver_coil",
+	"ingredient": {
+		"item": "wiptech:silver_wire",
+		"count": 16
+	},
+	"result": {
+		"item": "wiptech:silver_coil",
+		"count": 1
+	}
+}

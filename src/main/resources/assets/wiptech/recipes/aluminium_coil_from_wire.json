@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "aluminium_coil",
+	"ingredient": {
+		"item": "wiptech:aluminium_wire",
+		"count": 16
+	},
+	"result": {
+		"item": "wiptech:aluminium_coil",
+		"count": 1
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "nickel_spool",
+	"ingredient": {
+		"item": "wiptech:nickel_coil",
+		"count": 4
+	},
+	"result": {
+		"item": "wiptech:nickel_spool",
+		"count": 1
+	}
+}

@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "aluminium_spool",
+	"ingredient": {
+		"item": "wiptech:aluminium_coil",
+		"count": 4
+	},
+	"result": {
+		"item": "wiptech:aluminium_spool",
+		"count": 1
+	}
+}

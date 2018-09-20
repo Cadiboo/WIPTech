@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "platinum_spool",
+	"ingredient": {
+		"item": "wiptech:platinum_wire",
+		"count": 64
+	},
+	"result": {
+		"item": "wiptech:platinum_spool",
+		"count": 1
+	}
+}

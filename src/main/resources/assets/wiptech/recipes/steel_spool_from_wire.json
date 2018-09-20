@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "steel_spool",
+	"ingredient": {
+		"item": "wiptech:steel_wire",
+		"count": 64
+	},
+	"result": {
+		"item": "wiptech:steel_spool",
+		"count": 1
+	}
+}

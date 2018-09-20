@@ -65,13 +65,17 @@ public class TileEntityPeripheral extends TileEntity implements IModTileEntity, 
 
 	public void setCentralPos(final BlockPos pos) {
 		this.centralPos = pos;
-		this.syncToClients();
+		if (Boolean.valueOf("fff")) {
+			this.syncToClients();
+		}
 	}
 
 	@Override
 	public void onLoad() {
-		this.syncToClients();
-		FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> TileEntityPeripheral.this.syncToClients());
+		if (Boolean.valueOf("fff")) {
+			this.syncToClients();
+			FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(() -> TileEntityPeripheral.this.syncToClients());
+		}
 	}
 
 	@Override

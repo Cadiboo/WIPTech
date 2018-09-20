@@ -1,0 +1,12 @@
+{
+	"type": "wiptech:coiling",
+	"group": "gold_coil",
+	"ingredient": {
+		"item": "wiptech:gold_spool",
+		"count": 1
+	},
+	"result": {
+		"item": "wiptech:gold_coil",
+		"count": 4
+	}
+}
