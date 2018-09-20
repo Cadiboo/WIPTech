@@ -211,7 +211,7 @@ public class BlockNapalm extends BlockFire {
 
 				world.setBlockState(pos, this.getDefaultState().withProperty(AGE, newAge), 3);
 			} else {
-//				world.setBlockToAir(pos);
+				world.setBlockToAir(pos);
 			}
 
 			if (iblockstate.getBlock() == Blocks.TNT) {
