@@ -16,7 +16,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
  */
 public class TileEntityPeripheral extends TileEntity implements IModTileEntity, ITileEntitySyncable, ITickable {
 
-	private static final String CENTRAL_POS_TAG = "centralPos";
+	public static final String		CENTRAL_POS_TAG					= "centralPos";
+	public static final BlockPos	NULL_CENTRAL_POS_REPLACEMENT	= new BlockPos(-1, -1, -1);
 
 	private BlockPos centralPos;
 
@@ -54,11 +55,11 @@ public class TileEntityPeripheral extends TileEntity implements IModTileEntity, 
 	}
 
 	/**
-	 * @return the central pos or (0, 0, 0) if it is null
+	 * @return the central pos or (-1, -1, -1) if it is null
 	 */
 	public BlockPos getCentralPos() {
 		if (this.centralPos == null) {
-			return BlockPos.ORIGIN;
+			return NULL_CENTRAL_POS_REPLACEMENT;
 		}
 		return this.centralPos;
 	}
@@ -128,7 +129,7 @@ public class TileEntityPeripheral extends TileEntity implements IModTileEntity, 
 	@Override
 	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
 		super.writeToNBT(compound);
-		if ((this.centralPos != null) && !this.centralPos.equals(BlockPos.ORIGIN)) {
+		if ((this.centralPos != null) && !this.centralPos.equals(NULL_CENTRAL_POS_REPLACEMENT)) {
 			compound.setLong(CENTRAL_POS_TAG, this.centralPos.toLong());
 		}
 		return compound;

@@ -25,6 +25,7 @@ import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.client.model.ModelsCache;
 import cadiboo.wiptech.client.render.block.model.GlitchModelLoader;
 import cadiboo.wiptech.client.render.block.model.WireModelLoader;
+import cadiboo.wiptech.client.render.entity.EntityCoilgunBulletRenderer;
 import cadiboo.wiptech.client.render.entity.EntityNapalmRenderer;
 import cadiboo.wiptech.client.render.entity.EntityPortableGeneratorRenderer;
 import cadiboo.wiptech.client.render.entity.EntityRailgunRenderer;
@@ -37,6 +38,7 @@ import cadiboo.wiptech.client.render.tileentity.TileEntityWireRenderer;
 import cadiboo.wiptech.entity.IModEntity;
 import cadiboo.wiptech.entity.item.EntityPortableGenerator;
 import cadiboo.wiptech.entity.item.EntityRailgun;
+import cadiboo.wiptech.entity.projectile.EntityCoilgunBullet;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
 import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.entity.projectile.EntitySlugCasing;
@@ -355,6 +357,8 @@ public final class EventSubscriber {
 
 		event.getRegistry().register(buildEntityEntryFromClass(EntityNapalm.class, false, 128, 2, true));
 
+		event.getRegistry().register(buildEntityEntryFromClass(EntityCoilgunBullet.class, false, 128, 1, true));
+
 		// TODO: register shotgun bullet;
 
 		// TODO: register grenade bullet;
@@ -443,6 +447,7 @@ public final class EventSubscriber {
 		RenderingRegistry.registerEntityRenderingHandler(EntitySlug.class, renderManager -> new EntitySlugRenderer(renderManager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityRailgun.class, renderManager -> new EntityRailgunRenderer(renderManager));
 		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, renderManager -> new EntityNapalmRenderer(renderManager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityCoilgunBullet.class, renderManager -> new EntityCoilgunBulletRenderer(renderManager));
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -1,7 +1,7 @@
 package cadiboo.wiptech.client.render.entity;
 
 import cadiboo.wiptech.client.ClientUtil;
-import cadiboo.wiptech.entity.projectile.EntityNapalm;
+import cadiboo.wiptech.entity.projectile.EntityCoilgunBullet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
@@ -13,14 +13,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class EntityNapalmRenderer extends Render<EntityNapalm> {
+public class EntityCoilgunBulletRenderer extends Render<EntityCoilgunBullet> {
 
-	public EntityNapalmRenderer(final RenderManager renderManager) {
+	public EntityCoilgunBulletRenderer(final RenderManager renderManager) {
 		super(renderManager);
 	}
 
 	@Override
-	public void doRender(final EntityNapalm entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
+	public void doRender(final EntityCoilgunBullet entity, final double x, final double y, final double z, final float entityYaw, final float partialTicks) {
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
 		GlStateManager.disableLighting();
@@ -30,8 +30,6 @@ public class EntityNapalmRenderer extends Render<EntityNapalm> {
 		GlStateManager.pushMatrix();
 		try {
 			GlStateManager.translate(x, y + 0.125, z);
-
-			ClientUtil.rotateForPitchYaw(-entity.rotationPitch, entityYaw);
 
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
@@ -54,7 +52,7 @@ public class EntityNapalmRenderer extends Render<EntityNapalm> {
 	}
 
 	@Override
-	protected ResourceLocation getEntityTexture(final EntityNapalm entity) {
+	protected ResourceLocation getEntityTexture(final EntityCoilgunBullet entity) {
 		return TextureMap.LOCATION_BLOCKS_TEXTURE;
 	}
 

@@ -12,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 
 public class EntityNapalm extends EntityThrowable implements IModEntity {
@@ -28,20 +29,31 @@ public class EntityNapalm extends EntityThrowable implements IModEntity {
 	public void onUpdate() {
 		super.onUpdate();
 
-		this.igniteBlocks();
+		this.spawnParticles(this.posX, this.posY, this.posZ);
 
 		if (this.ticksExisted <= 2) {
 			return;
 		}
 
-		for (int i = 0; i < Math.min(50, this.ticksExisted); i++) {
-			final double randX = new Random().nextGaussian() * 0.0025 * this.ticksExisted;
-			final double randY = new Random().nextDouble() * 0.025 * Math.min(25, this.ticksExisted);
-			final double randZ = new Random().nextGaussian() * 0.0025 * this.ticksExisted;
-
-			this.world.spawnParticle(EnumParticleTypes.FLAME, true, this.posX, this.posY, this.posZ, randX, randY, randZ);
+		if (this.world.isRemote) {
+			return;
 		}
 
+		this.igniteBlocks(this.posX, this.posY, this.posZ);
+
+	}
+
+	public void spawnParticles(final double posX, final double posY, final double posZ) {
+
+		final Random rand = new Random();
+
+		for (int i = 0; i < Math.min(50, this.ticksExisted); i++) {
+			final double randXMotion = rand.nextGaussian() * 0.0025 * this.ticksExisted;
+			final double randYMotion = rand.nextDouble() * 0.025 * Math.min(25, this.ticksExisted);
+			final double randZMotion = rand.nextGaussian() * 0.0025 * this.ticksExisted;
+
+			this.world.spawnParticle(EnumParticleTypes.FLAME, true, posX, posY, posZ, randXMotion, randYMotion, randZMotion);
+		}
 	}
 
 	@Override
@@ -64,15 +76,23 @@ public class EntityNapalm extends EntityThrowable implements IModEntity {
 			this.world.newExplosion(this, this.posX, this.posY, this.posZ, 30, true, true);
 		}
 
-		this.igniteBlocks();
+		if (result.typeOfHit != Type.BLOCK) {
+			return;
+		}
+
+		final double posX = result.hitVec.x - Math.max(-0.51, Math.min(0.51, this.motionX));
+		final double posY = result.hitVec.y - Math.max(-0.51, Math.min(0.51, this.motionY));
+		final double posZ = result.hitVec.z - Math.max(-0.51, Math.min(0.51, this.motionZ));
+
+		this.igniteBlocks(posX, posY, posZ);
 		this.setDead();
 	}
 
-	protected void igniteBlocks() {
+	protected void igniteBlocks(final double posX, final double posY, final double posZ) {
 		if (this.world.isRemote) {
 			return;
 		}
-		BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
+		BlockPos pos = new BlockPos(posX, posY, posZ);
 		if ((this.world.getBlockState(pos) != Blocks.AIR.getDefaultState()) && (this.world.getBlockState(pos) != Blocks.SNOW_LAYER.getDefaultState())) {
 			return;
 		}
@@ -82,7 +102,7 @@ public class EntityNapalm extends EntityThrowable implements IModEntity {
 		for (int x = -(radius); x <= radius; x++) {
 			for (int y = -(radius); y <= radius; y++) {
 				for (int z = -(radius); z <= radius; z++) {
-					pos = new BlockPos(this.posX + x, this.posY + y, this.posZ + z);
+					pos = new BlockPos(posX + x, posY + y, posZ + z);
 
 					boolean place = false;
 
