@@ -108,6 +108,7 @@ public class BlockNapalm extends BlockFire {
 	@Override
 	public void updateTick(final World world, final BlockPos pos, IBlockState state, final Random rand) {
 
+		// TODO add a gamerule to kill all napalm - napalmIsEnabled
 		if (Boolean.valueOf("false")) {
 			world.setBlockToAir(pos);
 			return;
