@@ -251,7 +251,7 @@ public class BlockNapalm extends BlockFire {
 	 */
 	@Override
 	public boolean isCollidable() {
-		return true;
+		return false;
 	}
 
 	/**
