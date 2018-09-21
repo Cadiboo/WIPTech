@@ -39,7 +39,7 @@ public class ItemHandheldCoilgun extends ItemHandheldGun {
 
 		WIPTech.info("shot coilgun");
 
-		final float velocity = 20;
+		final float velocity = 50;
 		if (!player.world.isRemote) {
 			final EntityCoilgunBullet entityCoilgunBullet = new EntityCoilgunBullet(player.world, player);
 			entityCoilgunBullet.shoot(player, player.rotationPitch, player.rotationYaw, 0, velocity, 0);

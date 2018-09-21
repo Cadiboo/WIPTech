@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -135,6 +136,22 @@ public class BlockPeripheral extends Block {
 			}
 		}
 		return super.getPickBlock(state, target, world, pos, player);
+	}
+
+	@Override
+	public void getDrops(final NonNullList<ItemStack> drops, final IBlockAccess world, final BlockPos pos, final IBlockState state, final int fortune) {
+		final TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileEntityPeripheral) {
+			final TileEntityPeripheral peripheral = (TileEntityPeripheral) tile;
+			final BlockPos central = peripheral.getCentralPos();
+			final IBlockState centralState = world.getBlockState(central);
+			final Block block = centralState.getBlock();
+			if (block instanceof IBlockCentral) {
+				block.getDrops(drops, world, central, centralState, fortune);
+				return;
+			}
+		}
+		super.getDrops(drops, world, pos, state, fortune);
 	}
 
 }

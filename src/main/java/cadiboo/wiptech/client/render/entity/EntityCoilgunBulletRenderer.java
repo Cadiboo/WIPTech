@@ -29,7 +29,18 @@ public class EntityCoilgunBulletRenderer extends Render<EntityCoilgunBullet> {
 
 		GlStateManager.pushMatrix();
 		try {
+
 			GlStateManager.translate(x, y + 0.125, z);
+
+//			final double posX = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * partialTicks) + entity.motionX*partialTicks;
+//			final double posY = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * partialTicks)+ entity.motionY*partialTicks;
+//			final double posZ = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * partialTicks)+ entity.motionZ*partialTicks;
+
+			final double posX = entity.motionX * partialTicks;
+			final double posY = entity.motionY * partialTicks;
+			final double posZ = entity.motionZ * partialTicks;
+
+			GlStateManager.translate(posX, posY, posZ);
 
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
