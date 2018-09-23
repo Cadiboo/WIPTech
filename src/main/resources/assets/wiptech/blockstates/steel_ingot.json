@@ -11,5 +11,6 @@
 		},
 		"facing=east": {
 			"model": "wiptech:steel_ingot", "y": 270
-		}	}
+		}
+	}
 }

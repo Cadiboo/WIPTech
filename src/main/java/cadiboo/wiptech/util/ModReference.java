@@ -87,8 +87,8 @@ public final class ModReference {
 
 	}
 
-	public static final String	CLIENT_PROXY_CLASS	= "cadiboo.wiptech.client.Proxy";
-	public static final String	SERVER_PROXY_CLASS	= "cadiboo.wiptech.server.Proxy";
+	public static final String	CLIENT_PROXY_CLASS	= "cadiboo.wiptech.client.ClientProxy";
+	public static final String	SERVER_PROXY_CLASS	= "cadiboo.wiptech.server.ServerProxy";
 
 	public static final String	ACCEPTED_VERSIONS	= "[1.12.2, 1.13]";
 	public static final String	DEPENDENCIES		= "required-after:minecraft;" + "required-after:forge@[14.23.4.2723,);" + "";

@@ -18,7 +18,7 @@ import net.minecraft.world.World;
  * The same as {@link cadiboo.wiptech.block.BlockWire BlockWire} except with a bigger bounding box and a {@link cadiboo.wiptech.tileentity.TileEntityEnamel TileEntityEnamel} instead of a {@link cadiboo.wiptech.tileentity.TileEntityWire TileEntityWire}
  * @author Cadiboo
  */
-public class BlockEnamel extends BlockWire {
+public class BlockEnamel extends BlockWire implements IModBlock {
 
 	private static final int	format__0	= 0;
 	private static final int	format__1	= 1;

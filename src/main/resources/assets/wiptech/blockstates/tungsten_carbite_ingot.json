@@ -11,5 +11,6 @@
 		},
 		"facing=east": {
 			"model": "wiptech:tungsten_carbite_ingot", "y": 270
-		}	}
+		}
+	}
 }

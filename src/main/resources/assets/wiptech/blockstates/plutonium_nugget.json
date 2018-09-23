@@ -11,5 +11,6 @@
 		},
 		"facing=east": {
 			"model": "wiptech:plutonium_nugget", "y": 180
-		}	}
+		}
+	}
 }

@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  * Custom ore block for materials
  * @author Cadiboo
  */
-public class BlockModOre extends Block implements IBlockModMaterial {
+public class BlockModOre extends Block implements IModBlock, IBlockModMaterial {
 
 	protected final ModMaterials material;
 

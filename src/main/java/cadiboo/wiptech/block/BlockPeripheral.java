@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 /**
  * @author Cadiboo
  */
-public class BlockPeripheral extends Block {
+public class BlockPeripheral extends Block implements IModBlock {
 
 	public BlockPeripheral(final String name) {
 		super(Material.IRON);

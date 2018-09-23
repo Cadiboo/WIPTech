@@ -11,5 +11,6 @@
 		},
 		"facing=east": {
 			"model": "wiptech:iron_nugget", "y": 180
-		}	}
+		}
+	}
 }

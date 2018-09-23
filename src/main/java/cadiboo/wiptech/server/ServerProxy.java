@@ -4,7 +4,7 @@ import cadiboo.wiptech.util.IProxy;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class Proxy implements IProxy {
+public class ServerProxy implements IProxy {
 
 	@Override
 	public String localizeAndFormat(final String unlocalized, final Object... args) {

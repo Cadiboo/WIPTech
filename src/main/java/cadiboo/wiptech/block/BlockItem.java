@@ -22,7 +22,7 @@ import net.minecraft.world.World;
  * A block to allow placement of ingots, nuggets, gems etc.
  * @author Cadiboo
  */
-public class BlockItem extends Block implements IBlockModMaterial {
+public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 

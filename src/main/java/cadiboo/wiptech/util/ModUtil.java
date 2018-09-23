@@ -32,10 +32,10 @@ public final class ModUtil {
 	 * @param material   the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material} to get the names based on
 	 * @param nameSuffix the string to be appended to the names (for example "ore" or "block")
 	 */
-	public static void setRegistryNames(final Block block, final ModMaterials material, final String nameSuffix) {
+	public static Block setRegistryNames(final Block block, final ModMaterials material, final String nameSuffix) {
 		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.BLOCKS), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
 		block.setHardness(material.getProperties().getHardness());
-		setRegistryNames(block, registryName);
+		return setRegistryNames(block, registryName);
 	}
 
 	/**
@@ -44,7 +44,7 @@ public final class ModUtil {
 	 * @param material   the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material} to get the names based on
 	 * @param nameSuffix the string to be appended to the names (for example "shovel" or "helmet")
 	 */
-	public static void setRegistryNames(final Item item, final ModMaterials material, final String nameSuffix) {
+	public static Item setRegistryNames(final Item item, final ModMaterials material, final String nameSuffix) {
 		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.ITEMS), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
 		setRegistryNames(item, registryName);
 
@@ -52,6 +52,7 @@ public final class ModUtil {
 		if (overriddenItem != null) {
 			item.setUnlocalizedName(overriddenItem.getUnlocalizedName().replace("item.", ""));
 		}
+		return item;
 	}
 
 	/**
@@ -59,8 +60,8 @@ public final class ModUtil {
 	 * @param entry the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
 	 * @param name  the name for the entry that the registry name is derived from
 	 */
-	public static void setRegistryNames(final IForgeRegistryEntry.Impl<?> entry, final String name) {
-		setRegistryNames(entry, new ModResourceLocation(ModReference.MOD_ID, name));
+	public static <T extends IForgeRegistryEntry.Impl<?>> T setRegistryNames(final T entry, final String name) {
+		return setRegistryNames(entry, new ModResourceLocation(ModReference.MOD_ID, name));
 	}
 
 	/**
@@ -68,8 +69,8 @@ public final class ModUtil {
 	 * @param entry        the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
 	 * @param registryName the registry name for the entry that the unlocalised name is also gotten from
 	 */
-	public static void setRegistryNames(final IForgeRegistryEntry.Impl<?> entry, final ModResourceLocation registryName) {
-		setRegistryNames(entry, registryName, registryName.getResourcePath());
+	public static <T extends IForgeRegistryEntry.Impl<?>> T setRegistryNames(final T entry, final ModResourceLocation registryName) {
+		return setRegistryNames(entry, registryName, registryName.getResourcePath());
 	}
 
 	/**
@@ -78,16 +79,18 @@ public final class ModUtil {
 	 * @param registryName    the registry name for the entry
 	 * @param unlocalizedName the unlocalized name for the entry
 	 */
-	public static void setRegistryNames(final IForgeRegistryEntry.Impl<?> entry, final ModResourceLocation registryName, final String unlocalizedName) {
+	public static <T extends IForgeRegistryEntry.Impl<?>> T setRegistryNames(final T entry, final ModResourceLocation registryName, final String unlocalizedName) {
 		entry.setRegistryName(registryName);
 		if (entry instanceof Block) {
 			((Block) entry).setUnlocalizedName(unlocalizedName);
+			setCreativeTab((Block) entry);
 			((Block) entry).setHardness(1);
 		}
 		if (entry instanceof Item) {
 			((Item) entry).setUnlocalizedName(unlocalizedName);
 			setCreativeTab((Item) entry);
 		}
+		return entry;
 	}
 
 	/**
@@ -145,6 +148,16 @@ public final class ModUtil {
 	}
 
 	/**
+	 * Utility method to make sure that all our blocks appear on our creative tab
+	 * @param block the {@link net.minecraft.block.Block Block}
+	 */
+	public static void setCreativeTab(final Block block) {
+		if (block.getCreativeTabToDisplayOn() == null) {
+			block.setCreativeTab(ModCreativeTabs.CREATIVE_TAB);
+		}
+	}
+
+	/**
 	 * Utility method allowing centralized control of glowing material ores, blocks etc. Helpful for debugging
 	 * @param material the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
 	 * @return a light value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
@@ -187,13 +200,13 @@ public final class ModUtil {
 	}
 
 	/**
-	 * https://stackoverflow.com/a/5732117
-	 * @param input_start
-	 * @param input_end
-	 * @param output_start
-	 * @param output_end
-	 * @param input
-	 * @return
+	 * Maps a value from one range to another range. Taken from https://stackoverflow.com/a/5732117
+	 * @param input_start  the start of the input's range
+	 * @param input_end    the end of the input's range
+	 * @param output_start the start of the output's range
+	 * @param output_end   the end of the output's range
+	 * @param input        the input
+	 * @return the newly mapped value
 	 */
 	public static double map(final double input_start, final double input_end, final double output_start, final double output_end, final double input) {
 		final double input_range = input_end - input_start;
@@ -203,6 +216,10 @@ public final class ModUtil {
 	}
 
 	/**
+	 * Turns a class's name into a registry name<br>
+	 * It expects the Class's Name to be in CamelCase format<br>
+	 * It returns the registry name in snake_case format<br>
+	 * <br>
 	 * Examples:<br>
 	 * (TileEntitySuperAdvancedFurnace, "TileEntity") -> super_advanced_furnace<br>
 	 * (EntityPortableGenerator, "Entity") -> portable_generator<br>
@@ -217,6 +234,10 @@ public final class ModUtil {
 	}
 
 	/**
+	 * Turns a registry name into a more human readable name<br>
+	 * It expects the registry name to be in snake_case format<br>
+	 * It returns the registry name with "_" replaced with space and every word {@link org.apache.commons.lang3.StringUtils.capitalize capitalized}<br>
+	 * <br>
 	 * Examples:<br>
 	 * super_advanced_furnace -> Super Advanced Furnace<br>
 	 * portable_generator -> Portable Generator<br>

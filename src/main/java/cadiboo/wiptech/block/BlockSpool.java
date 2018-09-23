@@ -12,7 +12,7 @@ import net.minecraft.world.IBlockAccess;
  * A block of wires stored for later use
  * @author Cadiboo
  */
-public class BlockSpool extends Block implements IBlockModMaterial {
+public class BlockSpool extends Block implements IModBlock, IBlockModMaterial {
 
 	protected final ModMaterials material;
 

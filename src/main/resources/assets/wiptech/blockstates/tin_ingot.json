@@ -11,5 +11,6 @@
 		},
 		"facing=east": {
 			"model": "wiptech:tin_ingot", "y": 270
-		}	}
+		}
+	}
 }

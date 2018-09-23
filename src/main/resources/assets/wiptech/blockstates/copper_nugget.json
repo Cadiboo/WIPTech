@@ -11,5 +11,6 @@
 		},
 		"facing=east": {
 			"model": "wiptech:copper_nugget", "y": 180
-		}	}
+		}
+	}
 }

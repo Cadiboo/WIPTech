@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockNapalm extends BlockFire {
+public class BlockNapalm extends BlockFire implements IModBlock {
 
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
 

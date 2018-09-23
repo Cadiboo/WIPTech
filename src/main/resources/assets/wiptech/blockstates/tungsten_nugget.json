@@ -11,5 +11,6 @@
 		},
 		"facing=east": {
 			"model": "wiptech:tungsten_nugget", "y": 180
-		}	}
+		}
+	}
 }

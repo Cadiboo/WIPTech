@@ -11,5 +11,6 @@
 		},
 		"facing=east": {
 			"model": "wiptech:nickel_ingot", "y": 270
-		}	}
+		}
+	}
 }

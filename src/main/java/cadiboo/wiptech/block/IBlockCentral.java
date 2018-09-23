@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 import net.minecraft.util.math.BlockPos;
 
-public interface IBlockCentral {
+public interface IBlockCentral extends IModBlock {
 
 	default HashSet<BlockPos> getPeripheralPositions(final BlockPos pos) {
 		final int smallX = (int) -(getWidth() / 2f);

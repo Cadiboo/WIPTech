@@ -31,7 +31,7 @@ import net.minecraftforge.common.property.Properties;
  * Transmits energy, has a custom baked model, is awesome
  * @author cadigal
  */
-public class BlockWire extends Block implements IBlockModMaterial {
+public class BlockWire extends Block implements IModBlock, IBlockModMaterial {
 
 	private static final int	format__0	= 0;
 	private static final int	format__1	= 1;

@@ -12,7 +12,7 @@ import net.minecraft.world.IBlockAccess;
  * The same as a block of Iron or a block of Gold but for all materials
  * @author Cadiboo
  */
-public class BlockResource extends Block implements IBlockModMaterial {
+public class BlockResource extends Block implements IModBlock, IBlockModMaterial {
 
 	protected final ModMaterials material;
 

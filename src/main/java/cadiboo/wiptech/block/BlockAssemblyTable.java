@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 /**
  * @author Cadiboo
  */
-public class BlockAssemblyTable extends Block implements IBlockCentral {
+public class BlockAssemblyTable extends Block implements IModBlock, IBlockCentral {
 
 	public BlockAssemblyTable(final String name) {
 		super(Material.IRON);

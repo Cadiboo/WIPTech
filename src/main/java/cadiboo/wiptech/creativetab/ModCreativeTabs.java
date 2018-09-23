@@ -1,10 +1,10 @@
 package cadiboo.wiptech.creativetab;
 
-import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.common.registry.GameRegistry.ItemStackHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -15,20 +15,29 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ModCreativeTabs {
 
+	public static final String TAB_ICON_ITEM_REGISTRY_NAME = ModReference.MOD_ID + ":" + "example_block";
+
+	@ItemStackHolder(value = TAB_ICON_ITEM_REGISTRY_NAME)
+	public static final ItemStack TAB_ICON_ITEMSTACK = null;
+
 	/** instantiate creative tabs */
-	public static final CustomCreativeTab CREATIVE_TAB = new CustomCreativeTab(ModReference.MOD_ID, new ItemStack(ModItems.FLAMETHROWER), true);
+	public static final CustomCreativeTab CREATIVE_TAB = new CustomCreativeTab(ModReference.MOD_ID, true) {
+		@Override
+		public ItemStack getTabIconItem() {
+			return TAB_ICON_ITEMSTACK;
+		}
+
+	};
 
 	/**
 	 * This class is used for an extra tab in the creative inventory. Many mods like to group their special items and blocks in a dedicated tab although it is also perfectly acceptable to put them in the vanilla tabs where it makes sense.
 	 */
-	public static class CustomCreativeTab extends CreativeTabs {
+	public abstract static class CustomCreativeTab extends CreativeTabs {
 
-		private final ItemStack	iconStack;
-		private final boolean	hasSearchBar;
+		private final boolean hasSearchBar;
 
-		public CustomCreativeTab(final String name, final ItemStack iconStack, final boolean hasSearchBar) {
+		public CustomCreativeTab(final String name, final boolean hasSearchBar) {
 			super(name);
-			this.iconStack = iconStack;
 			this.hasSearchBar = hasSearchBar;
 		}
 
@@ -37,9 +46,7 @@ public class ModCreativeTabs {
 		 */
 		@SideOnly(Side.CLIENT)
 		@Override
-		public ItemStack getTabIconItem() {
-			return this.iconStack;
-		}
+		abstract public ItemStack getTabIconItem();
 
 		/**
 		 * Useful for adding extra items such as full variants of energy related items

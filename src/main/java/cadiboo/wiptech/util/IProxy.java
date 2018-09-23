@@ -4,7 +4,7 @@ import cadiboo.wiptech.WIPTech;
 import net.minecraftforge.fml.relauncher.Side;
 
 /**
- * Some basic functions that differ depending on the logical side
+ * Some basic functions that differ depending on the physical side
  * @author Cadiboo
  */
 public interface IProxy {

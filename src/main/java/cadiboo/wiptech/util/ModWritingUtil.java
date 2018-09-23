@@ -1174,7 +1174,7 @@ public class ModWritingUtil {
 				blockstate += "		" + "}," + "\n";
 			}
 			// remove last comma
-			blockstate = blockstate.substring(0, blockstate.length() - 2);
+			blockstate = StringUtils.reverse(StringUtils.reverse(blockstate).replaceFirst(",", ""));
 		} else {
 			blockstate += "		" + "\"" + default_variant_name + "\": {" + "\n";
 			blockstate += "			" + "\"model\": \"" + model.toString() + "\"" + "\n";
