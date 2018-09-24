@@ -61,7 +61,7 @@ public class BlockAssemblyTable extends Block implements IModBlock, IBlockCentra
 	@Override
 	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
 		this.getPeripheralPositions(pos).forEach(peripheralPos -> {
-			world.setBlockState(peripheralPos, Blocks.AIR.getDefaultState());
+			world.setBlockToAir(peripheralPos);
 		});
 
 		final TileEntity tile = world.getTileEntity(pos);

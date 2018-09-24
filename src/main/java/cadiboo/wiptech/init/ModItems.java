@@ -1,5 +1,6 @@
 package cadiboo.wiptech.init;
 
+import cadiboo.wiptech.item.ItemElectricShield;
 import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemGrenadeLauncher;
 import cadiboo.wiptech.item.ItemHandheldCoilgun;
@@ -45,5 +46,7 @@ public class ModItems {
 	public static final ItemHeartbeatSensor HEARTBEAT_SENSOR = null;
 
 	public static final ItemLaser LASER = null;
+
+	public static final ItemElectricShield ELECTRIC_SHIELD = null;
 
 }

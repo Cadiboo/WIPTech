@@ -24,6 +24,7 @@ import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemCircuit;
 import cadiboo.wiptech.item.ItemCoil;
+import cadiboo.wiptech.item.ItemElectricShield;
 import cadiboo.wiptech.item.ItemFlamethrower;
 import cadiboo.wiptech.item.ItemGrenadeLauncher;
 import cadiboo.wiptech.item.ItemHandheldCoilgun;
@@ -193,6 +194,8 @@ public final class EventSubscriber {
 		registry.register(new ItemHandheldRailgun("handheld_railgun"));
 		registry.register(new ItemHandheldCoilgun("handheld_coilgun"));
 		registry.register(new ItemHandheldPlasmagun("handheld_plasmagun"));
+
+		registry.register(new ItemElectricShield("electric_shield"));
 
 		WIPTech.info("Registered items");
 

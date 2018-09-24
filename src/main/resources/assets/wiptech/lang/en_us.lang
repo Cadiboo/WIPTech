@@ -275,6 +275,7 @@ item.osmium_pickaxe.name=Osmium Pickaxe
 tile.tungsten_ore.name=Tungsten Ore
 item.bootsGold.name=Gold Boots
 item.pickaxeIron.name=Iron Pickaxe
+item.electric_shield.name=Electric Shield
 item.glitch_shovel.name=Glitch Shovel
 tile.steel_spool.name=Steel Spool
 item.thorium_chestplate.name=Thorium Chestplate

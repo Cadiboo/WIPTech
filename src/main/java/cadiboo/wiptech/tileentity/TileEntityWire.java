@@ -2,7 +2,7 @@ package cadiboo.wiptech.tileentity;
 
 import java.util.List;
 
-import cadiboo.wiptech.capability.energy.IEnergyUser;
+import cadiboo.wiptech.capability.energy.IEnergyUserAdvanced;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.util.ModDamageSource;
@@ -22,7 +22,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class TileEntityWire extends TileEntity implements IModTileEntity, ITickable, IEnergyUser, ITileEntitySyncable, ITileEntityNetworkConnection {
+public class TileEntityWire extends TileEntity implements IModTileEntity, ITickable, IEnergyUserAdvanced, ITileEntitySyncable, ITileEntityNetworkConnection {
 
 	private final ModEnergyStorage energy;
 

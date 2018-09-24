@@ -6,7 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.capability.energy.IEnergyUser;
+import cadiboo.wiptech.capability.energy.IEnergyUserAdvanced;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
@@ -42,7 +42,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class EntityRailgun extends Entity implements IModEntity, IWorldNameable, IEnergyUser, IInventoryUser, IEntitySyncable {
+public class EntityRailgun extends Entity implements IModEntity, IWorldNameable, IEnergyUserAdvanced, IInventoryUser, IEntitySyncable {
 
 	private float	momentum;
 	private float	deltaRotation;
@@ -312,22 +312,6 @@ public class EntityRailgun extends Entity implements IModEntity, IWorldNameable,
 	}
 
 	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
-		compound.setInteger("energy", this.energy.getEnergyStored());
-		compound.setTag("inventory", this.getInventory().serializeNBT());
-	}
-
-	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
-		if (compound.hasKey("energy")) {
-			this.energy.setEnergyStored(compound.getInteger("energy"), false);
-		}
-		if (compound.hasKey("inventory")) {
-			this.getInventory().deserializeNBT(compound.getCompoundTag("inventory"));
-		}
-	}
-
-	@Override
 	public boolean processInitialInteract(final EntityPlayer player, final EnumHand hand) {
 		if (super.processInitialInteract(player, hand)) {
 			return true;
@@ -548,6 +532,18 @@ public class EntityRailgun extends Entity implements IModEntity, IWorldNameable,
 	@Override
 	public Entity getEntity() {
 		return this;
+	}
+
+	@Override
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
+		IEnergyUserAdvanced.super.deserializeNBT(compound);
+		IInventoryUser.super.deserializeNBT(compound);
+	}
+
+	@Override
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
+		compound.merge(IEnergyUserAdvanced.super.serializeNBT());
+		compound.merge(IInventoryUser.super.serializeNBT());
 	}
 
 	@Override

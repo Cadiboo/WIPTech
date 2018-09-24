@@ -6,7 +6,7 @@ import java.util.Collections;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
-import cadiboo.wiptech.capability.energy.IEnergyUser;
+import cadiboo.wiptech.capability.energy.IEnergyUserAdvanced;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
@@ -30,7 +30,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 /**
  * @author Cadiboo
  */
-public class TileEntityAssemblyTable extends TileEntity implements IModTileEntity, ITickable, IEnergyUser, IInventoryUser, ITileEntitySyncable, ITileEntityCentral {
+public class TileEntityAssemblyTable extends TileEntity implements IModTileEntity, ITickable, IEnergyUserAdvanced, IInventoryUser, ITileEntitySyncable, ITileEntityCentral {
 
 	public static final int	WIDTH	= 3;
 	public static final int	HEIGHT	= 2;
@@ -156,35 +156,6 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 	}
 
 	@Override
-	public void readFromNBT(final NBTTagCompound compound) {
-		super.readFromNBT(compound);
-		if (compound.hasKey(ENERGY_TAG)) {
-			this.getEnergy().setEnergyStored(compound.getInteger(ENERGY_TAG), false);
-		}
-		if (compound.hasKey(INVENTORY_TAG)) {
-			this.getInventory().deserializeNBT(compound.getCompoundTag(INVENTORY_TAG));
-		}
-		if (compound.hasKey(ASSEMBLY_TIME_TAG)) {
-			this.assemblyTime = compound.getInteger(ASSEMBLY_TIME_TAG);
-		}
-		if (compound.hasKey(MAX_ASSEMBLY_TIME_TAG)) {
-			this.maxAssemblyTime = compound.getInteger(MAX_ASSEMBLY_TIME_TAG);
-		}
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
-		super.writeToNBT(compound);
-
-		compound.setInteger(ENERGY_TAG, this.energy.getEnergyStored());
-		compound.setTag(INVENTORY_TAG, this.getInventory().serializeNBT());
-		compound.setInteger(ASSEMBLY_TIME_TAG, this.assemblyTime);
-		compound.setInteger(MAX_ASSEMBLY_TIME_TAG, this.maxAssemblyTime);
-
-		return compound;
-	}
-
-	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
 		return super.getRenderBoundingBox().grow(WIDTH, HEIGHT, DEPTH);
 	}
@@ -270,6 +241,29 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 		}
 
 		return true;
+	}
+
+	@Override
+	public void readFromNBT(final NBTTagCompound compound) {
+		super.readFromNBT(compound);
+		IEnergyUserAdvanced.super.deserializeNBT(compound);
+		IInventoryUser.super.deserializeNBT(compound);
+		if (compound.hasKey(ASSEMBLY_TIME_TAG)) {
+			this.assemblyTime = compound.getInteger(ASSEMBLY_TIME_TAG);
+		}
+		if (compound.hasKey(MAX_ASSEMBLY_TIME_TAG)) {
+			this.maxAssemblyTime = compound.getInteger(MAX_ASSEMBLY_TIME_TAG);
+		}
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(final NBTTagCompound compound) {
+		super.writeToNBT(compound);
+		compound.merge(IEnergyUserAdvanced.super.serializeNBT());
+		compound.merge(IInventoryUser.super.serializeNBT());
+		compound.setInteger(ASSEMBLY_TIME_TAG, this.assemblyTime);
+		compound.setInteger(MAX_ASSEMBLY_TIME_TAG, this.maxAssemblyTime);
+		return compound;
 	}
 
 }

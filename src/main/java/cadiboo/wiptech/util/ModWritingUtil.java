@@ -14,9 +14,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import cadiboo.wiptech.WIPTech;
+import cadiboo.wiptech.client.ClientEventSubscriber;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
@@ -39,10 +38,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModWritingUtil {
 
-	@VisibleForTesting
-	public static String	default_variant_name	= "normal";
-	private static String	assetDir				= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
-	private static String	dataDir					= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
+	private static String	assetDir	= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
+	private static String	dataDir		= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
 
 	private static final ModResourceLocation	item_generated				= new ModResourceLocation("", "item/generated");
 	private static final ModResourceLocation	item_handheld				= new ModResourceLocation("", "item/handheld");
@@ -54,7 +51,7 @@ public class ModWritingUtil {
 
 		final boolean recipes = true;
 		final boolean lang = true;
-		final boolean json = true;
+		final boolean json = false;
 
 		WIPTech.info("ModWritingUtil.writeMod() with options write recipes: " + recipes + ", write lang: " + lang + ", write json: " + json);
 
@@ -1176,7 +1173,7 @@ public class ModWritingUtil {
 			// remove last comma
 			blockstate = StringUtils.reverse(StringUtils.reverse(blockstate).replaceFirst(",", ""));
 		} else {
-			blockstate += "		" + "\"" + default_variant_name + "\": {" + "\n";
+			blockstate += "		" + "\"" + ClientEventSubscriber.DEFAULT_VARIANT + "\": {" + "\n";
 			blockstate += "			" + "\"model\": \"" + model.toString() + "\"" + "\n";
 			blockstate += "		" + "}" + "\n";
 		}

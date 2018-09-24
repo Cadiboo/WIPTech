@@ -37,7 +37,10 @@ public class EntityCoilgunBullet extends EntityThrowable implements IModEntity {
 		if (result.entityHit != null) {
 //				result.entityHit.setDead(); //this completely breaks the game bahaha
 			result.entityHit.attackEntityFrom(ModDamageSource.causeCoilgunBulletDamage(this, this.getThrower()), 10);
+			WIPTech.info(result.entityHit);
 		}
+
+		this.setDead();
 
 	}
 

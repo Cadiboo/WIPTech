@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 
 import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
+import cadiboo.wiptech.capability.attachments.IAttachmentUser;
 import cadiboo.wiptech.capability.attachments.circuitdata.CapabilityCircuitData;
 import cadiboo.wiptech.capability.attachments.circuitdata.CircuitData;
 import cadiboo.wiptech.capability.energy.IEnergyUser;
@@ -202,73 +203,7 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 
 	@Override
 	public final ICapabilityProvider initCapabilities(final ItemStack stack, @Nullable final NBTTagCompound nbt) {
-		return new ICapabilitySerializable<NBTTagCompound>() {
-
-			final ItemStack				itemStack		= stack;
-			final ModEnergyStorage		energy			= new ModEnergyStorage(1000);
-			final ModItemStackHandler	inventory		= new ModItemStackHandler();
-			final AttachmentList		attachments		= new AttachmentList(ItemHandheldGun.this.attachmentPoints);
-			final String				ATTACHMENTS_TAG	= "attachments";
-
-			@Override
-			public boolean hasCapability(@Nonnull final Capability<?> capability, @Nullable final EnumFacing facing) {
-				return this.getCapability(capability, facing) != null;
-			}
-
-			@Nullable
-			@Override
-			public <T> T getCapability(@Nonnull final Capability<T> capability, @Nullable final EnumFacing facing) {
-				if (capability == CapabilityEnergy.ENERGY) {
-					return (T) this.getEnergy();
-				}
-
-				if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-					return (T) this.getInventory();
-				}
-
-				if (capability == CapabilityAttachmentList.ATTACHMENT_LIST) {
-					return (T) this.getAttachmentList();
-				}
-
-				return null;
-			}
-
-			@Override
-			public NBTTagCompound serializeNBT() {
-				final NBTTagCompound compound = new NBTTagCompound();
-				compound.setTag(IEnergyUser.ENERGY_TAG, this.getEnergy().serializeNBT());
-				compound.setTag(IInventoryUser.INVENTORY_TAG, this.getInventory().serializeNBT());
-				compound.setTag(this.ATTACHMENTS_TAG, this.getAttachmentList().serializeNBT());
-				return compound;
-			}
-
-			@Override
-			public void deserializeNBT(final NBTTagCompound compound) {
-				if (compound.hasKey(IEnergyUser.ENERGY_TAG)) {
-					this.getEnergy().deserializeNBT(compound.getCompoundTag(IEnergyUser.ENERGY_TAG));
-				}
-				if (compound.hasKey(IInventoryUser.INVENTORY_TAG)) {
-					this.getInventory().deserializeNBT(compound.getCompoundTag(IInventoryUser.INVENTORY_TAG));
-				}
-				if (compound.hasKey(this.ATTACHMENTS_TAG)) {
-					this.getAttachmentList().deserializeNBT(compound.getCompoundTag(this.ATTACHMENTS_TAG));
-				}
-
-			}
-
-			public AttachmentList getAttachmentList() {
-				return this.attachments;
-			}
-
-			public ModEnergyStorage getEnergy() {
-				return this.energy;
-			}
-
-			public ModItemStackHandler getInventory() {
-				return this.inventory;
-			}
-
-		};
+		return new CapabilityProvider(stack, nbt);
 	}
 
 	@Override
@@ -295,6 +230,73 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 	@Override
 	public boolean getShareTag() {
 		return super.getShareTag() && true;
+	}
+
+	public class CapabilityProvider implements ICapabilitySerializable<NBTTagCompound>, IEnergyUser, IInventoryUser, IAttachmentUser {
+
+		final ItemStack				itemStack;
+		final ModEnergyStorage		energy		= new ModEnergyStorage(1000);
+		final ModItemStackHandler	inventory	= new ModItemStackHandler();
+		final AttachmentList		attachments	= new AttachmentList(ItemHandheldGun.this.attachmentPoints);
+
+		public CapabilityProvider(final ItemStack stack, final NBTTagCompound nbt) {
+			this.itemStack = stack;
+		}
+
+		@Override
+		public boolean hasCapability(@Nonnull final Capability<?> capability, @Nullable final EnumFacing facing) {
+			return this.getCapability(capability, facing) != null;
+		}
+
+		@Nullable
+		@Override
+		public <T> T getCapability(@Nonnull final Capability<T> capability, @Nullable final EnumFacing facing) {
+			if (capability == CapabilityEnergy.ENERGY) {
+				return (T) this.getEnergy();
+			}
+
+			if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+				return (T) this.getInventory();
+			}
+
+			if (capability == CapabilityAttachmentList.ATTACHMENT_LIST) {
+				return (T) this.getAttachments();
+			}
+
+			return null;
+		}
+
+		@Override
+		public NBTTagCompound serializeNBT() {
+			final NBTTagCompound compound = new NBTTagCompound();
+			compound.merge(IEnergyUser.super.serializeNBT());
+			compound.merge(IInventoryUser.super.serializeNBT());
+			compound.merge(IAttachmentUser.super.serializeNBT());
+			return compound;
+		}
+
+		@Override
+		public void deserializeNBT(final NBTTagCompound compound) {
+			IEnergyUser.super.deserializeNBT(compound);
+			IInventoryUser.super.deserializeNBT(compound);
+			IAttachmentUser.super.deserializeNBT(compound);
+		}
+
+		@Override
+		public AttachmentList getAttachments() {
+			return this.attachments;
+		}
+
+		@Override
+		public ModEnergyStorage getEnergy() {
+			return this.energy;
+		}
+
+		@Override
+		public ModItemStackHandler getInventory() {
+			return this.inventory;
+		}
+
 	}
 
 }

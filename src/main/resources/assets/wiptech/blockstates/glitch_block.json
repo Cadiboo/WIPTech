@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:glitch_block"
+			"model": "wiptech:builtin/glitch_block"
 		}
 	}
 }

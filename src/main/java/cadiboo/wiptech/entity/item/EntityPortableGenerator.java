@@ -5,7 +5,7 @@ import java.util.Random;
 import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.capability.energy.IEnergyUser;
+import cadiboo.wiptech.capability.energy.IEnergyUserAdvanced;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
@@ -33,7 +33,9 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class EntityPortableGenerator extends Entity implements IModEntity, IWorldNameable, IEnergyUser, IInventoryUser, IEntitySyncable {
+public class EntityPortableGenerator extends Entity implements IModEntity, IWorldNameable, IEnergyUserAdvanced, IInventoryUser, IEntitySyncable {
+
+	public static final String HANDLE_HOLDER_ID_TAG = "handleHolderId";
 
 	private final ModEnergyStorage		energy;
 	private final ModItemStackHandler	inventory;
@@ -63,34 +65,6 @@ public class EntityPortableGenerator extends Entity implements IModEntity, IWorl
 
 	@Override
 	protected void entityInit() {
-	}
-
-	@Override
-	protected void readEntityFromNBT(final NBTTagCompound compound) {
-		if (compound.hasKey("energy")) {
-			this.getEnergy().setEnergyStored(compound.getInteger("energy"), false);
-		}
-		if (compound.hasKey("inventory")) {
-			this.getInventory().deserializeNBT(compound.getCompoundTag("inventory"));
-		}
-		if (compound.hasKey("handleHolderId")) {
-			if (compound.getInteger("handleHolderId") == -1) {
-				this.handleHolder = null;
-			} else {
-				this.handleHolder = this.world.getEntityByID(compound.getInteger("handleHolderId"));
-			}
-		}
-	}
-
-	@Override
-	protected void writeEntityToNBT(final NBTTagCompound compound) {
-		compound.setInteger("energy", this.getEnergy().getEnergyStored());
-		compound.setTag("inventory", this.getInventory().serializeNBT());
-		if (this.handleHolder == null) {
-			compound.setInteger("handleHolderId", -1);
-		} else {
-			compound.setInteger("handleHolderId", this.handleHolder.getEntityId());
-		}
 	}
 
 	@Override
@@ -337,6 +311,30 @@ public class EntityPortableGenerator extends Entity implements IModEntity, IWorl
 	@Override
 	public Entity getEntity() {
 		return this;
+	}
+
+	@Override
+	protected void readEntityFromNBT(final NBTTagCompound compound) {
+		IEnergyUserAdvanced.super.deserializeNBT(compound);
+		IInventoryUser.super.deserializeNBT(compound);
+		if (compound.hasKey(HANDLE_HOLDER_ID_TAG)) {
+			if (compound.getInteger(HANDLE_HOLDER_ID_TAG) == -1) {
+				this.handleHolder = null;
+			} else {
+				this.handleHolder = this.world.getEntityByID(compound.getInteger(HANDLE_HOLDER_ID_TAG));
+			}
+		}
+	}
+
+	@Override
+	protected void writeEntityToNBT(final NBTTagCompound compound) {
+		compound.merge(IEnergyUserAdvanced.super.serializeNBT());
+		compound.merge(IInventoryUser.super.serializeNBT());
+		if (this.handleHolder == null) {
+			compound.setInteger(HANDLE_HOLDER_ID_TAG, -1);
+		} else {
+			compound.setInteger(HANDLE_HOLDER_ID_TAG, this.handleHolder.getEntityId());
+		}
 	}
 
 	@Override

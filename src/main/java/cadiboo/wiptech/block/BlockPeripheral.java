@@ -1,18 +1,20 @@
 package cadiboo.wiptech.block;
 
+import java.util.HashSet;
+
+import javax.annotation.Nullable;
+
 import cadiboo.wiptech.tileentity.TileEntityPeripheral;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -42,12 +44,9 @@ public class BlockPeripheral extends Block implements IModBlock {
 
 	@Override
 	public void breakBlock(final World world, final BlockPos pos, final IBlockState state) {
-		final TileEntity tile = world.getTileEntity(pos);
-		if (tile instanceof TileEntityPeripheral) {
-			final TileEntityPeripheral peripheral = (TileEntityPeripheral) tile;
-			final BlockPos central = peripheral.getCentralPos();
-//			world.getBlockState(central).getBlock().breakBlock(world, central, state);
-			world.setBlockState(central, Blocks.AIR.getDefaultState());
+		final Block block = this.getCentralBlock(world, pos);
+		if (block != null) {
+			block.breakBlock(world, pos, state);
 		}
 		super.breakBlock(world, pos, state);
 	}
@@ -56,32 +55,22 @@ public class BlockPeripheral extends Block implements IModBlock {
 	public boolean onBlockActivated(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player, final EnumHand hand, final EnumFacing facing, final float hitX, final float hitY, final float hitZ) {
 		if (world.isRemote) {
 			return true;
-		} else {
-			final TileEntity tile = world.getTileEntity(pos);
-			if (tile instanceof TileEntityPeripheral) {
-				final TileEntityPeripheral peripheral = (TileEntityPeripheral) tile;
-
-				final TileEntity central = peripheral.getCentral();
-
-				if (central == null) {
-					return false;
-				}
-
-				central.getBlockType().onBlockActivated(world, central.getPos(), state, player, hand, facing, hitX, hitY, hitZ);
-
-			}
-			return true;
 		}
+
+		final Block block = this.getCentralBlock(world, pos);
+		if (block == null) {
+			return false;
+		}
+
+		block.onBlockActivated(world, this.getCentralPos(world, pos), state, player, hand, facing, hitX, hitY, hitZ);
+		return true;
 	}
 
 	@Override
 	public void onBlockExploded(final World world, final BlockPos pos, final Explosion explosion) {
-		final TileEntity tile = world.getTileEntity(pos);
-		if (tile instanceof TileEntityPeripheral) {
-			final TileEntityPeripheral peripheral = (TileEntityPeripheral) tile;
-			final BlockPos central = peripheral.getCentralPos();
-//			world.getBlockState(central).getBlock().onBlockExploded(world, central, explosion);
-			world.setBlockState(central, Blocks.AIR.getDefaultState());
+		final BlockPos centralPos = this.getCentralPos(world, pos);
+		if (centralPos != null) {
+			world.setBlockToAir(centralPos);
 		}
 		super.onBlockExploded(world, pos, explosion);
 	}
@@ -108,50 +97,75 @@ public class BlockPeripheral extends Block implements IModBlock {
 
 	@Override
 	public AxisAlignedBB getSelectedBoundingBox(final IBlockState state, final World world, final BlockPos pos) {
-		final TileEntity tile = world.getTileEntity(pos);
-		if (tile instanceof TileEntityPeripheral) {
-			final TileEntityPeripheral peripheral = (TileEntityPeripheral) tile;
-			final BlockPos central = peripheral.getCentralPos();
-			final Block block = world.getBlockState(central).getBlock();
-			if (block instanceof IBlockCentral) {
-				AxisAlignedBB selectedBB = block.getSelectedBoundingBox(state, world, pos);
-				for (final BlockPos peripheralPos : ((IBlockCentral) block).getPeripheralPositions(central)) {
-					selectedBB = selectedBB.union(new AxisAlignedBB(peripheralPos));
-				}
-				return selectedBB;
-			}
+		final Block block = this.getCentralBlock(world, pos);
+		if (block == null) {
+			return super.getSelectedBoundingBox(state, world, pos);
 		}
-		return super.getSelectedBoundingBox(state, world, pos);
+
+		AxisAlignedBB selectedBB = block.getSelectedBoundingBox(state, world, pos);
+		final HashSet<BlockPos> peripheralPositions = ((IBlockCentral) block).getPeripheralPositions(this.getCentralPos(world, pos));
+		for (final BlockPos peripheralPos : peripheralPositions) {
+			selectedBB = selectedBB.union(new AxisAlignedBB(peripheralPos));
+		}
+		return selectedBB;
 	}
 
 	@Override
 	public ItemStack getPickBlock(final IBlockState state, final RayTraceResult target, final World world, final BlockPos pos, final EntityPlayer player) {
-		final TileEntity tile = world.getTileEntity(pos);
-		if (tile instanceof TileEntityPeripheral) {
-			final TileEntityPeripheral peripheral = (TileEntityPeripheral) tile;
-			final BlockPos central = peripheral.getCentralPos();
-			final Block block = world.getBlockState(central).getBlock();
-			if (block instanceof IBlockCentral) {
-				return block.getPickBlock(state, target, world, central, player);
-			}
+		final Block block = this.getCentralBlock(world, pos);
+		if (block == null) {
+			return super.getPickBlock(state, target, world, pos, player);
 		}
-		return super.getPickBlock(state, target, world, pos, player);
+
+		return block.getPickBlock(state, target, world, pos, player);
 	}
 
 	@Override
-	public void getDrops(final NonNullList<ItemStack> drops, final IBlockAccess world, final BlockPos pos, final IBlockState state, final int fortune) {
+	public void onBlockHarvested(final World world, final BlockPos pos, final IBlockState state, final EntityPlayer player) {
+		final Block block = this.getCentralBlock(world, pos);
+		if (block == null) {
+			super.onBlockHarvested(world, pos, state, player);
+			return;
+		}
+
+		block.onBlockHarvested(world, pos, state, player);
+		return;
+	}
+
+	@Override
+	public void harvestBlock(final World world, final EntityPlayer player, final BlockPos pos, final IBlockState state, final TileEntity te, final ItemStack stack) {
+		final Block block = this.getCentralBlock(world, pos);
+		if (block == null) {
+			super.harvestBlock(world, player, pos, state, te, stack);
+			return;
+		}
+
+		block.harvestBlock(world, player, pos, state, te, stack);
+		return;
+	}
+
+	@Nullable
+	public final <B extends Block & IBlockCentral> B getCentralBlock(final World world, final BlockPos pos) {
+		final BlockPos centralPos = this.getCentralPos(world, pos);
+		if (centralPos == null) {
+			return null;
+		}
+		return (B) world.getBlockState(centralPos).getBlock();
+	}
+
+	@Nullable
+	public final BlockPos getCentralPos(final World world, final BlockPos pos) {
 		final TileEntity tile = world.getTileEntity(pos);
-		if (tile instanceof TileEntityPeripheral) {
+		if ((tile != null) && (tile instanceof TileEntityPeripheral)) {
 			final TileEntityPeripheral peripheral = (TileEntityPeripheral) tile;
-			final BlockPos central = peripheral.getCentralPos();
-			final IBlockState centralState = world.getBlockState(central);
-			final Block block = centralState.getBlock();
+			final BlockPos centralPos = peripheral.getCentralPos();
+			final IBlockState state = world.getBlockState(centralPos);
+			final Block block = state.getBlock();
 			if (block instanceof IBlockCentral) {
-				block.getDrops(drops, world, central, centralState, fortune);
-				return;
+				return centralPos;
 			}
 		}
-		super.getDrops(drops, world, pos, state, fortune);
+		return null;
 	}
 
 }

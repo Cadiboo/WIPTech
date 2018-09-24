@@ -15,8 +15,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GlitchModelLoader implements ICustomModelLoader {
 
-	public static final String	GLITCH_BLOCK_MODEL_RESOURCE_LOCATION	= "models/block/glitch_block";
-	public static final String	GLITCH_ORE_MODEL_RESOURCE_LOCATION		= "models/block/glitch_ore";
+	public static final String GLITCH_MODEL_RESOURCE_LOCATION_BASE = "models/block/builtin/glitch_";
+
+	public static final String	GLITCH_BLOCK_MODEL_RESOURCE_LOCATION	= GLITCH_MODEL_RESOURCE_LOCATION_BASE + "block";
+	public static final String	GLITCH_ORE_MODEL_RESOURCE_LOCATION		= GLITCH_MODEL_RESOURCE_LOCATION_BASE + "ore";
+	public static final String	GLITCH_SPOOL_MODEL_RESOURCE_LOCATION	= GLITCH_MODEL_RESOURCE_LOCATION_BASE + "spool";
 
 	@Override
 	public void onResourceManagerReload(final IResourceManager resourceManager) {
@@ -24,14 +27,17 @@ public class GlitchModelLoader implements ICustomModelLoader {
 
 	@Override
 	public boolean accepts(final ResourceLocation modelLocation) {
-		return modelLocation.getResourceDomain().equals(ModReference.MOD_ID) && (modelLocation.getResourcePath().startsWith(GLITCH_BLOCK_MODEL_RESOURCE_LOCATION) || modelLocation.getResourcePath().startsWith(GLITCH_ORE_MODEL_RESOURCE_LOCATION));
+		if (modelLocation.toString().contains("glitch")) {
+//			WIPTech.info("glitch");
+		}
+		return modelLocation.getResourceDomain().equals(ModReference.MOD_ID) && (modelLocation.getResourcePath().startsWith(GLITCH_MODEL_RESOURCE_LOCATION_BASE));
 	}
 
 	@Override
 	public IModel loadModel(final ResourceLocation modelLocation) throws Exception {
 		final String resourcePath = modelLocation.getResourcePath();
-		if (!resourcePath.equals(GLITCH_BLOCK_MODEL_RESOURCE_LOCATION) || !resourcePath.equals(GLITCH_ORE_MODEL_RESOURCE_LOCATION)) {
-			assert false : "loadModel expected " + GLITCH_BLOCK_MODEL_RESOURCE_LOCATION + " OR " + GLITCH_ORE_MODEL_RESOURCE_LOCATION + " but found " + resourcePath;
+		if (!resourcePath.equals(GLITCH_BLOCK_MODEL_RESOURCE_LOCATION) && !resourcePath.equals(GLITCH_ORE_MODEL_RESOURCE_LOCATION) && !resourcePath.equals(GLITCH_SPOOL_MODEL_RESOURCE_LOCATION)) {
+			assert false : "loadModel expected " + GLITCH_BLOCK_MODEL_RESOURCE_LOCATION + " OR " + GLITCH_ORE_MODEL_RESOURCE_LOCATION + " OR " + GLITCH_SPOOL_MODEL_RESOURCE_LOCATION + " but found " + resourcePath;
 		}
 
 		try {
@@ -43,6 +49,9 @@ public class GlitchModelLoader implements ICustomModelLoader {
 			} else if (resourcePath.equals(GLITCH_ORE_MODEL_RESOURCE_LOCATION)) {
 				missingModel = new ModResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "block/missing_ore"));
 				invisibleModel = new ModResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_ore"));
+			} else if (resourcePath.equals(GLITCH_SPOOL_MODEL_RESOURCE_LOCATION)) {
+				missingModel = new ModResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "block/missing_spool"));
+				invisibleModel = new ModResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_spool"));
 			} else {
 				new IllegalArgumentException("how did we get here...??????").printStackTrace();
 			}

@@ -1,10 +1,8 @@
 package cadiboo.wiptech.capability.energy;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.energy.EnergyStorage;
 
-public class ModEnergyStorage extends EnergyStorage implements INBTSerializable<NBTTagCompound> {
+public class ModEnergyStorage extends EnergyStorage {
 
 	public ModEnergyStorage(final int capacity) {
 		super(capacity);
@@ -112,18 +110,18 @@ public class ModEnergyStorage extends EnergyStorage implements INBTSerializable<
 	public void onEnergyChanged() {
 	}
 
-	@Override
-	public NBTTagCompound serializeNBT() {
-		final NBTTagCompound compound = new NBTTagCompound();
-		compound.setInteger(IEnergyUser.ENERGY_TAG, this.energy);
-		return compound;
-	}
-
-	@Override
-	public void deserializeNBT(final NBTTagCompound compound) {
-		if (compound.hasKey(IEnergyUser.ENERGY_TAG, 99)) {
-			this.energy = compound.getInteger(IEnergyUser.ENERGY_TAG);
-		}
-	}
+//	@Override
+//	public NBTTagCompound serializeNBT() {
+//		final NBTTagCompound compound = new NBTTagCompound();
+//		compound.setInteger(IEnergyUser.ENERGY_TAG, this.energy);
+//		return compound;
+//	}
+//
+//	@Override
+//	public void deserializeNBT(final NBTTagCompound compound) {
+//		if (compound.hasKey(IEnergyUser.ENERGY_TAG, 99)) {
+//			this.energy = compound.getInteger(IEnergyUser.ENERGY_TAG);
+//		}
+//	}
 
 }

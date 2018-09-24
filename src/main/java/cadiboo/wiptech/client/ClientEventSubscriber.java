@@ -96,11 +96,13 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Mod.EventBusSubscriber(modid = ModReference.MOD_ID)
 public final class ClientEventSubscriber {
+
+	public static final String	DEFAULT_VARIANT		= "normal";
+	@Deprecated
+	public static final String	INVENTORY_VARIANT	= "inventory";
 
 	@SubscribeEvent
 	public static void onRegisterModelsEvent(final ModelRegistryEvent event) {
@@ -118,20 +120,22 @@ public final class ClientEventSubscriber {
 		registerModelsForAttachments();
 
 		/* item blocks */
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.MOD_FURNACE), 0, new ModelResourceLocation(ModBlocks.MOD_FURNACE.getRegistryName(), "facing=north"));
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(ModBlocks.ASSEMBLY_TABLE), 0, new ModelResourceLocation(ModBlocks.ASSEMBLY_TABLE.getRegistryName(), ModWritingUtil.default_variant_name));
+		registerItemBlockModel(ModBlocks.MOD_FURNACE, "facing=north");
+		registerItemBlockModel(ModBlocks.ASSEMBLY_TABLE);
 
 		/* items */
-		registerNormalItemModel(ModItems.PORTABLE_GENERATOR);
-		registerNormalItemModel(ModItems.FLAMETHROWER);
-		registerNormalItemModel(ModItems.RAILGUN);
-		registerNormalItemModel(ModItems.SLUG_CASING_BACK);
-		registerNormalItemModel(ModItems.SLUG_CASING_TOP);
-		registerNormalItemModel(ModItems.SLUG_CASING_BOTTOM);
+		registerItemModel(ModItems.PORTABLE_GENERATOR);
+		registerItemModel(ModItems.FLAMETHROWER);
+		registerItemModel(ModItems.RAILGUN);
+		registerItemModel(ModItems.SLUG_CASING_BACK);
+		registerItemModel(ModItems.SLUG_CASING_TOP);
+		registerItemModel(ModItems.SLUG_CASING_BOTTOM);
 
-		registerNormalItemModel(ModItems.HANDHELD_RAILGUN);
-		registerNormalItemModel(ModItems.HANDHELD_COILGUN);
-		registerNormalItemModel(ModItems.HANDHELD_PLASMAGUN);
+		registerItemModel(ModItems.HANDHELD_RAILGUN);
+		registerItemModel(ModItems.HANDHELD_COILGUN);
+		registerItemModel(ModItems.HANDHELD_PLASMAGUN);
+
+		registerItemModel(ModItems.ELECTRIC_SHIELD);
 
 		WIPTech.info("Registered models");
 
@@ -160,7 +164,7 @@ public final class ClientEventSubscriber {
 				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), material.getNameLowercase() + "_wire"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), material.getNameLowercase() + "_wire"), DEFAULT_VARIANT);
 					}
 				});
 			}
@@ -170,7 +174,7 @@ public final class ClientEventSubscriber {
 
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), material.getNameLowercase() + "_enamel"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), material.getNameLowercase() + "_enamel"), DEFAULT_VARIANT);
 					}
 				});
 			}
@@ -184,17 +188,23 @@ public final class ClientEventSubscriber {
 				ModelLoader.setCustomStateMapper(ModMaterials.GLITCH.getBlock(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_block"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_block"), DEFAULT_VARIANT);
 					}
 				});
 			}
-			if (ModMaterials.GLITCH.getOre() != null)
-
-			{
+			if (ModMaterials.GLITCH.getOre() != null) {
 				ModelLoader.setCustomStateMapper(ModMaterials.GLITCH.getOre(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_ore"), ModWritingUtil.default_variant_name);
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_ore"), DEFAULT_VARIANT);
+					}
+				});
+			}
+			if (ModMaterials.GLITCH.getSpool() != null) {
+				ModelLoader.setCustomStateMapper(ModMaterials.GLITCH.getSpool(), new StateMapperBase() {
+					@Override
+					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_spool"), DEFAULT_VARIANT);
 					}
 				});
 			}
@@ -206,7 +216,7 @@ public final class ClientEventSubscriber {
 
 			if (material.getProperties().hasRailgunSlug()) {
 				// FIXME TODO re-enable this & make it work
-//				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), "cased_" + material.getNameLowercase() + "_slug"), ModWritingUtil.default_variant_name));
+//				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), "cased_" + material.getNameLowercase() + "_slug"), DEFAULT_VARIANT));
 			}
 
 		}
@@ -315,19 +325,35 @@ public final class ClientEventSubscriber {
 	private static void registerModelsForAttachments() {
 
 		for (final CircuitTypes type : CircuitTypes.values()) {
-			registerNormalItemModel(type.getItem("circuit"));
+			registerItemModel(type.getItem("circuit"));
 		}
 
 		for (final ScopeTypes type : ScopeTypes.values()) {
-			registerNormalItemModel(type.getItem("scope"));
+			registerItemModel(type.getItem("scope"));
 		}
 
-		registerNormalItemModel(ModItems.SHOTGUN);
-		registerNormalItemModel(ModItems.GRENADE_LAUNCHER);
+		registerItemModel(ModItems.SHOTGUN);
+		registerItemModel(ModItems.GRENADE_LAUNCHER);
 
-		registerNormalItemModel(ModItems.HEARTBEAT_SENSOR);
-		registerNormalItemModel(ModItems.LASER);
+		registerItemModel(ModItems.HEARTBEAT_SENSOR);
+		registerItemModel(ModItems.LASER);
 
+	}
+
+	private static void registerItemBlockModel(final Block block) {
+		registerItemBlockModel(block, DEFAULT_VARIANT);
+	}
+
+	private static void registerItemBlockModel(final Block block, final String variant) {
+		registerItemModel(Item.getItemFromBlock(block), variant);
+	}
+
+	private static void registerItemModel(final Item item) {
+		registerItemModel(item, DEFAULT_VARIANT);
+	}
+
+	private static void registerItemModel(final Item item, final String variant) {
+		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), variant));
 	}
 
 	private static <T extends Item & IItemModMaterial> void registerItemModMaterialModel(final T item) {
@@ -335,7 +361,7 @@ public final class ClientEventSubscriber {
 		final String registryNameResourceDomain = isVanilla ? "minecraft" : item.getModMaterial().getAssetsModId();
 		final String registryNameResourcePath = item.getRegistryName().getResourcePath();
 
-		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), ModWritingUtil.default_variant_name));
+		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), DEFAULT_VARIANT));
 	}
 
 	private static <T extends Block & IBlockModMaterial> void registerBlockModMaterialItemBlockModel(final T block) {
@@ -343,26 +369,15 @@ public final class ClientEventSubscriber {
 		final String registryNameResourceDomain = isVanilla ? "minecraft" : block.getModMaterial().getAssetsModId();
 		final String registryNameResourcePath = block.getRegistryName().getResourcePath();
 
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), ModWritingUtil.default_variant_name));
-	}
-
-	private static void registerNormalItemModel(final Item item) {
-		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), ModWritingUtil.default_variant_name));
-	}
-
-	private static void registerNormalBlockModel(final Block block) {
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(block.getRegistryName(), ModWritingUtil.default_variant_name));
+		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), DEFAULT_VARIANT));
 	}
 
 	/* injected textures */
 	@SubscribeEvent
-
 	public static void onTextureStichEvent(final TextureStitchEvent event) {
-
 		final TextureMap map = event.getMap();
 
 		injectTextures(map);
-
 	}
 
 	private static void injectTextures(final TextureMap map) {
@@ -563,6 +578,7 @@ public final class ClientEventSubscriber {
 
 	}
 
+	@SubscribeEvent
 	public static void onRenderGameOverlay(final RenderGameOverlayEvent.Post event) {
 		if ((event.getType() != RenderGameOverlayEvent.ElementType.ALL) || (Minecraft.getMinecraft().currentScreen != null)) {
 			return;
