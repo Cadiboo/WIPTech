@@ -1,5 +1,7 @@
 package cadiboo.wiptech.client.render.entity;
 
+import java.math.BigDecimal;
+
 import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.entity.projectile.EntityCoilgunBullet;
 import net.minecraft.client.Minecraft;
@@ -30,17 +32,34 @@ public class EntityCoilgunBulletRenderer extends Render<EntityCoilgunBullet> {
 		GlStateManager.pushMatrix();
 		try {
 
+//			if (entity.ticksExisted == 0) {
+//				entity.lastTickPosX = entity.posX;
+//				entity.lastTickPosY = entity.posY;
+//				entity.lastTickPosZ = entity.posZ;
+//			}
+//
+//			final double d0 = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * partialTicks);
+//			final double d1 = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * partialTicks);
+//			final double d2 = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * partialTicks);
+//			final float f = entity.prevRotationYaw + ((entity.rotationYaw - entity.prevRotationYaw) * partialTicks);
+
 			GlStateManager.translate(x, y + 0.125, z);
 
-//			final double posX = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * partialTicks) + entity.motionX*partialTicks;
-//			final double posY = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * partialTicks)+ entity.motionY*partialTicks;
-//			final double posZ = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * partialTicks)+ entity.motionZ*partialTicks;
+//			final double posX = entity.lastTickPosX + ((entity.posX - entity.lastTickPosX) * partialTicks) + (entity.getMotionX().doubleValue() * partialTicks);
+//			final double posY = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * partialTicks) + (entity.getMotionY().doubleValue() * partialTicks);
+//			final double posZ = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * partialTicks) + (entity.getMotionZ().doubleValue() * partialTicks);
 
-			final double posX = entity.motionX * partialTicks;
-			final double posY = entity.motionY * partialTicks;
-			final double posZ = entity.motionZ * partialTicks;
+			final double scale = 1000000000;
+
+			final double posX = entity.getMotionX().multiply(new BigDecimal(partialTicks * scale)).doubleValue();
+			final double posY = entity.getMotionY().multiply(new BigDecimal(partialTicks * scale)).doubleValue();
+			final double posZ = entity.getMotionZ().multiply(new BigDecimal(partialTicks * scale)).doubleValue();
+//
+			GlStateManager.scale(1 / scale, 1 / scale, 1 / scale);
 
 			GlStateManager.translate(posX, posY, posZ);
+
+			GlStateManager.scale(scale, scale, scale);
 
 			GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 

@@ -116,8 +116,12 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 
 		if (world.getGameRules().getBoolean("doFireTick")) {
 			if (!world.isAreaLoaded(pos, 2)) {
+				world.scheduleUpdate(pos, this, this.tickRate(world) * 10);
 				return; // Forge: prevent loading unloaded chunks when spreading fire
 			}
+
+			world.getLight(pos);
+
 			if (!this.canPlaceBlockAt(world, pos)) {
 				world.setBlockToAir(pos);
 			}
@@ -159,9 +163,13 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 					this.tryCatchFire(world, pos.offset(facing), spawnChanceBase + spawnChance, rand, age, facing.getOpposite());
 				}
 
-				for (int x = -2; x <= 2; ++x) {
-					for (int z = -2; z <= 2; ++z) {
-						for (int y = -1; y <= 4; ++y) {
+				final int width = 1;
+				final int height = 2;
+				final int depth = 1;
+
+				for (int x = -width; x <= width; ++x) {
+					for (int z = -depth; z <= depth; ++z) {
+						for (int y = -height + (height / 2); y <= (height + (height / 2)); ++y) {
 
 							if ((x == 0) || (y == 0) || (z == 0)) {
 								continue;

@@ -829,4 +829,10 @@ public final class ClientUtil {
 		return color(redInt, greenInt, blueInt);
 	}
 
+	// TODO
+//	float f2 = (float)(i >> 16 & 255) / 255.0F;
+//	float f3 = (float)(i >> 8 & 255) / 255.0F;
+//	float f4 = (float)(i & 255) / 255.0F;
+//	GL11.glColor3f(f2, f3, f4);
+
 }

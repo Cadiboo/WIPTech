@@ -4,11 +4,10 @@ import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.IModEntity;
 import cadiboo.wiptech.util.ModDamageSource;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class EntityCoilgunBullet extends EntityThrowable implements IModEntity {
+public class EntityCoilgunBullet extends EntityHighSpeedProjectile implements IModEntity {
 
 	public EntityCoilgunBullet(final World worldIn) {
 		super(worldIn);
