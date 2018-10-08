@@ -13,7 +13,7 @@ import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
 import cadiboo.wiptech.event.ModEventFactory;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.item.IItemAttachment;
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -39,8 +39,8 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 	public static final String	ASSEMBLY_TIME_TAG		= "assemblyTime";
 	public static final String	MAX_ASSEMBLY_TIME_TAG	= "maxAssemblyTime";
 
-	public static final int	ATTACHMENT_SLOTS_SIZE	= (AttachmentPoints.values().length - 1);
-	public static final int	ASSEMBLY_SLOT			= (AttachmentPoints.values().length - 1) + 1;
+	public static final int	ATTACHMENT_SLOTS_SIZE	= (AttachmentPoint.values().length - 1);
+	public static final int	ASSEMBLY_SLOT			= (AttachmentPoint.values().length - 1) + 1;
 
 	private static final int ASSEMBLE_ENERGY_TICK = 1000;
 
@@ -228,7 +228,7 @@ public class TileEntityAssemblyTable extends TileEntity implements IModTileEntit
 			if (canAddAnyAttachment) {
 				continue;
 			}
-			final AttachmentPoints attachmentPoint = ((IItemAttachment) attachment.getItem()).getAttachmentPoint();
+			final AttachmentPoint attachmentPoint = ((IItemAttachment) attachment.getItem()).getAttachmentPoint();
 
 			if (attachmentList.canAddAttachment(attachment)) {
 				canAddAnyAttachment = true;

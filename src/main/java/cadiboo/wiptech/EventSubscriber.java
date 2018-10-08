@@ -55,10 +55,10 @@ import cadiboo.wiptech.tileentity.TileEntityModFurnace;
 import cadiboo.wiptech.tileentity.TileEntityPeripheral;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ExistsForDebugging;
-import cadiboo.wiptech.util.ModEnums.CircuitTypes;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
-import cadiboo.wiptech.util.ModEnums.ScopeTypes;
-import cadiboo.wiptech.util.ModEnums.SlugCasingParts;
+import cadiboo.wiptech.util.ModEnums.CircuitType;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
+import cadiboo.wiptech.util.ModEnums.ScopeType;
+import cadiboo.wiptech.util.ModEnums.SlugCasingPart;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModUtil;
@@ -119,7 +119,7 @@ public final class EventSubscriber {
 	}
 
 	private static void registerBlocksForMaterials(final IForgeRegistry<Block> registry) {
-		for (final ModMaterials material : ModMaterials.values()) {
+		for (final ModMaterial material : ModMaterial.values()) {
 			if (material.getProperties().hasOre()) {
 				registry.register(new BlockModOre(material));
 			}
@@ -187,9 +187,9 @@ public final class EventSubscriber {
 
 		registry.register(new ItemRailgun("railgun"));
 
-		registry.register(new ItemSlugCasing("slug_casing_back", SlugCasingParts.BACK));
-		registry.register(new ItemSlugCasing("slug_casing_top", SlugCasingParts.TOP));
-		registry.register(new ItemSlugCasing("slug_casing_bottom", SlugCasingParts.BOTTOM));
+		registry.register(new ItemSlugCasing("slug_casing_back", SlugCasingPart.BACK));
+		registry.register(new ItemSlugCasing("slug_casing_top", SlugCasingPart.TOP));
+		registry.register(new ItemSlugCasing("slug_casing_bottom", SlugCasingPart.BOTTOM));
 
 		registry.register(new ItemHandheldRailgun("handheld_railgun"));
 		registry.register(new ItemHandheldCoilgun("handheld_coilgun"));
@@ -202,7 +202,7 @@ public final class EventSubscriber {
 	}
 
 	private static void registerItemsForMaterials(final IForgeRegistry<Item> registry) {
-		for (final ModMaterials material : ModMaterials.values()) {
+		for (final ModMaterial material : ModMaterial.values()) {
 			if (material.getProperties().hasOre()) {
 				registry.register(new ModItemBlock(material.getOre(), new ModResourceLocation(material.getResouceLocationDomain("ore", ForgeRegistries.ITEMS), material.getNameLowercase() + "_ore")));
 			}
@@ -264,11 +264,11 @@ public final class EventSubscriber {
 
 	private static void registerItemsForAttachments(final IForgeRegistry<Item> registry) {
 
-		for (final CircuitTypes type : CircuitTypes.values()) {
+		for (final CircuitType type : CircuitType.values()) {
 			registry.register(new ItemCircuit("circuit", type));
 		}
 
-		for (final ScopeTypes type : ScopeTypes.values()) {
+		for (final ScopeType type : ScopeType.values()) {
 			registry.register(new ItemScope("scope", type));
 		}
 
@@ -307,7 +307,7 @@ public final class EventSubscriber {
 
 	private static void registerEntitiesForMaterials(final IForgeRegistry<EntityEntry> registry) {
 		// TODO AdditionalSpawnData maybe?
-		for (final ModMaterials material : ModMaterials.values()) {
+		for (final ModMaterial material : ModMaterial.values()) {
 			if (material.getProperties().hasRailgunSlug()) {
 				registry.register(buildEntityEntryFromClassWithName(EntitySlug.class, new ModResourceLocation(ModReference.MOD_ID, material.getNameLowercase() + "_slug"), false, 128, 2, true));
 			}

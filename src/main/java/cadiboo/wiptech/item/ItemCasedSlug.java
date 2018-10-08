@@ -1,6 +1,6 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModUtil;
@@ -9,16 +9,16 @@ import net.minecraft.item.Item;
 
 public class ItemCasedSlug extends Item implements IItemModMaterial, IModItem {
 
-	private final ModMaterials material;
+	private final ModMaterial material;
 
-	public ItemCasedSlug(final ModMaterials material) {
+	public ItemCasedSlug(final ModMaterial material) {
 		final ModResourceLocation registryName = new ModResourceLocation(ModReference.MOD_ID, "cased_" + material.getNameLowercase() + "_slug");
 		ModUtil.setRegistryNames(this, registryName);
 		this.material = material;
 	}
 
 	@Override
-	public ModMaterials getModMaterial() {
+	public ModMaterial getModMaterial() {
 		return this.material;
 	}
 

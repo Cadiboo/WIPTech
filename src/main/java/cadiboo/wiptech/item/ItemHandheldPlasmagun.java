@@ -2,7 +2,7 @@ package cadiboo.wiptech.item;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.capability.attachments.AttachmentList;
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
@@ -11,21 +11,21 @@ import net.minecraft.world.World;
  */
 public class ItemHandheldPlasmagun extends ItemHandheldGun {
 
-	public static final AttachmentPoints[] ATTACHMENT_POINTS = new AttachmentPoints[] {
+	public static final AttachmentPoint[] ATTACHMENT_POINTS = new AttachmentPoint[] {
 
-			AttachmentPoints.CIRCUIT,
+			AttachmentPoint.CIRCUIT,
 
-			AttachmentPoints.COIL,
+			AttachmentPoint.COIL,
 
-			AttachmentPoints.SCOPE,
+			AttachmentPoint.SCOPE,
 
-			AttachmentPoints.SIDE_LEFT,
+			AttachmentPoint.SIDE_LEFT,
 
-			AttachmentPoints.SIDE_RIGHT,
+			AttachmentPoint.SIDE_RIGHT,
 
-			AttachmentPoints.RAIL,
+			AttachmentPoint.RAIL,
 
-			AttachmentPoints.UNDER
+			AttachmentPoint.UNDER
 
 	};
 

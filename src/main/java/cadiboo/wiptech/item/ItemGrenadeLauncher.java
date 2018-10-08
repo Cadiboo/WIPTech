@@ -1,6 +1,6 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.item.Item;
 
@@ -14,8 +14,8 @@ public class ItemGrenadeLauncher extends Item implements IItemAttachment, IModIt
 	}
 
 	@Override
-	public AttachmentPoints getAttachmentPoint() {
-		return AttachmentPoints.UNDER;
+	public AttachmentPoint getAttachmentPoint() {
+		return AttachmentPoint.UNDER;
 	}
 
 }

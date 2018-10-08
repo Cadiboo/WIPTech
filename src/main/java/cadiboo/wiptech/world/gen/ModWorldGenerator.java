@@ -2,7 +2,7 @@ package cadiboo.wiptech.world.gen;
 
 import java.util.Random;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -37,7 +37,7 @@ public class ModWorldGenerator implements IWorldGenerator {
 	}
 
 	private void generateOverworld(final Random random, final int chunkX, final int chunkZ, final World world, final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
-		for (final ModMaterials material : ModMaterials.values()) {
+		for (final ModMaterial material : ModMaterial.values()) {
 			if (material.getProperties().hasOre()) {
 				final Block ore = material.getOre();
 				if (ore != null) {
@@ -47,22 +47,22 @@ public class ModWorldGenerator implements IWorldGenerator {
 		}
 	}
 
-	private int getMinY(final ModMaterials material) {
+	private int getMinY(final ModMaterial material) {
 		return 5;
 	}
 
-	private int getMaxY(final ModMaterials material) {
+	private int getMaxY(final ModMaterial material) {
 		return Math.max(1 + this.getMinY(material), Math.round(
 
 				Math.round(128 * ModUtil.map(0,
 
-						ModMaterials.getHighestHardness(), 0, 1,
+						ModMaterial.getHighestHardness(), 0, 1,
 
 						this.maxHardnessMinusMaterialHardness(material)
 
 								* ModUtil.map(0,
 
-										ModMaterials.getHighestConductivity(),
+										ModMaterial.getHighestConductivity(),
 
 										0, 1,
 
@@ -79,25 +79,25 @@ public class ModWorldGenerator implements IWorldGenerator {
 		);
 	}
 
-	private int getChance(final ModMaterials material) {
-		final int chance = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 1, 5, this.maxHardnessMinusMaterialHardness(material))));
+	private int getChance(final ModMaterial material) {
+		final int chance = Math.round(Math.round(ModUtil.map(0, ModMaterial.getHighestHardness(), 1, 5, this.maxHardnessMinusMaterialHardness(material))));
 		return chance;
 	}
 
-	private int getSize(final ModMaterials material) {
-		final int size = Math.round(Math.round(ModUtil.map(0, ModMaterials.getHighestHardness(), 3, 8, this.maxHardnessMinusMaterialHardness(material))));
+	private int getSize(final ModMaterial material) {
+		final int size = Math.round(Math.round(ModUtil.map(0, ModMaterial.getHighestHardness(), 3, 8, this.maxHardnessMinusMaterialHardness(material))));
 		return size;
 	}
 
-	private int maxHardnessMinusMaterialHardness(final ModMaterials material) {
-		final float highest = ModMaterials.getHighestHardness();
+	private int maxHardnessMinusMaterialHardness(final ModMaterial material) {
+		final float highest = ModMaterial.getHighestHardness();
 		final float hardness = material.getProperties().getHardness();
 
 		if (hardness == highest) {
 			return 1;
 		}
 
-		return Math.round(ModMaterials.getHighestHardness()) - Math.round(material.getProperties().getHardness());
+		return Math.round(ModMaterial.getHighestHardness()) - Math.round(material.getProperties().getHardness());
 	}
 
 	private void generateOre(final IBlockState ore, final World world, final Random random, final int x, final int z, final int minY, final int maxY, final int size, final int chances) {

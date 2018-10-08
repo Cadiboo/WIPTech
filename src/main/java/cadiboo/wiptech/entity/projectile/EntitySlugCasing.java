@@ -1,7 +1,7 @@
 package cadiboo.wiptech.entity.projectile;
 
 import cadiboo.wiptech.entity.IModEntity;
-import cadiboo.wiptech.util.ModEnums.SlugCasingParts;
+import cadiboo.wiptech.util.ModEnums.SlugCasingPart;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -9,19 +9,19 @@ import net.minecraft.world.World;
 
 public class EntitySlugCasing extends Entity implements IModEntity {
 
-	private SlugCasingParts part;
+	private SlugCasingPart part;
 
 	public EntitySlugCasing(final World world) {
-		this(world, SlugCasingParts.BACK);
+		this(world, SlugCasingPart.BACK);
 	}
 
-	public EntitySlugCasing(final World world, final SlugCasingParts part) {
+	public EntitySlugCasing(final World world, final SlugCasingPart part) {
 		super(world);
 		this.setSize(0.25f, 0.25f);
 		this.part = part;
 	}
 
-	private SlugCasingParts getPart() {
+	private SlugCasingPart getPart() {
 		return this.part;
 	}
 
@@ -38,7 +38,7 @@ public class EntitySlugCasing extends Entity implements IModEntity {
 
 	@Override
 	protected void writeEntityToNBT(final NBTTagCompound compound) {
-		this.part = SlugCasingParts.byId(compound.getInteger("part"));
+		this.part = SlugCasingPart.byId(compound.getInteger("part"));
 
 	}
 

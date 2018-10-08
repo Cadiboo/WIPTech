@@ -1,6 +1,6 @@
 package cadiboo.wiptech.block;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -14,16 +14,16 @@ import net.minecraft.world.IBlockAccess;
  */
 public class BlockSpool extends Block implements IModBlock, IBlockModMaterial {
 
-	protected final ModMaterials material;
+	protected final ModMaterial material;
 
-	public BlockSpool(final ModMaterials material) {
+	public BlockSpool(final ModMaterial material) {
 		super(material.getVanillaMaterial());
 		ModUtil.setRegistryNames(this, material, "spool");
 		this.material = material;
 	}
 
 	@Override
-	public final ModMaterials getModMaterial() {
+	public final ModMaterial getModMaterial() {
 		return this.material;
 	}
 

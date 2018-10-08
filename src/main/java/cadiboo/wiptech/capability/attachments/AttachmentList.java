@@ -6,7 +6,7 @@ import java.util.HashMap;
 import com.google.common.collect.ImmutableSet;
 
 import cadiboo.wiptech.item.IItemAttachment;
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,11 +14,11 @@ import net.minecraftforge.common.util.INBTSerializable;
 
 public class AttachmentList implements INBTSerializable<NBTTagCompound> {
 
-	private final ImmutableSet<AttachmentPoints> attachmentPoints;
+	private final ImmutableSet<AttachmentPoint> attachmentPoints;
 
-	private final HashMap<AttachmentPoints, ItemStack> attachments;
+	private final HashMap<AttachmentPoint, ItemStack> attachments;
 
-	public AttachmentList(final AttachmentPoints... attachmentPoints) {
+	public AttachmentList(final AttachmentPoint... attachmentPoints) {
 		this.attachmentPoints = ImmutableSet.copyOf(Arrays.asList(attachmentPoints));
 		this.attachments = new HashMap<>();
 		this.attachmentPoints.forEach(point -> {
@@ -26,11 +26,11 @@ public class AttachmentList implements INBTSerializable<NBTTagCompound> {
 		});
 	}
 
-	public ImmutableSet<AttachmentPoints> getPoints() {
+	public ImmutableSet<AttachmentPoint> getPoints() {
 		return this.attachmentPoints;
 	}
 
-	public ItemStack getAttachment(final AttachmentPoints attachmentPoint) {
+	public ItemStack getAttachment(final AttachmentPoint attachmentPoint) {
 		return this.attachments.get(attachmentPoint);
 	}
 
@@ -48,7 +48,7 @@ public class AttachmentList implements INBTSerializable<NBTTagCompound> {
 		final Item item = attachmentStack.getItem();
 		if (item instanceof IItemAttachment) {
 			final IItemAttachment attachmentItem = (IItemAttachment) item;
-			final AttachmentPoints attachmentPoint = attachmentItem.getAttachmentPoint();
+			final AttachmentPoint attachmentPoint = attachmentItem.getAttachmentPoint();
 
 			if (attachmentPoint != null) {
 
@@ -86,7 +86,7 @@ public class AttachmentList implements INBTSerializable<NBTTagCompound> {
 		final Item item = attachmentStack.getItem();
 		if (item instanceof IItemAttachment) {
 			final IItemAttachment attachmentItem = (IItemAttachment) item;
-			final AttachmentPoints attachmentPoint = attachmentItem.getAttachmentPoint();
+			final AttachmentPoint attachmentPoint = attachmentItem.getAttachmentPoint();
 
 			if (attachmentPoint != null) {
 
@@ -129,7 +129,7 @@ public class AttachmentList implements INBTSerializable<NBTTagCompound> {
 		if (compound == null) {
 			return;
 		}
-		for (final AttachmentPoints point : this.attachments.keySet()) {
+		for (final AttachmentPoint point : this.attachments.keySet()) {
 			if (compound.hasKey("" + point.getId())) {
 				this.attachments.put(point, new ItemStack((NBTTagCompound) compound.getTag("" + point.getId())));
 			}

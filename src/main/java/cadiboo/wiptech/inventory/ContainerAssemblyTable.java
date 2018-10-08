@@ -5,7 +5,7 @@ import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
 import cadiboo.wiptech.item.IItemAttachment;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -57,7 +57,7 @@ public class ContainerAssemblyTable extends Container {
 						if (!body.isEmpty()) {
 							final AttachmentList attachmentList = body.getCapability(CapabilityAttachmentList.ATTACHMENT_LIST, null);
 							if (attachmentList != null) {
-								final AttachmentPoints itemPoint = ((IItemAttachment) stack.getItem()).getAttachmentPoint();
+								final AttachmentPoint itemPoint = ((IItemAttachment) stack.getItem()).getAttachmentPoint();
 								if (attachmentList.getPoints().contains(itemPoint)) {
 									return true;
 								}

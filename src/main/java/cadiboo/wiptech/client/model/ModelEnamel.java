@@ -1,6 +1,6 @@
 package cadiboo.wiptech.client.model;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import net.minecraftforge.client.model.IModel;
@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelEnamel extends ModelWire implements IModel {
 
-	public ModelEnamel(final ModMaterials material) {
+	public ModelEnamel(final ModMaterial material) {
 		super(material);
 	}
 

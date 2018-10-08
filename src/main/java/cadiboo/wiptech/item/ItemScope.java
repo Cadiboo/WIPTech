@@ -1,7 +1,7 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
-import cadiboo.wiptech.util.ModEnums.ScopeTypes;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
+import cadiboo.wiptech.util.ModEnums.ScopeType;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.item.Item;
 
@@ -10,20 +10,20 @@ import net.minecraft.item.Item;
  */
 public class ItemScope extends Item implements IItemAttachment, IModItem {
 
-	private final ScopeTypes type;
+	private final ScopeType type;
 
-	public ItemScope(final String name, final ScopeTypes type) {
+	public ItemScope(final String name, final ScopeType type) {
 		ModUtil.setRegistryNames(this, type.getNameLowercase() + "_" + name);
 		this.type = type;
 	}
 
-	public ScopeTypes getType() {
+	public ScopeType getType() {
 		return this.type;
 	}
 
 	@Override
-	public AttachmentPoints getAttachmentPoint() {
-		return AttachmentPoints.SCOPE;
+	public AttachmentPoint getAttachmentPoint() {
+		return AttachmentPoint.SCOPE;
 	}
 
 }

@@ -2,7 +2,7 @@ package cadiboo.wiptech.block;
 
 import java.util.Random;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
@@ -22,16 +22,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class BlockModOre extends Block implements IModBlock, IBlockModMaterial {
 
-	protected final ModMaterials material;
+	protected final ModMaterial material;
 
-	public BlockModOre(final ModMaterials material) {
+	public BlockModOre(final ModMaterial material) {
 		super(Material.ROCK);
 		ModUtil.setRegistryNames(this, material, "ore");
 		this.material = material;
 	}
 
 	@Override
-	public final ModMaterials getModMaterial() {
+	public final ModMaterial getModMaterial() {
 		return this.material;
 	}
 
@@ -59,7 +59,7 @@ public class BlockModOre extends Block implements IModBlock, IBlockModMaterial {
 	public boolean isOpaqueCube(final IBlockState state) {
 		if (ModReference.Debug.debugOres()) {
 			return false;
-		} else if (this.getModMaterial() == ModMaterials.GLITCH) {
+		} else if (this.getModMaterial() == ModMaterial.GLITCH) {
 			return false;
 		} else {
 			return true;

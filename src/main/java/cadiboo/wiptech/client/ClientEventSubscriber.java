@@ -39,16 +39,16 @@ import cadiboo.wiptech.item.IItemAttachment;
 import cadiboo.wiptech.item.IItemModMaterial;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemRail;
+import cadiboo.wiptech.material.ModMaterialProperties;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
 import cadiboo.wiptech.tileentity.TileEntityModFurnace;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ExistsForDebugging;
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
-import cadiboo.wiptech.util.ModEnums.CircuitTypes;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
-import cadiboo.wiptech.util.ModEnums.ScopeTypes;
-import cadiboo.wiptech.util.ModMaterialProperties;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
+import cadiboo.wiptech.util.ModEnums.CircuitType;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
+import cadiboo.wiptech.util.ModEnums.ScopeType;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModWritingUtil;
@@ -158,7 +158,7 @@ public final class ClientEventSubscriber {
 	}
 
 	private static void registerModelsForMaterials() {
-		for (final ModMaterials material : ModMaterials.values()) {
+		for (final ModMaterial material : ModMaterial.values()) {
 
 			if (material.getProperties().hasWire()) {
 				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
@@ -183,25 +183,25 @@ public final class ClientEventSubscriber {
 		ModelLoaderRegistry.registerLoader(new WireModelLoader());
 		WIPTech.debug("Registered custom State Mappers for wires and enamels with the Model Loader");
 
-		if (ModMaterials.GLITCH.getProperties().hasBlock() || ModMaterials.GLITCH.getProperties().hasOre()) {
-			if (ModMaterials.GLITCH.getBlock() != null) {
-				ModelLoader.setCustomStateMapper(ModMaterials.GLITCH.getBlock(), new StateMapperBase() {
+		if (ModMaterial.GLITCH.getProperties().hasBlock() || ModMaterial.GLITCH.getProperties().hasOre()) {
+			if (ModMaterial.GLITCH.getBlock() != null) {
+				ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getBlock(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
 						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_block"), DEFAULT_VARIANT);
 					}
 				});
 			}
-			if (ModMaterials.GLITCH.getOre() != null) {
-				ModelLoader.setCustomStateMapper(ModMaterials.GLITCH.getOre(), new StateMapperBase() {
+			if (ModMaterial.GLITCH.getOre() != null) {
+				ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getOre(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
 						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_ore"), DEFAULT_VARIANT);
 					}
 				});
 			}
-			if (ModMaterials.GLITCH.getSpool() != null) {
-				ModelLoader.setCustomStateMapper(ModMaterials.GLITCH.getSpool(), new StateMapperBase() {
+			if (ModMaterial.GLITCH.getSpool() != null) {
+				ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getSpool(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
 						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_spool"), DEFAULT_VARIANT);
@@ -212,7 +212,7 @@ public final class ClientEventSubscriber {
 		ModelLoaderRegistry.registerLoader(new GlitchModelLoader());
 		WIPTech.debug("Registered custom State Mapper(s) for glitch block and ore with the Model Loader");
 
-		for (final ModMaterials material : ModMaterials.values()) {
+		for (final ModMaterial material : ModMaterial.values()) {
 
 			if (material.getProperties().hasRailgunSlug()) {
 				// FIXME TODO re-enable this & make it work
@@ -224,7 +224,7 @@ public final class ClientEventSubscriber {
 //		ModelLoaderRegistry.registerLoader(new CasedSlugModelLoader());
 //		WIPTech.debug("Registered custom Mesh Definitions for cased slugs with the Model Loader");
 
-		for (final ModMaterials material : ModMaterials.values()) {
+		for (final ModMaterial material : ModMaterial.values()) {
 			if (material.getProperties().hasOre()) {
 				if (material.getOre() != null) {
 					registerBlockModMaterialItemBlockModel(material.getOre());
@@ -324,11 +324,11 @@ public final class ClientEventSubscriber {
 
 	private static void registerModelsForAttachments() {
 
-		for (final CircuitTypes type : CircuitTypes.values()) {
+		for (final CircuitType type : CircuitType.values()) {
 			registerItemModel(type.getItem("circuit"));
 		}
 
-		for (final ScopeTypes type : ScopeTypes.values()) {
+		for (final ScopeType type : ScopeType.values()) {
 			registerItemModel(type.getItem("scope"));
 		}
 
@@ -383,8 +383,8 @@ public final class ClientEventSubscriber {
 	private static void injectTextures(final TextureMap map) {
 		final HashSet<ModResourceLocation> modelLocations = new HashSet<>();
 
-		if (ModMaterials.GLITCH != null) {
-			final ModMaterialProperties properties = ModMaterials.GLITCH.getProperties();
+		if (ModMaterial.GLITCH != null) {
+			final ModMaterialProperties properties = ModMaterial.GLITCH.getProperties();
 			if (properties.hasOre()) {
 				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/missing_ore"));
 				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_ore"));
@@ -395,12 +395,12 @@ public final class ClientEventSubscriber {
 			}
 
 			if (properties.hasResource()) {
-				final String resourceSuffix = ModMaterials.GLITCH.getType().getResourceNameSuffix();
+				final String resourceSuffix = ModMaterial.GLITCH.getType().getResourceNameSuffix();
 				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + resourceSuffix));
 				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + resourceSuffix));
 
-				if (ModMaterials.GLITCH.getType().hasResourcePiece()) {
-					final String resourcePieceSuffix = ModMaterials.GLITCH.getType().getResourcePieceNameSuffix();
+				if (ModMaterial.GLITCH.getType().hasResourcePiece()) {
+					final String resourcePieceSuffix = ModMaterial.GLITCH.getType().getResourcePieceNameSuffix();
 					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + resourcePieceSuffix));
 					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + resourcePieceSuffix));
 				}
@@ -777,7 +777,7 @@ public final class ClientEventSubscriber {
 		if (attachmentList != null) {
 
 			boolean isEmpty = true;
-			for (final AttachmentPoints attachmentPoint : attachmentList.getPoints()) {
+			for (final AttachmentPoint attachmentPoint : attachmentList.getPoints()) {
 				if (!isEmpty) {
 					continue;
 				}
@@ -791,7 +791,7 @@ public final class ClientEventSubscriber {
 			if (!isEmpty) {
 				setTooltip(event, TextFormatting.RESET + "");
 				setTooltip(event, WIPTech.proxy.localize("attachments") + ":");
-				for (final AttachmentPoints attachmentPoint : attachmentList.getPoints()) {
+				for (final AttachmentPoint attachmentPoint : attachmentList.getPoints()) {
 					final ItemStack attachmentStack = attachmentList.getAttachment(attachmentPoint);
 
 					String value = WIPTech.proxy.localize(attachmentStack.getUnlocalizedName() + ".name");

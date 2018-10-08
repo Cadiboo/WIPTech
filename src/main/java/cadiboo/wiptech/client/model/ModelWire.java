@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -21,9 +21,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModelWire implements IModel {
 
-	protected final ModMaterials material;
+	protected final ModMaterial material;
 
-	public ModelWire(final ModMaterials material) {
+	public ModelWire(final ModMaterial material) {
 		this.material = material;
 	}
 

@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import cadiboo.wiptech.client.model.ModelEnamel;
 import cadiboo.wiptech.client.model.ModelWire;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
@@ -43,9 +43,9 @@ public class WireModelLoader implements ICustomModelLoader {
 			final String modelMaterial = String.join("_", modelName);
 
 			if (modelType.toLowerCase().equals("wire")) {
-				return new ModelWire(ModMaterials.valueOf(modelMaterial.toUpperCase()));
+				return new ModelWire(ModMaterial.valueOf(modelMaterial.toUpperCase()));
 			} else if (modelType.toLowerCase().equals("enamel")) {
-				return new ModelEnamel(ModMaterials.valueOf(modelMaterial.toUpperCase()));
+				return new ModelEnamel(ModMaterial.valueOf(modelMaterial.toUpperCase()));
 			} else {
 				return ModelLoaderRegistry.getMissingModel();
 			}

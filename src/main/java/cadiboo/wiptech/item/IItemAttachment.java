@@ -1,12 +1,12 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 
 /**
  * @author Cadiboo
  */
 public interface IItemAttachment {
 
-	AttachmentPoints getAttachmentPoint();
+	AttachmentPoint getAttachmentPoint();
 
 }

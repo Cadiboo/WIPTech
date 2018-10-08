@@ -2,7 +2,7 @@ package cadiboo.wiptech.item;
 
 import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.entity.projectile.EntityNapalm;
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.SoundCategory;
@@ -13,19 +13,19 @@ import net.minecraft.world.World;
  */
 public class ItemHandheldRailgun extends ItemHandheldGun {
 
-	public static final AttachmentPoints[] ATTACHMENT_POINTS = new AttachmentPoints[] {
+	public static final AttachmentPoint[] ATTACHMENT_POINTS = new AttachmentPoint[] {
 
-			AttachmentPoints.CIRCUIT,
+			AttachmentPoint.CIRCUIT,
 
-			AttachmentPoints.SCOPE,
+			AttachmentPoint.SCOPE,
 
-			AttachmentPoints.SIDE_LEFT,
+			AttachmentPoint.SIDE_LEFT,
 
-			AttachmentPoints.SIDE_RIGHT,
+			AttachmentPoint.SIDE_RIGHT,
 
-			AttachmentPoints.RAIL,
+			AttachmentPoint.RAIL,
 
-			AttachmentPoints.UNDER
+			AttachmentPoint.UNDER
 
 	};
 

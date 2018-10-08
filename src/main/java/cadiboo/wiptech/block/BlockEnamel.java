@@ -3,7 +3,7 @@ package cadiboo.wiptech.block;
 import java.util.List;
 
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -31,7 +31,7 @@ public class BlockEnamel extends BlockWire implements IModBlock {
 	public static final AxisAlignedBB	EAST_AABB	= new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, format__1, 10d / 16d, 10d / 16d);
 	public static final AxisAlignedBB	WEST_AABB	= new AxisAlignedBB(format__0, 06d / 16d, 06d / 16d, 10d / 16d, 10d / 16d, 10d / 16d);
 
-	public BlockEnamel(final ModMaterials material) {
+	public BlockEnamel(final ModMaterial material) {
 		super(material, "enamel");
 	}
 

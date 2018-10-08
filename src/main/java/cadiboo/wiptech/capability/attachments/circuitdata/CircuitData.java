@@ -1,7 +1,7 @@
 package cadiboo.wiptech.capability.attachments.circuitdata;
 
-import cadiboo.wiptech.util.ModEnums.CircuitTypes;
-import cadiboo.wiptech.util.ModEnums.UsePhases;
+import cadiboo.wiptech.util.ModEnums.CircuitType;
+import cadiboo.wiptech.util.ModEnums.UsePhase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -9,15 +9,15 @@ public class CircuitData implements INBTSerializable<NBTTagCompound> {
 
 	public static final String SHOTS_TAKEN_TAG = "shotsTaken";
 
-	private final CircuitTypes	circuit;
+	private final CircuitType	circuit;
 	private int					shotsTaken;
 	private long				lastShotIncrementedTime;
 
-	public CircuitData(final CircuitTypes circuit) {
+	public CircuitData(final CircuitType circuit) {
 		this.circuit = circuit;
 	}
 
-	public boolean canShoot(final UsePhases phase) {
+	public boolean canShoot(final UsePhase phase) {
 
 		if (!this.canShootOnPhase(phase)) {
 			return false;
@@ -36,11 +36,11 @@ public class CircuitData implements INBTSerializable<NBTTagCompound> {
 		return true;
 	}
 
-	public boolean canShootOnPhase(final UsePhases phase) {
+	public boolean canShootOnPhase(final UsePhase phase) {
 		return this.circuit.getUsePhases().contains(phase);
 	}
 
-	public CircuitTypes getType() {
+	public CircuitType getType() {
 		return this.circuit;
 	}
 

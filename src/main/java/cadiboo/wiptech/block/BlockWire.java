@@ -4,7 +4,7 @@ import java.util.List;
 
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.tileentity.TileEntityWire;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -51,20 +51,20 @@ public class BlockWire extends Block implements IModBlock, IBlockModMaterial {
 	public static final IUnlistedProperty<Boolean>	CONNECTED_WEST	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_west"));
 	public static final IUnlistedProperty<Boolean>	CONNECTED_EAST	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_east"));
 
-	protected final ModMaterials material;
+	protected final ModMaterial material;
 
-	public BlockWire(final ModMaterials material) {
+	public BlockWire(final ModMaterial material) {
 		this(material, "wire");
 	}
 
-	protected BlockWire(final ModMaterials material, final String nameSuffix) {
+	protected BlockWire(final ModMaterial material, final String nameSuffix) {
 		super(material.getVanillaMaterial());
 		ModUtil.setRegistryNames(this, material, nameSuffix);
 		this.material = material;
 	}
 
 	@Override
-	public final ModMaterials getModMaterial() {
+	public final ModMaterial getModMaterial() {
 		return this.material;
 	}
 

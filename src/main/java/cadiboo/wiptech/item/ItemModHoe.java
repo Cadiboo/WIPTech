@@ -1,22 +1,22 @@
 package cadiboo.wiptech.item;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemHoe;
 
 public class ItemModHoe extends ItemHoe implements IItemModMaterial {
 
-	protected final ModMaterials material;
+	protected final ModMaterial material;
 
-	public ItemModHoe(final ModMaterials material) {
+	public ItemModHoe(final ModMaterial material) {
 		super(material.getToolMaterial());
 		ModUtil.setRegistryNames(this, material, "hoe");
 		this.material = material;
 	}
 
 	@Override
-	public ModMaterials getModMaterial() {
+	public ModMaterial getModMaterial() {
 		return this.material;
 	}
 

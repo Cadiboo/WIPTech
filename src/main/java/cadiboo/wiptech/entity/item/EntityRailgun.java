@@ -17,7 +17,7 @@ import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemSlug;
 import cadiboo.wiptech.util.ExistsForDebugging;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModGuiHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
@@ -377,7 +377,7 @@ public class EntityRailgun extends Entity implements IModEntity, IWorldNameable,
 
 			if (ammo.isEmpty()) {
 				if (shootAnyway) {
-					ammo = new ItemStack(ModMaterials.IRON.getCasedSlug());
+					ammo = new ItemStack(ModMaterial.IRON.getCasedSlug());
 				} else {
 					return;
 				}
@@ -427,7 +427,7 @@ public class EntityRailgun extends Entity implements IModEntity, IWorldNameable,
 
 		if (ammo.isEmpty()) {
 			if (shootAnyway) {
-				ammo = new ItemStack(ModMaterials.IRON.getCasedSlug());
+				ammo = new ItemStack(ModMaterial.IRON.getCasedSlug());
 			} else {
 				return;
 			}

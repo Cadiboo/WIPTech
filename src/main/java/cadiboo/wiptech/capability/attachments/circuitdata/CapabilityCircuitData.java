@@ -1,6 +1,6 @@
 package cadiboo.wiptech.capability.attachments.circuitdata;
 
-import cadiboo.wiptech.util.ModEnums.CircuitTypes;
+import cadiboo.wiptech.util.ModEnums.CircuitType;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -30,6 +30,6 @@ public class CapabilityCircuitData {
 					instance.deserializeNBT((NBTTagCompound) nbt);
 				}
 			}
-		}, () -> new CircuitData(CircuitTypes.SEMI_AUTO));
+		}, () -> new CircuitData(CircuitType.SEMI_AUTO));
 	}
 }

@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import cadiboo.wiptech.api.WIPTechAPI;
-import cadiboo.wiptech.util.ModEnums.CircuitTypes;
-import cadiboo.wiptech.util.ModEnums.ModMaterialTypes;
-import cadiboo.wiptech.util.ModEnums.UsePhases;
-import cadiboo.wiptech.util.ModMaterialProperties;
+import cadiboo.wiptech.material.ModMaterialProperties;
+import cadiboo.wiptech.util.ModEnums.CircuitType;
+import cadiboo.wiptech.util.ModEnums.ModMaterialType;
+import cadiboo.wiptech.util.ModEnums.UsePhase;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
@@ -36,11 +36,11 @@ public class WIPTechApiTester {
 
 		if (ModReference.Debug.debugAPICircuits()) {
 			final Random rand = new Random(0xBADC0DE);
-			final CircuitTypes SEMI_AUTO = WIPTechAPI.addCircuit(rand.nextString(7), rand.nextInt(1000), rand.nextInt(100), new UsePhases[] { UsePhases.TICK, UsePhases.END });
+			final CircuitType SEMI_AUTO = WIPTechAPI.addCircuit(rand.nextString(7), rand.nextInt(1000), rand.nextInt(100), new UsePhase[] { UsePhase.TICK, UsePhase.END });
 		}
 
 		if (ModReference.Debug.debugAPIMaterials()) {
-			for (final ModMaterialTypes type : ModMaterialTypes.values()) {
+			for (final ModMaterialType type : ModMaterialType.values()) {
 				final int n = 5;
 				BigInteger bi = BigInteger.ZERO;
 				final BigDecimal rows = new BigDecimal(Math.pow(2, n));

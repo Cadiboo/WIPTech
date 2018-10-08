@@ -1,12 +1,12 @@
 package cadiboo.wiptech.block;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 
 /**
  * @author Cadiboo
  */
 public interface IBlockModMaterial extends IModBlock {
 
-	ModMaterials getModMaterial();
+	ModMaterial getModMaterial();
 
 }

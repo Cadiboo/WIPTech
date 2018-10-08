@@ -1,7 +1,7 @@
 package cadiboo.wiptech.block;
 
-import cadiboo.wiptech.util.ModEnums.BlockItemTypes;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.BlockItemType;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -26,10 +26,10 @@ public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-	protected final ModMaterials	material;
-	protected final BlockItemTypes	type;
+	protected final ModMaterial	material;
+	protected final BlockItemType	type;
 
-	public BlockItem(final ModMaterials material, final BlockItemTypes type) {
+	public BlockItem(final ModMaterial material, final BlockItemType type) {
 		super(material.getVanillaMaterial());
 		ModUtil.setRegistryNames(this, material, type.getNameLowercase());
 		this.material = material;
@@ -38,11 +38,11 @@ public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 	}
 
 	@Override
-	public final ModMaterials getModMaterial() {
+	public final ModMaterial getModMaterial() {
 		return this.material;
 	}
 
-	public final BlockItemTypes getType() {
+	public final BlockItemType getType() {
 		return this.type;
 	}
 
@@ -79,7 +79,7 @@ public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 	@Override
 	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer) {
 		EnumFacing enumfacing = placer.getHorizontalFacing().rotateY();
-		if ((this.getType() == BlockItemTypes.NUGGET) & (this.material == ModMaterials.GOLD)) {
+		if ((this.getType() == BlockItemType.NUGGET) & (this.material == ModMaterial.GOLD)) {
 			enumfacing = enumfacing.rotateY();
 		}
 		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, enumfacing);

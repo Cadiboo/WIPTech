@@ -5,8 +5,8 @@ import javax.annotation.Nullable;
 
 import cadiboo.wiptech.capability.attachments.circuitdata.CapabilityCircuitData;
 import cadiboo.wiptech.capability.attachments.circuitdata.CircuitData;
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
-import cadiboo.wiptech.util.ModEnums.CircuitTypes;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
+import cadiboo.wiptech.util.ModEnums.CircuitType;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,20 +21,20 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
  */
 public class ItemCircuit extends Item implements IItemAttachment, IModItem {
 
-	private final CircuitTypes type;
+	private final CircuitType type;
 
-	public ItemCircuit(final String name, final CircuitTypes type) {
+	public ItemCircuit(final String name, final CircuitType type) {
 		ModUtil.setRegistryNames(this, type.getNameLowercase() + "_" + name);
 		this.type = type;
 	}
 
-	public CircuitTypes getType() {
+	public CircuitType getType() {
 		return this.type;
 	}
 
 	@Override
-	public AttachmentPoints getAttachmentPoint() {
-		return AttachmentPoints.CIRCUIT;
+	public AttachmentPoint getAttachmentPoint() {
+		return AttachmentPoint.CIRCUIT;
 	}
 
 	@Override

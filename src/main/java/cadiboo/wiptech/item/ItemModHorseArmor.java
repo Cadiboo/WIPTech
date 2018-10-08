@@ -2,7 +2,7 @@ package cadiboo.wiptech.item;
 
 import java.util.Random;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModUtil;
@@ -14,9 +14,9 @@ import net.minecraft.item.ItemStack;
 
 public class ItemModHorseArmor extends Item implements IItemModMaterial {
 
-	protected final ModMaterials material;
+	protected final ModMaterial material;
 
-	public ItemModHorseArmor(final ModMaterials material) {
+	public ItemModHorseArmor(final ModMaterial material) {
 		super();
 		this.setMaxStackSize(1);
 		ModUtil.setRegistryNames(this, material, "horse_armor");
@@ -24,7 +24,7 @@ public class ItemModHorseArmor extends Item implements IItemModMaterial {
 	}
 
 	@Override
-	public ModMaterials getModMaterial() {
+	public ModMaterial getModMaterial() {
 		return this.material;
 	}
 
@@ -40,7 +40,7 @@ public class ItemModHorseArmor extends Item implements IItemModMaterial {
 
 	@Override
 	public String getHorseArmorTexture(final EntityLiving wearer, final ItemStack stack) {
-		if (this.getModMaterial() == ModMaterials.GLITCH) {
+		if (this.getModMaterial() == ModMaterial.GLITCH) {
 			if (new Random().nextBoolean()) {
 				return new ModResourceLocation(ModReference.MOD_ID, "textures/entity/horse/armor/horse_armor_missing").toString() + ".png";
 			} else {

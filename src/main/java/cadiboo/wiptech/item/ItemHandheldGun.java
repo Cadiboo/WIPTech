@@ -14,8 +14,8 @@ import cadiboo.wiptech.capability.energy.IEnergyUser;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
 import cadiboo.wiptech.capability.inventory.IInventoryUser;
 import cadiboo.wiptech.capability.inventory.ModItemStackHandler;
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
-import cadiboo.wiptech.util.ModEnums.UsePhases;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
+import cadiboo.wiptech.util.ModEnums.UsePhase;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,18 +38,18 @@ import scala.actors.threadpool.Arrays;
 
 public abstract class ItemHandheldGun extends Item implements IModItem {
 
-	private static final AttachmentPoints[] REQUIRED_ATTACHMENT_POINTS = new AttachmentPoints[] { AttachmentPoints.CIRCUIT };
+	private static final AttachmentPoint[] REQUIRED_ATTACHMENT_POINTS = new AttachmentPoint[] { AttachmentPoint.CIRCUIT };
 
-	private final AttachmentPoints[] attachmentPoints;
+	private final AttachmentPoint[] attachmentPoints;
 
-	public ItemHandheldGun(final String name, final AttachmentPoints... attachmentPoints) {
+	public ItemHandheldGun(final String name, final AttachmentPoint... attachmentPoints) {
 		ModUtil.setRegistryNames(this, name);
 
-		final HashSet<AttachmentPoints> points = new HashSet<>();
+		final HashSet<AttachmentPoint> points = new HashSet<>();
 		points.addAll(Arrays.asList(attachmentPoints));
 		points.addAll(Arrays.asList(REQUIRED_ATTACHMENT_POINTS));
 
-		this.attachmentPoints = points.toArray(new AttachmentPoints[0]);
+		this.attachmentPoints = points.toArray(new AttachmentPoint[0]);
 		this.setMaxDamage(100);
 		this.setMaxStackSize(1);
 	}
@@ -81,7 +81,7 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 		if (attachmentList == null) {
 			return new ActionResult<>(EnumActionResult.FAIL, itemstack);
 		}
-		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
+		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoint.CIRCUIT);
 		if (circuitStack.isEmpty()) {
 			return new ActionResult<>(EnumActionResult.FAIL, itemstack);
 		}
@@ -91,14 +91,14 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			return new ActionResult<>(EnumActionResult.FAIL, itemstack);
 		}
 
-		if (circuitData.canShoot(UsePhases.START)) {
+		if (circuitData.canShoot(UsePhase.START)) {
 			circuitData.incrementShotsTaken();
 			this.shoot(world, player, attachmentList);
 			player.setActiveHand(hand);
 			return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
 		}
 
-		for (final UsePhases phase : UsePhases.values()) {
+		for (final UsePhase phase : UsePhase.values()) {
 			if (circuitData.canShootOnPhase(phase)) {
 				player.setActiveHand(hand);
 				return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
@@ -128,7 +128,7 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			return;
 		}
 
-		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
+		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoint.CIRCUIT);
 		if (circuitStack.isEmpty()) {
 			return;
 		}
@@ -139,7 +139,7 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			return;
 		}
 
-		if (circuitData.canShoot(UsePhases.TICK)) {
+		if (circuitData.canShoot(UsePhase.TICK)) {
 			circuitData.incrementShotsTaken();
 			this.shoot(world, player, attachmentList);
 		}
@@ -163,7 +163,7 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 		if (attachmentList == null) {
 			return;
 		}
-		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoints.CIRCUIT);
+		final ItemStack circuitStack = attachmentList.getAttachment(AttachmentPoint.CIRCUIT);
 		if (circuitStack.isEmpty()) {
 			return;
 		}
@@ -173,7 +173,7 @@ public abstract class ItemHandheldGun extends Item implements IModItem {
 			return;
 		}
 
-		if (circuitData.canShoot(UsePhases.END)) {
+		if (circuitData.canShoot(UsePhase.END)) {
 			circuitData.incrementShotsTaken();
 			this.shoot(world, player, attachmentList);
 		}

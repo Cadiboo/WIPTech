@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.creativetab.ModCreativeTabs;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.material.ModMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,11 +29,11 @@ public final class ModUtil {
 	/**
 	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.block.Block#setUnlocalizedName() Unlocalised Name} for the block taking vanilla overriding into account
 	 * @param block      the block to set registry names for
-	 * @param material   the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material} to get the names based on
+	 * @param material   the {@link cadiboo.wiptech.util.ModEnums.ModMaterial Mod Material} to get the names based on
 	 * @param nameSuffix the string to be appended to the names (for example "ore" or "block")
 	 */
-	public static Block setRegistryNames(final Block block, final ModMaterials material, final String nameSuffix) {
-		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.BLOCKS), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
+	public static Block setRegistryNames(final Block block, final ModMaterial material, final String nameSuffix) {
+		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
 		block.setHardness(material.getProperties().getHardness());
 		return setRegistryNames(block, registryName);
 	}
@@ -41,11 +41,11 @@ public final class ModUtil {
 	/**
 	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.item.Item#setUnlocalizedName() Unlocalised Name} for the item taking vanilla overriding and vanilla name quirks into account
 	 * @param item       the item to set registry names for
-	 * @param material   the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material} to get the names based on
+	 * @param material   the {@link cadiboo.wiptech.util.ModEnums.ModMaterial Mod Material} to get the names based on
 	 * @param nameSuffix the string to be appended to the names (for example "shovel" or "helmet")
 	 */
-	public static Item setRegistryNames(final Item item, final ModMaterials material, final String nameSuffix) {
-		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(nameSuffix.toLowerCase(), ForgeRegistries.ITEMS), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
+	public static Item setRegistryNames(final Item item, final ModMaterial material, final String nameSuffix) {
+		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
 		setRegistryNames(item, registryName);
 
 		final Item overriddenItem = ForgeRegistries.ITEMS.getValue(registryName);
@@ -96,21 +96,21 @@ public final class ModUtil {
 	/**
 	 * Gets the game name from a slot<br>
 	 * For example {@link net.minecraft.inventory.EntityEquipmentSlot.CHEST EntityEquipmentSlot.CHEST} -> "CHESTPLATE"
-	 * @param slot the {@link net.minecraft.inventory.EntityEquipmentSlot EntityEquipmentSlot} to get the name for
-	 * @return the game name for the slot
+	 * @param  slot the {@link net.minecraft.inventory.EntityEquipmentSlot EntityEquipmentSlot} to get the name for
+	 * @return      the game name for the slot
 	 */
 	public static String getSlotGameNameUppercase(final EntityEquipmentSlot slot) {
 		switch (slot) {
-		case CHEST:
-			return "CHESTPLATE";
-		case FEET:
-			return "BOOTS";
-		case HEAD:
-			return "HELMET";
-		case LEGS:
-			return "LEGGINGS";
-		default:
-			return slot.name().toUpperCase();
+			case CHEST :
+				return "CHESTPLATE";
+			case FEET :
+				return "BOOTS";
+			case HEAD :
+				return "HELMET";
+			case LEGS :
+				return "LEGGINGS";
+			default :
+				return slot.name().toUpperCase();
 		}
 	}
 
@@ -130,11 +130,11 @@ public final class ModUtil {
 
 	/**
 	 * Utility method to make sure that all our items appear on our creative tab, the search tab and any other tab they specify
-	 * @param item the {@link net.minecraft.item.Item Item}
-	 * @return an array of all tabs that this item is on.
+	 * @param  item the {@link net.minecraft.item.Item Item}
+	 * @return      an array of all tabs that this item is on.
 	 */
 	public static CreativeTabs[] getCreativeTabs(final Item item) {
-		return new CreativeTabs[] { item.getCreativeTab(), ModCreativeTabs.CREATIVE_TAB, CreativeTabs.SEARCH };
+		return new CreativeTabs[]{item.getCreativeTab(), ModCreativeTabs.CREATIVE_TAB, CreativeTabs.SEARCH};
 	}
 
 	/**
@@ -159,54 +159,54 @@ public final class ModUtil {
 
 	/**
 	 * Utility method allowing centralized control of glowing material ores, blocks etc. Helpful for debugging
-	 * @param material the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
-	 * @return a light value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
+	 * @param  material the {@link cadiboo.wiptech.util.ModEnums.ModMaterial Mod Material}
+	 * @return          a light value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterial material}
 	 */
-	public static int getMaterialLightValue(final ModMaterials material) {
+	public static int getMaterialLightValue(final ModMaterial material) {
 		if (ModReference.Debug.debugOres()) {
 			return 14;
 		}
 		switch (material) {
-		case PLUTONIUM:
-			return 6;
-		case URANIUM:
-			return 8;
-		case GLITCH:
-			return Math.round(Math.round(ModUtil.map(0, 1, 0, 15, new Random().nextDouble())));
-		default:
-			return 0;
+			case PLUTONIUM :
+				return 6;
+			case URANIUM :
+				return 8;
+			case GLITCH :
+				return Math.round(Math.round(ModUtil.map(0, 1, 0, 15, new Random().nextDouble())));
+			default :
+				return 0;
 		}
 	}
 
 	/**
 	 * Utility method allowing centralized control of glowing material ores, blocks etc. Helpful for debugging
-	 * @param material the {@link cadiboo.wiptech.util.ModEnums.ModMaterials Mod Material}
-	 * @return a light opacity value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterials material}
+	 * @param  material the {@link cadiboo.wiptech.util.ModEnums.ModMaterial Mod Material}
+	 * @return          a light opacity value corresponding to the {@link cadiboo.wiptech.util.ModEnums.ModMaterial material}
 	 */
-	public static int getMaterialLightOpacity(final ModMaterials material) {
+	public static int getMaterialLightOpacity(final ModMaterial material) {
 		if (ModReference.Debug.debugOres()) {
 			return 1;
 		}
 		switch (material) {
-		case PLUTONIUM:
-			return 9;
-		case URANIUM:
-			return 7;
-		case GLITCH:
-			return Math.round(Math.round(ModUtil.map(0, 1, 0, 15, new Random().nextDouble())));
-		default:
-			return 0;
+			case PLUTONIUM :
+				return 9;
+			case URANIUM :
+				return 7;
+			case GLITCH :
+				return Math.round(Math.round(ModUtil.map(0, 1, 0, 15, new Random().nextDouble())));
+			default :
+				return 0;
 		}
 	}
 
 	/**
 	 * Maps a value from one range to another range. Taken from https://stackoverflow.com/a/5732117
-	 * @param input_start  the start of the input's range
-	 * @param input_end    the end of the input's range
-	 * @param output_start the start of the output's range
-	 * @param output_end   the end of the output's range
-	 * @param input        the input
-	 * @return the newly mapped value
+	 * @param  input_start  the start of the input's range
+	 * @param  input_end    the end of the input's range
+	 * @param  output_start the start of the output's range
+	 * @param  output_end   the end of the output's range
+	 * @param  input        the input
+	 * @return              the newly mapped value
 	 */
 	public static double map(final double input_start, final double input_end, final double output_start, final double output_end, final double input) {
 		final double input_range = input_end - input_start;
@@ -225,9 +225,9 @@ public final class ModUtil {
 	 * (EntityPortableGenerator, "Entity") -> portable_generator<br>
 	 * (TileEntityPortableGenerator, "Entity") -> tile_portable_generator<br>
 	 * (EntityPortableEntityGeneratorEntity, "Entity") -> portable_generator<br>
-	 * @param clazz      the class
-	 * @param removeType the string to be removed from the class's name
-	 * @return the recommended registry name for the class
+	 * @param  clazz      the class
+	 * @param  removeType the string to be removed from the class's name
+	 * @return            the recommended registry name for the class
 	 */
 	public static String getRegistryNameForClass(final Class clazz, final String removeType) {
 		return org.apache.commons.lang3.StringUtils.uncapitalize(clazz.getSimpleName().replace(removeType, "")).replaceAll("([A-Z])", "_$1").toLowerCase();
@@ -242,8 +242,8 @@ public final class ModUtil {
 	 * super_advanced_furnace -> Super Advanced Furnace<br>
 	 * portable_generator -> Portable Generator<br>
 	 * tile_portable_generator -> Tile Portable Generator <br>
-	 * @param unlocalised the unlocalised name in
-	 * @return the recommended localised name for the class
+	 * @param  unlocalised the unlocalised name in
+	 * @return             the recommended localised name for the class
 	 */
 	public static String getLocalisedName(final String unlocalised) {
 		final String[] strs = unlocalised.split("_");
@@ -257,9 +257,9 @@ public final class ModUtil {
 	/**
 	 * Generic & dynamic version of {@link Container#transferStackInSlot(EntityPlayer, int)}<br>
 	 * Handle when the stack in slot {@code index} is shift-clicked. Normally this moves the stack between the player inventory and the other inventory(s).
-	 * @param player
-	 * @param index
-	 * @param container the container to apply the transfer to
+	 * @param  player
+	 * @param  index
+	 * @param  container the container to apply the transfer to
 	 * @return
 	 */
 	public static ItemStack transferStackInSlot(final EntityPlayer player, final int index, final Container container) {

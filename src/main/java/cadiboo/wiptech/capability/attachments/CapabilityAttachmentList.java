@@ -1,6 +1,6 @@
 package cadiboo.wiptech.capability.attachments;
 
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -30,6 +30,6 @@ public class CapabilityAttachmentList {
 			public void readNBT(final Capability<AttachmentList> capability, final AttachmentList instance, final EnumFacing side, final NBTBase nbt) {
 
 			}
-		}, () -> new AttachmentList(AttachmentPoints.values()));
+		}, () -> new AttachmentList(AttachmentPoint.values()));
 	}
 }

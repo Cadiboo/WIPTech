@@ -8,7 +8,7 @@ import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
 import cadiboo.wiptech.capability.attachments.IAttachmentUser;
 import cadiboo.wiptech.capability.energy.IEnergyUser;
 import cadiboo.wiptech.capability.energy.ModEnergyStorage;
-import cadiboo.wiptech.util.ModEnums.AttachmentPoints;
+import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -23,19 +23,19 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class ItemElectricShield extends Item {
 
-	public static final AttachmentPoints[] ATTACHMENT_POINTS = new AttachmentPoints[] {
+	public static final AttachmentPoint[] ATTACHMENT_POINTS = new AttachmentPoint[] {
 
-			AttachmentPoints.CIRCUIT,
+			AttachmentPoint.CIRCUIT,
 
-			AttachmentPoints.COIL,
+			AttachmentPoint.COIL,
 
-			AttachmentPoints.SCOPE,
+			AttachmentPoint.SCOPE,
 
-			AttachmentPoints.SIDE_LEFT,
+			AttachmentPoint.SIDE_LEFT,
 
-			AttachmentPoints.SIDE_RIGHT,
+			AttachmentPoint.SIDE_RIGHT,
 
-			AttachmentPoints.UNDER
+			AttachmentPoint.UNDER
 
 	};
 

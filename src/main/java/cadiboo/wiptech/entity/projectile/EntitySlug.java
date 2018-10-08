@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.entity.IModEntity;
-import cadiboo.wiptech.util.ModEnums.ModMaterials;
+import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,14 +23,14 @@ public class EntitySlug extends EntityThrowable implements IModEntity, IEntityAd
 
 	// FIXME do all this with capabilities or IEEPs. THe issue is that the material
 	// isnt synced between client & server
-	private ModMaterials						material;
+	private ModMaterial						material;
 	private static final DataParameter<Integer>	MATERIAL	= EntityDataManager.<Integer>createKey(EntitySlug.class, DataSerializers.VARINT);
 
 	public EntitySlug(final World world) {
-		this(world, ModMaterials.IRON);
+		this(world, ModMaterial.IRON);
 	}
 
-	public EntitySlug(final World world, final ModMaterials material) {
+	public EntitySlug(final World world, final ModMaterial material) {
 		super(world);
 		// this.material = material;
 		if (!world.isRemote) {
@@ -39,9 +39,9 @@ public class EntitySlug extends EntityThrowable implements IModEntity, IEntityAd
 		this.setSize(0.25f, 0.25f);
 	}
 
-	public ModMaterials getMaterial() {
+	public ModMaterial getMaterial() {
 		// return material;
-		return ModMaterials.byId(this.dataManager.get(MATERIAL).intValue());
+		return ModMaterial.byId(this.dataManager.get(MATERIAL).intValue());
 
 	}
 
