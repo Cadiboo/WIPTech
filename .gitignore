@@ -16,25 +16,30 @@ out
 # gradle
 build
 .gradle
+/gradle
+/gradle*
+gradle.properties
+!gradlew
+!gradlew.bat
+!build.gradle
 
 # other
 eclipse
 run
 
-#non-default
+# Important setup
 /*
 /*/
 !/src/
 !/src/*
 *.DS_Store*
-/gradle
-/gradle*
-gradle.properties
-!gradlew
-gradlew.bat
-!build.gradle
+
+# Vital git files
 !LICENSE
+!README.*
 !.gitignore
+
+# OPTIONAL - release JARs
 !/build/
 /build/*
 !/build/libs/
