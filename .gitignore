@@ -1,16 +1,45 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+/gradle
+/gradle*
+gradle.properties
+!gradlew
+!gradlew.bat
+!build.gradle
+
+# other
+eclipse
+run
+
+# Important setup
 /*
 /*/
 !/src/
 !/src/*
 *.DS_Store*
-!/gradle
-!/gradle*
-!gradle.properties
-!gradlew
-!gradlew.bat
-!build.gradle
+
+# Vital git files
 !LICENSE
+!README.*
 !.gitignore
+
+# OPTIONAL - release JARs
 !/build/
 /build/*
 !/build/libs/
