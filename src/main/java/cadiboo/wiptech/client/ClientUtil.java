@@ -835,4 +835,10 @@ public final class ClientUtil {
 //	float f4 = (float)(i & 255) / 255.0F;
 //	GL11.glColor3f(f2, f3, f4);
 
+	// TODO
+
+	// int r = (hex & 0xFF0000) >> 16;
+	// int g = (hex & 0xFF00) >> 8;
+	// int b = (hex & 0xFF);
+
 }
