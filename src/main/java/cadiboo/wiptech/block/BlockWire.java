@@ -3,8 +3,8 @@ package cadiboo.wiptech.block;
 import java.util.List;
 
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.tileentity.TileEntityWire;
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
@@ -33,23 +33,23 @@ import net.minecraftforge.common.property.Properties;
  */
 public class BlockWire extends Block implements IModBlock, IBlockModMaterial {
 
-	private static final int	format__0	= 0;
-	private static final int	format__1	= 1;
+	private static final int format__0 = 0;
+	private static final int format__1 = 1;
 
-	public static final AxisAlignedBB	CORE_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
-	public static final AxisAlignedBB	UP_AABB		= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, format__1, 09d / 16d);
-	public static final AxisAlignedBB	DOWN_AABB	= new AxisAlignedBB(07d / 16d, format__0, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
-	public static final AxisAlignedBB	NORTH_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, format__0, 09d / 16d, 09d / 16d, 09d / 16d);
-	public static final AxisAlignedBB	SOUTH_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, format__1);
-	public static final AxisAlignedBB	EAST_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, format__1, 09d / 16d, 09d / 16d);
-	public static final AxisAlignedBB	WEST_AABB	= new AxisAlignedBB(format__0, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB CORE_AABB = new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB UP_AABB = new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, format__1, 09d / 16d);
+	public static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(07d / 16d, format__0, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(07d / 16d, 07d / 16d, format__0, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, format__1);
+	public static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, format__1, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(format__0, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
 
-	public static final IUnlistedProperty<Boolean>	CONNECTED_DOWN	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_down"));
-	public static final IUnlistedProperty<Boolean>	CONNECTED_UP	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_up"));
-	public static final IUnlistedProperty<Boolean>	CONNECTED_NORTH	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_north"));
-	public static final IUnlistedProperty<Boolean>	CONNECTED_SOUTH	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_south"));
-	public static final IUnlistedProperty<Boolean>	CONNECTED_WEST	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_west"));
-	public static final IUnlistedProperty<Boolean>	CONNECTED_EAST	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_east"));
+	public static final IUnlistedProperty<Boolean> CONNECTED_DOWN = new Properties.PropertyAdapter<>(PropertyBool.create("connected_down"));
+	public static final IUnlistedProperty<Boolean> CONNECTED_UP = new Properties.PropertyAdapter<>(PropertyBool.create("connected_up"));
+	public static final IUnlistedProperty<Boolean> CONNECTED_NORTH = new Properties.PropertyAdapter<>(PropertyBool.create("connected_north"));
+	public static final IUnlistedProperty<Boolean> CONNECTED_SOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("connected_south"));
+	public static final IUnlistedProperty<Boolean> CONNECTED_WEST = new Properties.PropertyAdapter<>(PropertyBool.create("connected_west"));
+	public static final IUnlistedProperty<Boolean> CONNECTED_EAST = new Properties.PropertyAdapter<>(PropertyBool.create("connected_east"));
 
 	protected final ModMaterial material;
 
@@ -174,7 +174,7 @@ public class BlockWire extends Block implements IModBlock, IBlockModMaterial {
 	@Override
 	protected BlockStateContainer createBlockState() {
 		final IProperty[] listedProperties = new IProperty[0]; /* no listed properties */
-		final IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[] { CONNECTED_UP, CONNECTED_DOWN, CONNECTED_EAST, CONNECTED_WEST, CONNECTED_NORTH, CONNECTED_SOUTH };
+		final IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{CONNECTED_UP, CONNECTED_DOWN, CONNECTED_EAST, CONNECTED_WEST, CONNECTED_NORTH, CONNECTED_SOUTH};
 		return new ExtendedBlockState(this, listedProperties, unlistedProperties);
 	}
 

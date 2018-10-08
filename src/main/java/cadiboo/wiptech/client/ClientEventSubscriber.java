@@ -39,6 +39,7 @@ import cadiboo.wiptech.item.IItemAttachment;
 import cadiboo.wiptech.item.IItemModMaterial;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemRail;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.material.ModMaterialProperties;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
@@ -47,7 +48,6 @@ import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ExistsForDebugging;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import cadiboo.wiptech.util.ModEnums.CircuitType;
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModEnums.ScopeType;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
@@ -95,14 +95,13 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 @Mod.EventBusSubscriber(modid = ModReference.MOD_ID)
 public final class ClientEventSubscriber {
 
-	public static final String	DEFAULT_VARIANT		= "normal";
+	public static final String DEFAULT_VARIANT = "normal";
 	@Deprecated
-	public static final String	INVENTORY_VARIANT	= "inventory";
+	public static final String INVENTORY_VARIANT = "inventory";
 
 	@SubscribeEvent
 	public static void onRegisterModelsEvent(final ModelRegistryEvent event) {
@@ -164,7 +163,7 @@ public final class ClientEventSubscriber {
 				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), material.getNameLowercase() + "_wire"), DEFAULT_VARIANT);
+						return new ModelResourceLocation(new ModResourceLocation(material.getModId(), material.getNameLowercase() + "_wire"), DEFAULT_VARIANT);
 					}
 				});
 			}
@@ -174,7 +173,7 @@ public final class ClientEventSubscriber {
 
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), material.getNameLowercase() + "_enamel"), DEFAULT_VARIANT);
+						return new ModelResourceLocation(new ModResourceLocation(material.getModId(), material.getNameLowercase() + "_enamel"), DEFAULT_VARIANT);
 					}
 				});
 			}
@@ -216,13 +215,13 @@ public final class ClientEventSubscriber {
 
 			if (material.getProperties().hasRailgunSlug()) {
 				// FIXME TODO re-enable this & make it work
-//				ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), "cased_" + material.getNameLowercase() + "_slug"), DEFAULT_VARIANT));
+				// ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), "cased_" + material.getNameLowercase() + "_slug"), DEFAULT_VARIANT));
 			}
 
 		}
 
-//		ModelLoaderRegistry.registerLoader(new CasedSlugModelLoader());
-//		WIPTech.debug("Registered custom Mesh Definitions for cased slugs with the Model Loader");
+		// ModelLoaderRegistry.registerLoader(new CasedSlugModelLoader());
+		// WIPTech.debug("Registered custom Mesh Definitions for cased slugs with the Model Loader");
 
 		for (final ModMaterial material : ModMaterial.values()) {
 			if (material.getProperties().hasOre()) {
@@ -238,10 +237,10 @@ public final class ClientEventSubscriber {
 			}
 
 			if (material.getProperties().hasResource()) {
-				if ((material.getResource() != null) && material.getResouceLocationDomain(material.getType().getResourceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getAssetsModId())) {
+				if ((material.getResource() != null) && material.getResouceLocationDomain().equals(material.getModId())) {
 					registerBlockModMaterialItemBlockModel(material.getResource());
 				}
-				if ((material.getResourcePiece() != null) && material.getResouceLocationDomain(material.getType().getResourcePieceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getAssetsModId())) {
+				if ((material.getResourcePiece() != null) && material.getResouceLocationDomain().equals(material.getModId())) {
 					registerBlockModMaterialItemBlockModel(material.getResourcePiece());
 				}
 			}
@@ -261,37 +260,53 @@ public final class ClientEventSubscriber {
 				}
 			}
 
-			if (material.getProperties().hasArmor()) {
+			if (material.getProperties().hasHelmet()) {
 				if (material.getHelmet() != null) {
 					registerItemModMaterialModel(material.getHelmet());
 				}
+			}
+			if (material.getProperties().hasChestplate()) {
 				if (material.getChestplate() != null) {
 					registerItemModMaterialModel(material.getChestplate());
 				}
+			}
+			if (material.getProperties().hasLeggings()) {
 				if (material.getLeggings() != null) {
 					registerItemModMaterialModel(material.getLeggings());
 				}
+			}
+			if (material.getProperties().hasBoots()) {
 				if (material.getBoots() != null) {
 					registerItemModMaterialModel(material.getBoots());
 				}
+			}
+			if (material.getProperties().hasHorseArmor()) {
 				if (material.getHorseArmor() != null) {
 					registerItemModMaterialModel(material.getHorseArmor());
 				}
 			}
 
-			if (material.getProperties().hasTools()) {
+			if (material.getProperties().hasPickaxe()) {
 				if (material.getPickaxe() != null) {
 					registerItemModMaterialModel(material.getPickaxe());
 				}
+			}
+			if (material.getProperties().hasAxe()) {
 				if (material.getAxe() != null) {
 					registerItemModMaterialModel(material.getAxe());
 				}
+			}
+			if (material.getProperties().hasSword()) {
 				if (material.getSword() != null) {
 					registerItemModMaterialModel(material.getSword());
 				}
+			}
+			if (material.getProperties().hasShovel()) {
 				if (material.getShovel() != null) {
 					registerItemModMaterialModel(material.getShovel());
 				}
+			}
+			if (material.getProperties().hasHoe()) {
 				if (material.getHoe() != null) {
 					registerItemModMaterialModel(material.getHoe());
 				}
@@ -313,9 +328,9 @@ public final class ClientEventSubscriber {
 				if (material.getSlugItem() != null) {
 					registerItemModMaterialModel(material.getSlugItem());
 				}
-//				if (material.getCasedSlug() != null) {
-//					registerItemModMaterialModel(material.getCasedSlug());
-//				}
+				// if (material.getCasedSlug() != null) {
+				// registerItemModMaterialModel(material.getCasedSlug());
+				// }
 			}
 
 		}
@@ -358,7 +373,7 @@ public final class ClientEventSubscriber {
 
 	private static <T extends Item & IItemModMaterial> void registerItemModMaterialModel(final T item) {
 		final boolean isVanilla = item.getRegistryName().getResourceDomain().equals("minecraft");
-		final String registryNameResourceDomain = isVanilla ? "minecraft" : item.getModMaterial().getAssetsModId();
+		final String registryNameResourceDomain = isVanilla ? "minecraft" : item.getModMaterial().getModId();
 		final String registryNameResourcePath = item.getRegistryName().getResourcePath();
 
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), DEFAULT_VARIANT));
@@ -366,7 +381,7 @@ public final class ClientEventSubscriber {
 
 	private static <T extends Block & IBlockModMaterial> void registerBlockModMaterialItemBlockModel(final T block) {
 		final boolean isVanilla = block.getRegistryName().getResourceDomain().equals("minecraft");
-		final String registryNameResourceDomain = isVanilla ? "minecraft" : block.getModMaterial().getAssetsModId();
+		final String registryNameResourceDomain = isVanilla ? "minecraft" : block.getModMaterial().getModId();
 		final String registryNameResourcePath = block.getRegistryName().getResourcePath();
 
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), DEFAULT_VARIANT));
@@ -394,32 +409,32 @@ public final class ClientEventSubscriber {
 				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_block"));
 			}
 
-			if (properties.hasResource()) {
-				final String resourceSuffix = ModMaterial.GLITCH.getType().getResourceNameSuffix();
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + resourceSuffix));
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + resourceSuffix));
-
-				if (ModMaterial.GLITCH.getType().hasResourcePiece()) {
-					final String resourcePieceSuffix = ModMaterial.GLITCH.getType().getResourcePieceNameSuffix();
-					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + resourcePieceSuffix));
-					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + resourcePieceSuffix));
-				}
-			}
-
-			if (properties.hasArmor()) {
-				for (final String suffix : new String[] { "helmet", "chestplate", "leggings", "boots" }) {
-					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + suffix));
-					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + suffix));
-				}
-				// TODO: horse armor
-			}
-
-			if (properties.hasTools()) {
-				for (final String suffix : new String[] { "pickaxe", "axe", "sword", "shovel", "hoe" }) {
-					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + suffix));
-					modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + suffix));
-				}
-			}
+			// if (properties.hasResource()) {
+			// final String resourceSuffix = ModMaterial.GLITCH.getType().getResourceNameSuffix();
+			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + resourceSuffix));
+			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + resourceSuffix));
+			//
+			// if (ModMaterial.GLITCH.getType().hasResourcePiece()) {
+			// final String resourcePieceSuffix = ModMaterial.GLITCH.getType().getResourcePieceNameSuffix();
+			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + resourcePieceSuffix));
+			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + resourcePieceSuffix));
+			// }
+			// }
+			//
+			// if (properties.hasArmor()) {
+			// for (final String suffix : new String[]{"helmet", "chestplate", "leggings", "boots"}) {
+			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + suffix));
+			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + suffix));
+			// }
+			// // TODO: horse armor
+			// }
+			//
+			// if (properties.hasTools()) {
+			// for (final String suffix : new String[]{"pickaxe", "axe", "sword", "shovel", "hoe"}) {
+			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + suffix));
+			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + suffix));
+			// }
+			// }
 
 			if (properties.hasRailgunSlug()) {
 				// FIXME TODO: make it work
@@ -508,9 +523,9 @@ public final class ClientEventSubscriber {
 
 	private static void renderEnergyNetworks(final World world, final float partialTicks) {
 
-//		if (!ModReference.Debug.debugEnergyNetworks()) {
-//			return;
-//		}
+		// if (!ModReference.Debug.debugEnergyNetworks()) {
+		// return;
+		// }
 
 		final ItemStack check = Minecraft.getMinecraft().player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
 
@@ -809,7 +824,7 @@ public final class ClientEventSubscriber {
 			}
 		}
 
-//		setTooltip(event, event.getItemStack().serializeNBT().toString());
+		// setTooltip(event, event.getItemStack().serializeNBT().toString());
 
 	}
 

@@ -1,7 +1,7 @@
 package cadiboo.wiptech.block;
 
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModEnums.BlockItemType;
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
@@ -26,8 +26,8 @@ public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
-	protected final ModMaterial	material;
-	protected final BlockItemType	type;
+	protected final ModMaterial material;
+	protected final BlockItemType type;
 
 	public BlockItem(final ModMaterial material, final BlockItemType type) {
 		super(material.getVanillaMaterial());
@@ -93,7 +93,7 @@ public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { FACING });
+		return new BlockStateContainer(this, new IProperty[]{FACING});
 	}
 
 	@Override

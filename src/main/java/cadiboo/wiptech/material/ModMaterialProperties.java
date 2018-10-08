@@ -1,32 +1,42 @@
 package cadiboo.wiptech.material;
 
-import java.util.function.Function;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.item.Item;
+import net.minecraft.util.BlockRenderLayer;
 
 public class ModMaterialProperties {
 
-	protected final boolean hasOre;
-	protected final boolean hasBlock;
-	protected final boolean hasResource;
-	protected final boolean hasResourcePiece;
-	protected final boolean hasHelmet;
-	protected final boolean hasChestplate;
-	protected final boolean hasLeggings;
-	protected final boolean hasBoots;
-	protected final boolean hasHorseArmor;
-	protected final boolean hasPickaxe;
-	protected final boolean hasAxe;
-	protected final boolean hasSword;
-	protected final boolean hasShovel;
-	protected final boolean hasHoe;
-	protected final float hardness;
-	protected final int conductivity;
+	private final boolean hasOre;
+	private final boolean hasBlock;
+	private final boolean hasResource;
+	private final boolean hasResourcePiece;
+	private final boolean hasHelmet;
+	private final boolean hasChestplate;
+	private final boolean hasLeggings;
+	private final boolean hasBoots;
+	private final boolean hasHorseArmor;
+	private final boolean hasPickaxe;
+	private final boolean hasAxe;
+	private final boolean hasSword;
+	private final boolean hasShovel;
+	private final boolean hasHoe;
+	private final float hardness;
+	private final int conductivity;
 	/** if null reverts to getItemFromBlock(block) */
 	@Nullable
-	protected final Function<Void, Item> getOreDrop;
+	private final Supplier<Item> getOreDrop;
+	@Nonnull
+	private final BlockRenderLayer[] blockRenderLayers;
+	private final BiFunction<Integer, Random, Integer> getQuantityDroppedWithBonus;
 
 	public ModMaterialProperties(
 	/*@formatter:off*/
@@ -47,7 +57,12 @@ public class ModMaterialProperties {
 		final float MOHS_Hardness,
 		final int thermalConductivityAt20DegreesCelsius,
 		@Nullable
-		final Function<Void, Item> getOreDrop
+		final Supplier<Item> getOreDrop,
+		@Nullable
+		final BlockRenderLayer[] blockRenderLayers,
+		@Nonnull
+		@MethodsReturnNonnullByDefault
+		final BiFunction<Integer, Random, Integer> getQuantityDroppedWithBonus
 	/*@formatter:on*/
 	) {
 
@@ -68,6 +83,13 @@ public class ModMaterialProperties {
 		this.hardness = MOHS_Hardness;
 		this.conductivity = thermalConductivityAt20DegreesCelsius;
 		this.getOreDrop = getOreDrop;
+		if (blockRenderLayers == null) {
+			this.blockRenderLayers = new BlockRenderLayer[]{null};
+		} else {
+			this.blockRenderLayers = blockRenderLayers;
+		}
+		this.getQuantityDroppedWithBonus = getQuantityDroppedWithBonus;
+
 	}
 
 	public boolean hasOre() {
@@ -156,7 +178,12 @@ public class ModMaterialProperties {
 
 	@Nullable
 	public Item getOreDrop() {
-		return this.getOreDrop.apply(null);
+		return this.getOreDrop.get();
+	}
+
+	@Nonnull
+	public List<BlockRenderLayer> getBlockRenderLayers() {
+		return Arrays.asList(this.blockRenderLayers);
 	}
 
 	@Override
@@ -183,6 +210,10 @@ public class ModMaterialProperties {
 		string += ", hasCoil: " + this.hasCoil();
 		string += ", hasRail: " + this.hasRail();
 		return string;
+	}
+
+	public int getQuantityDroppedWithBonus(final int fortune, final Random random) {
+		return this.getQuantityDroppedWithBonus.apply(fortune, random);
 	}
 
 }

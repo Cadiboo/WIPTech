@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.function.Function;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import net.minecraft.client.renderer.block.model.IBakedModel;

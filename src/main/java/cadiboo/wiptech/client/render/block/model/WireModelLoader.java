@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import cadiboo.wiptech.client.model.ModelEnamel;
 import cadiboo.wiptech.client.model.ModelWire;
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;

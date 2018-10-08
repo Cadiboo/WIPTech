@@ -1,6 +1,6 @@
 package cadiboo.wiptech.block;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
+import cadiboo.wiptech.material.ModMaterial;
 
 /**
  * @author Cadiboo

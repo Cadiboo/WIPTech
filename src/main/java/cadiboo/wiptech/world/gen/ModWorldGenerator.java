@@ -2,7 +2,7 @@ package cadiboo.wiptech.world.gen;
 
 import java.util.Random;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

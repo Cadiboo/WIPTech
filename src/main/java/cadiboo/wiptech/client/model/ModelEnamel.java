@@ -1,6 +1,6 @@
 package cadiboo.wiptech.client.model;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModResourceLocation;
 import net.minecraftforge.client.model.IModel;

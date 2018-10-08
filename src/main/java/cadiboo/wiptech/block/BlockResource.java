@@ -1,6 +1,6 @@
 package cadiboo.wiptech.block;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -44,13 +44,12 @@ public class BlockResource extends Block implements IModBlock, IBlockModMaterial
 
 	@Override
 	public BlockRenderLayer getBlockLayer() {
-		switch (this.getModMaterial().getType()) {
-		case GEM:
-			return BlockRenderLayer.TRANSLUCENT;
-		default:
-		case METAL:
-			return super.getBlockLayer();
-		}
+		return this.material.getProperties().getBlockRenderLayers().get(0);
+	}
+
+	@Override
+	public boolean canRenderInLayer(final IBlockState state, final BlockRenderLayer layer) {
+		return this.material.getProperties().getBlockRenderLayers().contains(layer);
 	}
 
 	@Override
@@ -64,13 +63,7 @@ public class BlockResource extends Block implements IModBlock, IBlockModMaterial
 		if (this.getModMaterial() == null) {
 			return true;
 		}
-		switch (this.getModMaterial().getType()) {
-		case GEM:
-			return false;
-		default:
-		case METAL:
-			return true;
-		}
+		return (this.getModMaterial().getProperties().getBlockRenderLayers().size() == 1) && this.getModMaterial().getProperties().getBlockRenderLayers().contains(BlockRenderLayer.SOLID);
 	}
 
 }

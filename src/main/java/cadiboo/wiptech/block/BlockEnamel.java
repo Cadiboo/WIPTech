@@ -2,8 +2,8 @@ package cadiboo.wiptech.block;
 
 import java.util.List;
 
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -20,16 +20,16 @@ import net.minecraft.world.World;
  */
 public class BlockEnamel extends BlockWire implements IModBlock {
 
-	private static final int	format__0	= 0;
-	private static final int	format__1	= 1;
+	private static final int format__0 = 0;
+	private static final int format__1 = 1;
 
-	public static final AxisAlignedBB	CORE_AABB	= new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, 10d / 16d, 10d / 16d, 10d / 16d);
-	public static final AxisAlignedBB	UP_AABB		= new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, 10d / 16d, format__1, 10d / 16d);
-	public static final AxisAlignedBB	DOWN_AABB	= new AxisAlignedBB(06d / 16d, format__0, 06d / 16d, 10d / 16d, 10d / 16d, 10d / 16d);
-	public static final AxisAlignedBB	NORTH_AABB	= new AxisAlignedBB(06d / 16d, 06d / 16d, format__0, 10d / 16d, 10d / 16d, 10d / 16d);
-	public static final AxisAlignedBB	SOUTH_AABB	= new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, 10d / 16d, 10d / 16d, format__1);
-	public static final AxisAlignedBB	EAST_AABB	= new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, format__1, 10d / 16d, 10d / 16d);
-	public static final AxisAlignedBB	WEST_AABB	= new AxisAlignedBB(format__0, 06d / 16d, 06d / 16d, 10d / 16d, 10d / 16d, 10d / 16d);
+	public static final AxisAlignedBB CORE_AABB = new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, 10d / 16d, 10d / 16d, 10d / 16d);
+	public static final AxisAlignedBB UP_AABB = new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, 10d / 16d, format__1, 10d / 16d);
+	public static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(06d / 16d, format__0, 06d / 16d, 10d / 16d, 10d / 16d, 10d / 16d);
+	public static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(06d / 16d, 06d / 16d, format__0, 10d / 16d, 10d / 16d, 10d / 16d);
+	public static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, 10d / 16d, 10d / 16d, format__1);
+	public static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(06d / 16d, 06d / 16d, 06d / 16d, format__1, 10d / 16d, 10d / 16d);
+	public static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(format__0, 06d / 16d, 06d / 16d, 10d / 16d, 10d / 16d, 10d / 16d);
 
 	public BlockEnamel(final ModMaterial material) {
 		super(material, "enamel");

@@ -1,6 +1,7 @@
 package cadiboo.wiptech.material;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -33,6 +34,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -83,9 +85,13 @@ public enum ModMaterial implements IEnumNameFormattable {
 
 	GALLIUM(17, new MetalProperties(true, 1.50f, 29)),
 
-	BAUXITE(18, new ModMaterialProperties(true, false, false, false, false, false, false, false, false, false, false, false, false, false, ModMaterial.ALUMINIUM.getProperties().getHardness(), 0, null)),
+	BAUXITE(18, new ModMaterialProperties(true, false, false, false, false, false, false, false, false, false, false, false, false, false, ModMaterial.ALUMINIUM.getProperties().getHardness(), 0, null, new BlockRenderLayer[]{BlockRenderLayer.SOLID}, null)),
 
-	APATITE(19, new MetalProperties(true, 4.50f, 0)),
+	APATITE(19, new GemProperties(true, 4.50f, 0, () -> {
+		return APATITE.getResource();
+	}, (final Integer fortune, final Random random) -> {
+		return 64;
+	})),
 
 	GLITCH(19, new MetalProperties(true, 20.0f, 1000));
 
@@ -117,7 +123,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 		return this.properties;
 	}
 
-	public String getAssetsModId() {
+	public String getModId() {
 		return this.modId;
 	}
 

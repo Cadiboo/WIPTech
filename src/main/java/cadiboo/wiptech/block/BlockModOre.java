@@ -2,7 +2,7 @@ package cadiboo.wiptech.block;
 
 import java.util.Random;
 
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
@@ -75,39 +75,16 @@ public class BlockModOre extends Block implements IModBlock, IBlockModMaterial {
 
 	@Override
 	public Item getItemDropped(final IBlockState state, final Random rand, final int fortune) {
-		switch (this.getModMaterial().getType()) {
-		case GEM:
-			return Item.getItemFromBlock(this.getModMaterial().getResource());
-		case METAL:
-		default:
+		final Item item = this.material.getProperties().getOreDrop();
+		if (item == null) {
 			return Item.getItemFromBlock(this);
 		}
-	}
-
-	@Override
-	public int quantityDropped(final Random random) {
-		switch (this.getModMaterial().getType()) {
-		case GEM:
-			return 1;
-		case METAL:
-		default:
-			return super.quantityDropped(random);
-		}
+		return item;
 	}
 
 	@Override
 	public int quantityDroppedWithBonus(final int fortune, final Random random) {
-		if ((fortune > 0) && (Item.getItemFromBlock(this) != this.getItemDropped(this.getBlockState().getValidStates().iterator().next(), random, fortune))) {
-			int i = random.nextInt(fortune + 2) - 1;
-
-			if (i < 0) {
-				i = 0;
-			}
-
-			return this.quantityDropped(random) * (i + 1);
-		} else {
-			return this.quantityDropped(random);
-		}
+		return this.material.getProperties().getQuantityDroppedWithBonus(fortune, random);
 	}
 
 }
