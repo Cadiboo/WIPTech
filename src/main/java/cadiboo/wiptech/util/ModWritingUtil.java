@@ -42,9 +42,9 @@ public class ModWritingUtil {
 	private static String assetDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
 	private static String dataDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
 
-	private static final ModResourceLocation item_generated = new ModResourceLocation("", "item/generated");
+	private static final ModResourceLocation ITEM_GENERATED = new ModResourceLocation("", "item/generated");
 	private static final ModResourceLocation item_handheld = new ModResourceLocation("", "item/handheld");
-	private static final String item_default_texture_name = "layer0";
+	private static final String ITEM_DEFAULT_TEXTURE_NAME = "layer0";
 
 	@ExistsForDebugging
 	@SideOnly(Side.CLIENT)
@@ -163,7 +163,7 @@ public class ModWritingUtil {
 
 			if (resource.getResourceDomain().equals(ModReference.MOD_ID)) {
 
-				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 		}
@@ -175,7 +175,7 @@ public class ModWritingUtil {
 			ModResourceLocation textureLocation = getTextureLocation(resourcePiece, "item");
 			if (resourcePiece.getResourceDomain().equals(ModReference.MOD_ID)) {
 
-				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
@@ -216,7 +216,7 @@ public class ModWritingUtil {
 				final String path = armor.getResourcePath();
 				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
 
-				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 		}
@@ -230,7 +230,7 @@ public class ModWritingUtil {
 				final String path = armor.getResourcePath();
 				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
 
-				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
@@ -245,7 +245,7 @@ public class ModWritingUtil {
 				final String path = armor.getResourcePath();
 				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
 
-				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
@@ -259,7 +259,20 @@ public class ModWritingUtil {
 				final String path = armor.getResourcePath();
 				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
 
-				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
+
+			}
+		}
+
+		if (properties.hasHorseArmor()) {
+			final ModResourceLocation armor = new ModResourceLocation(material.getHorseArmor().getRegistryName());
+
+			if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				final String path = armor.getResourcePath();
+				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
+
+				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 		}
@@ -273,20 +286,20 @@ public class ModWritingUtil {
 				final String path = pickaxe.getResourcePath();
 				final ModResourceLocation textureLocation = getTextureLocation(pickaxe, "item");
 
-				itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 			}
 		}
 
 		if (properties.hasAxe()) {
 
-			final ModResourceLocation axe = new ModResourceLocation(material.getPickaxe().getRegistryName());
+			final ModResourceLocation axe = new ModResourceLocation(material.getAxe().getRegistryName());
 
 			if (axe.getResourceDomain().equals(ModReference.MOD_ID)) {
 
 				final String path = axe.getResourcePath();
 				final ModResourceLocation textureLocation = getTextureLocation(axe, "item");
 
-				itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
@@ -301,7 +314,7 @@ public class ModWritingUtil {
 				final String path = tool.getResourcePath();
 				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
 
-				itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
@@ -316,7 +329,7 @@ public class ModWritingUtil {
 				final String path = tool.getResourcePath();
 				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
 
-				itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
@@ -331,7 +344,7 @@ public class ModWritingUtil {
 				final String path = tool.getResourcePath();
 				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
 
-				itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
+				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
@@ -396,7 +409,7 @@ public class ModWritingUtil {
 			final String path = coil.getResourcePath();
 			final ModResourceLocation textureLocation = getTextureLocation(coil, "item");
 
-			itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+			itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			final ModResourceLocation resource = new ModResourceLocation(Item.getItemFromBlock(material.getResource()).getRegistryName());
 
@@ -422,7 +435,7 @@ public class ModWritingUtil {
 			final String path = rail.getResourcePath();
 			final ModResourceLocation textureLocation = getTextureLocation(rail, "item");
 
-			itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+			itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 		}
 
@@ -459,6 +472,7 @@ public class ModWritingUtil {
 
 			final Path file = Paths.get(assetDir + "blockstates/" + name.toLowerCase() + ".json");
 			try {
+				WIPTech.info("Writing Blockstate " + name.toLowerCase() + ".json");
 				Files.write(file, data, Charset.forName("UTF-8"));
 			} catch (final IOException e) {
 				e.printStackTrace();
@@ -478,6 +492,7 @@ public class ModWritingUtil {
 
 			final Path file = Paths.get(assetDir + "models/block/" + name.toLowerCase() + ".json");
 			try {
+				WIPTech.info("Writing Block Model " + name.toLowerCase() + ".json");
 				Files.write(file, data, Charset.forName("UTF-8"));
 			} catch (final IOException e) {
 				e.printStackTrace();
@@ -497,6 +512,7 @@ public class ModWritingUtil {
 
 			final Path file = Paths.get(assetDir + "models/item/" + name.toLowerCase() + ".json");
 			try {
+				WIPTech.info("Writing Item Model " + name.toLowerCase() + ".json");
 				Files.write(file, data, Charset.forName("UTF-8"));
 			} catch (final IOException e) {
 				e.printStackTrace();
@@ -711,6 +727,10 @@ public class ModWritingUtil {
 			finalData.add("}");
 		}
 
+		for (final String langEntry : finalData) {
+			WIPTech.info("Lang Entry " + langEntry);
+		}
+
 		final Path file = Paths.get(assetDir + "lang/" + getLangFileName() + "." + (Loader.MC_VERSION.contains("1.13") ? "json" : "lang"));
 		WIPTech.debug("Writing lang");
 		try {
@@ -904,6 +924,27 @@ public class ModWritingUtil {
 						"}");
 				/*@formatter:on*/
 		}
+
+		// if ((material.getHorseArmor() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("boots", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
+//			/*@formatter:off*/
+//				recipes.put(material.getBoots().getRegistryName().getResourcePath(), "{\n" +
+//						"	\"type\": \"minecraft:crafting_shaped\",\n" +
+//						"	\"pattern\": [\n" +
+//						"		\" XX\",\n" +
+//						"		\"XX \"\n" +
+//						"	],\n" +
+//						"	\"key\": {\n" +
+//						"		\"X\": {\n" +
+//						" 			\"item\": \""+material.getResource().getRegistryName().toString()+"\"\n" +
+//						"		}\n" +
+//						"	},\n" +
+//						"	\"result\": {\n" +
+//						"		\"item\": \""+material.getHorseArmor().getRegistryName().toString()+"\",\n" +
+//						"		\"count\": 1\n" +
+//						"	}\n" +
+//						"}");
+//				/*@formatter:on*/
+		// }
 
 		// tools
 
@@ -1232,6 +1273,7 @@ public class ModWritingUtil {
 			// TODO dataDir for 1.13
 			final Path file = Paths.get(assetDir + "recipes/" + name.toLowerCase() + ".json");
 			try {
+				WIPTech.info("Writing Recipe " + name.toLowerCase() + ".json");
 				Files.write(file, data, Charset.forName("UTF-8"));
 			} catch (final IOException e) {
 				e.printStackTrace();

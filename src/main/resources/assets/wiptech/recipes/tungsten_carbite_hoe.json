@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"XX",
+		" #",
+		" #"
+	],
+	"key": {
+		"#": {
+			"item": "minecraft:stick"
+		},
+		"X": {
+ 			"item": "wiptech:tungsten_carbite_ingot"
+		}
+	},
+	"result": {
+		"item": "wiptech:tungsten_carbite_hoe",
+		"count": 1
+	}
+}

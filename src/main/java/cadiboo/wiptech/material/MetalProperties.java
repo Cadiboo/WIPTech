@@ -55,7 +55,7 @@ public class MetalProperties extends ModMaterialProperties {
 	};
 
 	public MetalProperties(final boolean hasOre, final float MOHS_Hardness, final int thermalConductivityAt20DegreesCelsius) {
-		super(hasOre, true, true, RESOURCE_SUFFIX, true, RESOURCE_PIECE_SUFFIX, true, true, true, true, true, true, true, true, true, hasOre, MOHS_Hardness, thermalConductivityAt20DegreesCelsius, null, BLOCK_RENDER_LAYERS, GET_QUANTITY_DROPPED_WITH_BONUS, GET_BOUNDING_BOX);
+		super(hasOre, true, true, RESOURCE_SUFFIX, true, RESOURCE_PIECE_SUFFIX, true, true, true, true, true, true, true, true, true, true, MOHS_Hardness, thermalConductivityAt20DegreesCelsius, null, BLOCK_RENDER_LAYERS, GET_QUANTITY_DROPPED_WITH_BONUS, GET_BOUNDING_BOX);
 	}
 
 }
