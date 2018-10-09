@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/",
+	"textures": {
+		"": "wiptech:item/apatite"
+	}
+}

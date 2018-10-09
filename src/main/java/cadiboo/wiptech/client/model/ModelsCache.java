@@ -6,7 +6,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.util.ModResourceLocation;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

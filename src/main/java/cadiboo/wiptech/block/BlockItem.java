@@ -5,6 +5,7 @@ import cadiboo.wiptech.util.ModEnums.BlockItemType;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
@@ -26,12 +27,29 @@ public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
+	private static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0.2, 0.0, 0.2, 0.8, 0.2, 0.8);
+
+	private static final AxisAlignedBB INGOT_EW_AABB = new AxisAlignedBB(3d / 16d, 0, 6d / 16d, 1d - (3d / 16d), 3d / 16d, 1d - (6d / 16d));
+	private static final AxisAlignedBB INGOT_NS_AABB = new AxisAlignedBB(6d / 16d, 0, 3d / 16d, 1d - (6d / 16d), 3d / 16d, 1d - (3d / 16d));
+
+	private static final AxisAlignedBB NUGGET_EW_AABB = new AxisAlignedBB(4d / 16d, 0, 5d / 16d, 1d - (4d / 16d), 1d / 16d, 1d - (5d / 16d));
+	private static final AxisAlignedBB NUGGET_NS_AABB = new AxisAlignedBB(5d / 16d, 0, 4d / 16d, 1d - (5d / 16d), 1d / 16d, 1d - (4d / 16d));
+
 	protected final ModMaterial material;
 	protected final BlockItemType type;
 
 	public BlockItem(final ModMaterial material, final BlockItemType type) {
-		super(material.getVanillaMaterial());
-		ModUtil.setRegistryNames(this, material, type.getNameLowercase());
+		super(Material.CIRCUITS);
+		switch (type) {
+			case RESOURCE :
+				ModUtil.setRegistryNames(this, material, material.getProperties().getResourceSuffix());
+				break;
+			case RESOURCE_PIECE :
+				ModUtil.setRegistryNames(this, material, material.getProperties().getResourcePieceSuffix());
+				break;
+			default :
+				throw new RuntimeException("Someones been tampering with the universe...!");
+		}
 		this.material = material;
 		this.type = type;
 		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
@@ -79,7 +97,7 @@ public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 	@Override
 	public IBlockState getStateForPlacement(final World world, final BlockPos pos, final EnumFacing facing, final float hitX, final float hitY, final float hitZ, final int meta, final EntityLivingBase placer) {
 		EnumFacing enumfacing = placer.getHorizontalFacing().rotateY();
-		if ((this.getType() == BlockItemType.NUGGET) & (this.material == ModMaterial.GOLD)) {
+		if ((this.getModMaterial() == ModMaterial.GOLD) && (this.getType() == BlockItemType.RESOURCE_PIECE)) {
 			enumfacing = enumfacing.rotateY();
 		}
 		return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer).withProperty(FACING, enumfacing);
@@ -87,8 +105,7 @@ public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 
 	@Override
 	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
-		final EnumFacing facing = state.getValue(FACING);
-		return this.getType().getBoundingBox(facing);
+		return this.getModMaterial().getProperties().getBoundingBox(this.getType(), state.getValue(FACING));
 	}
 
 	@Override

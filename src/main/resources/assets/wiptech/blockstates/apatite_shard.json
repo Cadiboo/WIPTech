@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"facing=south": {
+			"model": "wiptech:apatite_shard", "y": 270
+		},
+		"facing=west": {
+			"model": "wiptech:apatite_shard", "y": 0
+		},
+		"facing=north": {
+			"model": "wiptech:apatite_shard", "y": 90
+		},
+		"facing=east": {
+			"model": "wiptech:apatite_shard", "y": 180
+		}
+	}
+}

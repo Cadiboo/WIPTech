@@ -3,6 +3,7 @@ package cadiboo.wiptech.block;
 import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +18,7 @@ public class BlockResource extends Block implements IModBlock, IBlockModMaterial
 	protected final ModMaterial material;
 
 	public BlockResource(final ModMaterial material) {
-		super(material.getVanillaMaterial());
+		super(Material.IRON);
 		ModUtil.setRegistryNames(this, material, "block");
 		this.material = material;
 	}

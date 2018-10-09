@@ -47,6 +47,7 @@ import cadiboo.wiptech.item.ItemShotgun;
 import cadiboo.wiptech.item.ItemSlug;
 import cadiboo.wiptech.item.ItemSlugCasing;
 import cadiboo.wiptech.item.ModItemBlock;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.network.play.server.SPacketSyncEnergyNetworkList;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
@@ -55,13 +56,14 @@ import cadiboo.wiptech.tileentity.TileEntityModFurnace;
 import cadiboo.wiptech.tileentity.TileEntityPeripheral;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ExistsForDebugging;
+import cadiboo.wiptech.util.ModEnums.BlockItemType;
 import cadiboo.wiptech.util.ModEnums.CircuitType;
-import cadiboo.wiptech.util.ModEnums.ModMaterial;
 import cadiboo.wiptech.util.ModEnums.ScopeType;
 import cadiboo.wiptech.util.ModEnums.SlugCasingPart;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModUtil;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocationPath;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -119,6 +121,15 @@ public final class EventSubscriber {
 	}
 
 	private static void registerBlocksForMaterials(final IForgeRegistry<Block> registry) {
+
+		// debug code, gotta love it
+		final ModMaterial debug1 = ModMaterial.ALUMINIUM;
+		final ModMaterial debug2 = ModMaterial.LEAD;
+		final ModMaterial debug3 = ModMaterial.BAUXITE;
+		final ModMaterial debug4 = ModMaterial.APATITE;
+
+		final ModMaterial[] values = ModMaterial.values();
+
 		for (final ModMaterial material : ModMaterial.values()) {
 			if (material.getProperties().hasOre()) {
 				registry.register(new BlockModOre(material));
@@ -129,10 +140,11 @@ public final class EventSubscriber {
 			}
 
 			if (material.getProperties().hasResource()) {
-				registry.register(new BlockItem(material, material.getType().getResourceBlockItemType()));
-				if (material.getType().hasResourcePiece()) {
-					registry.register(new BlockItem(material, material.getType().getResourcePieceBlockItemType()));
-				}
+				registry.register(new BlockItem(material, BlockItemType.RESOURCE));
+			}
+
+			if (material.getProperties().hasResourcePiece()) {
+				registry.register(new BlockItem(material, BlockItemType.RESOURCE_PIECE));
 			}
 
 			if (material.getProperties().hasWire()) {
@@ -174,7 +186,7 @@ public final class EventSubscriber {
 
 		registry.register(new ModItemBlock(ModBlocks.ASSEMBLY_TABLE));
 
-//		registry.register(new ModItemBlock(ModBlocks.PERIPHERAL));
+		// registry.register(new ModItemBlock(ModBlocks.PERIPHERAL));
 
 		//
 
@@ -204,18 +216,20 @@ public final class EventSubscriber {
 	private static void registerItemsForMaterials(final IForgeRegistry<Item> registry) {
 		for (final ModMaterial material : ModMaterial.values()) {
 			if (material.getProperties().hasOre()) {
-				registry.register(new ModItemBlock(material.getOre(), new ModResourceLocation(material.getResouceLocationDomain("ore", ForgeRegistries.ITEMS), material.getNameLowercase() + "_ore")));
+				registry.register(new ModItemBlock(material.getOre(), new ModResourceLocation(material.getResouceLocationDomainWithOverrides("ore", ForgeRegistries.BLOCKS), new ModResourceLocationPath(material.getNameLowercase() + "_ore"))));
 			}
 
 			if (material.getProperties().hasBlock()) {
-				registry.register(new ModItemBlock(material.getBlock(), new ModResourceLocation(material.getResouceLocationDomain("block", ForgeRegistries.ITEMS), material.getNameLowercase() + "_block")));
+				registry.register(new ModItemBlock(material.getBlock(), new ModResourceLocation(material.getResouceLocationDomainWithOverrides("block", ForgeRegistries.BLOCKS), new ModResourceLocationPath(material.getNameLowercase() + "_block"))));
 			}
 
 			if (material.getProperties().hasResource()) {
-				registry.register(new ModItemBlock(material.getResource(), new ModResourceLocation(material.getResouceLocationDomain(material.getType().getResourceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS), material.getNameLowercase() + "_" + material.getType().getResourceNameSuffix().toLowerCase())));
-				if (material.getType().hasResourcePiece()) {
-					registry.register(new ModItemBlock(material.getResourcePiece(), new ModResourceLocation(material.getResouceLocationDomain(material.getType().getResourcePieceNameSuffix().toLowerCase(), ForgeRegistries.ITEMS), material.getNameLowercase() + "_" + material.getType().getResourcePieceNameSuffix().toLowerCase())));
-				}
+				final String suffix = material.getProperties().getResourceSuffix();
+				registry.register(new ModItemBlock(material.getResource(), new ModResourceLocation(material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS), new ModResourceLocationPath(material.getNameLowercase() + (suffix.length() > 0 ? "_" + suffix : "")))));
+			}
+			if (material.getProperties().hasResourcePiece()) {
+				final String suffix = material.getProperties().getResourcePieceSuffix();
+				registry.register(new ModItemBlock(material.getResourcePiece(), new ModResourceLocation(material.getResouceLocationDomainWithOverrides(material.getProperties().getResourcePieceSuffix(), ForgeRegistries.ITEMS), new ModResourceLocationPath(material.getNameLowercase() + (suffix.length() > 0 ? "_" + suffix : "")))));
 			}
 
 			if (material.getProperties().hasWire()) {
@@ -227,19 +241,35 @@ public final class EventSubscriber {
 				registry.register(new ModItemBlock(material.getEnamel()));
 			}
 
-			if (material.getProperties().hasArmor()) {
+			if (material.getProperties().hasHelmet()) {
 				registry.register(new ItemModArmor(material, EntityEquipmentSlot.HEAD));
+			}
+			if (material.getProperties().hasChestplate()) {
 				registry.register(new ItemModArmor(material, EntityEquipmentSlot.CHEST));
+			}
+			if (material.getProperties().hasLeggings()) {
 				registry.register(new ItemModArmor(material, EntityEquipmentSlot.LEGS));
+			}
+			if (material.getProperties().hasBoots()) {
 				registry.register(new ItemModArmor(material, EntityEquipmentSlot.FEET));
+			}
+			if (material.getProperties().hasHorseArmor()) {
 				registry.register(new ItemModHorseArmor(material));
 			}
 
-			if (material.getProperties().hasTools()) {
+			if (material.getProperties().hasPickaxe()) {
 				registry.register(new ItemModPickaxe(material));
+			}
+			if (material.getProperties().hasAxe()) {
 				registry.register(new ItemModAxe(material));
+			}
+			if (material.getProperties().hasSword()) {
 				registry.register(new ItemModSword(material));
+			}
+			if (material.getProperties().hasShovel()) {
 				registry.register(new ItemModShovel(material));
+			}
+			if (material.getProperties().hasHoe()) {
 				registry.register(new ItemModHoe(material));
 			}
 

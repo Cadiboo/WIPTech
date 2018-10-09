@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:builtin/glitch_spool"
+			"model": "wiptech:glitch_spool"
 		}
 	}
 }

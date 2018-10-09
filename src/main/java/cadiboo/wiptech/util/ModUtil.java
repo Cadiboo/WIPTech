@@ -7,6 +7,8 @@ import org.apache.commons.lang3.StringUtils;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.creativetab.ModCreativeTabs;
 import cadiboo.wiptech.material.ModMaterial;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocationPath;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,7 +35,7 @@ public final class ModUtil {
 	 * @param nameSuffix the string to be appended to the names (for example "ore" or "block")
 	 */
 	public static Block setRegistryNames(final Block block, final ModMaterial material, final String nameSuffix) {
-		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
+		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomainWithOverrides(nameSuffix, ForgeRegistries.BLOCKS), new ModResourceLocationPath(material.getVanillaNameLowercase(nameSuffix) + (nameSuffix.length() > 0 ? "_" + nameSuffix : "")));
 		block.setHardness(material.getProperties().getHardness());
 		return setRegistryNames(block, registryName);
 	}
@@ -45,7 +47,7 @@ public final class ModUtil {
 	 * @param nameSuffix the string to be appended to the names (for example "shovel" or "helmet")
 	 */
 	public static Item setRegistryNames(final Item item, final ModMaterial material, final String nameSuffix) {
-		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomain(), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix);
+		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomainWithOverrides(nameSuffix, ForgeRegistries.ITEMS), new ModResourceLocationPath(material.getVanillaNameLowercase(nameSuffix) + (nameSuffix.length() > 0 ? "_" + nameSuffix : "")));
 		setRegistryNames(item, registryName);
 
 		final Item overriddenItem = ForgeRegistries.ITEMS.getValue(registryName);

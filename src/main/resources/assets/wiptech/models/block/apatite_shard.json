@@ -1,0 +1,6 @@
+{
+	"parent": "wiptech:block/shard",
+	"textures": {
+		"shard": "wiptech:item/apatite_shard"
+	}
+}

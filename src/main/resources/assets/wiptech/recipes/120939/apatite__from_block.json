@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "apatite_",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+			"item": "wiptech:apatite_block"
+		}
+	},
+	"result": {
+		"item": "wiptech:apatite_",
+		"count": 9
+	}
+}

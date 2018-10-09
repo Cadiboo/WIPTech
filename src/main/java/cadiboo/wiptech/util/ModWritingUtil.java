@@ -18,16 +18,19 @@ import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.client.ClientEventSubscriber;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
+import cadiboo.wiptech.material.MetalProperties;
 import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.material.ModMaterialProperties;
 import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import cadiboo.wiptech.util.ModEnums.CircuitType;
 import cadiboo.wiptech.util.ModEnums.ScopeType;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -49,7 +52,7 @@ public class ModWritingUtil {
 
 		final boolean recipes = true;
 		final boolean lang = true;
-		final boolean json = false;
+		final boolean json = true;
 
 		WIPTech.info("ModWritingUtil.writeMod() with options write recipes: " + recipes + ", write lang: " + lang + ", write json: " + json);
 
@@ -62,30 +65,39 @@ public class ModWritingUtil {
 			WIPTech.info("All arguments are false for writeMod() - Aborting!");
 			return;
 		}
+
 		if (recipes) {
-			for (final ModMaterial material : ModMaterial.values()) {
-				try {
-					generateAndWriteRecipes(material);
-				} catch (final Exception e) {
-					e.printStackTrace();
+			new Thread(() -> {
+				for (final ModMaterial material : ModMaterial.values()) {
+					try {
+						generateAndWriteRecipes(material);
+					} catch (final Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
+			}, "Recipe Writer Thread").start();
 		}
+
 		if (lang) {
-			try {
-				generateAndWriteLang();
-			} catch (final Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if (json) {
-			for (final ModMaterial material : ModMaterial.values()) {
+			new Thread(() -> {
 				try {
-					generateAndWriteModels(material);
+					generateAndWriteLang();
 				} catch (final Exception e) {
 					e.printStackTrace();
 				}
-			}
+			}, "Lang Writer Thread").start();
+		}
+
+		if (json) {
+			new Thread(() -> {
+				for (final ModMaterial material : ModMaterial.values()) {
+					try {
+						generateAndWriteModels(material);
+					} catch (final Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}, "JSON Writer Thread").start();
 		}
 
 	}
@@ -133,98 +145,197 @@ public class ModWritingUtil {
 			}
 		}
 
-		// if (properties.hasResource()) {
-		// final ModResourceLocation resource = new ModResourceLocation(Item.getItemFromBlock(material.getResource()).getRegistryName());
-		//
-		// final String path = resource.getResourcePath();
-		// final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, path);
-		//
-		// blockstates.put(path, generateBlockstateJSON(model, EnumFacing.HORIZONTALS));
-		//
-		// final String resourceNameSuffix = material.getType().getResourceNameSuffix();
-		//
-		// final ModResourceLocation parent = new ModResourceLocation(ModReference.MOD_ID, "block/" + resourceNameSuffix);
-		// final String textureName = resourceNameSuffix;
-		// final ModResourceLocation textureLocation = getTextureLocation(resource, "item");
-		//
-		// blockModels.put(path, generateModelJSON(parent, textureName, textureLocation));
-		//
-		// if (resource.getResourceDomain().equals(ModReference.MOD_ID)) {
-		//
-		// itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
-		//
-		// }
-		// }
-		//
-		// if (properties.hasResource() && material.getType().hasResourcePiece()) {
-		// ModResourceLocation resourcePiece = new ModResourceLocation(Item.getItemFromBlock(material.getResourcePiece()).getRegistryName());
-		// final String path = resourcePiece.getResourcePath();
-		//
-		// ModResourceLocation textureLocation = getTextureLocation(resourcePiece, "item");
-		// if (resourcePiece.getResourceDomain().equals(ModReference.MOD_ID)) {
-		//
-		// itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
-		//
-		// }
-		//
-		// // HACK cause im too lazy to make my nuggets models use the nugget textures instead of the currently being used ingot textures
-		// if (material.getType() == ModMaterialType.METAL) {
-		// resourcePiece = new ModResourceLocation(Item.getItemFromBlock(material.getResource()).getRegistryName());
-		// }
-		//
-		// String resourcePieceNameSuffix = material.getType().getResourcePieceNameSuffix();
-		// final ModResourceLocation parent = new ModResourceLocation(ModReference.MOD_ID, "block/" + resourcePieceNameSuffix);
-		// // HACK cause im too lazy to make my nuggets models use the nugget textures instead of the currently being used ingot textures
-		// if (material.getType() == ModMaterialType.METAL) {
-		// resourcePieceNameSuffix = "ingot";
-		// }
-		//
-		// final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, path);
-		//
-		// blockstates.put(path, generateBlockstateJSON(model, true, EnumFacing.HORIZONTALS));
-		//
-		// final String textureName = resourcePieceNameSuffix;
-		// // HACK cause im too lazy to make my nuggets models use the nugget textures instead of the currently being used ingot textures
-		// if (material.getType() == ModMaterialType.METAL) {
-		// textureLocation = getTextureLocation(resourcePiece, "item");
-		// }
-		//
-		// blockModels.put(path, generateModelJSON(parent, textureName, textureLocation));
-		// }
-		//
-		// if (properties.hasArmor()) {
-		// for (final Item itemArmor : new Item[]{material.getHelmet(), material.getChestplate(), material.getLeggings(), material.getBoots(), material.getHorseArmor()}) {
-		//
-		// final ModResourceLocation armor = new ModResourceLocation(itemArmor.getRegistryName());
-		//
-		// if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
-		//
-		// final String path = armor.getResourcePath();
-		// final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
-		//
-		// itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
-		//
-		// }
-		//
-		// }
-		// }
-		//
-		// if (properties.hasTools()) {
-		// for (final Item itemTool : new Item[]{material.getPickaxe(), material.getAxe(), material.getSword(), material.getShovel(), material.getHoe()}) {
-		//
-		// final ModResourceLocation tool = new ModResourceLocation(itemTool.getRegistryName());
-		//
-		// if (tool.getResourceDomain().equals(ModReference.MOD_ID)) {
-		//
-		// final String path = tool.getResourcePath();
-		// final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
-		//
-		// itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
-		//
-		// }
-		//
-		// }
-		// }
+		if (properties.hasResource()) {
+			final ModResourceLocation resource = new ModResourceLocation(Item.getItemFromBlock(material.getResource()).getRegistryName());
+
+			final String path = resource.getResourcePath();
+			final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, path);
+
+			blockstates.put(path, generateBlockstateJSON(model, EnumFacing.HORIZONTALS));
+
+			final String resourceNameSuffix = material.getProperties().getResourceSuffix();
+
+			final ModResourceLocation parent = new ModResourceLocation(ModReference.MOD_ID, "block/" + resourceNameSuffix);
+			final String textureName = resourceNameSuffix;
+			final ModResourceLocation textureLocation = getTextureLocation(resource, "item");
+
+			blockModels.put(path, generateModelJSON(parent, textureName, textureLocation));
+
+			if (resource.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+
+			}
+		}
+
+		if (properties.hasResource() && material.getProperties().hasResourcePiece()) {
+			ModResourceLocation resourcePiece = new ModResourceLocation(Item.getItemFromBlock(material.getResourcePiece()).getRegistryName());
+			final String path = resourcePiece.getResourcePath();
+
+			ModResourceLocation textureLocation = getTextureLocation(resourcePiece, "item");
+			if (resourcePiece.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+
+			}
+
+			// TODO:
+			// HACK cause im too lazy to make my nuggets models use the nugget textures instead of the currently being used ingot textures
+			if (material.getProperties() instanceof MetalProperties) {
+				resourcePiece = new ModResourceLocation(Item.getItemFromBlock(material.getResource()).getRegistryName());
+			}
+
+			String resourcePieceNameSuffix = material.getProperties().getResourcePieceSuffix();
+			final ModResourceLocation parent = new ModResourceLocation(ModReference.MOD_ID, "block/" + resourcePieceNameSuffix);
+			// TODO:
+			// HACK cause im too lazy to make my nuggets models use the nugget textures instead of the currently being used ingot textures
+			if (material.getProperties() instanceof MetalProperties) {
+				resourcePieceNameSuffix = "ingot";
+			}
+
+			final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, path);
+
+			blockstates.put(path, generateBlockstateJSON(model, true, EnumFacing.HORIZONTALS));
+
+			final String textureName = resourcePieceNameSuffix;
+			// TODO:
+			// HACK cause im too lazy to make my nuggets models use the nugget textures instead of the currently being used ingot textures
+			if (material.getProperties() instanceof MetalProperties) {
+				textureLocation = getTextureLocation(resourcePiece, "item");
+			}
+
+			blockModels.put(path, generateModelJSON(parent, textureName, textureLocation));
+		}
+
+		if (properties.hasHelmet()) {
+
+			final ModResourceLocation armor = new ModResourceLocation(material.getHelmet().getRegistryName());
+
+			if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				final String path = armor.getResourcePath();
+				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
+
+				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+
+			}
+		}
+
+		if (properties.hasChestplate()) {
+
+			final ModResourceLocation armor = new ModResourceLocation(material.getChestplate().getRegistryName());
+
+			if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				final String path = armor.getResourcePath();
+				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
+
+				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+
+			}
+
+		}
+
+		if (properties.hasLeggings()) {
+
+			final ModResourceLocation armor = new ModResourceLocation(material.getLeggings().getRegistryName());
+
+			if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				final String path = armor.getResourcePath();
+				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
+
+				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+
+			}
+
+		}
+
+		if (properties.hasBoots()) {
+			final ModResourceLocation armor = new ModResourceLocation(material.getBoots().getRegistryName());
+
+			if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				final String path = armor.getResourcePath();
+				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
+
+				itemModels.put(path, generateModelJSON(item_generated, item_default_texture_name, textureLocation));
+
+			}
+		}
+
+		if (properties.hasPickaxe()) {
+
+			final ModResourceLocation pickaxe = new ModResourceLocation(material.getPickaxe().getRegistryName());
+
+			if (pickaxe.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				final String path = pickaxe.getResourcePath();
+				final ModResourceLocation textureLocation = getTextureLocation(pickaxe, "item");
+
+				itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
+			}
+		}
+
+		if (properties.hasAxe()) {
+
+			final ModResourceLocation axe = new ModResourceLocation(material.getPickaxe().getRegistryName());
+
+			if (axe.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				final String path = axe.getResourcePath();
+				final ModResourceLocation textureLocation = getTextureLocation(axe, "item");
+
+				itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
+
+			}
+
+		}
+
+		if (properties.hasSword()) {
+
+			final ModResourceLocation tool = new ModResourceLocation(material.getSword().getRegistryName());
+
+			if (tool.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				final String path = tool.getResourcePath();
+				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
+
+				itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
+
+			}
+
+		}
+
+		if (properties.hasShovel()) {
+
+			final ModResourceLocation tool = new ModResourceLocation(material.getShovel().getRegistryName());
+
+			if (tool.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				final String path = tool.getResourcePath();
+				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
+
+				itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
+
+			}
+
+		}
+
+		if (properties.hasHoe()) {
+
+			final ModResourceLocation tool = new ModResourceLocation(material.getHoe().getRegistryName());
+
+			if (tool.getResourceDomain().equals(ModReference.MOD_ID)) {
+
+				final String path = tool.getResourcePath();
+				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
+
+				itemModels.put(path, generateModelJSON(item_handheld, item_default_texture_name, textureLocation));
+
+			}
+
+		}
 
 		if (properties.hasWire()) {
 			final ModResourceLocation wire = new ModResourceLocation(material.getWire().getRegistryName());
@@ -622,7 +733,7 @@ public class ModWritingUtil {
 			GameRegistry.addSmelting(new ItemStack(material.getOre()), new ItemStack(material.getResource()), 1);
 		}
 
-		if ((material.getBlock() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getBlock() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("block", ForgeRegistries.BLOCKS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getBlock().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -643,7 +754,7 @@ public class ModWritingUtil {
 				/*@formatter:on*/
 		}
 
-		if ((material.getResource() != null) && (material.getBlock() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getResource() != null) && (material.getBlock() != null) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides("block", ForgeRegistries.BLOCKS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getResource().getRegistryName().getResourcePath() + "_from_block", "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -663,9 +774,9 @@ public class ModWritingUtil {
 						"}");
 				/*@formatter:on*/
 		}
-		if ((material.getResource() != null) && (material.getResourcePiece() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getResource() != null) && (material.getResourcePiece() != null) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourcePieceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-					recipes.put(material.getResource().getRegistryName().getResourcePath() + "_from_resource_piecess", "{\n" +
+					recipes.put(material.getResource().getRegistryName().getResourcePath() + "_from_"+material.getProperties().getResourcePieceSuffix()+"s", "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
 							"	\"group\": \""+material.getResource().getRegistryName().getResourcePath()+"\",\n" +
 							"	\"pattern\": [\n" +
@@ -686,7 +797,7 @@ public class ModWritingUtil {
 					/*@formatter:on*/
 		}
 
-		if ((material.getResourcePiece() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getResourcePiece() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourcePieceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getResourcePiece().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -708,7 +819,7 @@ public class ModWritingUtil {
 
 		// armor
 
-		if ((material.getHelmet() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getHelmet() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("helmet", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getHelmet().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -729,7 +840,7 @@ public class ModWritingUtil {
 				/*@formatter:on*/
 		}
 
-		if ((material.getChestplate() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getChestplate() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("chesplate", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getChestplate().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -751,7 +862,7 @@ public class ModWritingUtil {
 				/*@formatter:on*/
 		}
 
-		if ((material.getLeggings() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getLeggings() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("leggings", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getLeggings().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -773,7 +884,7 @@ public class ModWritingUtil {
 				/*@formatter:on*/
 		}
 
-		if ((material.getBoots() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getBoots() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("boots", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getBoots().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -796,7 +907,7 @@ public class ModWritingUtil {
 
 		// tools
 
-		if ((material.getAxe() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getAxe() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("axe", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getAxe().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -821,7 +932,7 @@ public class ModWritingUtil {
 				/*@formatter:on*/
 		}
 
-		if ((material.getPickaxe() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getPickaxe() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("pickaxe", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getPickaxe().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -846,7 +957,7 @@ public class ModWritingUtil {
 				/*@formatter:on*/
 		}
 
-		if ((material.getSword() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getSword() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("sword", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getSword().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -871,7 +982,7 @@ public class ModWritingUtil {
 				/*@formatter:on*/
 		}
 
-		if ((material.getShovel() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getShovel() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("shovel", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getShovel().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
@@ -896,7 +1007,7 @@ public class ModWritingUtil {
 				/*@formatter:on*/
 		}
 
-		if ((material.getHoe() != null) && (material.getResource() != null) && (material.getResouceLocationDomain().equals(ModReference.MOD_ID))) {
+		if ((material.getHoe() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("hoe", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
 				recipes.put(material.getHoe().getRegistryName().getResourcePath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +

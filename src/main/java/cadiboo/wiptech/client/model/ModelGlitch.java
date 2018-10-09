@@ -3,7 +3,7 @@ package cadiboo.wiptech.client.model;
 import java.util.function.Function;
 
 import cadiboo.wiptech.WIPTech;
-import cadiboo.wiptech.util.ModResourceLocation;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.VertexFormat;

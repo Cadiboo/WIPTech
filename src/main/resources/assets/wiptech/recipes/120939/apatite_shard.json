@@ -1,0 +1,15 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"#"
+	],
+	"key": {
+		"#": {
+ 			"item": "wiptech:apatite_"
+		}
+	},
+	"result": {
+		"item": "wiptech:apatite_shard",
+		"count": 9
+	}
+}

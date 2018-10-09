@@ -2,7 +2,7 @@ package cadiboo.wiptech.client.model;
 
 import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModResourceLocation;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

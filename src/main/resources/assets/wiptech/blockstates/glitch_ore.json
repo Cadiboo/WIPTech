@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"normal": {
-			"model": "wiptech:builtin/glitch_ore"
+			"model": "wiptech:glitch_ore"
 		}
 	}
 }

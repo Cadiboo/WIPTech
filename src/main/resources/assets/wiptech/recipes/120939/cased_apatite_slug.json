@@ -1,0 +1,24 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"group": "cased_apatite_slug",
+	"pattern": [
+		" B ",
+		"AX",
+		" C "
+	],
+	"key": {
+		"A": {
+ 			"item": "wiptech:slug_casing_back"
+		},		"B": {
+ 			"item": "wiptech:slug_casing_top"
+		},		"C": {
+ 			"item": "wiptech:slug_casing_bottom"
+		},		"X": {
+ 			"item": "wiptech:apatite_slug"
+		}
+	},
+	"result": {
+		"item": "wiptech:cased_apatite_slug",
+		"count": 1
+	}
+}

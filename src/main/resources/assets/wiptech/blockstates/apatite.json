@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"facing=south": {
+			"model": "wiptech:apatite", "y": 0
+		},
+		"facing=west": {
+			"model": "wiptech:apatite", "y": 90
+		},
+		"facing=north": {
+			"model": "wiptech:apatite", "y": 180
+		},
+		"facing=east": {
+			"model": "wiptech:apatite", "y": 270
+		}
+	}
+}

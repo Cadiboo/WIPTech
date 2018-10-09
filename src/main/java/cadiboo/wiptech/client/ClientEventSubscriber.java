@@ -50,8 +50,8 @@ import cadiboo.wiptech.util.ModEnums.AttachmentPoint;
 import cadiboo.wiptech.util.ModEnums.CircuitType;
 import cadiboo.wiptech.util.ModEnums.ScopeType;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModWritingUtil;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -95,6 +95,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 @Mod.EventBusSubscriber(modid = ModReference.MOD_ID)
 public final class ClientEventSubscriber {
@@ -163,7 +164,7 @@ public final class ClientEventSubscriber {
 				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(material.getModId(), material.getNameLowercase() + "_wire"), DEFAULT_VARIANT);
+						return new ModelResourceLocation(new ModResourceLocation(material.getModId().toString(), material.getNameLowercase() + "_wire"), DEFAULT_VARIANT);
 					}
 				});
 			}
@@ -173,7 +174,7 @@ public final class ClientEventSubscriber {
 
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(material.getModId(), material.getNameLowercase() + "_enamel"), DEFAULT_VARIANT);
+						return new ModelResourceLocation(new ModResourceLocation(material.getModId().toString(), material.getNameLowercase() + "_enamel"), DEFAULT_VARIANT);
 					}
 				});
 			}
@@ -237,10 +238,10 @@ public final class ClientEventSubscriber {
 			}
 
 			if (material.getProperties().hasResource()) {
-				if ((material.getResource() != null) && material.getResouceLocationDomain().equals(material.getModId())) {
+				if ((material.getResource() != null) && material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getModId())) {
 					registerBlockModMaterialItemBlockModel(material.getResource());
 				}
-				if ((material.getResourcePiece() != null) && material.getResouceLocationDomain().equals(material.getModId())) {
+				if ((material.getResourcePiece() != null) && material.getResouceLocationDomainWithOverrides(material.getProperties().getResourcePieceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getModId())) {
 					registerBlockModMaterialItemBlockModel(material.getResourcePiece());
 				}
 			}
@@ -373,7 +374,7 @@ public final class ClientEventSubscriber {
 
 	private static <T extends Item & IItemModMaterial> void registerItemModMaterialModel(final T item) {
 		final boolean isVanilla = item.getRegistryName().getResourceDomain().equals("minecraft");
-		final String registryNameResourceDomain = isVanilla ? "minecraft" : item.getModMaterial().getModId();
+		final String registryNameResourceDomain = isVanilla ? "minecraft" : item.getModMaterial().getModId().toString();
 		final String registryNameResourcePath = item.getRegistryName().getResourcePath();
 
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), DEFAULT_VARIANT));
@@ -381,7 +382,7 @@ public final class ClientEventSubscriber {
 
 	private static <T extends Block & IBlockModMaterial> void registerBlockModMaterialItemBlockModel(final T block) {
 		final boolean isVanilla = block.getRegistryName().getResourceDomain().equals("minecraft");
-		final String registryNameResourceDomain = isVanilla ? "minecraft" : block.getModMaterial().getModId();
+		final String registryNameResourceDomain = isVanilla ? "minecraft" : block.getModMaterial().getModId().toString();
 		final String registryNameResourcePath = block.getRegistryName().getResourcePath();
 
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), DEFAULT_VARIANT));

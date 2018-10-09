@@ -14,6 +14,7 @@ import cadiboo.wiptech.block.BlockModOre;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemModArmor;
@@ -27,8 +28,9 @@ import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.item.ItemSlug;
 import cadiboo.wiptech.util.ModEnums.IEnumNameFormattable;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModResourceLocation;
-import net.minecraft.block.material.Material;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocationDomain;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocationPath;
 import net.minecraft.entity.passive.HorseArmorType;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item.ToolMaterial;
@@ -37,6 +39,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -85,11 +89,9 @@ public enum ModMaterial implements IEnumNameFormattable {
 
 	GALLIUM(17, new MetalProperties(true, 1.50f, 29)),
 
-	BAUXITE(18, new ModMaterialProperties(true, false, false, false, false, false, false, false, false, false, false, false, false, false, ModMaterial.ALUMINIUM.getProperties().getHardness(), 0, null, new BlockRenderLayer[]{BlockRenderLayer.SOLID}, null)),
+	BAUXITE(18, new ModMaterialProperties(true, false, false, null, false, null, false, false, false, false, false, false, false, false, false, false, ModMaterial.ALUMINIUM.getProperties().getHardness(), 0, null, new BlockRenderLayer[]{BlockRenderLayer.SOLID}, null, null)),
 
-	APATITE(19, new GemProperties(true, 4.50f, 0, () -> {
-		return APATITE.getResource();
-	}, (final Integer fortune, final Random random) -> {
+	APATITE(19, new GemProperties(true, 4.50f, 0, () -> ModItems.APATITE_RESOURCE, (final Integer fortune, final Random random) -> {
 		return 64;
 	})),
 
@@ -100,19 +102,19 @@ public enum ModMaterial implements IEnumNameFormattable {
 	private final ArmorMaterial armorMaterial;
 	private final ToolMaterial toolMaterial;
 	private final HorseArmorType horseArmorType;
-	private final String modId;
+	private final ModResourceLocationDomain modId;
 
 	private ModMaterial(final int id, final ModMaterialProperties properties) {
 		this(id, properties, ModReference.MOD_ID);
 	}
 
-	ModMaterial(final int id, final ModMaterialProperties properties, final String modId) {
+	private ModMaterial(final int id, final ModMaterialProperties properties, final String modId) {
 		this.id = id;
 		this.properties = properties;
+		this.modId = new ModResourceLocationDomain(modId);
 		this.armorMaterial = this.generateArmorMaterial();
 		this.toolMaterial = this.generateToolMaterial();
 		this.horseArmorType = this.generateHorseArmorType();
-		this.modId = modId;
 	}
 
 	public int getId() {
@@ -123,7 +125,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 		return this.properties;
 	}
 
-	public String getModId() {
+	public ModResourceLocationDomain getModId() {
 		return this.modId;
 	}
 
@@ -174,7 +176,21 @@ public enum ModMaterial implements IEnumNameFormattable {
 		} else {
 			final String name = this.getNameUppercase();
 
-			final String textureName = new ModResourceLocation(this.getResouceLocationDomain(), this.getNameLowercase()).toString();
+			String nameSuffix = null;
+			if ((nameSuffix == null) && this.getProperties().hasHelmet()) {
+				nameSuffix = "helmet";
+			}
+			if ((nameSuffix == null) && this.getProperties().hasChestplate()) {
+				nameSuffix = "chestplate";
+			}
+			if ((nameSuffix == null) && this.getProperties().hasLeggings()) {
+				nameSuffix = "leggings";
+			}
+			if ((nameSuffix == null) && this.getProperties().hasBoots()) {
+				nameSuffix = "boots";
+			}
+
+			final String textureName = new ModResourceLocation(this.getResouceLocationDomainWithOverrides(nameSuffix, ForgeRegistries.ITEMS), new ModResourceLocationPath(this.getNameLowercase())).toString();
 
 			final int durability = (int) Math.ceil(this.getProperties().getHardness() * ModReference.ARMOR_MATERIAL_HARDNESS_MULTIPLIER);
 
@@ -189,7 +205,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 
 			final ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability, soundOnEquip, toughness);
 			// TODO TEST THIS!!
-			armorMaterial.setRepairItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ModResourceLocation(this.getResouceLocationDomain(), this.getNameLowercase()))));
+			armorMaterial.setRepairItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ModResourceLocation(this.getResouceLocationDomainWithOverrides(nameSuffix, ForgeRegistries.ITEMS), new ModResourceLocationPath(this.getNameLowercase() + (this.getProperties().getResourceSuffix().length() > 0 ? "_" + this.getProperties().getResourceSuffix() : ""))))));
 			return armorMaterial;
 
 		}
@@ -207,7 +223,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 		} else {
 			final String name = this.getNameUppercase();
 
-			final String textureLocation = new ModResourceLocation(this.getResouceLocationDomain(), "textures/entity/horse/armor/horse_armor_" + this.getNameLowercase()).toString() + ".png";
+			final String textureLocation = new ModResourceLocation(this.getResouceLocationDomainWithOverrides("horse_armor", ForgeRegistries.ITEMS), new ModResourceLocationPath("textures/entity/horse/armor/horse_armor_" + this.getNameLowercase())).toString() + ".png";
 
 			final int armorStrength = (int) Math.ceil(this.getProperties().getHardness());
 
@@ -215,8 +231,15 @@ public enum ModMaterial implements IEnumNameFormattable {
 		}
 	}
 
-	public String getResouceLocationDomain() {
-		return this.modId;
+	public ModResourceLocationDomain getResouceLocationDomainWithOverrides(final String nameSuffix, final IForgeRegistry registry) {
+		for (final ModContainer mod : Loader.instance().getActiveModList()) {
+			if (!mod.getModId().equals(ModReference.MOD_ID)) {
+				if (registry.containsKey(new ModResourceLocation(mod.getModId(), this.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix))) {
+					return new ModResourceLocationDomain(mod.getModId());
+				}
+			}
+		}
+		return new ModResourceLocationDomain(ModReference.MOD_ID);
 	}
 
 	public String getVanillaNameLowercase(final String suffix) {
@@ -274,11 +297,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 		if (!this.getProperties().hasResource()) {
 			return null;
 		}
-		return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, "resource");
-	}
-
-	private String getResourcePieceType() {
-		return null;
+		return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, this.getProperties().getResourceSuffix());
 	}
 
 	@Nullable
@@ -286,7 +305,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 		if (!this.getProperties().hasResourcePiece()) {
 			return null;
 		}
-		return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, "resource_piece");
+		return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, this.getProperties().getResourcePieceSuffix());
 	}
 
 	@Nullable
@@ -440,7 +459,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 	@Nullable
 	public static <T> T getRegistryValue(@Nonnull final IForgeRegistry<? extends IForgeRegistryEntry<T>> registry, @Nonnull final ModMaterial material, @Nonnull String nameSuffix) {
 		nameSuffix = nameSuffix.toLowerCase();
-		return (T) registry.getValue(new ModResourceLocation(material.getResouceLocationDomain(), material.getVanillaNameLowercase(nameSuffix) + "_" + nameSuffix));
+		return (T) registry.getValue(new ModResourceLocation(material.getResouceLocationDomainWithOverrides(nameSuffix, registry), new ModResourceLocationPath(material.getVanillaNameLowercase(nameSuffix) + (nameSuffix.length() > 0 ? "_" + nameSuffix : ""))));
 	}
 
 	public static float getHighestHardness() {
@@ -464,10 +483,6 @@ public enum ModMaterial implements IEnumNameFormattable {
 			}
 		}
 		return ret;
-	}
-
-	public Material getVanillaMaterial() {
-		return Material.IRON;
 	}
 
 	public static ModMaterial byId(final int id) {

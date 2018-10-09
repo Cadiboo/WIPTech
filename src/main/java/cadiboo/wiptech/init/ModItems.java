@@ -13,6 +13,7 @@ import cadiboo.wiptech.item.ItemRailgun;
 import cadiboo.wiptech.item.ItemShotgun;
 import cadiboo.wiptech.item.ItemSlugCasing;
 import cadiboo.wiptech.util.ModReference;
+import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 /**
@@ -35,9 +36,9 @@ public class ModItems {
 
 	public static final ItemSlugCasing SLUG_CASING_BOTTOM = null;
 
-	public static final ItemHandheldRailgun		HANDHELD_RAILGUN	= null;
-	public static final ItemHandheldCoilgun		HANDHELD_COILGUN	= null;
-	public static final ItemHandheldPlasmagun	HANDHELD_PLASMAGUN	= null;
+	public static final ItemHandheldRailgun HANDHELD_RAILGUN = null;
+	public static final ItemHandheldCoilgun HANDHELD_COILGUN = null;
+	public static final ItemHandheldPlasmagun HANDHELD_PLASMAGUN = null;
 
 	public static final ItemShotgun SHOTGUN = null;
 
@@ -48,5 +49,7 @@ public class ModItems {
 	public static final ItemLaser LASER = null;
 
 	public static final ItemElectricShield ELECTRIC_SHIELD = null;
+
+	public static final ItemBlock APATITE_RESOURCE = null;
 
 }

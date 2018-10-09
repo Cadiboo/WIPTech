@@ -9,16 +9,25 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import cadiboo.wiptech.util.ModEnums.BlockItemType;
 import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class ModMaterialProperties {
 
 	private final boolean hasOre;
 	private final boolean hasBlock;
 	private final boolean hasResource;
+	@Nullable
+	final String resourceSuffix;
 	private final boolean hasResourcePiece;
+
+	@Nullable
+	final String resourcePieceSuffix;
 	private final boolean hasHelmet;
 	private final boolean hasChestplate;
 	private final boolean hasLeggings;
@@ -36,14 +45,21 @@ public class ModMaterialProperties {
 	private final Supplier<Item> getOreDrop;
 	@Nonnull
 	private final BlockRenderLayer[] blockRenderLayers;
+	@Nonnull
 	private final BiFunction<Integer, Random, Integer> getQuantityDroppedWithBonus;
+	@Nonnull
+	private final BiFunction<BlockItemType, EnumFacing, AxisAlignedBB> getBoundingBox;
 
 	public ModMaterialProperties(
 	/*@formatter:off*/
 		final boolean hasOre,
 		final boolean hasBlock,
 		final boolean hasResource,
+		@Nullable
+		final String resourceSuffix,
 		final boolean hasResourcePiece,
+		@Nullable
+		final String resourcePieceSuffix,
 		final boolean hasHelmet,
 		final boolean hasChestplate,
 		final boolean hasLeggings,
@@ -62,14 +78,18 @@ public class ModMaterialProperties {
 		final BlockRenderLayer[] blockRenderLayers,
 		@Nonnull
 		@MethodsReturnNonnullByDefault
-		final BiFunction<Integer, Random, Integer> getQuantityDroppedWithBonus
+		final BiFunction<Integer, Random, Integer> getQuantityDroppedWithBonus,
+		@Nullable
+		final BiFunction<BlockItemType, EnumFacing, AxisAlignedBB>  getBoundingBox
 	/*@formatter:on*/
 	) {
 
 		this.hasOre = hasOre;
 		this.hasBlock = hasBlock;
 		this.hasResource = hasResource;
+		this.resourceSuffix = resourceSuffix;
 		this.hasResourcePiece = hasResourcePiece;
+		this.resourcePieceSuffix = resourcePieceSuffix;
 		this.hasHelmet = hasHelmet;
 		this.hasChestplate = hasChestplate;
 		this.hasLeggings = hasLeggings;
@@ -89,6 +109,13 @@ public class ModMaterialProperties {
 			this.blockRenderLayers = blockRenderLayers;
 		}
 		this.getQuantityDroppedWithBonus = getQuantityDroppedWithBonus;
+		if (getBoundingBox == null) {
+			this.getBoundingBox = (final BlockItemType type, final EnumFacing facing) -> {
+				return Block.FULL_BLOCK_AABB;
+			};
+		} else {
+			this.getBoundingBox = getBoundingBox;
+		}
 
 	}
 
@@ -104,8 +131,16 @@ public class ModMaterialProperties {
 		return this.hasResource;
 	}
 
+	public String getResourceSuffix() {
+		return this.resourceSuffix;
+	}
+
 	public boolean hasResourcePiece() {
 		return this.hasResourcePiece;
+	}
+
+	public String getResourcePieceSuffix() {
+		return this.resourcePieceSuffix;
 	}
 
 	public boolean hasHelmet() {
@@ -178,11 +213,13 @@ public class ModMaterialProperties {
 
 	@Nullable
 	public Item getOreDrop() {
+		// return Items.ACACIA_BOAT;
 		return this.getOreDrop.get();
 	}
 
 	@Nonnull
 	public List<BlockRenderLayer> getBlockRenderLayers() {
+		// return Arrays.asList(new BlockRenderLayer[]{BlockRenderLayer.SOLID});
 		return Arrays.asList(this.blockRenderLayers);
 	}
 
@@ -213,7 +250,18 @@ public class ModMaterialProperties {
 	}
 
 	public int getQuantityDroppedWithBonus(final int fortune, final Random random) {
+		// return 1;
 		return this.getQuantityDroppedWithBonus.apply(fortune, random);
 	}
+
+	public AxisAlignedBB getBoundingBox(final BlockItemType type, final EnumFacing facing) {
+		// return Block.FULL_BLOCK_AABB;
+		return this.getBoundingBox.apply(type, facing);
+	}
+
+	// TODO @NonDepreciated
+	// public AxisAlignedBB getBoundingBox(final BlockItemType type) {
+	// return Block.FULL_BLOCK_AABB;
+	// }
 
 }

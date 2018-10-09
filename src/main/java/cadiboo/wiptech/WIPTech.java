@@ -12,7 +12,6 @@ import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.util.IProxy;
 import cadiboo.wiptech.util.ModGuiHandler;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModWritingUtil;
 import cadiboo.wiptech.world.gen.ModWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -23,7 +22,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 /**
  * WIPTech Alpha
@@ -106,9 +104,7 @@ public class WIPTech {
 	 */
 	@EventHandler
 	public void init(final FMLInitializationEvent event) {
-		if (proxy.getPhysicalSide() == Side.CLIENT) {
-			ModWritingUtil.writeMod();
-		}
+
 	}
 
 	/**
@@ -130,8 +126,8 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#DEBUG DEBUG} level.
-	 * @param messages the message objects to log.
-	 * @author Cadiboo
+	 * @param  messages the message objects to log.
+	 * @author          Cadiboo
 	 */
 	public static void debug(final Object... messages) {
 		for (final Object msg : messages) {
@@ -141,8 +137,8 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#INFO ERROR} INFO.
-	 * @param messages the message objects to log.
-	 * @author Cadiboo
+	 * @param  messages the message objects to log.
+	 * @author          Cadiboo
 	 */
 	public static void info(final Object... messages) {
 		for (final Object msg : messages) {
@@ -152,8 +148,8 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#WARN WARN} level.
-	 * @param messages the message objects to log.
-	 * @author Cadiboo
+	 * @param  messages the message objects to log.
+	 * @author          Cadiboo
 	 */
 	public static void warn(final Object... messages) {
 		for (final Object msg : messages) {
@@ -163,8 +159,8 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#ERROR ERROR} level.
-	 * @param messages the message objects to log.
-	 * @author Cadiboo
+	 * @param  messages the message objects to log.
+	 * @author          Cadiboo
 	 */
 	public static void error(final Object... messages) {
 		for (final Object msg : messages) {
@@ -174,8 +170,8 @@ public class WIPTech {
 
 	/**
 	 * Logs message object(s) with the {@link org.apache.logging.log4j.Level#FATAL FATAL} level.
-	 * @param messages the message objects to log.
-	 * @author Cadiboo
+	 * @param  messages the message objects to log.
+	 * @author          Cadiboo
 	 */
 	public static void fatal(final Object... messages) {
 		for (final Object msg : messages) {
@@ -185,8 +181,8 @@ public class WIPTech {
 
 	/**
 	 * Logs all {@link java.lang.reflect.Field Field}s and their values of an object with the {@link org.apache.logging.log4j.Level#INFO INFO} level.
-	 * @param objects the objects to dump.
-	 * @author Cadiboo
+	 * @param  objects the objects to dump.
+	 * @author         Cadiboo
 	 */
 	public static void dump(final Object... objects) {
 		for (final Object obj : objects) {

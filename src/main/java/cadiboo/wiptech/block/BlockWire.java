@@ -7,6 +7,7 @@ import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.tileentity.TileEntityWire;
 import cadiboo.wiptech.util.ModUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
@@ -58,7 +59,7 @@ public class BlockWire extends Block implements IModBlock, IBlockModMaterial {
 	}
 
 	protected BlockWire(final ModMaterial material, final String nameSuffix) {
-		super(material.getVanillaMaterial());
+		super(Material.CIRCUITS);
 		ModUtil.setRegistryNames(this, material, nameSuffix);
 		this.material = material;
 	}

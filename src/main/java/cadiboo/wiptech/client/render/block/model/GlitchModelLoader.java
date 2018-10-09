@@ -2,7 +2,7 @@ package cadiboo.wiptech.client.render.block.model;
 
 import cadiboo.wiptech.client.model.ModelGlitch;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModResourceLocation;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;

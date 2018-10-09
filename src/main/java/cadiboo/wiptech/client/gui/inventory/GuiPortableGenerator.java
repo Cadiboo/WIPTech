@@ -3,7 +3,7 @@ package cadiboo.wiptech.client.gui.inventory;
 import cadiboo.wiptech.entity.item.EntityPortableGenerator;
 import cadiboo.wiptech.inventory.ContainerPortableGenerator;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModResourceLocation;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;

@@ -9,9 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import cadiboo.wiptech.item.ItemCircuit;
 import cadiboo.wiptech.item.ItemScope;
-import net.minecraft.util.EnumFacing;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 /**
@@ -54,15 +53,7 @@ public final class ModEnums {
 
 	public static enum BlockItemType implements IEnumNameFormattable {
 
-		INGOT(0), NUGGET(1), GEM(2);
-
-		private static final AxisAlignedBB DEFAULT_AABB = new AxisAlignedBB(0.2, 0.0, 0.2, 0.8, 0.2, 0.8);
-
-		private static final AxisAlignedBB INGOT_EW_AABB = new AxisAlignedBB(3d / 16d, 0, 6d / 16d, 1d - (3d / 16d), 3d / 16d, 1d - (6d / 16d));
-		private static final AxisAlignedBB INGOT_NS_AABB = new AxisAlignedBB(6d / 16d, 0, 3d / 16d, 1d - (6d / 16d), 3d / 16d, 1d - (3d / 16d));
-
-		private static final AxisAlignedBB NUGGET_EW_AABB = new AxisAlignedBB(4d / 16d, 0, 5d / 16d, 1d - (4d / 16d), 1d / 16d, 1d - (5d / 16d));
-		private static final AxisAlignedBB NUGGET_NS_AABB = new AxisAlignedBB(5d / 16d, 0, 4d / 16d, 1d - (5d / 16d), 1d / 16d, 1d - (4d / 16d));
+		RESOURCE(0), RESOURCE_PIECE(1);
 
 		private final int id;
 
@@ -72,39 +63,6 @@ public final class ModEnums {
 
 		public int getId() {
 			return this.id;
-		}
-
-		public AxisAlignedBB getBoundingBox(final EnumFacing facing) {
-
-			switch (byId(this.getId())) {
-				case INGOT :
-					switch (facing) {
-						case EAST :
-						case WEST :
-							return INGOT_EW_AABB;
-						case NORTH :
-						case SOUTH :
-							return INGOT_NS_AABB;
-						default :
-							return DEFAULT_AABB;
-					}
-				case NUGGET :
-					switch (facing) {
-						case EAST :
-						case WEST :
-							return NUGGET_EW_AABB;
-						case NORTH :
-						case SOUTH :
-							return NUGGET_NS_AABB;
-						default :
-							return DEFAULT_AABB;
-					}
-				case GEM :
-					return DEFAULT_AABB;
-				default :
-					return DEFAULT_AABB;
-
-			}
 		}
 
 		public static BlockItemType byId(final int id) {

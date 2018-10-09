@@ -2,8 +2,8 @@ package cadiboo.wiptech.item;
 
 import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.util.ModReference;
-import cadiboo.wiptech.util.ModResourceLocation;
 import cadiboo.wiptech.util.ModUtil;
+import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
