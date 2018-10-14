@@ -673,7 +673,6 @@ public enum ModMaterial implements IEnumNameFormattable {
 
 			if (ModMaterial.this.getProperties().hasEnamel()) {
 				ModelLoader.setCustomStateMapper(ModMaterial.this.getEnamel(), new StateMapperBase() {
-
 					@Override
 					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
 						return new ModelResourceLocation(new ModResourceLocation(ModMaterial.this.getModId().toString(), ModMaterial.this.getNameLowercase() + "_enamel"), ClientEventSubscriber.DEFAULT_VARIANT);
@@ -685,30 +684,26 @@ public enum ModMaterial implements IEnumNameFormattable {
 			WIPTech.debug("Registered custom State Mappers for wires and enamels with the Model Loader");
 
 			if (ModMaterial.GLITCH.getProperties().hasBlock() || ModMaterial.GLITCH.getProperties().hasOre()) {
-				if (ModMaterial.GLITCH.getBlock() != null) {
-					ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getBlock(), new StateMapperBase() {
-						@Override
-						protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-							return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_block"), ClientEventSubscriber.DEFAULT_VARIANT);
-						}
-					});
-				}
-				if (ModMaterial.GLITCH.getOre() != null) {
-					ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getOre(), new StateMapperBase() {
-						@Override
-						protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-							return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_ore"), ClientEventSubscriber.DEFAULT_VARIANT);
-						}
-					});
-				}
-				if (ModMaterial.GLITCH.getSpool() != null) {
-					ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getSpool(), new StateMapperBase() {
-						@Override
-						protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-							return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_spool"), ClientEventSubscriber.DEFAULT_VARIANT);
-						}
-					});
-				}
+				ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getBlock(), new StateMapperBase() {
+					@Override
+					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_block"), ClientEventSubscriber.DEFAULT_VARIANT);
+					}
+				});
+
+				ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getOre(), new StateMapperBase() {
+					@Override
+					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_ore"), ClientEventSubscriber.DEFAULT_VARIANT);
+					}
+				});
+
+				ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getSpool(), new StateMapperBase() {
+					@Override
+					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_spool"), ClientEventSubscriber.DEFAULT_VARIANT);
+					}
+				});
 			}
 			ModelLoaderRegistry.registerLoader(new GlitchModelLoader());
 			WIPTech.debug("Registered custom State Mapper(s) for glitch block and ore with the Model Loader");
