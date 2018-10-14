@@ -8,15 +8,12 @@ import java.util.Random;
 import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockEnamel;
 import cadiboo.wiptech.block.BlockWire;
-import cadiboo.wiptech.block.IBlockModMaterial;
 import cadiboo.wiptech.capability.attachments.AttachmentList;
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
 import cadiboo.wiptech.capability.energy.network.EnergyNetwork;
 import cadiboo.wiptech.capability.energy.network.EnergyNetworkList;
 import cadiboo.wiptech.client.model.ModelsCache;
-import cadiboo.wiptech.client.render.block.model.GlitchModelLoader;
-import cadiboo.wiptech.client.render.block.model.WireModelLoader;
 import cadiboo.wiptech.client.render.entity.EntityCoilgunBulletRenderer;
 import cadiboo.wiptech.client.render.entity.EntityNapalmRenderer;
 import cadiboo.wiptech.client.render.entity.EntityPortableGeneratorRenderer;
@@ -36,7 +33,6 @@ import cadiboo.wiptech.entity.projectile.EntitySlugCasing;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.IItemAttachment;
-import cadiboo.wiptech.item.IItemModMaterial;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.material.ModMaterial;
@@ -61,7 +57,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.Entity;
@@ -86,7 +81,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -95,7 +89,6 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 @Mod.EventBusSubscriber(modid = ModReference.MOD_ID)
 public final class ClientEventSubscriber {
@@ -116,7 +109,6 @@ public final class ClientEventSubscriber {
 		registerEntityRenderers();
 		WIPTech.info("Registered entity renderers");
 
-		registerModelsForMaterials();
 		registerModelsForAttachments();
 
 		/* item blocks */
@@ -157,187 +149,6 @@ public final class ClientEventSubscriber {
 		RenderingRegistry.registerEntityRenderingHandler(EntityCoilgunBullet.class, renderManager -> new EntityCoilgunBulletRenderer(renderManager));
 	}
 
-	private static void registerModelsForMaterials() {
-		for (final ModMaterial material : ModMaterial.values()) {
-
-			if (material.getProperties().hasWire()) {
-				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
-					@Override
-					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(material.getModId().toString(), material.getNameLowercase() + "_wire"), DEFAULT_VARIANT);
-					}
-				});
-			}
-
-			if (material.getProperties().hasEnamel()) {
-				ModelLoader.setCustomStateMapper(material.getEnamel(), new StateMapperBase() {
-
-					@Override
-					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(material.getModId().toString(), material.getNameLowercase() + "_enamel"), DEFAULT_VARIANT);
-					}
-				});
-			}
-
-		}
-		ModelLoaderRegistry.registerLoader(new WireModelLoader());
-		WIPTech.debug("Registered custom State Mappers for wires and enamels with the Model Loader");
-
-		if (ModMaterial.GLITCH.getProperties().hasBlock() || ModMaterial.GLITCH.getProperties().hasOre()) {
-			if (ModMaterial.GLITCH.getBlock() != null) {
-				ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getBlock(), new StateMapperBase() {
-					@Override
-					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_block"), DEFAULT_VARIANT);
-					}
-				});
-			}
-			if (ModMaterial.GLITCH.getOre() != null) {
-				ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getOre(), new StateMapperBase() {
-					@Override
-					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_ore"), DEFAULT_VARIANT);
-					}
-				});
-			}
-			if (ModMaterial.GLITCH.getSpool() != null) {
-				ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getSpool(), new StateMapperBase() {
-					@Override
-					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
-						return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_spool"), DEFAULT_VARIANT);
-					}
-				});
-			}
-		}
-		ModelLoaderRegistry.registerLoader(new GlitchModelLoader());
-		WIPTech.debug("Registered custom State Mapper(s) for glitch block and ore with the Model Loader");
-
-		for (final ModMaterial material : ModMaterial.values()) {
-
-			if (material.getProperties().hasRailgunSlug()) {
-				// FIXME TODO re-enable this & make it work
-				// ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), "cased_" + material.getNameLowercase() + "_slug"), DEFAULT_VARIANT));
-			}
-
-		}
-
-		// ModelLoaderRegistry.registerLoader(new CasedSlugModelLoader());
-		// WIPTech.debug("Registered custom Mesh Definitions for cased slugs with the Model Loader");
-
-		for (final ModMaterial material : ModMaterial.values()) {
-			if (material.getProperties().hasOre()) {
-				if (material.getOre() != null) {
-					registerBlockModMaterialItemBlockModel(material.getOre());
-				}
-			}
-
-			if (material.getProperties().hasBlock()) {
-				if (material.getBlock() != null) {
-					registerBlockModMaterialItemBlockModel(material.getBlock());
-				}
-			}
-
-			if (material.getProperties().hasResource()) {
-				if ((material.getResource() != null) && material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getModId())) {
-					registerBlockModMaterialItemBlockModel(material.getResource());
-				}
-				if ((material.getResourcePiece() != null) && material.getResouceLocationDomainWithOverrides(material.getProperties().getResourcePieceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getModId())) {
-					registerBlockModMaterialItemBlockModel(material.getResourcePiece());
-				}
-			}
-
-			if (material.getProperties().hasWire()) {
-				if (material.getWire() != null) {
-					registerBlockModMaterialItemBlockModel(material.getWire());
-				}
-				if (material.getSpool() != null) {
-					registerBlockModMaterialItemBlockModel(material.getSpool());
-				}
-			}
-
-			if (material.getProperties().hasEnamel()) {
-				if (material.getEnamel() != null) {
-					registerBlockModMaterialItemBlockModel(material.getEnamel());
-				}
-			}
-
-			if (material.getProperties().hasHelmet()) {
-				if (material.getHelmet() != null) {
-					registerItemModMaterialModel(material.getHelmet());
-				}
-			}
-			if (material.getProperties().hasChestplate()) {
-				if (material.getChestplate() != null) {
-					registerItemModMaterialModel(material.getChestplate());
-				}
-			}
-			if (material.getProperties().hasLeggings()) {
-				if (material.getLeggings() != null) {
-					registerItemModMaterialModel(material.getLeggings());
-				}
-			}
-			if (material.getProperties().hasBoots()) {
-				if (material.getBoots() != null) {
-					registerItemModMaterialModel(material.getBoots());
-				}
-			}
-			if (material.getProperties().hasHorseArmor()) {
-				if (material.getHorseArmor() != null) {
-					registerItemModMaterialModel(material.getHorseArmor());
-				}
-			}
-
-			if (material.getProperties().hasPickaxe()) {
-				if (material.getPickaxe() != null) {
-					registerItemModMaterialModel(material.getPickaxe());
-				}
-			}
-			if (material.getProperties().hasAxe()) {
-				if (material.getAxe() != null) {
-					registerItemModMaterialModel(material.getAxe());
-				}
-			}
-			if (material.getProperties().hasSword()) {
-				if (material.getSword() != null) {
-					registerItemModMaterialModel(material.getSword());
-				}
-			}
-			if (material.getProperties().hasShovel()) {
-				if (material.getShovel() != null) {
-					registerItemModMaterialModel(material.getShovel());
-				}
-			}
-			if (material.getProperties().hasHoe()) {
-				if (material.getHoe() != null) {
-					registerItemModMaterialModel(material.getHoe());
-				}
-			}
-
-			if (material.getProperties().hasCoil()) {
-				if (material.getCoil() != null) {
-					registerItemModMaterialModel(material.getCoil());
-				}
-			}
-
-			if (material.getProperties().hasRail()) {
-				if (material.getRail() != null) {
-					registerItemModMaterialModel(material.getRail());
-				}
-			}
-
-			if (material.getProperties().hasRailgunSlug()) {
-				if (material.getSlugItem() != null) {
-					registerItemModMaterialModel(material.getSlugItem());
-				}
-				// if (material.getCasedSlug() != null) {
-				// registerItemModMaterialModel(material.getCasedSlug());
-				// }
-			}
-
-		}
-		WIPTech.debug("Registered models for materials");
-	}
-
 	private static void registerModelsForAttachments() {
 
 		for (final CircuitType type : CircuitType.values()) {
@@ -370,22 +181,6 @@ public final class ClientEventSubscriber {
 
 	private static void registerItemModel(final Item item, final String variant) {
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), variant));
-	}
-
-	private static <T extends Item & IItemModMaterial> void registerItemModMaterialModel(final T item) {
-		final boolean isVanilla = item.getRegistryName().getResourceDomain().equals("minecraft");
-		final String registryNameResourceDomain = isVanilla ? "minecraft" : item.getModMaterial().getModId().toString();
-		final String registryNameResourcePath = item.getRegistryName().getResourcePath();
-
-		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), DEFAULT_VARIANT));
-	}
-
-	private static <T extends Block & IBlockModMaterial> void registerBlockModMaterialItemBlockModel(final T block) {
-		final boolean isVanilla = block.getRegistryName().getResourceDomain().equals("minecraft");
-		final String registryNameResourceDomain = isVanilla ? "minecraft" : block.getModMaterial().getModId().toString();
-		final String registryNameResourcePath = block.getRegistryName().getResourcePath();
-
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), DEFAULT_VARIANT));
 	}
 
 	/* injected textures */

@@ -3,18 +3,23 @@ package cadiboo.wiptech.material;
 import java.util.Arrays;
 import java.util.Random;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import org.apache.commons.lang3.StringUtils;
 
+import cadiboo.wiptech.EventSubscriber;
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.block.BlockEnamel;
 import cadiboo.wiptech.block.BlockItem;
 import cadiboo.wiptech.block.BlockModOre;
 import cadiboo.wiptech.block.BlockResource;
 import cadiboo.wiptech.block.BlockSpool;
 import cadiboo.wiptech.block.BlockWire;
+import cadiboo.wiptech.block.IBlockModMaterial;
+import cadiboo.wiptech.client.ClientEventSubscriber;
+import cadiboo.wiptech.client.render.block.model.GlitchModelLoader;
+import cadiboo.wiptech.client.render.block.model.WireModelLoader;
+import cadiboo.wiptech.entity.projectile.EntitySlug;
 import cadiboo.wiptech.init.ModItems;
+import cadiboo.wiptech.item.IItemModMaterial;
 import cadiboo.wiptech.item.ItemCasedSlug;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemModArmor;
@@ -26,25 +31,42 @@ import cadiboo.wiptech.item.ItemModShovel;
 import cadiboo.wiptech.item.ItemModSword;
 import cadiboo.wiptech.item.ItemRail;
 import cadiboo.wiptech.item.ItemSlug;
+import cadiboo.wiptech.item.ModItemBlock;
+import cadiboo.wiptech.util.ModEnums.BlockItemType;
 import cadiboo.wiptech.util.ModEnums.IEnumNameFormattable;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import cadiboo.wiptech.util.resourcelocation.ModResourceLocationDomain;
 import cadiboo.wiptech.util.resourcelocation.ModResourceLocationPath;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.HorseArmorType;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
  * MOHS Hardness from <a href= "https://en.wikipedia.org/wiki/Mohs_scale_of_mineral_hardness">Wikipedia</a> and <a href= "http://periodictable.com/Properties/A/MohsHardness.v.html">Periodictable</a>
@@ -103,6 +125,39 @@ public enum ModMaterial implements IEnumNameFormattable {
 	private final ToolMaterial toolMaterial;
 	private final HorseArmorType horseArmorType;
 	private final ModResourceLocationDomain modId;
+
+	private BlockModOre ore;
+	private BlockResource block;
+	private BlockItem resource;
+	private BlockItem resourcePiece;
+	private BlockWire wire;
+	private BlockSpool spool;
+	private BlockEnamel enamel;
+
+	private ModItemBlock itemBlockOre;
+	private ModItemBlock itemBlockBlock;
+	private ModItemBlock itemBlockResource;
+	private ModItemBlock itemBlockResourcePiece;
+	private ModItemBlock itemBlockWire;
+	private ModItemBlock itemBlockSpool;
+	private ModItemBlock itemBlockEnamel;
+
+	private ItemModArmor helmet;
+	private ItemModArmor chestplate;
+	private ItemModArmor leggings;
+	private ItemModArmor boots;
+	private ItemModHorseArmor horseArmor;
+	private ItemModPickaxe pickaxe;
+	private ItemModAxe axe;
+	private ItemModSword sword;
+	private ItemModShovel shovel;
+	private ItemModHoe hoe;
+	private ItemCoil coil;
+	private ItemRail rail;
+	private ItemSlug slugItem;
+	private ItemCasedSlug casedSlug;
+
+	private EntityEntry slugEntity;
 
 	private ModMaterial(final int id, final ModMaterialProperties properties) {
 		this(id, properties, ModReference.MOD_ID);
@@ -276,190 +331,120 @@ public enum ModMaterial implements IEnumNameFormattable {
 		return StringUtils.capitalize(this.getVanillaNameLowercase(suffix));
 	}
 
-	@Nullable
 	public BlockModOre getOre() {
-		if (!this.getProperties().hasOre()) {
-			return null;
-		}
-		return (BlockModOre) this.getRegistryValue(ForgeRegistries.BLOCKS, "ore");
+		return this.ore;
 	}
 
-	@Nullable
 	public BlockResource getBlock() {
-		if (!this.getProperties().hasBlock()) {
-			return null;
-		}
-		return (BlockResource) this.getRegistryValue(ForgeRegistries.BLOCKS, "block");
+		return this.block;
 	}
 
-	@Nullable
 	public BlockItem getResource() {
-		if (!this.getProperties().hasResource()) {
-			return null;
-		}
-		return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, this.getProperties().getResourceSuffix());
+		return this.resource;
 	}
 
-	@Nullable
 	public BlockItem getResourcePiece() {
-		if (!this.getProperties().hasResourcePiece()) {
-			return null;
-		}
-		return (BlockItem) this.getRegistryValue(ForgeRegistries.BLOCKS, this.getProperties().getResourcePieceSuffix());
+		return this.resourcePiece;
 	}
 
-	@Nullable
 	public BlockWire getWire() {
-		if (!this.getProperties().hasWire()) {
-			return null;
-		}
-		return (BlockWire) this.getRegistryValue(ForgeRegistries.BLOCKS, "wire");
+		return this.wire;
 	}
 
-	@Nullable
 	public BlockSpool getSpool() {
-		if (!this.getProperties().hasWire()) {
-			return null;
-		}
-		return (BlockSpool) this.getRegistryValue(ForgeRegistries.BLOCKS, "spool");
+		return this.spool;
 	}
 
-	@Nullable
 	public BlockEnamel getEnamel() {
-		if (!this.getProperties().hasEnamel()) {
-			return null;
-		}
-		return (BlockEnamel) this.getRegistryValue(ForgeRegistries.BLOCKS, "enamel");
+		return this.enamel;
 	}
 
-	@Nullable
+	public ModItemBlock getItemBlockOre() {
+		return this.itemBlockOre;
+	}
+
+	public ModItemBlock getItemBlockBlock() {
+		return this.itemBlockBlock;
+	}
+
+	public ModItemBlock getItemBlockResource() {
+		return this.itemBlockResource;
+	}
+
+	public ModItemBlock getItemBlockResourcePiece() {
+		return this.itemBlockResourcePiece;
+	}
+
+	public ModItemBlock getItemBlockWire() {
+		return this.itemBlockWire;
+	}
+
+	public ModItemBlock getItemBlockSpool() {
+		return this.itemBlockSpool;
+	}
+
+	public ModItemBlock getItemBlockEnamel() {
+		return this.itemBlockEnamel;
+	}
+
 	public ItemModArmor getHelmet() {
-		if (!this.getProperties().hasHelmet()) {
-			return null;
-		}
-		return (ItemModArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "helmet");
+		return this.helmet;
 	}
 
-	@Nullable
 	public ItemModArmor getChestplate() {
-		if (!this.getProperties().hasChestplate()) {
-			return null;
-		}
-		return (ItemModArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "chestplate");
+		return this.chestplate;
 	}
 
-	@Nullable
 	public ItemModArmor getLeggings() {
-		if (!this.getProperties().hasLeggings()) {
-			return null;
-		}
-		return (ItemModArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "leggings");
+		return this.leggings;
 	}
 
-	@Nullable
 	public ItemModArmor getBoots() {
-		if (!this.getProperties().hasBoots()) {
-			return null;
-		}
-		return (ItemModArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "boots");
+		return this.boots;
 	}
 
 	public ItemModHorseArmor getHorseArmor() {
-		if (!this.getProperties().hasHorseArmor()) {
-			return null;
-		}
-		return (ItemModHorseArmor) this.getRegistryValue(ForgeRegistries.ITEMS, "horse_armor");
+		return this.horseArmor;
 	}
 
-	@Nullable
 	public ItemModPickaxe getPickaxe() {
-		if (!this.getProperties().hasPickaxe()) {
-			return null;
-		}
-		return (ItemModPickaxe) this.getRegistryValue(ForgeRegistries.ITEMS, "pickaxe");
+		return this.pickaxe;
 	}
 
-	@Nullable
 	public ItemModAxe getAxe() {
-		if (!this.getProperties().hasAxe()) {
-			return null;
-		}
-		return (ItemModAxe) this.getRegistryValue(ForgeRegistries.ITEMS, "axe");
+		return this.axe;
 	}
 
-	@Nullable
 	public ItemModSword getSword() {
-		if (!this.getProperties().hasSword()) {
-			return null;
-		}
-		return (ItemModSword) this.getRegistryValue(ForgeRegistries.ITEMS, "sword");
+		return this.sword;
 	}
 
-	@Nullable
 	public ItemModShovel getShovel() {
-		if (!this.getProperties().hasShovel()) {
-			return null;
-		}
-		return (ItemModShovel) this.getRegistryValue(ForgeRegistries.ITEMS, "shovel");
+		return this.shovel;
 	}
 
-	@Nullable
 	public ItemModHoe getHoe() {
-		if (!this.getProperties().hasHoe()) {
-			return null;
-		}
-		return (ItemModHoe) this.getRegistryValue(ForgeRegistries.ITEMS, "hoe");
+		return this.hoe;
 	}
 
-	@Nullable
 	public ItemCoil getCoil() {
-		if (!this.getProperties().hasCoil()) {
-			return null;
-		}
-		return (ItemCoil) this.getRegistryValue(ForgeRegistries.ITEMS, "coil");
+		return this.coil;
 	}
 
-	@Nullable
 	public ItemRail getRail() {
-		if (!this.getProperties().hasRail()) {
-			return null;
-		}
-		return (ItemRail) this.getRegistryValue(ForgeRegistries.ITEMS, "rail");
+		return this.rail;
 	}
 
-	@Nullable
-	public EntityEntry getSlugEntity() {
-		if (!this.getProperties().hasRailgunSlug()) {
-			return null;
-		}
-		return this.getRegistryValue(ForgeRegistries.ENTITIES, "slug");
-	}
-
-	@Nullable
 	public ItemSlug getSlugItem() {
-		if (!this.getProperties().hasRailgunSlug()) {
-			return null;
-		}
-		return (ItemSlug) this.getRegistryValue(ForgeRegistries.ITEMS, "slug");
+		return this.slugItem;
 	}
 
-	@Nullable
 	public ItemCasedSlug getCasedSlug() {
-		if (!this.getProperties().hasRailgunSlug()) {
-			return null;
-		}
-		return (ItemCasedSlug) ForgeRegistries.ITEMS.getValue(new ModResourceLocation(ModReference.MOD_ID, "cased_" + this.getNameLowercase() + "_" + "slug"));
+		return this.casedSlug;
 	}
 
-	@Nullable
-	private <T> T getRegistryValue(@Nonnull final IForgeRegistry<? extends IForgeRegistryEntry<T>> registry, @Nonnull final String nameSuffix) {
-		return getRegistryValue(registry, this, nameSuffix);
-	}
-
-	@Nullable
-	public static <T> T getRegistryValue(@Nonnull final IForgeRegistry<? extends IForgeRegistryEntry<T>> registry, @Nonnull final ModMaterial material, @Nonnull String nameSuffix) {
-		nameSuffix = nameSuffix.toLowerCase();
-		return (T) registry.getValue(new ModResourceLocation(material.getResouceLocationDomainWithOverrides(nameSuffix, registry), new ModResourceLocationPath(material.getVanillaNameLowercase(nameSuffix) + (nameSuffix.length() > 0 ? "_" + nameSuffix : ""))));
+	public EntityEntry getSlugEntity() {
+		return this.slugEntity;
 	}
 
 	public static float getHighestHardness() {
@@ -487,6 +472,401 @@ public enum ModMaterial implements IEnumNameFormattable {
 
 	public static ModMaterial byId(final int id) {
 		return values()[Math.min(Math.abs(id), values().length)];
+	}
+
+	public class MaterialEventSubscriber {
+
+		@SubscribeEvent
+		public void onRegisterBlocksEvent(final RegistryEvent.Register<Block> event) {
+			final IForgeRegistry<Block> registry = event.getRegistry();
+
+			final ModMaterial material = ModMaterial.this;
+
+			if (material.getProperties().hasOre()) {
+				registry.register(new BlockModOre(material));
+			}
+
+			if (material.getProperties().hasBlock()) {
+				registry.register(new BlockResource(material));
+			}
+
+			if (material.getProperties().hasResource()) {
+				registry.register(new BlockItem(material, BlockItemType.RESOURCE));
+			}
+
+			if (material.getProperties().hasResourcePiece()) {
+				registry.register(new BlockItem(material, BlockItemType.RESOURCE_PIECE));
+			}
+
+			if (material.getProperties().hasWire()) {
+				registry.register(new BlockWire(material));
+				registry.register(new BlockSpool(material));
+			}
+
+			if (material.getProperties().hasEnamel()) {
+				registry.register(new BlockEnamel(material));
+			}
+
+			WIPTech.debug("Registered blocks for " + ModMaterial.this.getNameFormatted());
+		}
+
+		@SubscribeEvent
+		public void onRegisterItemsEvent(final RegistryEvent.Register<Item> event) {
+			final IForgeRegistry<Item> registry = event.getRegistry();
+
+			final ModMaterial material = ModMaterial.this;
+
+			if (material.getProperties().hasOre()) {
+				registry.register(new ModItemBlock(material.getOre(), new ModResourceLocation(material.getResouceLocationDomainWithOverrides("ore", ForgeRegistries.BLOCKS), new ModResourceLocationPath(material.getNameLowercase() + "_ore"))));
+			}
+
+			if (material.getProperties().hasBlock()) {
+				registry.register(new ModItemBlock(material.getBlock(), new ModResourceLocation(material.getResouceLocationDomainWithOverrides("block", ForgeRegistries.BLOCKS), new ModResourceLocationPath(material.getNameLowercase() + "_block"))));
+			}
+
+			if (material.getProperties().hasResource()) {
+				final String suffix = material.getProperties().getResourceSuffix();
+				registry.register(new ModItemBlock(material.getResource(), new ModResourceLocation(material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS), new ModResourceLocationPath(material.getNameLowercase() + (suffix.length() > 0 ? "_" + suffix : "")))));
+			}
+			if (material.getProperties().hasResourcePiece()) {
+				final String suffix = material.getProperties().getResourcePieceSuffix();
+				registry.register(new ModItemBlock(material.getResourcePiece(), new ModResourceLocation(material.getResouceLocationDomainWithOverrides(material.getProperties().getResourcePieceSuffix(), ForgeRegistries.ITEMS), new ModResourceLocationPath(material.getNameLowercase() + (suffix.length() > 0 ? "_" + suffix : "")))));
+			}
+
+			if (material.getProperties().hasWire()) {
+				registry.register(new ModItemBlock(material.getWire()));
+				registry.register(new ModItemBlock(material.getSpool()));
+			}
+
+			if (material.getProperties().hasEnamel()) {
+				registry.register(new ModItemBlock(material.getEnamel()));
+			}
+
+			if (material.getProperties().hasHelmet()) {
+				registry.register(new ItemModArmor(material, EntityEquipmentSlot.HEAD));
+			}
+			if (material.getProperties().hasChestplate()) {
+				registry.register(new ItemModArmor(material, EntityEquipmentSlot.CHEST));
+			}
+			if (material.getProperties().hasLeggings()) {
+				registry.register(new ItemModArmor(material, EntityEquipmentSlot.LEGS));
+			}
+			if (material.getProperties().hasBoots()) {
+				registry.register(new ItemModArmor(material, EntityEquipmentSlot.FEET));
+			}
+			if (material.getProperties().hasHorseArmor()) {
+				registry.register(new ItemModHorseArmor(material));
+			}
+
+			if (material.getProperties().hasPickaxe()) {
+				registry.register(new ItemModPickaxe(material));
+			}
+			if (material.getProperties().hasAxe()) {
+				registry.register(new ItemModAxe(material));
+			}
+			if (material.getProperties().hasSword()) {
+				registry.register(new ItemModSword(material));
+			}
+			if (material.getProperties().hasShovel()) {
+				registry.register(new ItemModShovel(material));
+			}
+			if (material.getProperties().hasHoe()) {
+				registry.register(new ItemModHoe(material));
+			}
+
+			if (material.getProperties().hasCoil()) {
+				registry.register(new ItemCoil(material));
+			}
+
+			if (material.getProperties().hasRail()) {
+				registry.register(new ItemRail(material));
+			}
+
+			if (material.getProperties().hasRailgunSlug()) {
+				registry.register(new ItemSlug(material));
+				registry.register(new ItemCasedSlug(material));
+			}
+
+			WIPTech.debug("Registered items for " + ModMaterial.this.getNameFormatted());
+
+		}
+
+		@SubscribeEvent
+		public void onRegisterEntitiesEvent(final RegistryEvent.Register<EntityEntry> event) {
+			final IForgeRegistry<EntityEntry> registry = event.getRegistry();
+
+			final ModMaterial material = ModMaterial.this;
+
+			// TODO AdditionalSpawnData maybe?
+			if (material.getProperties().hasRailgunSlug()) {
+
+				final ModResourceLocation registryName = new ModResourceLocation(ModReference.MOD_ID, material.getNameLowercase() + "_slug");
+				final boolean hasEgg = false;
+				final int range = 128;
+				final int updateFrequency = 2;
+				final boolean sendVelocityUpdates = true;
+
+				EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
+				builder = builder.entity(EntitySlug.class);
+				builder = builder.id(registryName, EventSubscriber.entityId++);
+				builder = builder.name(registryName.getResourcePath());
+				builder = builder.tracker(range, updateFrequency, sendVelocityUpdates);
+
+				if (hasEgg) {
+					builder = builder.egg(0xFFFFFF, 0xAAAAAA);
+				}
+
+				final EntityEntry entry = builder.build();
+				registry.register(entry);
+			}
+			WIPTech.debug("Registered entities for " + ModMaterial.this.getNameFormatted());
+		}
+
+		@SideOnly(Side.CLIENT)
+		public void onRegisterModelsEvent(final ModelRegistryEvent event) {
+
+			final ModMaterial material = ModMaterial.this;
+
+			if (material.getProperties().hasWire()) {
+				ModelLoader.setCustomStateMapper(material.getWire(), new StateMapperBase() {
+					@Override
+					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+						return new ModelResourceLocation(new ModResourceLocation(material.getModId().toString(), material.getNameLowercase() + "_wire"), ClientEventSubscriber.DEFAULT_VARIANT);
+					}
+				});
+			}
+
+			if (material.getProperties().hasEnamel()) {
+				ModelLoader.setCustomStateMapper(material.getEnamel(), new StateMapperBase() {
+
+					@Override
+					protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+						return new ModelResourceLocation(new ModResourceLocation(material.getModId().toString(), material.getNameLowercase() + "_enamel"), ClientEventSubscriber.DEFAULT_VARIANT);
+					}
+				});
+			}
+
+			ModelLoaderRegistry.registerLoader(new WireModelLoader());
+			WIPTech.debug("Registered custom State Mappers for wires and enamels with the Model Loader");
+
+			if (ModMaterial.GLITCH.getProperties().hasBlock() || ModMaterial.GLITCH.getProperties().hasOre()) {
+				if (ModMaterial.GLITCH.getBlock() != null) {
+					ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getBlock(), new StateMapperBase() {
+						@Override
+						protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+							return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_block"), ClientEventSubscriber.DEFAULT_VARIANT);
+						}
+					});
+				}
+				if (ModMaterial.GLITCH.getOre() != null) {
+					ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getOre(), new StateMapperBase() {
+						@Override
+						protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+							return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_ore"), ClientEventSubscriber.DEFAULT_VARIANT);
+						}
+					});
+				}
+				if (ModMaterial.GLITCH.getSpool() != null) {
+					ModelLoader.setCustomStateMapper(ModMaterial.GLITCH.getSpool(), new StateMapperBase() {
+						@Override
+						protected ModelResourceLocation getModelResourceLocation(final IBlockState iBlockState) {
+							return new ModelResourceLocation(new ModResourceLocation(ModReference.MOD_ID, "glitch_spool"), ClientEventSubscriber.DEFAULT_VARIANT);
+						}
+					});
+				}
+			}
+			ModelLoaderRegistry.registerLoader(new GlitchModelLoader());
+			WIPTech.debug("Registered custom State Mapper(s) for glitch block and ore with the Model Loader");
+
+			if (material.getProperties().hasRailgunSlug()) {
+				// FIXME TODO re-enable this & make it work
+				// ModelLoader.setCustomMeshDefinition(material.getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(material.getAssetsModId(), "cased_" + material.getNameLowercase() + "_slug"), DEFAULT_VARIANT));
+			}
+
+			// ModelLoaderRegistry.registerLoader(new CasedSlugModelLoader());
+			// WIPTech.debug("Registered custom Mesh Definitions for cased slugs with the Model Loader");
+
+			if (material.getProperties().hasOre()) {
+				if (material.getOre() != null) {
+					this.registerBlockModMaterialItemBlockModel(material.getOre());
+				}
+			}
+
+			if (material.getProperties().hasBlock()) {
+				if (material.getBlock() != null) {
+					this.registerBlockModMaterialItemBlockModel(material.getBlock());
+				}
+			}
+
+			if (material.getProperties().hasResource()) {
+				if ((material.getResource() != null) && material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getModId())) {
+					this.registerBlockModMaterialItemBlockModel(material.getResource());
+				}
+				if ((material.getResourcePiece() != null) && material.getResouceLocationDomainWithOverrides(material.getProperties().getResourcePieceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(material.getModId())) {
+					this.registerBlockModMaterialItemBlockModel(material.getResourcePiece());
+				}
+			}
+
+			if (material.getProperties().hasWire()) {
+				if (material.getWire() != null) {
+					this.registerBlockModMaterialItemBlockModel(material.getWire());
+				}
+				if (material.getSpool() != null) {
+					this.registerBlockModMaterialItemBlockModel(material.getSpool());
+				}
+			}
+
+			if (material.getProperties().hasEnamel()) {
+				if (material.getEnamel() != null) {
+					this.registerBlockModMaterialItemBlockModel(material.getEnamel());
+				}
+			}
+
+			if (material.getProperties().hasHelmet()) {
+				if (material.getHelmet() != null) {
+					this.registerItemModMaterialModel(material.getHelmet());
+				}
+			}
+			if (material.getProperties().hasChestplate()) {
+				if (material.getChestplate() != null) {
+					this.registerItemModMaterialModel(material.getChestplate());
+				}
+			}
+			if (material.getProperties().hasLeggings()) {
+				if (material.getLeggings() != null) {
+					this.registerItemModMaterialModel(material.getLeggings());
+				}
+			}
+			if (material.getProperties().hasBoots()) {
+				if (material.getBoots() != null) {
+					this.registerItemModMaterialModel(material.getBoots());
+				}
+			}
+			if (material.getProperties().hasHorseArmor()) {
+				if (material.getHorseArmor() != null) {
+					this.registerItemModMaterialModel(material.getHorseArmor());
+				}
+			}
+
+			if (material.getProperties().hasPickaxe()) {
+				if (material.getPickaxe() != null) {
+					this.registerItemModMaterialModel(material.getPickaxe());
+				}
+			}
+			if (material.getProperties().hasAxe()) {
+				if (material.getAxe() != null) {
+					this.registerItemModMaterialModel(material.getAxe());
+				}
+			}
+			if (material.getProperties().hasSword()) {
+				if (material.getSword() != null) {
+					this.registerItemModMaterialModel(material.getSword());
+				}
+			}
+			if (material.getProperties().hasShovel()) {
+				if (material.getShovel() != null) {
+					this.registerItemModMaterialModel(material.getShovel());
+				}
+			}
+			if (material.getProperties().hasHoe()) {
+				if (material.getHoe() != null) {
+					this.registerItemModMaterialModel(material.getHoe());
+				}
+			}
+
+			if (material.getProperties().hasCoil()) {
+				if (material.getCoil() != null) {
+					this.registerItemModMaterialModel(material.getCoil());
+				}
+			}
+
+			if (material.getProperties().hasRail()) {
+				if (material.getRail() != null) {
+					this.registerItemModMaterialModel(material.getRail());
+				}
+			}
+
+			if (material.getProperties().hasRailgunSlug()) {
+				if (material.getSlugItem() != null) {
+					this.registerItemModMaterialModel(material.getSlugItem());
+				}
+				// if (material.getCasedSlug() != null) {
+				// registerItemModMaterialModel(material.getCasedSlug());
+				// }
+			}
+
+			WIPTech.debug("Registered models for materials");
+		}
+
+		@SideOnly(Side.CLIENT)
+		private <T extends Item & IItemModMaterial> void registerItemModMaterialModel(final T item) {
+			final boolean isVanilla = item.getRegistryName().getResourceDomain().equals("minecraft");
+			final String registryNameResourceDomain = isVanilla ? "minecraft" : item.getModMaterial().getModId().toString();
+			final String registryNameResourcePath = item.getRegistryName().getResourcePath();
+
+			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), ClientEventSubscriber.DEFAULT_VARIANT));
+		}
+
+		@SideOnly(Side.CLIENT)
+		private <T extends Block & IBlockModMaterial> void registerBlockModMaterialItemBlockModel(final T block) {
+			final boolean isVanilla = block.getRegistryName().getResourceDomain().equals("minecraft");
+			final String registryNameResourceDomain = isVanilla ? "minecraft" : block.getModMaterial().getModId().toString();
+			final String registryNameResourcePath = block.getRegistryName().getResourcePath();
+
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), ClientEventSubscriber.DEFAULT_VARIANT));
+		}
+
+		@SubscribeEvent(priority = EventPriority.LOWEST)
+		public void onRegistryEventRegister(final RegistryEvent.Register event) {
+			final IForgeRegistry registry = event.getRegistry();
+
+			if (registry == ForgeRegistries.BLOCKS) {
+				ModMaterial.this.ore = (BlockModOre) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "ore")));
+				ModMaterial.this.block = (BlockResource) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "block")));
+				ModMaterial.this.resource = (BlockItem) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "resource")));
+				ModMaterial.this.resourcePiece = (BlockItem) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "resourcePiece")));
+				ModMaterial.this.wire = (BlockWire) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "wire")));
+				ModMaterial.this.spool = (BlockSpool) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "spool")));
+				ModMaterial.this.enamel = (BlockEnamel) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "enamel")));
+			}
+
+			if (registry == ForgeRegistries.ITEMS) {
+				ModMaterial.this.itemBlockOre = (ModItemBlock) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "ore")));
+				ModMaterial.this.itemBlockBlock = (ModItemBlock) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "block")));
+				ModMaterial.this.itemBlockResource = (ModItemBlock) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "resource")));
+				ModMaterial.this.itemBlockResourcePiece = (ModItemBlock) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "resourcePiece")));
+				ModMaterial.this.itemBlockWire = (ModItemBlock) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "wire")));
+				ModMaterial.this.itemBlockSpool = (ModItemBlock) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "spool")));
+				ModMaterial.this.itemBlockEnamel = (ModItemBlock) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "enamel")));
+
+				ModMaterial.this.helmet = (ItemModArmor) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "helmet")));
+				ModMaterial.this.chestplate = (ItemModArmor) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "chestplate")));
+				ModMaterial.this.leggings = (ItemModArmor) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "leggings")));
+				ModMaterial.this.boots = (ItemModArmor) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "boots")));
+				ModMaterial.this.horseArmor = (ItemModHorseArmor) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "horseArmor")));
+				ModMaterial.this.pickaxe = (ItemModPickaxe) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "pickaxe")));
+				ModMaterial.this.axe = (ItemModAxe) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "axe")));
+				ModMaterial.this.sword = (ItemModSword) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "sword")));
+				ModMaterial.this.shovel = (ItemModShovel) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "shovel")));
+				ModMaterial.this.hoe = (ItemModHoe) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "hoe")));
+				ModMaterial.this.coil = (ItemCoil) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "coil")));
+				ModMaterial.this.rail = (ItemRail) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "rail")));
+				ModMaterial.this.slugItem = (ItemSlug) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "slug")));
+				ModMaterial.this.casedSlug = (ItemCasedSlug) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath("cased" + "_" + ModMaterial.this.getNameLowercase() + "_" + "slug")));
+			}
+
+			if (registry == ForgeRegistries.ENTITIES) {
+				ModMaterial.this.slugEntity = (EntityEntry) registry.getValue(new ModResourceLocation(ModMaterial.this.getResouceLocationDomainWithOverrides("ore", registry), new ModResourceLocationPath(ModMaterial.this.getNameLowercase() + "_" + "slug")));
+			}
+
+		}
+
+		// TODO: texturestich?
+	}
+
+	private final MaterialEventSubscriber eventSubscriber = new MaterialEventSubscriber();
+	public MaterialEventSubscriber getEventSubscriber() {
+		return this.eventSubscriber;
 	}
 
 }

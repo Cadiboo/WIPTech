@@ -8,11 +8,14 @@ import org.apache.logging.log4j.Logger;
 import cadiboo.wiptech.capability.attachments.CapabilityAttachmentList;
 import cadiboo.wiptech.capability.attachments.circuitdata.CapabilityCircuitData;
 import cadiboo.wiptech.capability.energy.network.CapabilityEnergyNetworkList;
+import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.network.ModNetworkManager;
 import cadiboo.wiptech.util.IProxy;
 import cadiboo.wiptech.util.ModGuiHandler;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.world.gen.ModWorldGenerator;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -97,6 +100,10 @@ public class WIPTech {
 		CapabilityAttachmentList.register();
 		CapabilityCircuitData.register();
 
+		for(ModMaterial material : ModMaterial.values()) {
+			MinecraftForge.EVENT_BUS.register(material.getEventSubscriber());
+		}
+		
 	}
 
 	/**
