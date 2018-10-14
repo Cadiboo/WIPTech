@@ -660,6 +660,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 
 		/** CLIENT ONLY */
 		@SideOnly(Side.CLIENT)
+		@SubscribeEvent
 		public void onRegisterModelsEvent(final ModelRegistryEvent event) {
 
 			if (ModMaterial.this.getProperties().hasWire()) {
