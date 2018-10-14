@@ -722,112 +722,76 @@ public enum ModMaterial implements IEnumNameFormattable {
 			// WIPTech.debug("Registered custom Mesh Definitions for cased slugs with the Model Loader");
 
 			if (ModMaterial.this.getProperties().hasOre()) {
-				if (ModMaterial.this.getOre() != null) {
-					this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getOre());
-				}
+				this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getOre());
 			}
 
 			if (ModMaterial.this.getProperties().hasBlock()) {
-				if (ModMaterial.this.getBlock() != null) {
-					this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getBlock());
-				}
+				this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getBlock());
 			}
 
 			if (ModMaterial.this.getProperties().hasResource()) {
-				if ((ModMaterial.this.getResource() != null) && ModMaterial.this.getResouceLocationDomainWithOverrides(ModMaterial.this.getProperties().getResourceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(ModMaterial.this.getModId())) {
+				if (ModMaterial.this.getResouceLocationDomainWithOverrides(ModMaterial.this.getProperties().getResourceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(ModMaterial.this.getModId())) {
 					this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getResource());
 				}
-				if ((ModMaterial.this.getResourcePiece() != null) && ModMaterial.this.getResouceLocationDomainWithOverrides(ModMaterial.this.getProperties().getResourcePieceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(ModMaterial.this.getModId())) {
+				if (ModMaterial.this.getResouceLocationDomainWithOverrides(ModMaterial.this.getProperties().getResourcePieceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(ModMaterial.this.getModId())) {
 					this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getResourcePiece());
 				}
 			}
 
 			if (ModMaterial.this.getProperties().hasWire()) {
-				if (ModMaterial.this.getWire() != null) {
-					this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getWire());
-				}
-				if (ModMaterial.this.getSpool() != null) {
-					this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getSpool());
-				}
+				this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getWire());
+
+				this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getSpool());
 			}
 
 			if (ModMaterial.this.getProperties().hasEnamel()) {
-				if (ModMaterial.this.getEnamel() != null) {
-					this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getEnamel());
-				}
+				this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getEnamel());
 			}
 
 			if (ModMaterial.this.getProperties().hasHelmet()) {
-				if (ModMaterial.this.getHelmet() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getHelmet());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getHelmet());
 			}
 			if (ModMaterial.this.getProperties().hasChestplate()) {
-				if (ModMaterial.this.getChestplate() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getChestplate());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getChestplate());
 			}
 			if (ModMaterial.this.getProperties().hasLeggings()) {
-				if (ModMaterial.this.getLeggings() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getLeggings());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getLeggings());
 			}
 			if (ModMaterial.this.getProperties().hasBoots()) {
-				if (ModMaterial.this.getBoots() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getBoots());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getBoots());
 			}
 			if (ModMaterial.this.getProperties().hasHorseArmor()) {
-				if (ModMaterial.this.getHorseArmor() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getHorseArmor());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getHorseArmor());
 			}
 
 			if (ModMaterial.this.getProperties().hasPickaxe()) {
-				if (ModMaterial.this.getPickaxe() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getPickaxe());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getPickaxe());
 			}
 			if (ModMaterial.this.getProperties().hasAxe()) {
-				if (ModMaterial.this.getAxe() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getAxe());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getAxe());
 			}
 			if (ModMaterial.this.getProperties().hasSword()) {
-				if (ModMaterial.this.getSword() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getSword());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getSword());
 			}
 			if (ModMaterial.this.getProperties().hasShovel()) {
-				if (ModMaterial.this.getShovel() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getShovel());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getShovel());
 			}
 			if (ModMaterial.this.getProperties().hasHoe()) {
-				if (ModMaterial.this.getHoe() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getHoe());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getHoe());
 			}
 
 			if (ModMaterial.this.getProperties().hasCoil()) {
-				if (ModMaterial.this.getCoil() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getCoil());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getCoil());
 			}
 
 			if (ModMaterial.this.getProperties().hasRail()) {
-				if (ModMaterial.this.getRail() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getRail());
-				}
+				this.registerItemModMaterialModel(ModMaterial.this.getRail());
 			}
 
 			if (ModMaterial.this.getProperties().hasRailgunSlug()) {
-				if (ModMaterial.this.getSlugItem() != null) {
-					this.registerItemModMaterialModel(ModMaterial.this.getSlugItem());
-				}
-				// if (getCasedSlug() != null) {
+				this.registerItemModMaterialModel(ModMaterial.this.getSlugItem());
+
 				// registerItemModMaterialModel(getCasedSlug());
-				// }
 			}
 
 			WIPTech.debug("Registered models for materials");
