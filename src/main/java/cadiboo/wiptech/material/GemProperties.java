@@ -21,13 +21,15 @@ public class GemProperties extends ModMaterialProperties {
 	public static final BiFunction<BlockItemType, EnumFacing, AxisAlignedBB> DEFAULT_GET_BOUNDING_BOX = (final BlockItemType type, final EnumFacing facing) -> {
 		return DEFAULT_BOUNDING_BOX;
 	};
+	public static final String RESOURCE_SUFFIX = "";
+	public static final String RESOURCE_PIECE_SUFFIX = "shard";
 
 	public GemProperties(final boolean hasOre, final float MOHS_Hardness, final int thermalConductivityAt20DegreesCelsius, @Nullable final Supplier<Item> getOreDrop, @Nonnull @MethodsReturnNonnullByDefault final BiFunction<Integer, Random, Integer> getQuantityDroppedWithBonus) {
 		this(hasOre, MOHS_Hardness, thermalConductivityAt20DegreesCelsius, getOreDrop, getQuantityDroppedWithBonus, DEFAULT_GET_BOUNDING_BOX);
 	}
 
 	public GemProperties(final boolean hasOre, final float MOHS_Hardness, final int thermalConductivityAt20DegreesCelsius, @Nullable final Supplier<Item> getOreDrop, @Nonnull @MethodsReturnNonnullByDefault final BiFunction<Integer, Random, Integer> getQuantityDroppedWithBonus, @Nullable final BiFunction<BlockItemType, EnumFacing, AxisAlignedBB> getBoundingBox) {
-		super(hasOre, true, true, "", true, "shard", true, true, true, true, true, true, true, true, true, true, MOHS_Hardness, thermalConductivityAt20DegreesCelsius, getOreDrop, BLOCK_RENDER_LAYERS, getQuantityDroppedWithBonus, getBoundingBox);
+		super(hasOre, true, true, RESOURCE_SUFFIX, true, RESOURCE_PIECE_SUFFIX, true, true, true, true, true, true, true, true, true, true, MOHS_Hardness, thermalConductivityAt20DegreesCelsius, getOreDrop, BLOCK_RENDER_LAYERS, getQuantityDroppedWithBonus, getBoundingBox);
 	}
 
 }
