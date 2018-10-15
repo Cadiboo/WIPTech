@@ -740,11 +740,11 @@ public final class ClientUtil {
 	@SideOnly(Side.CLIENT)
 	public static void enableMaxLighting() {
 		GlStateManager.disableLighting();
-		final int i = 15728881;
+		final int lightmapCoords = 15728881;
 
-		final int j = i % 65536;
-		final int k = i / 65536;
-		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j, k);
+		final int skyLight = lightmapCoords % 65536;
+		final int blockLight = lightmapCoords / 65536;
+		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, skyLight, blockLight);
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 

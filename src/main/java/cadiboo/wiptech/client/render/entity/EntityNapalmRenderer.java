@@ -44,31 +44,32 @@ public class EntityNapalmRenderer extends Render<EntityNapalm> {
 		final double d11 = entity.lastTickPosY + ((entity.posY - entity.lastTickPosY) * partialTicks) + (entity.motionY * partialTicks);
 		final double d21 = entity.lastTickPosZ + ((entity.posZ - entity.lastTickPosZ) * partialTicks) + (entity.motionZ * partialTicks);
 
-//		GlStateManager.pushMatrix();
-//		GlStateManager.translate(vec3d.x, vec3d.y, vec3d.z);
-//		this.bindTexture(TextureMap.LOCATION_MISSING_TEXTURE);
-//		ClientUtil.drawSeamlessCuboid(0, 1, 0, 1, 1, 1, 1, 1);
-//		GlStateManager.popMatrix();
-//
-//		GlStateManager.pushMatrix();
-//		GlStateManager.translate(vec3d1.x, vec3d1.y, vec3d1.z);
-//		this.bindTexture(TextureMap.LOCATION_MISSING_TEXTURE);
-//		ClientUtil.drawSeamlessCuboid(0, 1, 0, 1, 1, 1, 1, 1);
-//		GlStateManager.popMatrix();
+		// GlStateManager.pushMatrix();
+		// GlStateManager.translate(vec3d.x, vec3d.y, vec3d.z);
+		// this.bindTexture(TextureMap.LOCATION_MISSING_TEXTURE);
+		// ClientUtil.drawSeamlessCuboid(0, 1, 0, 1, 1, 1, 1, 1);
+		// GlStateManager.popMatrix();
+		//
+		// GlStateManager.pushMatrix();
+		// GlStateManager.translate(vec3d1.x, vec3d1.y, vec3d1.z);
+		// this.bindTexture(TextureMap.LOCATION_MISSING_TEXTURE);
+		// ClientUtil.drawSeamlessCuboid(0, 1, 0, 1, 1, 1, 1, 1);
+		// GlStateManager.popMatrix();
 
-//		GlStateManager.pushMatrix();
-//		GlStateManager.translate(vec3d2.x, vec3d2.y, vec3d2.z);
-//		this.bindTexture(TextureMap.LOCATION_MISSING_TEXTURE);
-//		ClientUtil.drawSeamlessCuboid(0, 1, 0, 1, 1, 1, 1, 1);
-//		GlStateManager.popMatrix();
+		// GlStateManager.pushMatrix();
+		// GlStateManager.translate(vec3d2.x, vec3d2.y, vec3d2.z);
+		// this.bindTexture(TextureMap.LOCATION_MISSING_TEXTURE);
+		// ClientUtil.drawSeamlessCuboid(0, 1, 0, 1, 1, 1, 1, 1);
+		// GlStateManager.popMatrix();
 
-//		GlStateManager.pushMatrix();
-//		GlStateManager.translate(d0, d1, d2);
-//		this.bindTexture(TextureMap.LOCATION_MISSING_TEXTURE);
-//		ClientUtil.drawSeamlessCuboid(0, 1, 0, 1, 1, 1, 1, 1);
-//		GlStateManager.popMatrix();
+		// GlStateManager.pushMatrix();
+		// GlStateManager.translate(d0, d1, d2);
+		// this.bindTexture(TextureMap.LOCATION_MISSING_TEXTURE);
+		// ClientUtil.drawSeamlessCuboid(0, 1, 0, 1, 1, 1, 1, 1);
+		// GlStateManager.popMatrix();
 
 		if (entity.getThrower() == null) {
+			GlStateManager.enableLighting();
 			return;
 		}
 		final Vec3d look = entity.getThrower().getLook(partialTicks);
@@ -93,15 +94,15 @@ public class EntityNapalmRenderer extends Render<EntityNapalm> {
 
 			final TextureAtlasSprite lava = texturemap.getAtlasSprite("minecraft:blocks/lava_flow");
 
-//			ClientUtil.drawSeamlessCuboid(lava.getMinU(), lava.getMaxU(), lava.getMinV(), lava.getMaxV(), 0.125, 0.125, 0.125, 10);
+			// ClientUtil.drawSeamlessCuboid(lava.getMinU(), lava.getMaxU(), lava.getMinV(), lava.getMaxV(), 0.125, 0.125, 0.125, 10);
 
 		} catch (final Exception e) {
 			// TODO: handle exception
 		}
 
-		GlStateManager.enableLighting();
-
 		GlStateManager.popMatrix();
+
+		GlStateManager.enableLighting();
 
 	}
 

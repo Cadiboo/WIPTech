@@ -18,6 +18,7 @@ import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.client.ClientEventSubscriber;
 import cadiboo.wiptech.init.ModBlocks;
 import cadiboo.wiptech.init.ModItems;
+import cadiboo.wiptech.material.GemProperties;
 import cadiboo.wiptech.material.MetalProperties;
 import cadiboo.wiptech.material.ModMaterial;
 import cadiboo.wiptech.material.ModMaterialProperties;
@@ -103,6 +104,7 @@ public class ModWritingUtil {
 	}
 
 	private static void generateAndWriteModels(final ModMaterial material) {
+
 		final ModMaterialProperties properties = material.getProperties();
 
 		final HashMap<String, String> blockstates = new HashMap<>();
@@ -153,7 +155,10 @@ public class ModWritingUtil {
 
 			blockstates.put(path, generateBlockstateJSON(model, EnumFacing.HORIZONTALS));
 
-			final String resourceNameSuffix = material.getProperties().getResourceSuffix();
+			String resourceNameSuffix = material.getProperties().getResourceSuffix();
+			if (material.getProperties() instanceof GemProperties) {
+				resourceNameSuffix = "gem";
+			}
 
 			final ModResourceLocation parent = new ModResourceLocation(ModReference.MOD_ID, "block/" + resourceNameSuffix);
 			final String textureName = resourceNameSuffix;
@@ -550,11 +555,11 @@ public class ModWritingUtil {
 			}
 
 			if (material.getResource() != null) {
-				lang.put(material.getResource().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " " + (material == ModMaterial.APATITE ? "" : "Ingot"));
+				lang.put(material.getResource().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + (material.getProperties() instanceof GemProperties ? "" : " Ingot"));
 			}
 
 			if (material.getResourcePiece() != null) {
-				lang.put(material.getResourcePiece().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " " + (material == ModMaterial.APATITE ? "Shard" : "Nugget"));
+				lang.put(material.getResourcePiece().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " " + (material.getProperties() instanceof GemProperties ? "Shard" : "Nugget"));
 			}
 
 			// armor
@@ -1075,21 +1080,21 @@ public class ModWritingUtil {
 
 		//
 
-		if ((material.getWire() != null) && (material.getResource() != null)) {
-			/*@formatter:off*/
-			recipes.put(material.getEnamel().getRegistryName().getResourcePath(), "{\n" +
-					"	\"type\": \"wiptech:hammering\",\n" +
-					"	\"ingredient\": {\n" +
-					"		\"item\": \""+material.getResource().getRegistryName().toString()+"\",\n" +
-					"		\"count\": 1\n" +
-					"	},\n" +
-					"	\"result\": {\n" +
-					"		\"item\": \""+material.getWire().getRegistryName().toString()+"\",\n" +
-					"		\"count\": 4\n" +
-					"	}\n" +
-					"}");
-			/*@formatter:on*/
-		}
+		// if ((material.getWire() != null) && (material.getResource() != null)) {
+//			/*@formatter:off*/
+//			recipes.put(material.getEnamel().getRegistryName().getResourcePath(), "{\n" +
+//					"	\"type\": \"wiptech:hammering\",\n" +
+//					"	\"ingredient\": {\n" +
+//					"		\"item\": \""+material.getResource().getRegistryName().toString()+"\",\n" +
+//					"		\"count\": 1\n" +
+//					"	},\n" +
+//					"	\"result\": {\n" +
+//					"		\"item\": \""+material.getWire().getRegistryName().toString()+"\",\n" +
+//					"		\"count\": 4\n" +
+//					"	}\n" +
+//					"}");
+//			/*@formatter:on*/
+		// }
 
 		if (material.getEnamel() != null) {
 			/*@formatter:off*/
@@ -1137,67 +1142,67 @@ public class ModWritingUtil {
 			/*@formatter:on*/
 		}
 
-		if (material.getCoil() != null) {
-			/*@formatter:off*/
-			recipes.put(material.getCoil().getRegistryName().getResourcePath()+"_from_wire", "{\n" +
-					"	\"type\": \"wiptech:coiling\",\n" +
-					"	\"group\": \""+material.getCoil().getRegistryName().getResourcePath()+"\",\n" +
-					"	\"ingredient\": {\n" +
-					"		\"item\": \""+material.getWire().getRegistryName().toString()+"\",\n" +
-					"		\"count\": 16\n" +
-					"	},\n" +
-					"	\"result\": {\n" +
-					"		\"item\": \""+material.getCoil().getRegistryName().toString()+"\",\n" +
-					"		\"count\": 1\n" +
-					"	}\n" +
-					"}");
-			/*@formatter:on*/
-			/*@formatter:off*/
-			recipes.put(material.getCoil().getRegistryName().getResourcePath()+"_from_spool", "{\n" +
-					"	\"type\": \"wiptech:coiling\",\n" +
-					"	\"group\": \""+material.getCoil().getRegistryName().getResourcePath()+"\",\n" +
-					"	\"ingredient\": {\n" +
-					"		\"item\": \""+material.getSpool().getRegistryName().toString()+"\",\n" +
-					"		\"count\": 1\n" +
-					"	},\n" +
-					"	\"result\": {\n" +
-					"		\"item\": \""+material.getCoil().getRegistryName().toString()+"\",\n" +
-					"		\"count\": 4\n" +
-					"	}\n" +
-					"}");
-			/*@formatter:on*/
-		}
-
-		if (material.getSpool() != null) {
-			/*@formatter:off*/
-			recipes.put(material.getSpool().getRegistryName().getResourcePath()+"_from_wire", "{\n" +
-					"	\"type\": \"wiptech:coiling\",\n" +
-					"	\"group\": \""+material.getSpool().getRegistryName().getResourcePath()+"\",\n" +
-					"	\"ingredient\": {\n" +
-					"		\"item\": \""+material.getWire().getRegistryName().toString()+"\",\n" +
-					"		\"count\": 64\n" +
-					"	},\n" +
-					"	\"result\": {\n" +
-					"		\"item\": \""+material.getSpool().getRegistryName().toString()+"\",\n" +
-					"		\"count\": 1\n" +
-					"	}\n" +
-					"}");
-			/*@formatter:on*/
-			/*@formatter:off*/
-			recipes.put(material.getSpool().getRegistryName().getResourcePath()+"_from_coil", "{\n" +
-					"	\"type\": \"wiptech:coiling\",\n" +
-					"	\"group\": \""+material.getSpool().getRegistryName().getResourcePath()+"\",\n" +
-					"	\"ingredient\": {\n" +
-					"		\"item\": \""+material.getCoil().getRegistryName().toString()+"\",\n" +
-					"		\"count\": 4\n" +
-					"	},\n" +
-					"	\"result\": {\n" +
-					"		\"item\": \""+material.getSpool().getRegistryName().toString()+"\",\n" +
-					"		\"count\": 1\n" +
-					"	}\n" +
-					"}");
-			/*@formatter:on*/
-		}
+		// if (material.getCoil() != null) {
+//			/*@formatter:off*/
+//			recipes.put(material.getCoil().getRegistryName().getResourcePath()+"_from_wire", "{\n" +
+//					"	\"type\": \"wiptech:coiling\",\n" +
+//					"	\"group\": \""+material.getCoil().getRegistryName().getResourcePath()+"\",\n" +
+//					"	\"ingredient\": {\n" +
+//					"		\"item\": \""+material.getWire().getRegistryName().toString()+"\",\n" +
+//					"		\"count\": 16\n" +
+//					"	},\n" +
+//					"	\"result\": {\n" +
+//					"		\"item\": \""+material.getCoil().getRegistryName().toString()+"\",\n" +
+//					"		\"count\": 1\n" +
+//					"	}\n" +
+//					"}");
+//			/*@formatter:on*/
+//			/*@formatter:off*/
+//			recipes.put(material.getCoil().getRegistryName().getResourcePath()+"_from_spool", "{\n" +
+//					"	\"type\": \"wiptech:coiling\",\n" +
+//					"	\"group\": \""+material.getCoil().getRegistryName().getResourcePath()+"\",\n" +
+//					"	\"ingredient\": {\n" +
+//					"		\"item\": \""+material.getSpool().getRegistryName().toString()+"\",\n" +
+//					"		\"count\": 1\n" +
+//					"	},\n" +
+//					"	\"result\": {\n" +
+//					"		\"item\": \""+material.getCoil().getRegistryName().toString()+"\",\n" +
+//					"		\"count\": 4\n" +
+//					"	}\n" +
+//					"}");
+//			/*@formatter:on*/
+		// }
+		//
+		// if (material.getSpool() != null) {
+//			/*@formatter:off*/
+//			recipes.put(material.getSpool().getRegistryName().getResourcePath()+"_from_wire", "{\n" +
+//					"	\"type\": \"wiptech:coiling\",\n" +
+//					"	\"group\": \""+material.getSpool().getRegistryName().getResourcePath()+"\",\n" +
+//					"	\"ingredient\": {\n" +
+//					"		\"item\": \""+material.getWire().getRegistryName().toString()+"\",\n" +
+//					"		\"count\": 64\n" +
+//					"	},\n" +
+//					"	\"result\": {\n" +
+//					"		\"item\": \""+material.getSpool().getRegistryName().toString()+"\",\n" +
+//					"		\"count\": 1\n" +
+//					"	}\n" +
+//					"}");
+//			/*@formatter:on*/
+//			/*@formatter:off*/
+//			recipes.put(material.getSpool().getRegistryName().getResourcePath()+"_from_coil", "{\n" +
+//					"	\"type\": \"wiptech:coiling\",\n" +
+//					"	\"group\": \""+material.getSpool().getRegistryName().getResourcePath()+"\",\n" +
+//					"	\"ingredient\": {\n" +
+//					"		\"item\": \""+material.getCoil().getRegistryName().toString()+"\",\n" +
+//					"		\"count\": 4\n" +
+//					"	},\n" +
+//					"	\"result\": {\n" +
+//					"		\"item\": \""+material.getSpool().getRegistryName().toString()+"\",\n" +
+//					"		\"count\": 1\n" +
+//					"	}\n" +
+//					"}");
+//			/*@formatter:on*/
+		// }
 
 		if (material.getSlugItem() != null) {
 			/*@formatter:off*/

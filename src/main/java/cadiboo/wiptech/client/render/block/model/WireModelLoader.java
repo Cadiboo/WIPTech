@@ -3,6 +3,7 @@ package cadiboo.wiptech.client.render.block.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import cadiboo.wiptech.WIPTech;
 import cadiboo.wiptech.client.model.ModelEnamel;
 import cadiboo.wiptech.client.model.ModelWire;
 import cadiboo.wiptech.material.ModMaterial;
@@ -26,6 +27,7 @@ public class WireModelLoader implements ICustomModelLoader {
 
 	@Override
 	public boolean accepts(final ResourceLocation modelLocation) {
+		WIPTech.info(modelLocation);
 		return modelLocation.getResourceDomain().equals(ModReference.MOD_ID) && modelLocation.getResourcePath().startsWith(WIRE_MODEL_RESOURCE_LOCATION);
 	}
 

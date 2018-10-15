@@ -1,6 +1,0 @@
-{
-	"parent": "wiptech:block/gem",
-	"textures": {
-		"gem": "wiptech:item/apatite_gem"
-	}
-}

@@ -35,8 +35,6 @@ import cadiboo.wiptech.init.ModItems;
 import cadiboo.wiptech.item.IItemAttachment;
 import cadiboo.wiptech.item.ItemCoil;
 import cadiboo.wiptech.item.ItemRail;
-import cadiboo.wiptech.material.ModMaterial;
-import cadiboo.wiptech.material.ModMaterialProperties;
 import cadiboo.wiptech.tileentity.TileEntityAssemblyTable;
 import cadiboo.wiptech.tileentity.TileEntityEnamel;
 import cadiboo.wiptech.tileentity.TileEntityModFurnace;
@@ -57,7 +55,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.HorseArmorType;
@@ -66,7 +63,6 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -78,8 +74,6 @@ import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
@@ -181,92 +175,6 @@ public final class ClientEventSubscriber {
 
 	private static void registerItemModel(final Item item, final String variant) {
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), variant));
-	}
-
-	/* injected textures */
-	@SubscribeEvent
-	public static void onTextureStichEvent(final TextureStitchEvent event) {
-		final TextureMap map = event.getMap();
-
-		injectTextures(map);
-	}
-
-	private static void injectTextures(final TextureMap map) {
-		final HashSet<ModResourceLocation> modelLocations = new HashSet<>();
-
-		if (ModMaterial.GLITCH != null) {
-			final ModMaterialProperties properties = ModMaterial.GLITCH.getProperties();
-			if (properties.hasOre()) {
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/missing_ore"));
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_ore"));
-			}
-			if (properties.hasBlock()) {
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/missing_block"));
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_block"));
-			}
-
-			// if (properties.hasResource()) {
-			// final String resourceSuffix = ModMaterial.GLITCH.getType().getResourceNameSuffix();
-			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + resourceSuffix));
-			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + resourceSuffix));
-			//
-			// if (ModMaterial.GLITCH.getType().hasResourcePiece()) {
-			// final String resourcePieceSuffix = ModMaterial.GLITCH.getType().getResourcePieceNameSuffix();
-			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + resourcePieceSuffix));
-			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + resourcePieceSuffix));
-			// }
-			// }
-			//
-			// if (properties.hasArmor()) {
-			// for (final String suffix : new String[]{"helmet", "chestplate", "leggings", "boots"}) {
-			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + suffix));
-			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + suffix));
-			// }
-			// // TODO: horse armor
-			// }
-			//
-			// if (properties.hasTools()) {
-			// for (final String suffix : new String[]{"pickaxe", "axe", "sword", "shovel", "hoe"}) {
-			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + suffix));
-			// modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + suffix));
-			// }
-			// }
-
-			if (properties.hasRailgunSlug()) {
-				// FIXME TODO: make it work
-			}
-
-			if (properties.hasWire()) {
-				// idk what to do here
-			}
-
-			if (properties.hasEnamel()) {
-				// idk what to do here
-			}
-
-			if (properties.hasCoil()) {
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + "coil"));
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + "coil"));
-
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/missing_spool"));
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "block/invisible_spool"));
-			}
-
-			if (properties.hasRail()) {
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/missing_" + "rail"));
-				modelLocations.add(new ModResourceLocation(ModReference.MOD_ID, "item/invisible_" + "rail"));
-			}
-
-		}
-
-		for (final ModResourceLocation modelLocation : modelLocations) {
-			final IModel model = ModelsCache.INSTANCE.getModel(modelLocation);
-
-			for (final ResourceLocation textureLocation : model.getTextures()) {
-				map.registerSprite(textureLocation);
-			}
-		}
-
 	}
 
 	@SubscribeEvent

@@ -13,7 +13,7 @@ import net.minecraft.world.World;
  */
 public class ItemHandheldRailgun extends ItemHandheldGun {
 
-	public static final AttachmentPoint[] ATTACHMENT_POINTS = new AttachmentPoint[] {
+	public static final AttachmentPoint[] ATTACHMENT_POINTS = new AttachmentPoint[]{
 
 			AttachmentPoint.CIRCUIT,
 
