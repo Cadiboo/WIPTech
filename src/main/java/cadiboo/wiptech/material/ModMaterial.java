@@ -878,7 +878,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 					ModMaterial.this.boots = (ItemModArmor) this.getRegistryValue(registry, "boots");
 				}
 				if (ModMaterial.this.getProperties().hasHorseArmor()) {
-					ModMaterial.this.horseArmor = (ItemModHorseArmor) this.getRegistryValue(registry, "horseArmor");
+					ModMaterial.this.horseArmor = (ItemModHorseArmor) this.getRegistryValue(registry, "horse_armor");
 				}
 				if (ModMaterial.this.getProperties().hasPickaxe()) {
 					ModMaterial.this.pickaxe = (ItemModPickaxe) this.getRegistryValue(registry, "pickaxe");
