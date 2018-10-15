@@ -50,6 +50,6 @@ public class ModItems {
 
 	public static final ItemElectricShield ELECTRIC_SHIELD = null;
 
-	public static final ItemBlock APATITE_RESOURCE = null;
+	public static final ItemBlock APATITE = null;
 
 }

@@ -2,11 +2,11 @@ package cadiboo.wiptech.util.resourcelocation;
 
 import java.util.Locale;
 
-public class ModResourceLocationDomain {
+public class ResourceLocationDomain {
 
 	private final String domain;
 
-	public ModResourceLocationDomain(final String resourceLocationDomain) {
+	public ResourceLocationDomain(final String resourceLocationDomain) {
 		this.domain = org.apache.commons.lang3.StringUtils.isEmpty(resourceLocationDomain) ? "minecraft" : resourceLocationDomain.toLowerCase(Locale.ROOT);
 	}
 

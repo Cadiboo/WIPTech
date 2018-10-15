@@ -42,8 +42,8 @@ import cadiboo.wiptech.util.ModEnums.BlockItemType;
 import cadiboo.wiptech.util.ModEnums.IEnumNameFormattable;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
-import cadiboo.wiptech.util.resourcelocation.ModResourceLocationDomain;
 import cadiboo.wiptech.util.resourcelocation.ModResourceLocationPath;
+import cadiboo.wiptech.util.resourcelocation.ResourceLocationDomain;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -124,7 +124,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 
 	BAUXITE(18, new ModMaterialProperties(true, false, false, null, false, null, false, false, false, false, false, false, false, false, false, false, ModMaterial.ALUMINIUM.getProperties().getHardness(), 0, null, new BlockRenderLayer[]{BlockRenderLayer.SOLID}, null, null)),
 
-	APATITE(19, new GemProperties(true, 4.50f, 0, () -> ModItems.APATITE_RESOURCE, (final Integer fortune, final Random random) -> {
+	APATITE(19, new GemProperties(true, 4.50f, 0, () -> ModItems.APATITE, (final Integer fortune, final Random random) -> {
 		return 64;
 	})),
 
@@ -135,7 +135,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 	private final ArmorMaterial armorMaterial;
 	private final ToolMaterial toolMaterial;
 	private final HorseArmorType horseArmorType;
-	private final ModResourceLocationDomain modId;
+	private final ResourceLocationDomain modId;
 
 	private BlockModOre ore;
 	private BlockResource block;
@@ -177,7 +177,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 	private ModMaterial(final int id, final ModMaterialProperties properties, final String modId) {
 		this.id = id;
 		this.properties = properties;
-		this.modId = new ModResourceLocationDomain(modId);
+		this.modId = new ResourceLocationDomain(modId);
 		this.armorMaterial = this.generateArmorMaterial();
 		this.toolMaterial = this.generateToolMaterial();
 		this.horseArmorType = this.generateHorseArmorType();
@@ -191,7 +191,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 		return this.properties;
 	}
 
-	public ModResourceLocationDomain getModId() {
+	public ResourceLocationDomain getModId() {
 		return this.modId;
 	}
 
@@ -271,7 +271,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 
 			final ArmorMaterial armorMaterial = EnumHelper.addArmorMaterial(name, textureName, durability, reductionAmounts, enchantability, soundOnEquip, toughness);
 			// TODO TEST THIS!!
-			armorMaterial.setRepairItem(new ItemStack(ForgeRegistries.ITEMS.getValue(new ModResourceLocation(this.getResouceLocationDomainWithOverrides(nameSuffix, ForgeRegistries.ITEMS), new ModResourceLocationPath(this.getNameLowercase() + (this.getProperties().getResourceSuffix().length() > 0 ? "_" + this.getProperties().getResourceSuffix() : ""))))));
+			armorMaterial.setRepairItem(new ItemStack(this.getResource()));
 			return armorMaterial;
 
 		}
@@ -297,15 +297,15 @@ public enum ModMaterial implements IEnumNameFormattable {
 		}
 	}
 
-	public ModResourceLocationDomain getResouceLocationDomainWithOverrides(final String nameSuffix, final IForgeRegistry registry) {
+	public ResourceLocationDomain getResouceLocationDomainWithOverrides(final String nameSuffix, final IForgeRegistry registry) {
 		for (final ModContainer mod : Loader.instance().getActiveModList()) {
 			if (!mod.getModId().equals(ModReference.MOD_ID)) {
 				if (registry.containsKey(new ModResourceLocation(mod.getModId(), this.getVanillaNameLowercase(nameSuffix) + (nameSuffix.length() > 0 ? "_" + nameSuffix : "")))) {
-					return new ModResourceLocationDomain(mod.getModId());
+					return new ResourceLocationDomain(mod.getModId());
 				}
 			}
 		}
-		return new ModResourceLocationDomain(ModReference.MOD_ID);
+		return new ResourceLocationDomain(ModReference.MOD_ID);
 	}
 
 	public String getVanillaNameLowercase(final String suffix) {
@@ -735,6 +735,8 @@ public enum ModMaterial implements IEnumNameFormattable {
 				if (ModMaterial.this.getResouceLocationDomainWithOverrides(ModMaterial.this.getProperties().getResourceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(ModMaterial.this.getModId())) {
 					this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getResource());
 				}
+			}
+			if (ModMaterial.this.getProperties().hasResourcePiece()) {
 				if (ModMaterial.this.getResouceLocationDomainWithOverrides(ModMaterial.this.getProperties().getResourcePieceSuffix().toLowerCase(), ForgeRegistries.ITEMS).equals(ModMaterial.this.getModId())) {
 					this.registerBlockModMaterialItemBlockModel(ModMaterial.this.getResourcePiece());
 				}
