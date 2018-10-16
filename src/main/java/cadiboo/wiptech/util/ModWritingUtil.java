@@ -44,7 +44,7 @@ public class ModWritingUtil {
 	private static String dataDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
 
 	private static final ModResourceLocation ITEM_GENERATED = new ModResourceLocation("", "item/generated");
-	private static final ModResourceLocation item_handheld = new ModResourceLocation("", "item/handheld");
+	private static final ModResourceLocation ITEM_HANDHELD = new ModResourceLocation("", "item/handheld");
 	private static final String ITEM_DEFAULT_TEXTURE_NAME = "layer0";
 
 	@ExistsForDebugging
@@ -62,7 +62,7 @@ public class ModWritingUtil {
 			return;
 		}
 
-		if (Boolean.valueOf(false).equals(recipes) && Boolean.valueOf(false).equals(recipes) && Boolean.valueOf(false).equals(recipes)) {
+		if (Boolean.valueOf(false).equals(recipes) && Boolean.valueOf(false).equals(lang) && Boolean.valueOf(false).equals(json)) {
 			WIPTech.info("All arguments are false for writeMod() - Aborting!");
 			return;
 		}
@@ -291,7 +291,7 @@ public class ModWritingUtil {
 				final String path = pickaxe.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(pickaxe, "item");
 
-				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_HANDHELD, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 			}
 		}
 
@@ -304,7 +304,7 @@ public class ModWritingUtil {
 				final String path = axe.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(axe, "item");
 
-				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_HANDHELD, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
@@ -319,7 +319,7 @@ public class ModWritingUtil {
 				final String path = tool.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
 
-				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_HANDHELD, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
@@ -334,7 +334,7 @@ public class ModWritingUtil {
 				final String path = tool.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
 
-				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_HANDHELD, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
@@ -349,7 +349,7 @@ public class ModWritingUtil {
 				final String path = tool.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
 
-				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
+				itemModels.put(path, generateModelJSON(ITEM_HANDHELD, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
 			}
 
