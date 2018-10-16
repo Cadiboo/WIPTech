@@ -4,20 +4,20 @@ import net.minecraft.util.ResourceLocation;
 
 public class ModResourceLocation extends ResourceLocation {
 
-	public ModResourceLocation(final ResourceLocationDomain resourceDomain, final ModResourceLocationPath resourcePath) {
-		super(resourceDomain.toString(), resourcePath.toString());
+	public ModResourceLocation(final ResourceLocationNamespace resourceNamespace, final ModResourceLocationPath resourcePath) {
+		super(resourceNamespace.toString(), resourcePath.toString());
 	}
 
-	public ModResourceLocation(final String resourceDomain, final String resourcePath) {
-		this(new ResourceLocationDomain(resourceDomain), new ModResourceLocationPath(resourcePath));
+	public ModResourceLocation(final String resourceNamespace, final String resourcePath) {
+		this(new ResourceLocationNamespace(resourceNamespace), new ModResourceLocationPath(resourcePath));
 	}
 
 	public ModResourceLocation(final ResourceLocation resourceLocation) {
-		this(new ResourceLocationDomain(resourceLocation.getResourceDomain()).toString(), new ModResourceLocationPath(resourceLocation.getResourcePath()).toString());
+		this(new ResourceLocationNamespace(resourceLocation.getNamespace()).toString(), new ModResourceLocationPath(resourceLocation.getPath()).toString());
 	}
 
 	protected ModResourceLocation(final String... resourceName) {
-		this(new ResourceLocationDomain(resourceName[0]).toString(), new ModResourceLocationPath(resourceName[1]).toString());
+		this(new ResourceLocationNamespace(resourceName[0]).toString(), new ModResourceLocationPath(resourceName[1]).toString());
 	}
 
 	public ModResourceLocation(final String resourceLocation) {
@@ -26,8 +26,8 @@ public class ModResourceLocation extends ResourceLocation {
 
 	@Override
 	public String toString() {
-		if (this.resourceDomain.equals("")) {
-			return this.resourcePath;
+		if (this.namespace.equals("")) {
+			return this.path;
 		}
 		return super.toString();
 	}

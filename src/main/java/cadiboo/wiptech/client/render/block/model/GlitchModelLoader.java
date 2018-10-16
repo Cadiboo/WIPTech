@@ -28,12 +28,12 @@ public class GlitchModelLoader implements ICustomModelLoader {
 			WIPTech.info("glitch");
 			WIPTech.info(modelLocation);
 		}
-		return modelLocation.getResourceDomain().equals(ModReference.MOD_ID) && (modelLocation.getResourcePath().startsWith(GLITCH_MODEL_RESOURCE_LOCATION));
+		return modelLocation.getNamespace().equals(ModReference.MOD_ID) && (modelLocation.getPath().startsWith(GLITCH_MODEL_RESOURCE_LOCATION));
 	}
 
 	@Override
 	public IModel loadModel(final ResourceLocation modelLocation) throws Exception {
-		final String resourcePath = modelLocation.getResourcePath().replace(GLITCH_MODEL_RESOURCE_LOCATION, "");
+		final String resourcePath = modelLocation.getPath().replace(GLITCH_MODEL_RESOURCE_LOCATION, "");
 
 		try {
 			ModResourceLocation missingModel = new ModResourceLocation(TextureMap.LOCATION_MISSING_TEXTURE);

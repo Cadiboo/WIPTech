@@ -23,7 +23,7 @@ public class ModCreativeTabs {
 	/** instantiate creative tabs */
 	public static final CustomCreativeTab CREATIVE_TAB = new CustomCreativeTab(ModReference.MOD_ID, true) {
 		@Override
-		public ItemStack getTabIconItem() {
+		public ItemStack createIcon() {
 			return TAB_ICON_ITEMSTACK;
 		}
 
@@ -46,7 +46,7 @@ public class ModCreativeTabs {
 		 */
 		@SideOnly(Side.CLIENT)
 		@Override
-		abstract public ItemStack getTabIconItem();
+		abstract public ItemStack createIcon();
 
 		/**
 		 * Useful for adding extra items such as full variants of energy related items

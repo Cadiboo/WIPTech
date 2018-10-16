@@ -27,9 +27,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiAssemblyTable extends GuiContainer {
 
-	private static final int				ASSEMBLY_START_BUTTON	= 0;
-	private final InventoryPlayer			playerInventory;
-	private final TileEntityAssemblyTable	assemblyTable;
+	private static final int ASSEMBLY_START_BUTTON = 0;
+	private final InventoryPlayer playerInventory;
+	private final TileEntityAssemblyTable assemblyTable;
 
 	public GuiAssemblyTable(final InventoryPlayer playerInv, final TileEntityAssemblyTable assemblyTable) {
 		super(new ContainerAssemblyTable(playerInv, assemblyTable));
@@ -107,7 +107,7 @@ public class GuiAssemblyTable extends GuiContainer {
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int mouseX, final int mouseY) {
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		this.fontRenderer.drawString(WIPTech.proxy.localize(this.assemblyTable.getBlockType().getUnlocalizedName() + ".name"), 8, 6, 4210752);
+		this.fontRenderer.drawString(WIPTech.proxy.localize(this.assemblyTable.getBlockType().getTranslationKey() + ".name"), 8, 6, 4210752);
 	}
 
 	public static void renderItemAndEffectIntoGUI(final ItemStack stack, final int xPos, final int yPos) {

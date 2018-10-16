@@ -43,7 +43,7 @@ import cadiboo.wiptech.util.ModEnums.IEnumNameFormattable;
 import cadiboo.wiptech.util.ModReference;
 import cadiboo.wiptech.util.resourcelocation.ModResourceLocation;
 import cadiboo.wiptech.util.resourcelocation.ModResourceLocationPath;
-import cadiboo.wiptech.util.resourcelocation.ResourceLocationDomain;
+import cadiboo.wiptech.util.resourcelocation.ResourceLocationNamespace;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -135,7 +135,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 	private final ArmorMaterial armorMaterial;
 	private final ToolMaterial toolMaterial;
 	private final HorseArmorType horseArmorType;
-	private final ResourceLocationDomain modId;
+	private final ResourceLocationNamespace modId;
 
 	private BlockModOre ore;
 	private BlockResource block;
@@ -177,7 +177,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 	private ModMaterial(final int id, final ModMaterialProperties properties, final String modId) {
 		this.id = id;
 		this.properties = properties;
-		this.modId = new ResourceLocationDomain(modId);
+		this.modId = new ResourceLocationNamespace(modId);
 		this.armorMaterial = this.generateArmorMaterial();
 		this.toolMaterial = this.generateToolMaterial();
 		this.horseArmorType = this.generateHorseArmorType();
@@ -191,7 +191,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 		return this.properties;
 	}
 
-	public ResourceLocationDomain getModId() {
+	public ResourceLocationNamespace getModId() {
 		return this.modId;
 	}
 
@@ -297,15 +297,15 @@ public enum ModMaterial implements IEnumNameFormattable {
 		}
 	}
 
-	public ResourceLocationDomain getResouceLocationDomainWithOverrides(final String nameSuffix, final IForgeRegistry registry) {
+	public ResourceLocationNamespace getResouceLocationDomainWithOverrides(final String nameSuffix, final IForgeRegistry registry) {
 		for (final ModContainer mod : Loader.instance().getActiveModList()) {
 			if (!mod.getModId().equals(ModReference.MOD_ID)) {
 				if (registry.containsKey(new ModResourceLocation(mod.getModId(), this.getVanillaNameLowercase(nameSuffix) + (nameSuffix.length() > 0 ? "_" + nameSuffix : "")))) {
-					return new ResourceLocationDomain(mod.getModId());
+					return new ResourceLocationNamespace(mod.getModId());
 				}
 			}
 		}
-		return new ResourceLocationDomain(ModReference.MOD_ID);
+		return new ResourceLocationNamespace(ModReference.MOD_ID);
 	}
 
 	public String getVanillaNameLowercase(final String suffix) {
@@ -651,7 +651,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 				EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
 				builder = builder.entity(EntitySlug.class);
 				builder = builder.id(registryName, EventSubscriber.entityId++);
-				builder = builder.name(registryName.getResourcePath());
+				builder = builder.name(registryName.getPath());
 				builder = builder.tracker(range, updateFrequency, sendVelocityUpdates);
 
 				if (hasEgg) {
@@ -804,9 +804,9 @@ public enum ModMaterial implements IEnumNameFormattable {
 		/** CLIENT ONLY */
 		@SideOnly(Side.CLIENT)
 		private <T extends Item & IItemModMaterial> void registerItemModMaterialModel(final T item) {
-			final boolean isVanilla = item.getRegistryName().getResourceDomain().equals("minecraft");
+			final boolean isVanilla = item.getRegistryName().getNamespace().equals("minecraft");
 			final String registryNameResourceDomain = isVanilla ? "minecraft" : item.getModMaterial().getModId().toString();
-			final String registryNameResourcePath = item.getRegistryName().getResourcePath();
+			final String registryNameResourcePath = item.getRegistryName().getPath();
 
 			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), ClientEventSubscriber.DEFAULT_VARIANT));
 		}
@@ -814,9 +814,9 @@ public enum ModMaterial implements IEnumNameFormattable {
 		/** CLIENT ONLY */
 		@SideOnly(Side.CLIENT)
 		private <T extends Block & IBlockModMaterial> void registerBlockModMaterialItemBlockModel(final T block) {
-			final boolean isVanilla = block.getRegistryName().getResourceDomain().equals("minecraft");
+			final boolean isVanilla = block.getRegistryName().getNamespace().equals("minecraft");
 			final String registryNameResourceDomain = isVanilla ? "minecraft" : block.getModMaterial().getModId().toString();
-			final String registryNameResourcePath = block.getRegistryName().getResourcePath();
+			final String registryNameResourcePath = block.getRegistryName().getPath();
 
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ModResourceLocation(registryNameResourceDomain, registryNameResourcePath), ClientEventSubscriber.DEFAULT_VARIANT));
 		}

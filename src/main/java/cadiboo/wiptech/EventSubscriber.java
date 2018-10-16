@@ -196,7 +196,7 @@ public final class EventSubscriber {
 		EntityEntryBuilder<Entity> builder = EntityEntryBuilder.create();
 		builder = builder.entity(clazz);
 		builder = builder.id(registryName, entityId++);
-		builder = builder.name(registryName.getResourcePath());
+		builder = builder.name(registryName.getPath());
 		builder = builder.tracker(range, updateFrequency, sendVelocityUpdates);
 
 		if (hasEgg) {

@@ -27,12 +27,12 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 
 	public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
 
-	public static final PropertyBool	DOWN	= PropertyBool.create("down");
-	public static final PropertyBool	UP		= PropertyBool.create("up");
-	public static final PropertyBool	NORTH	= PropertyBool.create("north");
-	public static final PropertyBool	SOUTH	= PropertyBool.create("south");
-	public static final PropertyBool	WEST	= PropertyBool.create("west");
-	public static final PropertyBool	EAST	= PropertyBool.create("east");
+	public static final PropertyBool DOWN = PropertyBool.create("down");
+	public static final PropertyBool UP = PropertyBool.create("up");
+	public static final PropertyBool NORTH = PropertyBool.create("north");
+	public static final PropertyBool SOUTH = PropertyBool.create("south");
+	public static final PropertyBool WEST = PropertyBool.create("west");
+	public static final PropertyBool EAST = PropertyBool.create("east");
 
 	public BlockNapalm(final String name) {
 		super();
@@ -53,7 +53,7 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer(this, new IProperty[] { AGE, DOWN, UP, NORTH, SOUTH, WEST, EAST });
+		return new BlockStateContainer(this, new IProperty[]{AGE, DOWN, UP, NORTH, SOUTH, WEST, EAST});
 	}
 
 	@Override
@@ -73,10 +73,10 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 
 	/**
 	 * Side sensitive version that calls the block function.
-	 * @param world The current world
-	 * @param pos   Block position
-	 * @param face  The side the fire is coming from
-	 * @return True if the face can catch fire.
+	 * @param  world The current world
+	 * @param  pos   Block position
+	 * @param  face  The side the fire is coming from
+	 * @return       True if the face can catch fire.
 	 */
 	@Override
 	public boolean canCatchFire(final IBlockAccess world, final BlockPos pos, final EnumFacing facing) {
@@ -181,13 +181,13 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 							final int encouragement = this.getNeighborEncouragement(world, blockpos);
 
 							if (encouragement > 0) {
-								int encouragementChance = (encouragement + 40 + (world.getDifficulty().getDifficultyId() * 7)) / (age + 30);
+								int encouragementChance = (encouragement + 40 + (world.getDifficulty().getId() * 7)) / (age + 30);
 
 								if (isInHighHumidity) {
 									encouragementChance /= 2;
 								}
 
-//								encouragementChance *= 10;
+								// encouragementChance *= 10;
 
 								if ((encouragementChance > 0) && (rand.nextInt(heightRandSeed) <= encouragementChance) && (!world.isRaining() || !this.canDie(world, blockpos))) {
 
@@ -218,11 +218,11 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 
 				world.setBlockState(pos, this.getDefaultState().withProperty(AGE, newAge), 3);
 			} else {
-//				world.setBlockToAir(pos);
+				// world.setBlockToAir(pos);
 			}
 
 			if (iblockstate.getBlock() == Blocks.TNT) {
-				Blocks.TNT.onBlockDestroyedByPlayer(world, pos, iblockstate.withProperty(BlockTNT.EXPLODE, true));
+				Blocks.TNT.onPlayerDestroy(world, pos, iblockstate.withProperty(BlockTNT.EXPLODE, true));
 			}
 		}
 	}
@@ -237,9 +237,9 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 	}
 
 	/**
-	 * @param world The current world
-	 * @param pos   Block position in world
-	 * @return the encouragement values of all the block's neighbours
+	 * @param  world The current world
+	 * @param  pos   Block position in world
+	 * @return       the encouragement values of all the block's neighbours
 	 */
 	public int getNeighborEncouragement(final World world, final BlockPos pos) {
 		if (!world.isAirBlock(pos)) {
@@ -296,10 +296,10 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 
 	/**
 	 * Location aware and overrideable version of the lightOpacity array, return the number to subtract from the light value when it passes through this block. This is not guaranteed to have the tile entity in place before this is called, so it is recommended that you have your tile entity call relight after being placed if you rely on it for light info.
-	 * @param state The Block state
-	 * @param world The current world
-	 * @param pos   Block position in world
-	 * @return The amount of light to block, 0 for air, 255 for fully opaque.
+	 * @param  state The Block state
+	 * @param  world The current world
+	 * @param  pos   Block position in world
+	 * @return       The amount of light to block, 0 for air, 255 for fully opaque.
 	 */
 	@Override
 	public int getLightOpacity(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
@@ -308,10 +308,10 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 
 	/**
 	 * Get a light value for this block, taking into account the given state and coordinates, normal ranges are between 0 and 15
-	 * @param state Block state
-	 * @param world The current world
-	 * @param pos   Block position in world
-	 * @return The light value
+	 * @param  state Block state
+	 * @param  world The current world
+	 * @param  pos   Block position in world
+	 * @return       The light value
 	 */
 	@Override
 	public int getLightValue(final IBlockState state, final IBlockAccess world, final BlockPos pos) {
@@ -361,9 +361,9 @@ public class BlockNapalm extends BlockFire implements IModBlock {
 
 	/**
 	 * Determines if this block should set fire and deal fire damage to entities coming into contact with it.
-	 * @param world The current world
-	 * @param pos   Block position in world
-	 * @return True if the block should deal damage
+	 * @param  world The current world
+	 * @param  pos   Block position in world
+	 * @return       True if the block should deal damage
 	 */
 	@Override
 	public boolean isBurning(final IBlockAccess world, final BlockPos pos) {

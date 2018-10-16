@@ -28,12 +28,12 @@ public class WireModelLoader implements ICustomModelLoader {
 	@Override
 	public boolean accepts(final ResourceLocation modelLocation) {
 		WIPTech.info(modelLocation);
-		return modelLocation.getResourceDomain().equals(ModReference.MOD_ID) && modelLocation.getResourcePath().startsWith(WIRE_MODEL_RESOURCE_LOCATION);
+		return modelLocation.getNamespace().equals(ModReference.MOD_ID) && modelLocation.getPath().startsWith(WIRE_MODEL_RESOURCE_LOCATION);
 	}
 
 	@Override
 	public IModel loadModel(final ResourceLocation modelLocation) throws Exception {
-		final String resourcePath = modelLocation.getResourcePath();
+		final String resourcePath = modelLocation.getPath();
 		if (!resourcePath.equals(WIRE_MODEL_RESOURCE_LOCATION)) {
 			assert false : "loadModel expected " + WIRE_MODEL_RESOURCE_LOCATION + " but found " + resourcePath;
 		}

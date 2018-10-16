@@ -85,8 +85,13 @@ public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public boolean canRenderInLayer(final IBlockState state, final BlockRenderLayer layer) {
+		return this.material.getProperties().getBlockRenderLayers().contains(layer) || (this.getRenderLayer() == layer);
 	}
 
 	@Override
@@ -120,7 +125,7 @@ public class BlockItem extends Block implements IModBlock, IBlockModMaterial {
 
 	@Override
 	public IBlockState getStateFromMeta(final int meta) {
-		return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
+		return this.getDefaultState().withProperty(FACING, EnumFacing.byHorizontalIndex(meta));
 	}
 
 }

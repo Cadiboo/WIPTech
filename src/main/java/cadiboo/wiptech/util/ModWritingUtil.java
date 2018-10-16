@@ -114,9 +114,9 @@ public class ModWritingUtil {
 		if (properties.hasOre()) {
 			final ModResourceLocation ore = new ModResourceLocation(material.getOre().getRegistryName());
 
-			if (ore.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (ore.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = ore.getResourcePath();
+				final String path = ore.getPath();
 				final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, path);
 
 				blockstates.put(path, generateBlockstateJSON(model));
@@ -132,9 +132,9 @@ public class ModWritingUtil {
 		if (properties.hasBlock()) {
 			final ModResourceLocation block = new ModResourceLocation(material.getBlock().getRegistryName());
 
-			if (block.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (block.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = block.getResourcePath();
+				final String path = block.getPath();
 				final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, path);
 
 				blockstates.put(path, generateBlockstateJSON(model));
@@ -150,7 +150,7 @@ public class ModWritingUtil {
 		if (properties.hasResource()) {
 			final ModResourceLocation resource = new ModResourceLocation(Item.getItemFromBlock(material.getResource()).getRegistryName());
 
-			final String path = resource.getResourcePath();
+			final String path = resource.getPath();
 			final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, path);
 
 			blockstates.put(path, generateBlockstateJSON(model, EnumFacing.HORIZONTALS));
@@ -166,7 +166,7 @@ public class ModWritingUtil {
 
 			blockModels.put(path, generateModelJSON(parent, textureName, textureLocation));
 
-			if (resource.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (resource.getNamespace().equals(ModReference.MOD_ID)) {
 
 				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
@@ -175,10 +175,10 @@ public class ModWritingUtil {
 
 		if (properties.hasResource() && material.getProperties().hasResourcePiece()) {
 			ModResourceLocation resourcePiece = new ModResourceLocation(Item.getItemFromBlock(material.getResourcePiece()).getRegistryName());
-			final String path = resourcePiece.getResourcePath();
+			final String path = resourcePiece.getPath();
 
 			ModResourceLocation textureLocation = getTextureLocation(resourcePiece, "item");
-			if (resourcePiece.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (resourcePiece.getNamespace().equals(ModReference.MOD_ID)) {
 
 				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
 
@@ -216,9 +216,9 @@ public class ModWritingUtil {
 
 			final ModResourceLocation armor = new ModResourceLocation(material.getHelmet().getRegistryName());
 
-			if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (armor.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = armor.getResourcePath();
+				final String path = armor.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
 
 				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -230,9 +230,9 @@ public class ModWritingUtil {
 
 			final ModResourceLocation armor = new ModResourceLocation(material.getChestplate().getRegistryName());
 
-			if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (armor.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = armor.getResourcePath();
+				final String path = armor.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
 
 				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -245,9 +245,9 @@ public class ModWritingUtil {
 
 			final ModResourceLocation armor = new ModResourceLocation(material.getLeggings().getRegistryName());
 
-			if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (armor.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = armor.getResourcePath();
+				final String path = armor.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
 
 				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -259,9 +259,9 @@ public class ModWritingUtil {
 		if (properties.hasBoots()) {
 			final ModResourceLocation armor = new ModResourceLocation(material.getBoots().getRegistryName());
 
-			if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (armor.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = armor.getResourcePath();
+				final String path = armor.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
 
 				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -272,9 +272,9 @@ public class ModWritingUtil {
 		if (properties.hasHorseArmor()) {
 			final ModResourceLocation armor = new ModResourceLocation(material.getHorseArmor().getRegistryName());
 
-			if (armor.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (armor.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = armor.getResourcePath();
+				final String path = armor.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(armor, "item");
 
 				itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -286,9 +286,9 @@ public class ModWritingUtil {
 
 			final ModResourceLocation pickaxe = new ModResourceLocation(material.getPickaxe().getRegistryName());
 
-			if (pickaxe.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (pickaxe.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = pickaxe.getResourcePath();
+				final String path = pickaxe.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(pickaxe, "item");
 
 				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -299,9 +299,9 @@ public class ModWritingUtil {
 
 			final ModResourceLocation axe = new ModResourceLocation(material.getAxe().getRegistryName());
 
-			if (axe.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (axe.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = axe.getResourcePath();
+				final String path = axe.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(axe, "item");
 
 				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -314,9 +314,9 @@ public class ModWritingUtil {
 
 			final ModResourceLocation tool = new ModResourceLocation(material.getSword().getRegistryName());
 
-			if (tool.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (tool.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = tool.getResourcePath();
+				final String path = tool.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
 
 				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -329,9 +329,9 @@ public class ModWritingUtil {
 
 			final ModResourceLocation tool = new ModResourceLocation(material.getShovel().getRegistryName());
 
-			if (tool.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (tool.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = tool.getResourcePath();
+				final String path = tool.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
 
 				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -344,9 +344,9 @@ public class ModWritingUtil {
 
 			final ModResourceLocation tool = new ModResourceLocation(material.getHoe().getRegistryName());
 
-			if (tool.getResourceDomain().equals(ModReference.MOD_ID)) {
+			if (tool.getNamespace().equals(ModReference.MOD_ID)) {
 
-				final String path = tool.getResourcePath();
+				final String path = tool.getPath();
 				final ModResourceLocation textureLocation = getTextureLocation(tool, "item");
 
 				itemModels.put(path, generateModelJSON(item_handheld, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -358,7 +358,7 @@ public class ModWritingUtil {
 		if (properties.hasWire()) {
 			final ModResourceLocation wire = new ModResourceLocation(material.getWire().getRegistryName());
 
-			final String path = wire.getResourcePath();
+			final String path = wire.getPath();
 			final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, "builtin/wire/" + path);
 
 			blockstates.put(path, generateBlockstateJSON(model));
@@ -384,7 +384,7 @@ public class ModWritingUtil {
 		if (properties.hasEnamel()) {
 			final ModResourceLocation enamel = new ModResourceLocation(material.getEnamel().getRegistryName());
 
-			final String path = enamel.getResourcePath();
+			final String path = enamel.getPath();
 			final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, "builtin/wire/" + path);
 
 			blockstates.put(path, generateBlockstateJSON(model));
@@ -411,7 +411,7 @@ public class ModWritingUtil {
 
 			final ModResourceLocation coil = new ModResourceLocation(material.getCoil().getRegistryName());
 
-			final String path = coil.getResourcePath();
+			final String path = coil.getPath();
 			final ModResourceLocation textureLocation = getTextureLocation(coil, "item");
 
 			itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -420,7 +420,7 @@ public class ModWritingUtil {
 
 			final ModResourceLocation spool = new ModResourceLocation(material.getSpool().getRegistryName());
 
-			final String spoolPath = spool.getResourcePath();
+			final String spoolPath = spool.getPath();
 
 			final ModResourceLocation model = new ModResourceLocation(ModReference.MOD_ID, spoolPath);
 			blockstates.put(spoolPath, generateBlockstateJSON(model));
@@ -437,7 +437,7 @@ public class ModWritingUtil {
 
 			final ModResourceLocation rail = new ModResourceLocation(material.getRail().getRegistryName());
 
-			final String path = rail.getResourcePath();
+			final String path = rail.getPath();
 			final ModResourceLocation textureLocation = getTextureLocation(rail, "item");
 
 			itemModels.put(path, generateModelJSON(ITEM_GENERATED, ITEM_DEFAULT_TEXTURE_NAME, textureLocation));
@@ -448,7 +448,7 @@ public class ModWritingUtil {
 
 			final ModResourceLocation slug = new ModResourceLocation(material.getSlugItem().getRegistryName());
 
-			final String path = slug.getResourcePath();
+			final String path = slug.getPath();
 
 			final ModResourceLocation resource = new ModResourceLocation(Item.getItemFromBlock(material.getResource()).getRegistryName());
 
@@ -528,8 +528,8 @@ public class ModWritingUtil {
 	}
 
 	private static ModResourceLocation getTextureLocation(final ModResourceLocation location, final String prepend) {
-		final String domain = location.getResourceDomain();
-		final String path = location.getResourcePath();
+		final String domain = location.getNamespace();
+		final String path = location.getPath();
 
 		final String optionalS = domain.equals("minecraft") && !Loader.MC_VERSION.contains("1.13") ? "s" : "";
 
@@ -547,103 +547,103 @@ public class ModWritingUtil {
 		for (final ModMaterial material : ModMaterial.values()) {
 
 			if (material.getOre() != null) {
-				lang.put(material.getOre().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Ore");
+				lang.put(material.getOre().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Ore");
 			}
 
 			if (material.getBlock() != null) {
-				lang.put(material.getBlock().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Block");
+				lang.put(material.getBlock().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Block");
 			}
 
 			if (material.getResource() != null) {
-				lang.put(material.getResource().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + (material.getProperties() instanceof GemProperties ? "" : " Ingot"));
+				lang.put(material.getResource().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + (material.getProperties() instanceof GemProperties ? "" : " Ingot"));
 			}
 
 			if (material.getResourcePiece() != null) {
-				lang.put(material.getResourcePiece().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " " + (material.getProperties() instanceof GemProperties ? "Shard" : "Nugget"));
+				lang.put(material.getResourcePiece().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " " + (material.getProperties() instanceof GemProperties ? "Shard" : "Nugget"));
 			}
 
 			// armor
 
 			if (material.getHelmet() != null) {
-				lang.put(material.getHelmet().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Helmet");
+				lang.put(material.getHelmet().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Helmet");
 			}
 
 			if (material.getChestplate() != null) {
-				lang.put(material.getChestplate().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Chestplate");
+				lang.put(material.getChestplate().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Chestplate");
 			}
 
 			if (material.getLeggings() != null) {
-				lang.put(material.getLeggings().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Leggings");
+				lang.put(material.getLeggings().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Leggings");
 			}
 
 			if (material.getBoots() != null) {
-				lang.put(material.getBoots().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Boots");
+				lang.put(material.getBoots().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Boots");
 			}
 
 			if (material.getHorseArmor() != null) {
-				lang.put(material.getHorseArmor().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Horse Armor");
+				lang.put(material.getHorseArmor().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Horse Armor");
 			}
 
 			// tools
 
 			if (material.getAxe() != null) {
-				lang.put(material.getAxe().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Axe");
+				lang.put(material.getAxe().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Axe");
 			}
 
 			if (material.getPickaxe() != null) {
-				lang.put(material.getPickaxe().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Pickaxe");
+				lang.put(material.getPickaxe().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Pickaxe");
 			}
 
 			if (material.getSword() != null) {
-				lang.put(material.getSword().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Sword");
+				lang.put(material.getSword().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Sword");
 			}
 
 			if (material.getShovel() != null) {
-				lang.put(material.getShovel().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Shovel");
+				lang.put(material.getShovel().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Shovel");
 			}
 
 			if (material.getHoe() != null) {
-				lang.put(material.getHoe().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Hoe");
+				lang.put(material.getHoe().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Hoe");
 			}
 
 			//
 
 			if (material.getWire() != null) {
-				lang.put(material.getWire().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Wire");
+				lang.put(material.getWire().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Wire");
 			}
 
 			if (material.getEnamel() != null) {
-				lang.put(material.getEnamel().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Enamel");
+				lang.put(material.getEnamel().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Enamel");
 			}
 
 			if (material.getRail() != null) {
-				lang.put(material.getRail().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Rail");
+				lang.put(material.getRail().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Rail");
 			}
 
 			if (material.getCoil() != null) {
-				lang.put(material.getCoil().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Coil");
+				lang.put(material.getCoil().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Coil");
 			}
 
 			if (material.getSpool() != null) {
-				lang.put(material.getSpool().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Spool");
+				lang.put(material.getSpool().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Spool");
 			}
 
 			if (material.getSlugItem() != null) {
-				lang.put(material.getSlugItem().getUnlocalizedName(), getLocalisedName(material.getNameLowercase()) + " Slug");
-				lang.put(material.getCasedSlug().getUnlocalizedName(), "Cased " + getLocalisedName(material.getNameLowercase()) + " Slug");
+				lang.put(material.getSlugItem().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Slug");
+				lang.put(material.getCasedSlug().getTranslationKey(), "Cased " + getTranslatedTranslationKey(material.getNameLowercase()) + " Slug");
 			}
 		}
 
 		for (final CircuitType type : CircuitType.values()) {
-			lang.put(type.getItem("circuit").getUnlocalizedName(), getLocalisedName(type.getNameLowercase()) + " Circuit");
+			lang.put(type.getItem("circuit").getTranslationKey(), getTranslatedTranslationKey(type.getNameLowercase()) + " Circuit");
 		}
 
 		for (final ScopeType type : ScopeType.values()) {
-			lang.put(type.getItem("scope").getUnlocalizedName(), getLocalisedName(type.getNameLowercase()) + " Scope");
+			lang.put(type.getItem("scope").getTranslationKey(), getTranslatedTranslationKey(type.getNameLowercase()) + " Scope");
 		}
 
 		for (final AttachmentPoint attachmentPoint : AttachmentPoint.values()) {
-			lang.put(attachmentPoint.getNameLowercase(), getLocalisedName(attachmentPoint.getNameLowercase()));
+			lang.put(attachmentPoint.getNameLowercase(), getTranslatedTranslationKey(attachmentPoint.getNameLowercase()));
 		}
 
 		for (final Field field : ModItems.class.getFields()) {
@@ -658,7 +658,7 @@ public class ModWritingUtil {
 				final Item item = (Item) value;
 
 				if (item != null) {
-					lang.put(item.getUnlocalizedName(), getLocalisedName(item.getRegistryName().getResourcePath()));
+					lang.put(item.getTranslationKey(), getTranslatedTranslationKey(item.getRegistryName().getPath()));
 				}
 
 			} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -678,8 +678,8 @@ public class ModWritingUtil {
 
 				final Block block = (Block) value;
 
-				if ((block != null) && !block.getRegistryName().getResourcePath().equalsIgnoreCase("napalm") && !block.getRegistryName().getResourcePath().equalsIgnoreCase("peripheral")) {
-					lang.put(block.getUnlocalizedName(), getLocalisedName(block.getRegistryName().getResourcePath()));
+				if ((block != null) && !block.getRegistryName().getPath().equalsIgnoreCase("napalm") && !block.getRegistryName().getPath().equalsIgnoreCase("peripheral")) {
+					lang.put(block.getTranslationKey(), getTranslatedTranslationKey(block.getRegistryName().getPath()));
 				}
 
 			} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -760,7 +760,7 @@ public class ModWritingUtil {
 
 		if ((material.getBlock() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("block", ForgeRegistries.BLOCKS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getBlock().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getBlock().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"###\",\n" +
@@ -781,9 +781,9 @@ public class ModWritingUtil {
 
 		if ((material.getResource() != null) && (material.getBlock() != null) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides("block", ForgeRegistries.BLOCKS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getResource().getRegistryName().getResourcePath() + "_from_block", "{\n" +
+				recipes.put(material.getResource().getRegistryName().getPath() + "_from_block", "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
-						"	\"group\": \""+material.getResource().getRegistryName().getResourcePath()+"\",\n" +
+						"	\"group\": \""+material.getResource().getRegistryName().getPath()+"\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"#\"\n" +
 						"	],\n" +
@@ -801,9 +801,9 @@ public class ModWritingUtil {
 		}
 		if ((material.getResource() != null) && (material.getResourcePiece() != null) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourcePieceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-					recipes.put(material.getResource().getRegistryName().getResourcePath() + "_from_"+material.getProperties().getResourcePieceSuffix()+"s", "{\n" +
+					recipes.put(material.getResource().getRegistryName().getPath() + "_from_"+material.getProperties().getResourcePieceSuffix()+"s", "{\n" +
 							"	\"type\": \"minecraft:crafting_shaped\",\n" +
-							"	\"group\": \""+material.getResource().getRegistryName().getResourcePath()+"\",\n" +
+							"	\"group\": \""+material.getResource().getRegistryName().getPath()+"\",\n" +
 							"	\"pattern\": [\n" +
 							"		\"###\",\n" +
 							"		\"###\",\n" +
@@ -824,7 +824,7 @@ public class ModWritingUtil {
 
 		if ((material.getResourcePiece() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourcePieceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getResourcePiece().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getResourcePiece().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"#\"\n" +
@@ -846,7 +846,7 @@ public class ModWritingUtil {
 
 		if ((material.getHelmet() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("helmet", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getHelmet().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getHelmet().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"XXX\",\n" +
@@ -867,7 +867,7 @@ public class ModWritingUtil {
 
 		if ((material.getChestplate() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("chesplate", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getChestplate().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getChestplate().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"X X\",\n" +
@@ -889,7 +889,7 @@ public class ModWritingUtil {
 
 		if ((material.getLeggings() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("leggings", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getLeggings().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getLeggings().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"XXX\",\n" +
@@ -911,7 +911,7 @@ public class ModWritingUtil {
 
 		if ((material.getBoots() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("boots", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getBoots().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getBoots().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"X X\",\n" +
@@ -955,7 +955,7 @@ public class ModWritingUtil {
 
 		if ((material.getAxe() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("axe", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getAxe().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getAxe().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"XX\",\n" +
@@ -980,7 +980,7 @@ public class ModWritingUtil {
 
 		if ((material.getPickaxe() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("pickaxe", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getPickaxe().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getPickaxe().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"XXX\",\n" +
@@ -1005,7 +1005,7 @@ public class ModWritingUtil {
 
 		if ((material.getSword() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("sword", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getSword().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getSword().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"X\",\n" +
@@ -1030,7 +1030,7 @@ public class ModWritingUtil {
 
 		if ((material.getShovel() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("shovel", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getShovel().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getShovel().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"X\",\n" +
@@ -1055,7 +1055,7 @@ public class ModWritingUtil {
 
 		if ((material.getHoe() != null) && (material.getResource() != null) && (material.getResouceLocationDomainWithOverrides("hoe", ForgeRegistries.ITEMS).equals(ModReference.MOD_ID)) && (material.getResouceLocationDomainWithOverrides(material.getProperties().getResourceSuffix(), ForgeRegistries.ITEMS).equals(ModReference.MOD_ID))) {
 			/*@formatter:off*/
-				recipes.put(material.getHoe().getRegistryName().getResourcePath(), "{\n" +
+				recipes.put(material.getHoe().getRegistryName().getPath(), "{\n" +
 						"	\"type\": \"minecraft:crafting_shaped\",\n" +
 						"	\"pattern\": [\n" +
 						"		\"XX\",\n" +
@@ -1098,7 +1098,7 @@ public class ModWritingUtil {
 
 		if (material.getEnamel() != null) {
 			/*@formatter:off*/
-			recipes.put(material.getEnamel().getRegistryName().getResourcePath(), "{\n" +
+			recipes.put(material.getEnamel().getRegistryName().getPath(), "{\n" +
 					"	\"type\": \"minecraft:crafting_shaped\",\n" +
 					"	\"pattern\": [\n" +
 					"		\"XXX\",\n" +
@@ -1124,7 +1124,7 @@ public class ModWritingUtil {
 
 		if (material.getRail() != null) {
 			/*@formatter:off*/
-			recipes.put(material.getRail().getRegistryName().getResourcePath(), "{\n" +
+			recipes.put(material.getRail().getRegistryName().getPath(), "{\n" +
 					"	\"type\": \"minecraft:crafting_shaped\",\n" +
 					"	\"pattern\": [\n" +
 					"		\"XX\"\n" +
@@ -1206,9 +1206,9 @@ public class ModWritingUtil {
 
 		if (material.getSlugItem() != null) {
 			/*@formatter:off*/
-			recipes.put(material.getCasedSlug().getRegistryName().getResourcePath(), "{\n" +
+			recipes.put(material.getCasedSlug().getRegistryName().getPath(), "{\n" +
 					"	\"type\": \"minecraft:crafting_shaped\",\n" +
-					"	\"group\": \""+material.getCasedSlug().getRegistryName().getResourcePath()+"\",\n" +
+					"	\"group\": \""+material.getCasedSlug().getRegistryName().getPath()+"\",\n" +
 					"	\"pattern\": [\n" +
 					"		\" B \",\n" +
 					"		\"AXX\",\n" +
@@ -1235,9 +1235,9 @@ public class ModWritingUtil {
 					"}");
 			/*@formatter:on*/
 			/*@formatter:off*/
-			recipes.put(material.getCasedSlug().getRegistryName().getResourcePath(), "{\n" +
+			recipes.put(material.getCasedSlug().getRegistryName().getPath(), "{\n" +
 					"	\"type\": \"minecraft:crafting_shaped\",\n" +
-					"	\"group\": \""+material.getCasedSlug().getRegistryName().getResourcePath()+"\",\n" +
+					"	\"group\": \""+material.getCasedSlug().getRegistryName().getPath()+"\",\n" +
 					"	\"pattern\": [\n" +
 					"		\" B \",\n" +
 					"		\"AX\",\n" +
@@ -1287,11 +1287,11 @@ public class ModWritingUtil {
 		});
 	}
 
-	private static String getLocalisedName(String unlocalised) {
+	private static String getTranslatedTranslationKey(String unlocalised) {
 		if (getLangFileName().toLowerCase().equals("en_us")) {
 			unlocalised = unlocalised.replace("aluminium", "aluminum");
 		}
-		return ModUtil.getLocalisedName(unlocalised);
+		return ModUtil.registryNameToTranslationKey(unlocalised);
 	}
 
 	private static String generateModelJSON(final ModResourceLocation parent, final String textureName, final ModResourceLocation textureLocation) {

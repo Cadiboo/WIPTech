@@ -16,8 +16,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiModFurnace extends GuiContainer {
 
-	private final InventoryPlayer		playerInventory;
-	private final TileEntityModFurnace	modFurnace;
+	private final InventoryPlayer playerInventory;
+	private final TileEntityModFurnace modFurnace;
 
 	public GuiModFurnace(final InventoryPlayer playerInv, final TileEntityModFurnace modFurnace) {
 		super(new ContainerModFurnace(playerInv, modFurnace));
@@ -82,7 +82,7 @@ public class GuiModFurnace extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int mouseX, final int mouseY) {
-		this.fontRenderer.drawString(WIPTech.proxy.localize(this.modFurnace.getBlockType().getUnlocalizedName() + ".name"), 8, 6, 4210752);
+		this.fontRenderer.drawString(WIPTech.proxy.localize(this.modFurnace.getBlockType().getTranslationKey() + ".name"), 8, 6, 4210752);
 		this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, (this.ySize - 96) + 2, 4210752);
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 	}

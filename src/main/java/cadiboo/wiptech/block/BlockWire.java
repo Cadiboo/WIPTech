@@ -90,8 +90,13 @@ public class BlockWire extends Block implements IModBlock, IBlockModMaterial {
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public boolean canRenderInLayer(final IBlockState state, final BlockRenderLayer layer) {
+		return this.material.getProperties().getBlockRenderLayers().contains(layer) || (this.getRenderLayer() == layer);
 	}
 
 	@Override

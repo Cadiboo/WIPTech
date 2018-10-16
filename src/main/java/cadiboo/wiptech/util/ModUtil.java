@@ -37,7 +37,13 @@ public final class ModUtil {
 	public static Block setRegistryNames(final Block block, final ModMaterial material, final String nameSuffix) {
 		final ModResourceLocation registryName = new ModResourceLocation(material.getResouceLocationDomainWithOverrides(nameSuffix, ForgeRegistries.BLOCKS), new ModResourceLocationPath(material.getVanillaNameLowercase(nameSuffix) + (nameSuffix.length() > 0 ? "_" + nameSuffix : "")));
 		block.setHardness(material.getProperties().getHardness());
-		return setRegistryNames(block, registryName);
+		setRegistryNames(block, registryName);
+
+		final Block overriddenBlock = ForgeRegistries.BLOCKS.getValue(registryName);
+		if (overriddenBlock != null) {
+			block.setTranslationKey(overriddenBlock.getTranslationKey().replace("tile.", ""));
+		}
+		return block;
 	}
 
 	/**
@@ -52,7 +58,7 @@ public final class ModUtil {
 
 		final Item overriddenItem = ForgeRegistries.ITEMS.getValue(registryName);
 		if (overriddenItem != null) {
-			item.setUnlocalizedName(overriddenItem.getUnlocalizedName().replace("item.", ""));
+			item.setTranslationKey(overriddenItem.getTranslationKey().replace("item.", ""));
 		}
 		return item;
 	}
@@ -72,24 +78,24 @@ public final class ModUtil {
 	 * @param registryName the registry name for the entry that the unlocalised name is also gotten from
 	 */
 	public static <T extends IForgeRegistryEntry.Impl<?>> T setRegistryNames(final T entry, final ModResourceLocation registryName) {
-		return setRegistryNames(entry, registryName, registryName.getResourcePath());
+		return setRegistryNames(entry, registryName, registryName.getPath());
 	}
 
 	/**
 	 * Sets the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl#setRegistryName(net.minecraft.util.ResourceLocation) Registry Name} and the {@link net.minecraft.item.Item#setUnlocalizedName() Unlocalised Name} (if applicable) for the entry
-	 * @param entry           the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
-	 * @param registryName    the registry name for the entry
-	 * @param unlocalizedName the unlocalized name for the entry
+	 * @param entry          the {@link net.minecraftforge.registries.IForgeRegistryEntry.Impl IForgeRegistryEntry.Impl<?>} to set the names for
+	 * @param registryName   the registry name for the entry
+	 * @param translationKey the unlocalized name for the entry
 	 */
-	public static <T extends IForgeRegistryEntry.Impl<?>> T setRegistryNames(final T entry, final ModResourceLocation registryName, final String unlocalizedName) {
+	public static <T extends IForgeRegistryEntry.Impl<?>> T setRegistryNames(final T entry, final ModResourceLocation registryName, final String translationKey) {
 		entry.setRegistryName(registryName);
 		if (entry instanceof Block) {
-			((Block) entry).setUnlocalizedName(unlocalizedName);
+			((Block) entry).setTranslationKey(translationKey);
 			setCreativeTab((Block) entry);
 			((Block) entry).setHardness(1);
 		}
 		if (entry instanceof Item) {
-			((Item) entry).setUnlocalizedName(unlocalizedName);
+			((Item) entry).setTranslationKey(translationKey);
 			setCreativeTab((Item) entry);
 		}
 		return entry;
@@ -154,7 +160,7 @@ public final class ModUtil {
 	 * @param block the {@link net.minecraft.block.Block Block}
 	 */
 	public static void setCreativeTab(final Block block) {
-		if (block.getCreativeTabToDisplayOn() == null) {
+		if (block.getCreativeTab() == null) {
 			block.setCreativeTab(ModCreativeTabs.CREATIVE_TAB);
 		}
 	}
@@ -244,11 +250,11 @@ public final class ModUtil {
 	 * super_advanced_furnace -> Super Advanced Furnace<br>
 	 * portable_generator -> Portable Generator<br>
 	 * tile_portable_generator -> Tile Portable Generator <br>
-	 * @param  unlocalised the unlocalised name in
-	 * @return             the recommended localised name for the class
+	 * @param  registryNamePath the path of the registryName name in
+	 * @return                  the recommended translation key for the class
 	 */
-	public static String getLocalisedName(final String unlocalised) {
-		final String[] strs = unlocalised.split("_");
+	public static String registryNameToTranslationKey(final String registryNamePath) {
+		final String[] strs = registryNamePath.split("_");
 		for (int i = 0; i < strs.length; i++) {
 			strs[i] = org.apache.commons.lang3.StringUtils.capitalize(strs[i]);
 		}

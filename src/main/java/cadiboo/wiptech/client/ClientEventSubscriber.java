@@ -467,7 +467,7 @@ public final class ClientEventSubscriber {
 
 		}
 
-		if (!item.getRegistryName().getResourceDomain().equals(ModReference.MOD_ID)) {
+		if (!item.getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 			return;
 		}
 
@@ -513,7 +513,7 @@ public final class ClientEventSubscriber {
 				for (final AttachmentPoint attachmentPoint : attachmentList.getPoints()) {
 					final ItemStack attachmentStack = attachmentList.getAttachment(attachmentPoint);
 
-					String value = WIPTech.proxy.localize(attachmentStack.getUnlocalizedName() + ".name");
+					String value = WIPTech.proxy.localize(attachmentStack.getTranslationKey() + ".name");
 
 					if (attachmentStack.isEmpty()) {
 						if (Boolean.valueOf(true)) {

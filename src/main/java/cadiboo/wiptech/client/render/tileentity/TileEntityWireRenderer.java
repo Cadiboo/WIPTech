@@ -23,7 +23,7 @@ public class TileEntityWireRenderer extends ModTileEntitySpecialRenderer<TileEnt
 			GlStateManager.pushMatrix();
 			try {
 				final Vec3d tilePos = new Vec3d(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ());
-				final Vec3d entityPos = ClientUtil.getEntityRenderPos(entity, partialTicks).addVector(-0.5, entity.getEyeHeight() / 2, -0.5);
+				final Vec3d entityPos = ClientUtil.getEntityRenderPos(entity, partialTicks).add(-0.5, entity.getEyeHeight() / 2, -0.5);
 
 				final Vec3d relativeEntityPos = tilePos.subtract(entityPos);
 

@@ -44,13 +44,13 @@ public class BlockResource extends Block implements IModBlock, IBlockModMaterial
 	}
 
 	@Override
-	public BlockRenderLayer getBlockLayer() {
+	public BlockRenderLayer getRenderLayer() {
 		return this.material.getProperties().getBlockRenderLayers().get(0);
 	}
 
 	@Override
 	public boolean canRenderInLayer(final IBlockState state, final BlockRenderLayer layer) {
-		return this.material.getProperties().getBlockRenderLayers().contains(layer);
+		return this.material.getProperties().getBlockRenderLayers().contains(layer) || (this.getRenderLayer() == layer);
 	}
 
 	@Override
