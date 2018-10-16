@@ -40,8 +40,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModWritingUtil {
 
-	private static String assetDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
-	private static String dataDir = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
+	private static final String ASSETS_DIR = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
+	private static final String DATA_DIR = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
 
 	private static final ModResourceLocation ITEM_GENERATED = new ModResourceLocation("", "item/generated");
 	private static final ModResourceLocation ITEM_HANDHELD = new ModResourceLocation("", "item/handheld");
@@ -475,7 +475,7 @@ public class ModWritingUtil {
 				}
 			}
 
-			final Path file = Paths.get(assetDir + "blockstates/" + name.toLowerCase() + ".json");
+			final Path file = Paths.get(ASSETS_DIR + "blockstates/" + name.toLowerCase() + ".json");
 			try {
 				WIPTech.info("Writing Blockstate " + name.toLowerCase() + ".json");
 				Files.write(file, data, Charset.forName("UTF-8"));
@@ -495,7 +495,7 @@ public class ModWritingUtil {
 				}
 			}
 
-			final Path file = Paths.get(assetDir + "models/block/" + name.toLowerCase() + ".json");
+			final Path file = Paths.get(ASSETS_DIR + "models/block/" + name.toLowerCase() + ".json");
 			try {
 				WIPTech.info("Writing Block Model " + name.toLowerCase() + ".json");
 				Files.write(file, data, Charset.forName("UTF-8"));
@@ -515,7 +515,7 @@ public class ModWritingUtil {
 				}
 			}
 
-			final Path file = Paths.get(assetDir + "models/item/" + name.toLowerCase() + ".json");
+			final Path file = Paths.get(ASSETS_DIR + "models/item/" + name.toLowerCase() + ".json");
 			try {
 				WIPTech.info("Writing Item Model " + name.toLowerCase() + ".json");
 				Files.write(file, data, Charset.forName("UTF-8"));
@@ -736,7 +736,7 @@ public class ModWritingUtil {
 			WIPTech.info("Lang Entry " + langEntry);
 		}
 
-		final Path file = Paths.get(assetDir + "lang/" + getLangFileName() + "." + (Loader.MC_VERSION.contains("1.13") ? "json" : "lang"));
+		final Path file = Paths.get(ASSETS_DIR + "lang/" + getLangFileName() + "." + (Loader.MC_VERSION.contains("1.13") ? "json" : "lang"));
 		WIPTech.debug("Writing lang");
 		try {
 			Files.write(file, finalData, Charset.forName("UTF-8"));
@@ -1276,7 +1276,7 @@ public class ModWritingUtil {
 			}
 
 			// TODO dataDir for 1.13
-			final Path file = Paths.get(assetDir + "recipes/" + name.toLowerCase() + ".json");
+			final Path file = Paths.get(ASSETS_DIR + "recipes/" + name.toLowerCase() + ".json");
 			try {
 				WIPTech.info("Writing Recipe " + name.toLowerCase() + ".json");
 				Files.write(file, data, Charset.forName("UTF-8"));
