@@ -19,7 +19,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
@@ -40,8 +42,12 @@ public final class ModUtil {
 		setRegistryNames(block, registryName);
 
 		final Block overriddenBlock = ForgeRegistries.BLOCKS.getValue(registryName);
-		if (overriddenBlock != null) {
-			block.setTranslationKey(overriddenBlock.getTranslationKey().replace("tile.", ""));
+
+		if ((overriddenBlock != null)) {
+			// WHY do you not return null forge, WHY (it returns air)
+			if (overriddenBlock != ReflectionHelper.getPrivateValue(ForgeRegistry.class, (ForgeRegistry) ForgeRegistries.BLOCKS, "defaultValue")) {
+				block.setTranslationKey(overriddenBlock.getTranslationKey().replace("tile.", ""));
+			}
 		}
 		return block;
 	}
