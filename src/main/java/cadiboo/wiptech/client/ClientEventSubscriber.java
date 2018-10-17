@@ -135,12 +135,12 @@ public final class ClientEventSubscriber {
 	}
 
 	private static void registerEntityRenderers() {
-		RenderingRegistry.registerEntityRenderingHandler(EntityPortableGenerator.class, renderManager -> new EntityPortableGeneratorRenderer(renderManager));
-		RenderingRegistry.registerEntityRenderingHandler(EntitySlugCasing.class, renderManager -> new EntitySlugCasingRenderer(renderManager));
-		RenderingRegistry.registerEntityRenderingHandler(EntitySlug.class, renderManager -> new EntitySlugRenderer(renderManager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityRailgun.class, renderManager -> new EntityRailgunRenderer(renderManager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, renderManager -> new EntityNapalmRenderer(renderManager));
-		RenderingRegistry.registerEntityRenderingHandler(EntityCoilgunBullet.class, renderManager -> new EntityCoilgunBulletRenderer(renderManager));
+		RenderingRegistry.registerEntityRenderingHandler(EntityPortableGenerator.class, EntityPortableGeneratorRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySlugCasing.class, EntitySlugCasingRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntitySlug.class, EntitySlugRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityRailgun.class, EntityRailgunRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityNapalm.class, EntityNapalmRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityCoilgunBullet.class, EntityCoilgunBulletRenderer::new);
 	}
 
 	private static void registerModelsForAttachments() {
