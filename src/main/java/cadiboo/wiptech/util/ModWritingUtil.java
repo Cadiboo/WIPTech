@@ -40,12 +40,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class ModWritingUtil {
 
-	private static final String ASSETS_DIR = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
-	private static final String DATA_DIR = "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
+	private static final String	ASSETS_DIR	= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
+	private static final String	DATA_DIR	= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
 
-	private static final ModResourceLocation ITEM_GENERATED = new ModResourceLocation("", "item/generated");
-	private static final ModResourceLocation ITEM_HANDHELD = new ModResourceLocation("", "item/handheld");
-	private static final String ITEM_DEFAULT_TEXTURE_NAME = "layer0";
+	private static final ModResourceLocation	ITEM_GENERATED				= new ModResourceLocation("", "item/generated");
+	private static final ModResourceLocation	ITEM_HANDHELD				= new ModResourceLocation("", "item/handheld");
+	private static final String					ITEM_DEFAULT_TEXTURE_NAME	= "layer0";
 
 	@ExistsForDebugging
 	@SideOnly(Side.CLIENT)
@@ -546,89 +546,89 @@ public class ModWritingUtil {
 
 		for (final ModMaterial material : ModMaterial.values()) {
 
-			if (material.getOre() != null) {
+			if ((material.getOre() != null) && material.getOre().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getOre().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Ore");
 			}
 
-			if (material.getBlock() != null) {
+			if ((material.getBlock() != null) && material.getBlock().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getBlock().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Block");
 			}
 
-			if (material.getResource() != null) {
+			if ((material.getResource() != null) && material.getResource().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getResource().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + (material.getProperties() instanceof GemProperties ? "" : " Ingot"));
 			}
 
-			if (material.getResourcePiece() != null) {
+			if ((material.getResourcePiece() != null) && material.getResourcePiece().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getResourcePiece().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " " + (material.getProperties() instanceof GemProperties ? "Shard" : "Nugget"));
 			}
 
 			// armor
 
-			if (material.getHelmet() != null) {
+			if ((material.getHelmet() != null) && material.getHelmet().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getHelmet().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Helmet");
 			}
 
-			if (material.getChestplate() != null) {
+			if ((material.getChestplate() != null) && material.getChestplate().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getChestplate().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Chestplate");
 			}
 
-			if (material.getLeggings() != null) {
+			if ((material.getLeggings() != null) && material.getLeggings().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getLeggings().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Leggings");
 			}
 
-			if (material.getBoots() != null) {
+			if ((material.getBoots() != null) && material.getBoots().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getBoots().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Boots");
 			}
 
-			if (material.getHorseArmor() != null) {
+			if ((material.getHorseArmor() != null) && material.getHorseArmor().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getHorseArmor().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Horse Armor");
 			}
 
 			// tools
 
-			if (material.getAxe() != null) {
+			if ((material.getAxe() != null) && material.getAxe().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getAxe().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Axe");
 			}
 
-			if (material.getPickaxe() != null) {
+			if ((material.getPickaxe() != null) && material.getPickaxe().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getPickaxe().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Pickaxe");
 			}
 
-			if (material.getSword() != null) {
+			if ((material.getSword() != null) && material.getSword().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getSword().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Sword");
 			}
 
-			if (material.getShovel() != null) {
+			if ((material.getShovel() != null) && material.getShovel().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getShovel().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Shovel");
 			}
 
-			if (material.getHoe() != null) {
+			if ((material.getHoe() != null) && material.getHoe().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getHoe().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Hoe");
 			}
 
 			//
 
-			if (material.getWire() != null) {
+			if ((material.getWire() != null) && material.getWire().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getWire().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Wire");
 			}
 
-			if (material.getEnamel() != null) {
+			if ((material.getEnamel() != null) && material.getEnamel().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getEnamel().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Enamel");
 			}
 
-			if (material.getRail() != null) {
+			if ((material.getRail() != null) && material.getRail().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getRail().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Rail");
 			}
 
-			if (material.getCoil() != null) {
+			if ((material.getCoil() != null) && material.getCoil().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getCoil().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Coil");
 			}
 
-			if (material.getSpool() != null) {
+			if ((material.getSpool() != null) && material.getSpool().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getSpool().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Spool");
 			}
 
-			if (material.getSlugItem() != null) {
+			if ((material.getSlugItem() != null) && material.getSlugItem().getRegistryName().getNamespace().equals(ModReference.MOD_ID)) {
 				lang.put(material.getSlugItem().getTranslationKey(), getTranslatedTranslationKey(material.getNameLowercase()) + " Slug");
 				lang.put(material.getCasedSlug().getTranslationKey(), "Cased " + getTranslatedTranslationKey(material.getNameLowercase()) + " Slug");
 			}
