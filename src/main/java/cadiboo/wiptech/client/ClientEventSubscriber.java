@@ -87,9 +87,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber(modid = ModReference.MOD_ID)
 public final class ClientEventSubscriber {
 
-	public static final String DEFAULT_VARIANT = "normal";
+	public static final String	DEFAULT_VARIANT		= "normal";
 	@Deprecated
-	public static final String INVENTORY_VARIANT = "inventory";
+	public static final String	INVENTORY_VARIANT	= "inventory";
 
 	@SubscribeEvent
 	public static void onRegisterModelsEvent(final ModelRegistryEvent event) {
