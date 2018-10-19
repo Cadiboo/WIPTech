@@ -37,9 +37,6 @@ public class TileEntityModFurnaceRenderer extends ModTileEntitySpecialRenderer<T
 			}
 
 			if (te.isOn()) {
-
-				// Other systems, such as Java, will want an integer where bits 0-7 are the red value, 8-15 the green, and 16-23 the blue.
-
 				final int red;
 				final int green;
 				final int blue;
