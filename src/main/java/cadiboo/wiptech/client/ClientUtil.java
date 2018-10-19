@@ -630,8 +630,8 @@ public final class ClientUtil {
 	/**
 	 * Renders an {@link ItemStack} with the ground camera transform
 	 *
-	 * @param stack
-	 * @param world
+	 * @param stack stack the stack to render
+	 * @param world the world passed to {@link net.minecraft.client.renderer.RenderItem#getItemModelWithOverrides(ItemStack, World, net.minecraft.entity.EntityLivingBase), RenderItem.getItemModelWithOverrides(ItemStack, World, EntityLivingBase)}
 	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
@@ -646,8 +646,8 @@ public final class ClientUtil {
 	/**
 	 * Renders an {@link ItemStack} without any camera transforms
 	 *
-	 * @param stack
-	 * @param world
+	 * @param stack the stack to render
+	 * @param world the world passed to {@link net.minecraft.client.renderer.RenderItem#getItemModelWithOverrides(ItemStack, World, net.minecraft.entity.EntityLivingBase), RenderItem.getItemModelWithOverrides(ItemStack, World, EntityLivingBase)}
 	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
@@ -662,10 +662,10 @@ public final class ClientUtil {
 	/**
 	 * Renders an {@link ItemStack} with the specified {@link IBakedModel} with the specified color
 	 *
-	 * @param stack
-	 * @param model
-	 * @param color
+	 * @param stack the stack to render
+	 * @param color the color to render the stack with
 	 * @author Cadiboo
+	 * @see {@link ClientUtil#color(int, int, int)}
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void renderStackWithColor(final ItemStack stack, final World world, final int color) {
@@ -677,7 +677,7 @@ public final class ClientUtil {
 	/**
 	 * Renders a baked model
 	 *
-	 * @param model
+	 * @param model the model to render
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void renderModel(final IBakedModel model) {
@@ -685,10 +685,11 @@ public final class ClientUtil {
 	}
 
 	/**
-	 * renders a baked model with the specified color
+	 * Renders a baked model with the specified color
 	 *
-	 * @param model
-	 * @param color
+	 * @param model the model to render
+	 * @param color the color to render the model with
+	 * @see {@link ClientUtil#color(int, int, int)}
 	 */
 	@SideOnly(Side.CLIENT)
 	public static void renderModelWithColor(final IBakedModel model, final int color) {
@@ -714,11 +715,10 @@ public final class ClientUtil {
 	/**
 	 * Renders a list of quads with the specified color
 	 *
-	 * @param bufferbuilder
-	 * @param quads
-	 * @param color
-	 * @param stack
-	 * @author Cadiboo
+	 * @param bufferbuilder the bufferbuilder to render the quads with
+	 * @param quads         a list with all the quads in it
+	 * @param color         the color to render the quads with
+	 * @see {@link ClientUtil#color(int, int, int)}
 	 */
 	@SideOnly(Side.CLIENT)
 	private static void renderQuadsColor(final BufferBuilder bufferbuilder, final List<BakedQuad> quads, int color) {
