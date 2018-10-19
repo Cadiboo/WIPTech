@@ -5,12 +5,15 @@ import java.util.Random;
 import cadiboo.wiptech.client.ClientUtil;
 import cadiboo.wiptech.tileentity.TileEntityModFurnace;
 import cadiboo.wiptech.util.ModUtil;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -37,13 +40,37 @@ public class TileEntityModFurnaceRenderer extends ModTileEntitySpecialRenderer<T
 
 				// Other systems, such as Java, will want an integer where bits 0-7 are the red value, 8-15 the green, and 16-23 the blue.
 
-				final double smeltPercentage = ModUtil.map(0, te.getMaxSmeltTime(), 0, 1, te.getMaxSmeltTime() - te.getSmeltTime());
+				final int red;
+				final int green;
+				final int blue;
 
-				final int red = (int) (0xff0000 * smeltPercentage);
+				final int smeltTime = te.getSmeltTime();
+				final int maxSmeltTime = te.getMaxSmeltTime();
 
-				final int color = red | 0x00ffff;
+				final double smeltPercentage = ModUtil.map(0, maxSmeltTime, 0, 1, smeltTime);
 
-				ClientUtil.renderModelWithColor(ClientUtil.getModelFromStack(input, te.getWorld()), -color | (0xFFFFFF + 1));
+				if (Block.getBlockFromItem(input.getItem()).isFlammable(this.getWorld(), BlockPos.ORIGIN, EnumFacing.UP)) {
+					if (smeltTime <= (maxSmeltTime / 2)) {
+						// heat up
+						red = 0xFF;
+						green = (int) ((0.5d - smeltPercentage) * 2 * 0xFF);
+						blue = green;
+					} else {
+						// turn black if its flamable
+						red = (int) ((1 - smeltPercentage) * 2 * 0xFF);
+						green = 0x00;
+						blue = 0x00;
+					}
+				} else {
+					// heat up
+					red = 0xFF;
+					green = (int) ((1 - smeltPercentage) * 0xFF);
+					blue = green;
+				}
+
+				final int color = ClientUtil.color(red, green, blue);
+
+				ClientUtil.renderModelWithColor(ClientUtil.getModelFromStack(input, te.getWorld()), color);
 			} else {
 				ClientUtil.renderModel(ClientUtil.getModelFromStack(input, te.getWorld()));
 			}

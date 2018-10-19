@@ -1,6 +1,5 @@
 package cadiboo.wiptech.client;
 
-import java.nio.ByteOrder;
 import java.util.List;
 import java.util.Random;
 
@@ -23,6 +22,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.ForgeHooksClient;
@@ -31,6 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Util that is only used on the client i.e. Rendering code
+ *
  * @author Cadiboo
  */
 @SideOnly(Side.CLIENT)
@@ -38,6 +39,7 @@ public final class ClientUtil {
 
 	/**
 	 * Rotation algorithm Taken off Max_the_Technomancer from <a href= "https://www.minecraftforum.net/forums/mapping-and-modding-java-edition/minecraft-mods/modification-development/2772267-tesr-getting-darker-and-lighter-as-it-rotates">here</a>
+	 *
 	 * @param face the {@link net.minecraft.util.EnumFacing face} to rotate for
 	 * @author Cadiboo
 	 */
@@ -49,6 +51,7 @@ public final class ClientUtil {
 
 	/**
 	 * All Light methods I can remember
+	 *
 	 * @author Cadiboo
 	 */
 	@SideOnly(Side.CLIENT)
@@ -73,6 +76,7 @@ public final class ClientUtil {
 
 	/**
 	 * Modifed by Cadiboo, based on Notch?'s lightning code. Cleaned it up, made it readable & used pushMatrix, popMatrix & translate instead of drawing it straight onto the screen
+	 *
 	 * @param number                      The seed for the randoms that are used
 	 * @param NumberOfBranches            The number of main (full length) branches
 	 * @param NumberOfPossibleSubBranches The number Sub branches for each main branch
@@ -193,6 +197,7 @@ public final class ClientUtil {
 
 	/**
 	 * Put a lot of effort into this, it gets the entities exact (really, really exact) position
+	 *
 	 * @param entity       The entity to calculate the position of
 	 * @param partialTicks The multiplier used to predict where the entity is/will be
 	 * @return The position of the entity as a Vec3d
@@ -246,6 +251,7 @@ public final class ClientUtil {
 
 	/**
 	 * Rotates the X axis directly towards a {@link net.minecraft.util.math.Vec3d Vec3d} position
+	 *
 	 * @param source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
 	 * @param destination The position to rotate towards
 	 * @author Cadiboo
@@ -258,6 +264,7 @@ public final class ClientUtil {
 
 	/**
 	 * Rotates the Y axis directly towards a {@link net.minecraft.util.math.Vec3d Vec3d} position
+	 *
 	 * @param source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
 	 * @param destination The position to rotate towards
 	 * @author Cadiboo
@@ -270,6 +277,7 @@ public final class ClientUtil {
 
 	/**
 	 * Rotates the Z axis directly towards a {@link net.minecraft.util.math.Vec3d Vec3d} position
+	 *
 	 * @param source      The position to rotate from (I think that I've messed up the maths, it currently only works with 0, 0, 0 i.e. the Origin)
 	 * @param destination The position to rotate towards
 	 * @author Cadiboo
@@ -282,6 +290,7 @@ public final class ClientUtil {
 
 	/**
 	 * Rotates around X axis based on Pitch input and around Y axis based on Yaw input
+	 *
 	 * @param pitch
 	 * @param yaw
 	 */
@@ -293,6 +302,7 @@ public final class ClientUtil {
 
 	/**
 	 * Modified version of {@link ClientUtil#renderLightning(int, int, int, double) renderLightning} that looks more electricity-arcy
+	 *
 	 * @param number           The seed for the randoms that are used
 	 * @param NumberOfBranches The number of main (full length) branches
 	 * @param scale            How large/small/long it will be
@@ -430,6 +440,7 @@ public final class ClientUtil {
 
 	/**
 	 * Draws a cuboid similar to the way blocks are drawn
+	 *
 	 * @param minU   Minimum texture U (x) to draw from (between 0 and 1)
 	 * @param maxU   Maximum texture U (x) to draw from (between 0 and 1)
 	 * @param minV   Minimum texture V (y) to draw from (between 0 and 1)
@@ -497,6 +508,7 @@ public final class ClientUtil {
 
 	/**
 	 * Draws a cuboid that has its texture always be "seamless"
+	 *
 	 * @param minU   Minimum texture U (x) to draw from (between 0 and 1)
 	 * @param maxU   Maximum texture U (x) to draw from (between 0 and 1)
 	 * @param minV   Minimum texture V (y) to draw from (between 0 and 1)
@@ -581,6 +593,7 @@ public final class ClientUtil {
 
 	/**
 	 * Draws a part of a texture
+	 *
 	 * @param minU   Minimum texture U (x) to draw from (between 0 and 1)
 	 * @param maxU   Maximum texture U (x) to draw from (between 0 and 1)
 	 * @param minV   Minimum texture V (y) to draw from (between 0 and 1)
@@ -616,6 +629,7 @@ public final class ClientUtil {
 
 	/**
 	 * Renders an {@link ItemStack} with the ground camera transform
+	 *
 	 * @param stack
 	 * @param world
 	 * @author Cadiboo
@@ -631,6 +645,7 @@ public final class ClientUtil {
 
 	/**
 	 * Renders an {@link ItemStack} without any camera transforms
+	 *
 	 * @param stack
 	 * @param world
 	 * @author Cadiboo
@@ -646,6 +661,7 @@ public final class ClientUtil {
 
 	/**
 	 * Renders an {@link ItemStack} with the specified {@link IBakedModel} with the specified color
+	 *
 	 * @param stack
 	 * @param model
 	 * @param color
@@ -660,6 +676,7 @@ public final class ClientUtil {
 
 	/**
 	 * Renders a baked model
+	 *
 	 * @param model
 	 */
 	@SideOnly(Side.CLIENT)
@@ -669,6 +686,7 @@ public final class ClientUtil {
 
 	/**
 	 * renders a baked model with the specified color
+	 *
 	 * @param model
 	 * @param color
 	 */
@@ -695,6 +713,7 @@ public final class ClientUtil {
 
 	/**
 	 * Renders a list of quads with the specified color
+	 *
 	 * @param bufferbuilder
 	 * @param quads
 	 * @param color
@@ -713,7 +732,7 @@ public final class ClientUtil {
 					color = TextureUtil.anaglyphColor(color);
 				}
 
-				color = color | -16777216;
+				color = color | -0x1000000;
 			}
 
 			net.minecraftforge.client.model.pipeline.LightUtil.renderQuadColor(bufferbuilder, bakedquad, color);
@@ -722,6 +741,7 @@ public final class ClientUtil {
 
 	/**
 	 * gets the model from a stack with overrides
+	 *
 	 * @param stack
 	 * @param world
 	 * @return The stack's model
@@ -750,6 +770,7 @@ public final class ClientUtil {
 
 	/**
 	 * draws a texture that doesn't have to be 256x256, used in GUIs
+	 *
 	 * @param x
 	 * @param y
 	 * @param u
@@ -775,6 +796,7 @@ public final class ClientUtil {
 
 	/**
 	 * Gets the pitch rotation between two vectors
+	 *
 	 * @param source
 	 * @param destination
 	 * @return the pitch rotation
@@ -789,6 +811,7 @@ public final class ClientUtil {
 
 	/**
 	 * Gets the yaw rotation between two vectors
+	 *
 	 * @param source
 	 * @param destination
 	 * @return the yaw rotation
@@ -802,6 +825,7 @@ public final class ClientUtil {
 
 	/**
 	 * Used in Guis to determine whether or not to render a tooltip
+	 *
 	 * @param x
 	 * @param y
 	 * @param xSize
@@ -814,12 +838,31 @@ public final class ClientUtil {
 		return (mouseX >= x) && (mouseX <= (x + xSize)) && (mouseY >= y) && (mouseY <= (y + ySize));
 	}
 
-	public static int color(final int red, final int green, final int blue) {
-		if (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {
-			return -16777216 | (blue << 16) | (green << 8) | red;
-		} else {
-			return (red << 24) | (green << 16) | (blue << 8) | 255;
-		}
+	/**
+	 * @param red   the red value of the color, between 0x00 (decimal 0) and 0xFF (decimal 255)
+	 * @param green the red value of the color, between 0x00 (decimal 0) and 0xFF (decimal 255)
+	 * @param blue  the red value of the color, between 0x00 (decimal 0) and 0xFF (decimal 255)
+	 * @return the color in ARGB format
+	 */
+	public static int color(int red, int green, int blue) {
+
+		red = MathHelper.clamp(red, 0x00, 0xFF);
+		green = MathHelper.clamp(green, 0x00, 0xFF);
+		blue = MathHelper.clamp(blue, 0x00, 0xFF);
+
+		final int alpha = 0xFF;
+
+		// 0x alpha red green blue
+		// 0xaarrggbb
+
+		int colorRGBA = 0;
+		colorRGBA |= red << 16;
+		colorRGBA |= green << 8;
+		colorRGBA |= blue << 0;
+		colorRGBA |= alpha << 24;
+
+		return colorRGBA;
+
 	}
 
 	public static int colorf(final float red, final float green, final float blue) {
