@@ -843,6 +843,7 @@ public final class ClientUtil {
 	 * @param green the red value of the color, between 0x00 (decimal 0) and 0xFF (decimal 255)
 	 * @param blue  the red value of the color, between 0x00 (decimal 0) and 0xFF (decimal 255)
 	 * @return the color in ARGB format
+	 * @author Cadiboo
 	 */
 	public static int color(int red, int green, int blue) {
 
@@ -862,7 +863,6 @@ public final class ClientUtil {
 		colorRGBA |= alpha << 24;
 
 		return colorRGBA;
-
 	}
 
 	public static int colorf(final float red, final float green, final float blue) {
