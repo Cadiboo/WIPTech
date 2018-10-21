@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 
 /**
  * Basic world generator that generates ores
+ *
  * @author Cadiboo
  */
 public class ModWorldGenerator implements IWorldGenerator {
@@ -22,14 +23,14 @@ public class ModWorldGenerator implements IWorldGenerator {
 	@Override
 	public void generate(final Random random, final int chunkX, final int chunkZ, final World world, final IChunkGenerator chunkGenerator, final IChunkProvider chunkProvider) {
 		switch (world.provider.getDimensionType()) {
-			case NETHER :
+			case NETHER:
 				break;
-			case OVERWORLD :
+			case OVERWORLD:
 				this.generateOverworld(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
 				break;
-			case THE_END :
+			case THE_END:
 				break;
-			default :
+			default:
 				break;
 
 		}
@@ -52,15 +53,21 @@ public class ModWorldGenerator implements IWorldGenerator {
 	}
 
 	private int getMaxY(final ModMaterial material) {
-		return Math.max(1 + this.getMinY(material), Math.round(
+		return Math.max(
 
-				Math.round(128 * ModUtil.map(0,
+				1 + this.getMinY(material), Math.round(
 
-						ModMaterial.getHighestHardness(), 0, 1,
+						Math.round(128 *
 
-						this.maxHardnessMinusMaterialHardness(material)
+								ModUtil.map(0,
 
-								* ModUtil.map(0,
+										ModMaterial.getHighestHardness(), 0, 1,
+
+										this.maxHardnessMinusMaterialHardness(material)
+
+								) *
+
+								ModUtil.map(0,
 
 										ModMaterial.getHighestConductivity(),
 
@@ -70,11 +77,9 @@ public class ModWorldGenerator implements IWorldGenerator {
 
 								)
 
-				)
+						)
 
 				)
-
-		)
 
 		);
 	}
@@ -97,7 +102,7 @@ public class ModWorldGenerator implements IWorldGenerator {
 			return 1;
 		}
 
-		return Math.round(ModMaterial.getHighestHardness()) - Math.round(material.getProperties().getHardness());
+		return Math.round(highest - hardness);
 	}
 
 	private void generateOre(final IBlockState ore, final World world, final Random random, final int x, final int z, final int minY, final int maxY, final int size, final int chances) {
