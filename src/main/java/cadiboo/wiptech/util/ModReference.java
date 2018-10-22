@@ -2,6 +2,7 @@ package cadiboo.wiptech.util;
 
 /**
  * Holds mod-wide constant values
+ *
  * @author Cadiboo
  */
 public final class ModReference {
@@ -83,15 +84,16 @@ public final class ModReference {
 		 * This is our Mod's full Version.<br>
 		 * It is our Mod's Name, our Mod's Minecraft Version, our Mod's Major Mod version, our Mod's Major API version, our Mod's Minor Mod version, our Mod's Patch version and our Mod's Suffix in the format <code>MODNAME MCVERSION-MAJORMOD.MAJORAPI.MINOR.PATCH[-SUFFIX]</code>
 		 */
-		public static final String FULL_VERSION = MOD_NAME + "" + MINECRAFT_VERSION + "-" + VERSION + (VERSION_SUFFIX.length() > 0 ? "-" + VERSION_SUFFIX : "");
+		public static final String FULL_VERSION = MOD_NAME + "-" + MINECRAFT_VERSION + "-" + VERSION + (VERSION_SUFFIX.length() > 0 ? "-" + VERSION_SUFFIX : "");
 
 	}
 
 	public static final String	CLIENT_PROXY_CLASS	= "cadiboo.wiptech.client.ClientProxy";
 	public static final String	SERVER_PROXY_CLASS	= "cadiboo.wiptech.server.ServerProxy";
 
+	// https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
 	public static final String	ACCEPTED_VERSIONS	= "[1.12.2, 1.13]";
-	public static final String	DEPENDENCIES		= "required-after:minecraft;" + "required-after:forge@[14.23.4.2723,);" + "";
+	public static final String	DEPENDENCIES		= "required-after:minecraft;" + "required-after:forge@[14.23.4.2723,];" + "";
 
 	public static final String ENERGY_UNIT = "PNs";
 
