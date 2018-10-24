@@ -30,15 +30,24 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @ExistsForDebugging
+@Mod.EventBusSubscriber(Side.CLIENT)
 @SideOnly(Side.CLIENT)
 public class ModWritingUtil {
+
+	@SubscribeEvent
+	public static void onBakeModelsEvent(final ModelBakeEvent event) {
+		writeMod();
+	}
 
 	private static final String	ASSETS_DIR	= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/assets/wiptech/";
 	private static final String	DATA_DIR	= "/Users/" + System.getProperty("user.name") + "/Developer/Modding/WIPTechAlpha/src/main/resources/data/wiptech/";
@@ -467,7 +476,7 @@ public class ModWritingUtil {
 
 		WIPTech.debug("Writing blockstates for " + material);
 		blockstates.forEach((name, state) -> {
-			final ArrayList data = new ArrayList<>(Arrays.asList(state.split("\n")));
+			final ArrayList<String> data = new ArrayList<>(Arrays.asList(state.split("\n")));
 			final Iterator<String> it = data.iterator();
 			while (it.hasNext()) {
 				if (it.next().equals("")) {
@@ -487,7 +496,7 @@ public class ModWritingUtil {
 
 		WIPTech.debug("Writing blockModels for " + material);
 		blockModels.forEach((name, model) -> {
-			final ArrayList data = new ArrayList<>(Arrays.asList(model.split("\n")));
+			final ArrayList<String> data = new ArrayList<>(Arrays.asList(model.split("\n")));
 			final Iterator<String> it = data.iterator();
 			while (it.hasNext()) {
 				if (it.next().equals("")) {
@@ -507,7 +516,7 @@ public class ModWritingUtil {
 
 		WIPTech.debug("Writing itemModels for " + material);
 		itemModels.forEach((name, model) -> {
-			final ArrayList data = new ArrayList<>(Arrays.asList(model.split("\n")));
+			final ArrayList<String> data = new ArrayList<>(Arrays.asList(model.split("\n")));
 			final Iterator<String> it = data.iterator();
 			while (it.hasNext()) {
 				if (it.next().equals("")) {
@@ -1267,7 +1276,7 @@ public class ModWritingUtil {
 
 		WIPTech.debug("Writing recipes for " + material);
 		recipes.forEach((name, recipe) -> {
-			final ArrayList data = new ArrayList<>(Arrays.asList(recipe.split("\n")));
+			final ArrayList<String> data = new ArrayList<>(Arrays.asList(recipe.split("\n")));
 			final Iterator<String> it = data.iterator();
 			while (it.hasNext()) {
 				if (it.next().equals("")) {
