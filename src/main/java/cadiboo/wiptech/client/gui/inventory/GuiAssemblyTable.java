@@ -51,7 +51,7 @@ public class GuiAssemblyTable extends GuiContainer {
 
 		final ItemStack assembleItem = this.assemblyTable.getInventory().getStackInSlot(TileEntityAssemblyTable.ASSEMBLY_SLOT).copy();
 
-		renderItemAndEffectIntoGUI(assembleItem, x + 188, y + 55);
+		renderItemAndEffectIntoGUIWithMousePositions(assembleItem, x + 188, y + 55);
 
 		final int width = 118 - 23;
 		final int height = width;
@@ -73,7 +73,7 @@ public class GuiAssemblyTable extends GuiContainer {
 
 			final ItemStack stack = this.assemblyTable.getInventory().getStackInSlot(attachmentSlotIndex);
 
-			renderItemAndEffectIntoGUI(stack, x + 188, y + 55);
+			renderItemAndEffectIntoGUIWithMousePositions(stack, x + 188, y + 55);
 
 		}
 
@@ -110,7 +110,7 @@ public class GuiAssemblyTable extends GuiContainer {
 		this.fontRenderer.drawString(WIPTech.proxy.localize(this.assemblyTable.getBlockType().getTranslationKey() + ".name"), 8, 6, 4210752);
 	}
 
-	public static void renderItemAndEffectIntoGUI(final ItemStack stack, final int xPos, final int yPos) {
+	public static void renderItemAndEffectIntoGUIWithMousePositions(final ItemStack stack, final int xPos, final int yPos) {
 
 		IBakedModel bakedmodel = ModRenderItem.getItemModelWithOverrides(stack, null, null);
 		final ItemCameraTransforms.TransformType transformType = ItemCameraTransforms.TransformType.FIXED;
