@@ -2,6 +2,8 @@ package cadiboo.wiptech.util;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import cadiboo.wiptech.client.gui.inventory.GuiAssemblyTable;
 import cadiboo.wiptech.client.gui.inventory.GuiModFurnace;
 import cadiboo.wiptech.client.gui.inventory.GuiPortableGenerator;
@@ -41,6 +43,7 @@ public class ModGuiHandler implements IGuiHandler {
 	 * @return a {@link net.minecraft.inventory.Container Container} for the server
 	 */
 	@Override
+	@Nullable
 	public Container getServerGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		switch (ID) {
 		case RAILGUN:
@@ -73,6 +76,7 @@ public class ModGuiHandler implements IGuiHandler {
 	 * @return a {@link net.minecraft.client.gui.GuiScreen GuiScreen} for the client
 	 */
 	@Override
+	@Nullable
 	@SideOnly(Side.CLIENT)
 	public Gui getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		switch (ID) {
