@@ -36,6 +36,9 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.items.CapabilityItemHandler;
 import scala.actors.threadpool.Arrays;
 
+/**
+ * @author Cadiboo
+ */
 public abstract class ItemHandheldGun extends Item implements IModItem {
 
 	private static final AttachmentPoint[] REQUIRED_ATTACHMENT_POINTS = new AttachmentPoint[] { AttachmentPoint.CIRCUIT };
