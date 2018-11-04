@@ -832,9 +832,9 @@ public final class ClientUtil {
 	 * @param ySize
 	 * @param mouseX
 	 * @param mouseY
-	 * @return
+	 * @return if the mouse is inside the rectangle
 	 */
-	public static boolean isInRect(final int x, final int y, final int xSize, final int ySize, final int mouseX, final int mouseY) {
+	public static boolean isInRectangle(final int x, final int y, final int xSize, final int ySize, final int mouseX, final int mouseY) {
 		return (mouseX >= x) && (mouseX <= (x + xSize)) && (mouseY >= y) && (mouseY <= (y + ySize));
 	}
 

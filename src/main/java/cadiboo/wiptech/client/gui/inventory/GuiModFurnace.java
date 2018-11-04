@@ -60,7 +60,7 @@ public class GuiModFurnace extends GuiContainer {
 		final int x = (this.width - this.xSize) / 2;
 		final int y = (this.height - this.ySize) / 2;
 
-		if (ClientUtil.isInRect(x + 56, y + 36, 24, 16, mouseX, mouseY)) {
+		if (ClientUtil.isInRectangle(x + 56, y + 36, 24, 16, mouseX, mouseY)) {
 			final int fuelBurnTime = this.modFurnace.getMaxFuelTime();
 			final int fuelTimeRemaining = this.modFurnace.getFuelTimeRemaining();
 
@@ -69,7 +69,7 @@ public class GuiModFurnace extends GuiContainer {
 			this.drawHoveringText(percentage + "%", mouseX, mouseY);
 		}
 
-		if (ClientUtil.isInRect(x + 79, y + 34, 24, 16, mouseX, mouseY)) {
+		if (ClientUtil.isInRectangle(x + 79, y + 34, 24, 16, mouseX, mouseY)) {
 			final int inputSmeltTime = this.modFurnace.getMaxSmeltTime();
 			final int modFurnaceSmeltTime = this.modFurnace.getSmeltTime();
 
