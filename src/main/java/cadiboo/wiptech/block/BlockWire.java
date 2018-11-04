@@ -30,27 +30,28 @@ import net.minecraftforge.common.property.Properties;
 
 /**
  * Transmits energy, has a custom baked model, is awesome
+ * 
  * @author cadigal
  */
 public class BlockWire extends Block implements IModBlock, IBlockModMaterial {
 
-	private static final int format__0 = 0;
-	private static final int format__1 = 1;
+	private static final int	format__0	= 0;
+	private static final int	format__1	= 1;
 
-	public static final AxisAlignedBB CORE_AABB = new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
-	public static final AxisAlignedBB UP_AABB = new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, format__1, 09d / 16d);
-	public static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(07d / 16d, format__0, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
-	public static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(07d / 16d, 07d / 16d, format__0, 09d / 16d, 09d / 16d, 09d / 16d);
-	public static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, format__1);
-	public static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, format__1, 09d / 16d, 09d / 16d);
-	public static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(format__0, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB	CORE_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB	UP_AABB		= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, format__1, 09d / 16d);
+	public static final AxisAlignedBB	DOWN_AABB	= new AxisAlignedBB(07d / 16d, format__0, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB	NORTH_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, format__0, 09d / 16d, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB	SOUTH_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, format__1);
+	public static final AxisAlignedBB	EAST_AABB	= new AxisAlignedBB(07d / 16d, 07d / 16d, 07d / 16d, format__1, 09d / 16d, 09d / 16d);
+	public static final AxisAlignedBB	WEST_AABB	= new AxisAlignedBB(format__0, 07d / 16d, 07d / 16d, 09d / 16d, 09d / 16d, 09d / 16d);
 
-	public static final IUnlistedProperty<Boolean> CONNECTED_DOWN = new Properties.PropertyAdapter<>(PropertyBool.create("connected_down"));
-	public static final IUnlistedProperty<Boolean> CONNECTED_UP = new Properties.PropertyAdapter<>(PropertyBool.create("connected_up"));
-	public static final IUnlistedProperty<Boolean> CONNECTED_NORTH = new Properties.PropertyAdapter<>(PropertyBool.create("connected_north"));
-	public static final IUnlistedProperty<Boolean> CONNECTED_SOUTH = new Properties.PropertyAdapter<>(PropertyBool.create("connected_south"));
-	public static final IUnlistedProperty<Boolean> CONNECTED_WEST = new Properties.PropertyAdapter<>(PropertyBool.create("connected_west"));
-	public static final IUnlistedProperty<Boolean> CONNECTED_EAST = new Properties.PropertyAdapter<>(PropertyBool.create("connected_east"));
+	public static final IUnlistedProperty<Boolean>	CONNECTED_DOWN	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_down"));
+	public static final IUnlistedProperty<Boolean>	CONNECTED_UP	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_up"));
+	public static final IUnlistedProperty<Boolean>	CONNECTED_NORTH	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_north"));
+	public static final IUnlistedProperty<Boolean>	CONNECTED_SOUTH	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_south"));
+	public static final IUnlistedProperty<Boolean>	CONNECTED_WEST	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_west"));
+	public static final IUnlistedProperty<Boolean>	CONNECTED_EAST	= new Properties.PropertyAdapter<>(PropertyBool.create("connected_east"));
 
 	protected final ModMaterial material;
 
@@ -107,27 +108,27 @@ public class BlockWire extends Block implements IModBlock, IBlockModMaterial {
 	@Override
 	public AxisAlignedBB getBoundingBox(final IBlockState state, final IBlockAccess source, final BlockPos pos) {
 		final TileEntity tile = source.getTileEntity(pos);
-		AxisAlignedBB AABB = this.CORE_AABB;
+		AxisAlignedBB AABB = BlockWire.CORE_AABB;
 		if ((tile != null) && (tile instanceof TileEntityWire)) {
 			final TileEntityWire wire = (TileEntityWire) tile;
 
 			if (wire.isConnectedTo(EnumFacing.DOWN)) {
-				AABB = AABB.union(this.DOWN_AABB);
+				AABB = AABB.union(DOWN_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.UP)) {
-				AABB = AABB.union(this.UP_AABB);
+				AABB = AABB.union(UP_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.NORTH)) {
-				AABB = AABB.union(this.NORTH_AABB);
+				AABB = AABB.union(NORTH_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.SOUTH)) {
-				AABB = AABB.union(this.SOUTH_AABB);
+				AABB = AABB.union(SOUTH_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.WEST)) {
-				AABB = AABB.union(this.WEST_AABB);
+				AABB = AABB.union(WEST_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.EAST)) {
-				AABB = AABB.union(this.EAST_AABB);
+				AABB = AABB.union(EAST_AABB);
 			}
 		}
 		return AABB;
@@ -136,27 +137,27 @@ public class BlockWire extends Block implements IModBlock, IBlockModMaterial {
 	@Override
 	public void addCollisionBoxToList(final IBlockState state, final World world, final BlockPos pos, final AxisAlignedBB entityBox, final List<AxisAlignedBB> collidingBoxes, final Entity entity, final boolean isActualState) {
 		final TileEntity tile = world.getTileEntity(pos);
-		this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.CORE_AABB);
+		addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockWire.CORE_AABB);
 		if ((tile != null) && (tile instanceof TileEntityWire)) {
 			final TileEntityWire wire = (TileEntityWire) tile;
 
 			if (wire.isConnectedTo(EnumFacing.DOWN)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.DOWN_AABB);
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockWire.DOWN_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.UP)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.UP_AABB);
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockWire.UP_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.NORTH)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.NORTH_AABB);
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockWire.NORTH_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.SOUTH)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.SOUTH_AABB);
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockWire.SOUTH_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.WEST)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.WEST_AABB);
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockWire.WEST_AABB);
 			}
 			if (wire.isConnectedTo(EnumFacing.EAST)) {
-				this.addCollisionBoxToList(pos, entityBox, collidingBoxes, this.EAST_AABB);
+				addCollisionBoxToList(pos, entityBox, collidingBoxes, BlockWire.EAST_AABB);
 			}
 		}
 
@@ -179,8 +180,8 @@ public class BlockWire extends Block implements IModBlock, IBlockModMaterial {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		final IProperty[] listedProperties = new IProperty[0]; /* no listed properties */
-		final IUnlistedProperty[] unlistedProperties = new IUnlistedProperty[]{CONNECTED_UP, CONNECTED_DOWN, CONNECTED_EAST, CONNECTED_WEST, CONNECTED_NORTH, CONNECTED_SOUTH};
+		final IProperty<?>[] listedProperties = new IProperty[0]; /* no listed properties */
+		final IUnlistedProperty<?>[] unlistedProperties = new IUnlistedProperty[] { CONNECTED_UP, CONNECTED_DOWN, CONNECTED_EAST, CONNECTED_WEST, CONNECTED_NORTH, CONNECTED_SOUTH };
 		return new ExtendedBlockState(this, listedProperties, unlistedProperties);
 	}
 

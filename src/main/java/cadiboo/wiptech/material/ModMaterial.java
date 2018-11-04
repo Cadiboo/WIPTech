@@ -81,6 +81,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
  * MOHS Hardness from <a href= "https://en.wikipedia.org/wiki/Mohs_scale_of_mineral_hardness">Wikipedia</a> and <a href= "http://periodictable.com/Properties/A/MohsHardness.v.html">Periodictable</a>
+ *
  * @author Cadiboo
  */
 public enum ModMaterial implements IEnumNameFormattable {
@@ -122,7 +123,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 
 	GALLIUM(17, new MetalProperties(true, 1.50f, 29)),
 
-	BAUXITE(18, new ModMaterialProperties(true, false, false, null, false, null, false, false, false, false, false, false, false, false, false, false, ModMaterial.ALUMINIUM.getProperties().getHardness(), 0, null, new BlockRenderLayer[]{BlockRenderLayer.SOLID}, null, null)),
+	BAUXITE(18, new ModMaterialProperties(true, false, false, null, false, null, false, false, false, false, false, false, false, false, false, false, ModMaterial.ALUMINIUM.getProperties().getHardness(), 0, null, new BlockRenderLayer[] { BlockRenderLayer.SOLID }, null, null)),
 
 	APATITE(19, new GemProperties(true, 4.50f, 0, () -> ModItems.APATITE, (final Integer fortune, final Random random) -> {
 		return 64;
@@ -130,43 +131,43 @@ public enum ModMaterial implements IEnumNameFormattable {
 
 	GLITCH(19, new MetalProperties(true, 20.0f, 1000));
 
-	private final int id;
-	private final ModMaterialProperties properties;
-	private final ArmorMaterial armorMaterial;
-	private final ToolMaterial toolMaterial;
-	private final HorseArmorType horseArmorType;
-	private final ResourceLocationNamespace modId;
+	private final int						id;
+	private final ModMaterialProperties		properties;
+	private final ArmorMaterial				armorMaterial;
+	private final ToolMaterial				toolMaterial;
+	private final HorseArmorType			horseArmorType;
+	private final ResourceLocationNamespace	modId;
 
-	private BlockModOre ore;
-	private BlockResource block;
-	private BlockItem resource;
-	private BlockItem resourcePiece;
-	private BlockWire wire;
-	private BlockSpool spool;
-	private BlockEnamel enamel;
+	private BlockModOre		ore;
+	private BlockResource	block;
+	private BlockItem		resource;
+	private BlockItem		resourcePiece;
+	private BlockWire		wire;
+	private BlockSpool		spool;
+	private BlockEnamel		enamel;
 
-	private ModItemBlock itemBlockOre;
-	private ModItemBlock itemBlockBlock;
-	private ModItemBlock itemBlockResource;
-	private ModItemBlock itemBlockResourcePiece;
-	private ModItemBlock itemBlockWire;
-	private ModItemBlock itemBlockSpool;
-	private ModItemBlock itemBlockEnamel;
+	private ModItemBlock	itemBlockOre;
+	private ModItemBlock	itemBlockBlock;
+	private ModItemBlock	itemBlockResource;
+	private ModItemBlock	itemBlockResourcePiece;
+	private ModItemBlock	itemBlockWire;
+	private ModItemBlock	itemBlockSpool;
+	private ModItemBlock	itemBlockEnamel;
 
-	private ItemModArmor helmet;
-	private ItemModArmor chestplate;
-	private ItemModArmor leggings;
-	private ItemModArmor boots;
-	private ItemModHorseArmor horseArmor;
-	private ItemModPickaxe pickaxe;
-	private ItemModAxe axe;
-	private ItemModSword sword;
-	private ItemModShovel shovel;
-	private ItemModHoe hoe;
-	private ItemCoil coil;
-	private ItemRail rail;
-	private ItemSlug slugItem;
-	private ItemCasedSlug casedSlug;
+	private ItemModArmor		helmet;
+	private ItemModArmor		chestplate;
+	private ItemModArmor		leggings;
+	private ItemModArmor		boots;
+	private ItemModHorseArmor	horseArmor;
+	private ItemModPickaxe		pickaxe;
+	private ItemModAxe			axe;
+	private ItemModSword		sword;
+	private ItemModShovel		shovel;
+	private ItemModHoe			hoe;
+	private ItemCoil			coil;
+	private ItemRail			rail;
+	private ItemSlug			slugItem;
+	private ItemCasedSlug		casedSlug;
 
 	private EntityEntry slugEntity;
 
@@ -297,7 +298,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 		}
 	}
 
-	public ResourceLocationNamespace getResouceLocationDomainWithOverrides(final String nameSuffix, final IForgeRegistry registry) {
+	public ResourceLocationNamespace getResouceLocationDomainWithOverrides(final String nameSuffix, final IForgeRegistry<?> registry) {
 		for (final ModContainer mod : Loader.instance().getActiveModList()) {
 			if (!mod.getModId().equals(ModReference.MOD_ID)) {
 				if (registry.containsKey(new ModResourceLocation(mod.getModId(), this.getVanillaNameLowercase(nameSuffix) + (nameSuffix.length() > 0 ? "_" + nameSuffix : "")))) {
@@ -315,20 +316,20 @@ public enum ModMaterial implements IEnumNameFormattable {
 		// }
 
 		switch (suffix.toLowerCase()) {
-			case "sword" :
-			case "shovel" :
-			case "pickaxe" :
-			case "axe" :
-			case "hoe" :
-			case "helmet" :
-			case "chestplate" :
-			case "leggings" :
-			case "boots" :
-			case "apple" :
-			case "carrot" :
-			case "horse_armor" :
+			case "sword":
+			case "shovel":
+			case "pickaxe":
+			case "axe":
+			case "hoe":
+			case "helmet":
+			case "chestplate":
+			case "leggings":
+			case "boots":
+			case "apple":
+			case "carrot":
+			case "horse_armor":
 				return this.getNameLowercase() + (this.getNameLowercase().contains("gold") ? "en" : "");
-			default :
+			default:
 				return this.getNameLowercase();
 		}
 
@@ -477,7 +478,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 	public static double getHighestConductivity() {
 		float ret = 0;
 		for (final ModMaterial material : ModMaterial.values()) {
-			if (material == material.GLITCH) {
+			if (material == ModMaterial.GLITCH) {
 				continue;
 			}
 			if (material.getProperties().getConductivity() > ret) {
@@ -715,7 +716,9 @@ public enum ModMaterial implements IEnumNameFormattable {
 			ModelLoaderRegistry.registerLoader(new GlitchModelLoader());
 			WIPTech.debug("Registered custom State Mapper(s) for glitch block and ore with the Model Loader");
 
-			if (ModMaterial.this.getProperties().hasRailgunSlug()) {
+			if (ModMaterial.this.getProperties().hasRailgunSlug())
+
+			{
 				// FIXME TODO re-enable this & make it work
 				// ModelLoader.setCustomMeshDefinition(getCasedSlug(), stack -> new ModelResourceLocation(new ModResourceLocation(getAssetsModId(), "cased_" + getNameLowercase() + "_slug"), DEFAULT_VARIANT));
 			}
@@ -822,8 +825,8 @@ public enum ModMaterial implements IEnumNameFormattable {
 		}
 
 		@SubscribeEvent(priority = EventPriority.LOWEST)
-		public void onRegistryEventRegister(final RegistryEvent.Register event) {
-			final IForgeRegistry registry = event.getRegistry();
+		public void onRegistryEventRegister(final RegistryEvent.Register<?> event) {
+			final IForgeRegistry<?> registry = event.getRegistry();
 
 			if (registry == ForgeRegistries.BLOCKS) {
 				if (ModMaterial.this.getProperties().hasOre()) {
@@ -1018,6 +1021,7 @@ public enum ModMaterial implements IEnumNameFormattable {
 	}
 
 	private final MaterialEventSubscriber eventSubscriber = new MaterialEventSubscriber();
+
 	public MaterialEventSubscriber getEventSubscriber() {
 		WIPTech.info(this.eventSubscriber.toString());
 		return this.eventSubscriber;

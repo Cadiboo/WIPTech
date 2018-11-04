@@ -97,7 +97,7 @@ public class GuiAssemblyTable extends GuiContainer {
 		final int y = (this.height - this.ySize) / 2;
 
 		// assembly progress
-		if (ClientUtil.isInRect(x + 129, y + 93, 118, 16, mouseX, mouseY)) {
+		if (ClientUtil.isInRectangle(x + 129, y + 93, 118, 16, mouseX, mouseY)) {
 			final int percentage = Math.round(Math.round(100 - ModUtil.map(0, this.assemblyTable.getMaxAssemblyTime(), 0, 100, this.assemblyTable.getAssemblyTime())));
 			this.drawHoveringText(percentage + "%", mouseX, mouseY);
 		}
