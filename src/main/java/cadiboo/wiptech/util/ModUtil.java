@@ -26,7 +26,7 @@ import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 /**
- * Utility Methods
+ * Utility Methods for Common Code
  *
  * @author Cadiboo
  */
