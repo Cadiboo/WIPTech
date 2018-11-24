@@ -1,0 +1,37 @@
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run
+
+# Important setup
+!/src/
+!/src/*
+*.DS_Store*
+
+# Vital git files
+!LICENSE
+!README.*
+!.gitignore
+
+# OPTIONAL - release JARs
+!/build/
+/build/*
+!/build/libs/
